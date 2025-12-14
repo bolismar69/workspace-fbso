@@ -1,0 +1,4 @@
+FROM eclipse-temurin:8-jre-focal
+USER 1000
+WORKDIR /app
+ENTRYPOINT ["java", "-jar", "app.jar"]

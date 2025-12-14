@@ -1,0 +1,29 @@
+# Configuração Padrão do Serviço
+server:
+  port: 8080 # Porta para Health Check (Actuator)
+
+# Configuração de Logs
+logging:
+  level:
+    root: INFO
+    org.springframework: WARN
+    com.fbso: DEBUG # Nível de debug para o nosso código de negócio
+
+# Configuração Padrão de Mensageria (RabbitMQ/AMQP)
+spring:
+  rabbitmq:
+    host: \${RABBITMQ_HOST:localhost}
+    port: \${RABBITMQ_PORT:5672}
+    username: \${RABBITMQ_USER:guest}
+    password: \${RABBITMQ_PASS:guest}
+    listener:
+      simple:
+        # Padrão de consumo: um por vez (concorrência gerenciada pelo ambiente)
+        concurrency: 1
+        max-concurrency: 5 
+
+# Propriedade de Negócio (Usada no Listener)
+fbso:
+  transaction:
+    queue:
+      name: ms-transaction-processor-queue

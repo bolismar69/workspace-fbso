@@ -1,0 +1,10 @@
+# Imagem Base (Java Runtime)
+FROM eclipse-temurin:17-jre-focal
+
+# Configuração de segurança
+USER 1000
+
+WORKDIR /app
+
+# Argumentos de execução JVM padrão (segurança, memória)
+ENTRYPOINT ["java", "-XX:InitialRAMPercentage=75.0", "-jar", "app.jar"]

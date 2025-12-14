@@ -1,0 +1,13 @@
+# Stage 1: Build da imagem nativa (compilação)
+FROM quay.io/quarkus/ubi-quarkus-mandrel-builder:jdk-17 AS build
+COPY --chown=quarkus:quarkus src /home/quarkus/src
+WORKDIR /home/quarkus/src
+# Execução da compilação nativa
+RUN mvn package -Pnative
+
+# Stage 2: Imagem final de runtime (Menor possível)
+FROM registry.access.redhat.com/ubi8/ubi-minimal
+WORKDIR /app
+COPY --from=build /home/quarkus/src/target/*-runner /app/application
+# Ponto de entrada nativo
+CMD ["./application", "-Dquarkus.http.port=8080"]

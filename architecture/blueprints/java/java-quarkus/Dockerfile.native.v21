@@ -1,0 +1,30 @@
+# Stage 1: BUILDER - Cria o binário nativo
+# Usamos o Mandrel, otimizado para Quarkus e GraalVM
+FROM quay.io/quarkus/ubi-quarkus-mandrel-builder:jdk-21 AS build
+
+USER quarkus
+WORKDIR /home/quarkus/src
+COPY --chown=quarkus:quarkus mvnw .
+COPY --chown=quarkus:quarkus .mvn .mvn
+COPY --chown=quarkus:quarkus pom.xml .
+COPY --chown=quarkus:quarkus src/ src/
+
+# Compilação nativa (usando o perfil 'native')
+# O uso de -DskipTests é comum para builds otimizados no CI
+RUN mvn package -Pnative -DskipTests
+
+# Stage 2: RUNTIME - Execução Mínima
+# Usa uma imagem mínima sem JRE, pois o binário é nativo
+FROM registry.access.redhat.com/ubi9/ubi-minimal
+
+# Parâmetros de segurança e execução
+USER 1000
+WORKDIR /app
+# Copia o binário final
+COPY --from=build /home/quarkus/src/target/*-runner /app/application
+
+# Exposição da porta padrão
+EXPOSE 8080
+
+# Ponto de entrada (execução direta do binário)
+CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]

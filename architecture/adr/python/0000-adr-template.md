@@ -1,0 +1,1 @@
+(ADRs Globais, como Processo de Code Review)

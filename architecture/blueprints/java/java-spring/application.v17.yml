@@ -1,0 +1,21 @@
+spring:
+  # Configuração padrão de Batch
+  batch:
+    job:
+      enabled: false # Jobs devem ser iniciados via linha de comando ou API
+  datasource:
+    # Configuração Padrão de Data Source (deve ser sobrescrito pelo ambiente)
+    url: jdbc:postgresql://localhost:5432/batch_db
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+  profiles:
+    active: dev # Perfil padrão
+    
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    com.fbso: DEBUG # Nível de debug para nosso código de negócio
+server:
+  port: 8080 # Porta padrão para Health Checks

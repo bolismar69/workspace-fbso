@@ -1,0 +1,36 @@
+# Configuração Padrão (Usada se nenhum perfil for ativo)
+spring:
+  # Desabilita a inicialização automática de Jobs, esperando comando explícito
+  batch:
+    job:
+      enabled: false
+  datasource:
+    # Configuração Padrão para Desenvolvimento Local
+    url: jdbc:postgresql://localhost:5432/batch_db
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+    
+server:
+  port: 8080 # Porta para Actuator/Health Checks
+  
+logging:
+  level:
+    root: INFO
+    org.springframework: WARN
+    com.fbso: DEBUG # DEBUG para o código de negócio
+
+# --- Perfil 'prod' (Para ambientes de produção) ---
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    # URL e credenciais serão injetadas pelo ambiente (Secret Manager)
+    url: ${DB_URL_PROD:placeholder}
+    username: ${DB_USER_PROD:placeholder}
+    password: ${DB_PASS_PROD:placeholder}
+logging:
+  level:
+    com.fbso: INFO # Logs de negócio em INFO na produção
