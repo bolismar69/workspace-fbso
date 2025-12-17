@@ -9,66 +9,70 @@
 # ------------------------------------------------------------------------------
 
 # Proprietários de Arquitetura e Infraestrutura (Revisores obrigatórios para o Nível 1)
-/architecture/ @time-arquitetura @user-cto
-/devops_tools/ @time-infra-squad
+# /architecture/ @bolismar69@gmail.com
+# /devops_tools/ @bolismar69@gmail.com
 
-# Proprietários de Bibliotecas Comuns de Frontend
-/frontend/*/libs/ @time-frontend-libs
-
-# ------------------------------------------------------------------------------
-# 2. FRAMEWORK REACT (Web Apps) - Proprietários por Projeto
-# ------------------------------------------------------------------------------
-
-/frontend/react/web_apps/app-web-single_page-portal/ @time-frontend-portal-squad @user-lider-portal
-
-/frontend/angular/web_apps/app-web-enterprise-crm/ @time-frontend-crm-squad @user-lider-crm
-
-# ------------------------------------------------------------------------------
-# 3. FRAMEWORK REACT NATIVE (Mobile Apps) - Proprietários por Projeto
-# ------------------------------------------------------------------------------
-
-/frontend/react_native/mobile_apps/app-mob-sales-force/ @time-mobile-sales-squad @user-sme-vendas
-
-# ------------------------------------------------------------------------------
-# 4. FRAMEWORK FLUTTER (Multiplataforma Apps) - Proprietários por Projeto
-# ------------------------------------------------------------------------------
-
-/frontend/flutter/multiplatform_apps/app-mp-client-v3/ @time-flutter-client-squad @user-lider-flutter
-
-# ------------------------------------------------------------------------------
-# 5. NATIVO ANDROID (Kotlin) - Proprietários por Projeto
-# ------------------------------------------------------------------------------
-
-/frontend/kotlin_native/android_apps/app-android-scanner-v2/ @time-mobile-android-native @user-sme-hardware
-
-# ------------------------------------------------------------------------------
-# 6. FRAMEWORK DESKTOP (.NET MAUI) - Proprietários por Projeto
-# ------------------------------------------------------------------------------
-
-/frontend/dotnet_maui/desktop_apps/app-desktop-data-entry-tool/ @time-desktop-apps-squad @user-lider-csharp
-
-# ------------------------------------------------------------------------------
-# 7. REGRA DE SEGURANÇA (Catch-All para o Backend)
-# ------------------------------------------------------------------------------
-
-# Qualquer alteração em qualquer código Java de microsserviço requer aprovação do Lider Técnico
-/backend/java/quarkus/microservices/ @time-backend-quarkus @user-lider-tecnico-be
-
-# (Adicione aqui as regras de outros projetos que sejam prioritários ou críticos)
-
-# Global
-* @ORG-java-tech-lead
-
-# Java (backend)
-/backend/java/** @ORG-java-tech-lead
+# # Proprietários de Bibliotecas Comuns de Frontend
+# /frontend/*/libs/ @bolismar69@gmail.com
+# 
+# # ------------------------------------------------------------------------------
+# # 2. FRAMEWORK REACT (Web Apps) - Proprietários por Projeto
+# # ------------------------------------------------------------------------------
+# 
+# /frontend/react/web_apps/app-web-single_page-portal/ @bolismar69@gmail.com
+# 
+# /frontend/angular/web_apps/app-web-enterprise-crm/ @bolismar69@gmail.com
+# 
+# # ------------------------------------------------------------------------------
+# # 3. FRAMEWORK REACT NATIVE (Mobile Apps) - Proprietários por Projeto
+# # ------------------------------------------------------------------------------
+# 
+# /frontend/react_native/mobile_apps/app-mob-sales-force/ @bolismar69@gmail.com
+# 
+# # ------------------------------------------------------------------------------
+# # 4. FRAMEWORK FLUTTER (Multiplataforma Apps) - Proprietários por Projeto
+# # ------------------------------------------------------------------------------
+# 
+# /frontend/flutter/multiplatform_apps/app-mp-client-v3/ @bolismar69@gmail.com
+# 
+# # ------------------------------------------------------------------------------
+# # 5. NATIVO ANDROID (Kotlin) - Proprietários por Projeto
+# # ------------------------------------------------------------------------------
+# 
+# /frontend/kotlin_native/android_apps/app-android-scanner-v2/ @bolismar69@gmail.com
+# 
+# # ------------------------------------------------------------------------------
+# # 6. FRAMEWORK DESKTOP (.NET MAUI) - Proprietários por Projeto
+# # ------------------------------------------------------------------------------
+# 
+# /frontend/dotnet_maui/desktop_apps/app-desktop-data-entry-tool @bolismar69@gmail.com
+# 
+# # ------------------------------------------------------------------------------
+# # 7. REGRA DE SEGURANÇA (Catch-All para o Backend)
+# # ------------------------------------------------------------------------------
+# 
+# # Qualquer alteração em qualquer código Java de microsserviço requer aprovação do Lider Técnico
+# /backend/java/quarkus/microservices/ @bolismar69@gmail.com
+# 
+# # (Adicione aqui as regras de outros projetos que sejam prioritários ou críticos)
+# 
+# # Global
+# * @ORG-java-tech-lead
 
 # Docker e workflows compartilhados
-/.github/** @ORG-java-tech-lead
+/.github/** @bolismar69@gmail.com
+
+# Proprietários de Arquitetura
+/architecture/** @bolismar69@gmail.com
+
+# Proprietários de DevOps
+/devops/** @bolismar69@gmail.com
+
+# Java (backend)
+/backend/java/generic/** @bolismar69@gmail.com
 
 # Spring
-/backend/java/spring/** @ORG-java-tech-lead
+/backend/java/spring/** @bolismar69@gmail.com
 
 # Quarkus
-/backend/java/quarkus/** @ORG-java-tech-lead
-
-
+/backend/java/quarkus/** @bolismar69@gmail.com
