@@ -1,0 +1,43 @@
+name: Java CI/CD Trigger
+
+description: >
+  Detecta alterações em serviços Java no monorepo e aciona workflow reutilizável para build e push Docker.
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/java/**'
+
+jobs:
+  detect_services:
+    name: Detectar serviços Java alterados
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.extract.outputs.matrix }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: extract
+        name: Simular extração de serviços afetados
+        run: |
+          # TODO: Substituir por script real que detecta mudanças no monorepo
+          AFFECTED='[
+            {"path": "backend/java/quarkus/ms-user-auth", "goals": "clean install"},
+            {"path": "backend/java/spring/ms-payment", "goals": "clean install -DskipTests"}
+          ]'
+          echo "matrix=$AFFECTED" >> $GITHUB_OUTPUT
+
+  build_matrix:
+    name: Build dos serviços Java
+    needs: detect_services
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.detect_services.outputs.matrix) }}
+
+    uses: ./.github/workflows/callables/build-java-service.yml
+    with:
+      service-path: ${{ matrix.path }}
+      maven-goals: ${{ matrix.goals }}

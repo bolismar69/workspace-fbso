@@ -1,0 +1,74 @@
+# ==============================================================================
+# ARQUIVO CODEOWNERS (Foco em Aplicações Específicas)
+# ------------------------------------------------------------------------------
+# ATENÇÃO: A regra mais específica (mais abaixo no arquivo) tem precedência.
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. REGRAS GERAIS DE GOVERNANÇA (Colocadas primeiro para serem herdadas)
+# ------------------------------------------------------------------------------
+
+# Proprietários de Arquitetura e Infraestrutura (Revisores obrigatórios para o Nível 1)
+/architecture/ @time-arquitetura @user-cto
+/devops_tools/ @time-infra-squad
+
+# Proprietários de Bibliotecas Comuns de Frontend
+/frontend/*/libs/ @time-frontend-libs
+
+# ------------------------------------------------------------------------------
+# 2. FRAMEWORK REACT (Web Apps) - Proprietários por Projeto
+# ------------------------------------------------------------------------------
+
+/frontend/react/web_apps/app-web-single_page-portal/ @time-frontend-portal-squad @user-lider-portal
+
+/frontend/angular/web_apps/app-web-enterprise-crm/ @time-frontend-crm-squad @user-lider-crm
+
+# ------------------------------------------------------------------------------
+# 3. FRAMEWORK REACT NATIVE (Mobile Apps) - Proprietários por Projeto
+# ------------------------------------------------------------------------------
+
+/frontend/react_native/mobile_apps/app-mob-sales-force/ @time-mobile-sales-squad @user-sme-vendas
+
+# ------------------------------------------------------------------------------
+# 4. FRAMEWORK FLUTTER (Multiplataforma Apps) - Proprietários por Projeto
+# ------------------------------------------------------------------------------
+
+/frontend/flutter/multiplatform_apps/app-mp-client-v3/ @time-flutter-client-squad @user-lider-flutter
+
+# ------------------------------------------------------------------------------
+# 5. NATIVO ANDROID (Kotlin) - Proprietários por Projeto
+# ------------------------------------------------------------------------------
+
+/frontend/kotlin_native/android_apps/app-android-scanner-v2/ @time-mobile-android-native @user-sme-hardware
+
+# ------------------------------------------------------------------------------
+# 6. FRAMEWORK DESKTOP (.NET MAUI) - Proprietários por Projeto
+# ------------------------------------------------------------------------------
+
+/frontend/dotnet_maui/desktop_apps/app-desktop-data-entry-tool/ @time-desktop-apps-squad @user-lider-csharp
+
+# ------------------------------------------------------------------------------
+# 7. REGRA DE SEGURANÇA (Catch-All para o Backend)
+# ------------------------------------------------------------------------------
+
+# Qualquer alteração em qualquer código Java de microsserviço requer aprovação do Lider Técnico
+/backend/java/quarkus/microservices/ @time-backend-quarkus @user-lider-tecnico-be
+
+# (Adicione aqui as regras de outros projetos que sejam prioritários ou críticos)
+
+# Global
+* @ORG-java-tech-lead
+
+# Java (backend)
+/backend/java/** @ORG-java-tech-lead
+
+# Docker e workflows compartilhados
+/.github/** @ORG-java-tech-lead
+
+# Spring
+/backend/java/spring/** @ORG-java-tech-lead
+
+# Quarkus
+/backend/java/quarkus/** @ORG-java-tech-lead
+
+

@@ -1,0 +1,34 @@
+<!-- Trecho pom.xml com os plugins do SonarQube e Checkstyle. -->
+
+<build>
+  <plugins>
+    <!-- Checkstyle Plugin -->
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-checkstyle-plugin</artifactId>
+      <version>3.3.0</version>
+      <executions>
+        <execution>
+          <id>checkstyle-validation</id>
+          <phase>validate</phase>
+          <goals>
+            <goal>checkstyle</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <configLocation>checkstyle.xml</configLocation>
+        <encoding>UTF-8</encoding>
+        <consoleOutput>true</consoleOutput>
+        <failsOnError>true</failsOnError>
+      </configuration>
+    </plugin>
+
+    <!-- Sonar Plugin -->
+    <plugin>
+      <groupId>org.sonarsource.scanner.maven</groupId>
+      <artifactId>sonar-maven-plugin</artifactId>
+      <version>3.11.0.3922</version>
+    </plugin>
+  </plugins>
+</build>

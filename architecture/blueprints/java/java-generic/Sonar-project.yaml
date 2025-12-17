@@ -1,0 +1,12 @@
+# Arquivo sonar-project.properties para uso alternativo à configuração via pom.xml
+
+sonar.projectKey=org:my-service
+sonar.organization=org
+sonar.host.url=https://sonarcloud.io
+sonar.login=${SONAR_TOKEN}
+
+sonar.java.binaries=target/classes
+sonar.sources=src/main/java
+sonar.tests=src/test/java
+sonar.junit.reportPaths=target/surefire-reports
+sonar.java.checkstyle.reportPaths=target/checkstyle-result.xml

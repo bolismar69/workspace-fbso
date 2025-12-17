@@ -1,0 +1,65 @@
+# syntax=docker/dockerfile:1.7
+ARG JAVA_VERSION=21
+ARG IMAGE_TO_BUILD=eclipse-temurin:21-jdk-jammy
+ARG IMAGE_TO_RUNTIME=eclipse-temurin:21-jre-jammy
+ARG APP_PORT=8080
+
+########################
+# Build
+########################
+# FROM eclipse-temurin:${JAVA_VERSION}-jdk-jammy AS build
+FROM ${IMAGE_TO_BUILD} AS build
+WORKDIR /workspace
+
+# 1) Camada: arquivos de build (melhor cache)
+# Maven
+COPY pom.xml ./
+COPY .mvn/ .mvn/
+COPY mvnw ./
+# Gradle
+COPY build.gradle* settings.gradle* gradle.properties ./
+COPY gradle/ gradle/
+COPY gradlew ./
+
+# 2) Aquece deps (cache)
+RUN --mount=type=cache,target=/root/.m2 \
+    --mount=type=cache,target=/root/.gradle \
+    set -eux; \
+    if [ -x ./mvnw ]; then ./mvnw -q -DskipTests dependency:go-offline || true; fi; \
+    if [ -x ./gradlew ]; then ./gradlew -q --no-daemon dependencies || true; fi
+
+# 3) Camada: código
+COPY . .
+
+# 4) Build final (wrapper obrigatório)
+RUN --mount=type=cache,target=/root/.m2 \
+    --mount=type=cache,target=/root/.gradle \
+    set -eux; \
+    if [ -x ./mvnw ]; then \
+      ./mvnw -q -DskipTests package; \
+      cp "$(ls -1 target/*.jar | head -n 1)" /workspace/app.jar; \
+    elif [ -x ./gradlew ]; then \
+      ./gradlew -q --no-daemon build -x test; \
+      cp "$(ls -1 build/libs/*.jar | head -n 1)" /workspace/app.jar; \
+    else \
+      echo "ERRO: Padronize mvnw/gradlew no repo." && exit 1; \
+    fi
+
+########################
+# Runtime
+########################
+# FROM eclipse-temurin:${JAVA_VERSION}-jre-jammy AS runtime
+FROM ${IMAGE_TO_RUNTIME} AS runtime
+ENV APP_PORT=${APP_PORT}
+ENV JAVA_OPTS=""
+
+WORKDIR /app
+COPY --from=build /workspace/app.jar /app/app.jar
+
+RUN set -eux; \
+  useradd -r -u 10001 -g root appuser; \
+  chown -R 10001:0 /app
+USER 10001
+
+EXPOSE ${APP_PORT}
+ENTRYPOINT ["sh","-c","exec java $JAVA_OPTS -Dserver.port=$APP_PORT -jar /app/app.jar"]

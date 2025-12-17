@@ -1,0 +1,85 @@
+name: Reusable Build Java Service
+
+description: >
+  Template para build e push de serviços Java em monorepo, reutilizável via workflow_call.
+
+on:
+  workflow_call:
+    inputs:
+      service-path:
+        description: Caminho do serviço dentro do repositório
+        required: true
+        type: string
+      maven-goals:
+        description: Comando Maven a executar (ex: clean install)
+        required: true
+        type: string
+
+jobs:
+  build_and_push:
+    name: 🔧 Build e Push Java (${{ inputs.service-path }})
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Carregar variáveis de ambiente compartilhadas
+        run: |
+          set -a
+          source .github/docker.env
+          source .github/docker.env.java
+          set +a
+
+      - name: Configurar Java e cache do Maven
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Cache do Maven
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      - name: Verificação Checkstyle
+        run: |
+          cd ${{ inputs.service-path }}
+          ./mvnw checkstyle:checkstyle
+
+      - name: Verificação SonarQube
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd ${{ inputs.service-path }}
+          ./mvnw verify sonar:sonar \
+            -Dsonar.projectKey=org:${{ inputs.service-path }} \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.organization=org \
+            -Dsonar.login=$SONAR_TOKEN
+
+      - name: Build do serviço com Maven
+        run: |
+          cd ${{ inputs.service-path }}
+          ./mvnw ${{ inputs.maven-goals }}
+
+      - name: Validar artefato gerado
+        run: |
+          cd ${{ inputs.service-path }}
+          if [ -f "target/app-runner" ]; then echo "OK - Quarkus Native";
+          elif [ -f "target/app" ]; then echo "OK - Spring Native";
+          elif [ -f "target/app.jar" ]; then echo "OK - Standard JAR";
+          else echo "Artifact ausente" && exit 1;
+          fi
+
+      - name: Docker Build & Push
+        run: |
+          cd ${{ inputs.service-path }}
+          docker build \
+            --build-arg IMAGE_TO_BUILD=$IMAGE_TO_BUILD_STANDARD \
+            --build-arg IMAGE_TO_RUNTIME=$IMAGE_TO_RUNTIME_JVM \
+            --build-arg PORT_TO_EXPOSE=$PORT_TO_EXPOSE \
+            -t $DOCKER_REGISTRY/$DOCKER_ORG/${{ inputs.service-path }}:$DOCKER_TAG_PREFIX-${{ github.sha }} .
+
+          docker push $DOCKER_REGISTRY/$DOCKER_ORG/${{ inputs.service-path }}:$DOCKER_TAG_PREFIX-${{ github.sha }}
