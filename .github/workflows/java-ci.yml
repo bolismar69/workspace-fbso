@@ -102,7 +102,7 @@ jobs:
     name: Build dos serviços Java
     needs: detect_services
     if: ${{ needs.detect_services.outputs.matrix != '[]' && needs.detect_services.outputs.matrix != '' }}
-    uses: ./.github/workflows/callables/build-java-service.yml
+    uses: ./.github/workflows/build-java-service.yml
     with:
       services: ${{ needs.detect_services.outputs.matrix }}
     secrets:
