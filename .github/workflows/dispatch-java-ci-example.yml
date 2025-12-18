@@ -1,0 +1,29 @@
+name: Dispatch Java CI Example
+
+on:
+  workflow_dispatch:
+    inputs:
+      run-example:
+        description: 'Apenas um trigger de exemplo para dispatch' 
+        required: false
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger `java-ci.yml` via API
+        env:
+          REPO: ${{ github.repository }}
+          WORKFLOW_FILENAME: java-ci.yml
+          SERVICES_JSON: '[{"path":"backend/java/quarkus/ms-user-auth","goals":"clean install"},{"path":"backend/java/spring/ms-payment","goals":"clean install -DskipTests"}]'
+        run: |
+          echo "Dispatching $WORKFLOW_FILENAME on $REPO"
+          OWNER=$(echo "$REPO" | cut -d/ -f1)
+          REPO_NAME=$(echo "$REPO" | cut -d/ -f2)
+          PAYLOAD=$(jq -n --arg ref "main" --argjson inputs "{services: $SERVICES_JSON}" '{ref:$ref, inputs: $inputs}')
+          echo "Payload: $PAYLOAD"
+          curl -sS -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/$OWNER/$REPO_NAME/actions/workflows/$WORKFLOW_FILENAME/dispatches \
+            -d "$PAYLOAD"

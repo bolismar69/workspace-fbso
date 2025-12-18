@@ -44,26 +44,54 @@ jobs:
         name: Detectar serviços afetados
         run: |
           set -euo pipefail
+          # garantir jq disponível (ubuntu runner normalmente tem, mas em custom runners instala)
+          if ! command -v jq >/dev/null 2>&1; then
+            echo "jq não encontrado — instalando..."
+            sudo apt-get update -y && sudo apt-get install -y jq
+          fi
+
           # Override manual via workflow_dispatch input (JSON array)
           SERVICES_INPUT='${{ github.event.inputs.services }}'
-          if [ -n "$SERVICES_INPUT" ]; then
+          if [ -n "$SERVICES_INPUT" ] && [ "$SERVICES_INPUT" != "null" ]; then
+            echo "Validando JSON de entrada..."
+            if ! echo "$SERVICES_INPUT" | jq empty >/dev/null 2>&1; then
+              echo "Erro: input 'services' não é JSON válido" >&2
+              exit 1
+            fi
             echo "Usando override de serviços via workflow_dispatch"
             echo "matrix=$SERVICES_INPUT" >> $GITHUB_OUTPUT
             exit 0
           fi
+
           # Garantir que temos referência para comparar (fallback para origin/main)
           git fetch --no-tags --depth=2 origin main || true
           CHANGED=$(git diff --name-only origin/main...HEAD || true)
+          if [ -z "$CHANGED" ]; then
+            # tentativa de recuperar histórico caso seja um clone shallow/fork
+            git fetch --no-tags origin main || true
+            CHANGED=$(git diff --name-only origin/main...HEAD || true)
+          fi
+
           echo "Arquivos modificados:" >&2
           echo "$CHANGED" >&2
+
           # Extrair serviços únicos (assumindo estrutura backend/java/<framework>/<service>/...)
           SERVICES=$(echo "$CHANGED" | awk -F/ '/^backend\/java\// { if (NF>=4) print $1"/"$2"/"$3"/"$4; else print $1"/"$2"/"$3 }' | sort -u || true)
+
           MATRIX='[]'
+          COUNT=0
           for s in $SERVICES; do
             if [ -n "$s" ]; then
               MATRIX=$(echo "$MATRIX" | jq --arg p "$s" '. + [{path: $p, goals: "clean install"}]')
+              COUNT=$((COUNT+1))
             fi
           done
+
+          echo "Serviços detectados: $COUNT" >&2
+          if [ "$COUNT" -gt 0 ]; then
+            echo "$SERVICES" >&2
+          fi
+
           if [ "$(echo "$MATRIX" | jq 'length')" -eq 0 ]; then
             echo "matrix=[]" >> $GITHUB_OUTPUT
           else
@@ -73,17 +101,10 @@ jobs:
   build_matrix:
     name: Build dos serviços Java
     needs: detect_services
-    runs-on: ubuntu-latest
     if: ${{ needs.detect_services.outputs.matrix != '[]' && needs.detect_services.outputs.matrix != '' }}
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.detect_services.outputs.matrix) }}
-    timeout-minutes: 60
-
     uses: ./.github/workflows/callables/build-java-service.yml
     with:
-      service-path: ${{ matrix.path }}
-      maven-goals: ${{ matrix.goals }}
+      services: ${{ needs.detect_services.outputs.matrix }}
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
