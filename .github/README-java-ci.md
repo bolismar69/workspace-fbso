@@ -28,3 +28,14 @@ curl -X POST \
 Observações:
 - O campo `services` é uma string contendo JSON (escape necessário se usar curl). No GitHub UI isso não é necessário.
 - Certifique-se de que as variáveis em `.github/docker.env` e `.github/docker.java.env` existem e contém `DOCKER_REGISTRY`, `DOCKER_ORG`, `DOCKER_TAG_PREFIX` e outras usadas pelo build.
+
+Publicar mudanças rapidamente
+- Script: `scripts/publish.sh`
+- Uso: torne-o executável e rode com a mensagem de commit como parâmetro:
+
+```bash
+chmod +x scripts/publish.sh
+./scripts/publish.sh "UPD: repositorio atualizado ..."
+```
+
+O script faz `git add -A`, `git commit -m "..."` e `git push origin main`. Se a mensagem não for fornecida o script exibirá erro e não fará commit.

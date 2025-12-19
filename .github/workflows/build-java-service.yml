@@ -52,12 +52,18 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      - name: Definir caminho sanitizado
+        run: |
+          set -euo pipefail
+          # substitui / por - e usa basename para evitar caminhos longos
+          SANITIZED=$(basename "${{ matrix.path }}" | tr '/' '-')
+          echo "SANITIZED_PATH=$SANITIZED" >> $GITHUB_ENV
+
       - name: Cache do Maven
         uses: actions/cache@v3
         with:
           path: ~/.m2
-          # sanitize matrix.path replacing '/' by '-' for cache key
-          key: ${{ runner.os }}-maven-${{ replace(matrix.path, '/', '-') }}-${{ hashFiles(format('{0}/**/pom.xml', matrix.path)) }}
+          key: ${{ runner.os }}-maven-${{ env.SANITIZED_PATH }}-${{ hashFiles(format('{0}/**/pom.xml', matrix.path)) }}
           restore-keys: ${{ runner.os }}-maven-
 
       - name: Build do serviço com Maven (usa mvnw quando disponível)
