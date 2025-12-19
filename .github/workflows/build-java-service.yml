@@ -10,6 +10,11 @@ on:
         description: 'JSON array de objetos {"path":"...","goals":"..."} com os serviços a processar'
         required: true
         type: string
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
 
 jobs:
   build_and_push:
