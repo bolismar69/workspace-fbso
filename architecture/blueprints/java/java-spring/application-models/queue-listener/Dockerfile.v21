@@ -1,5 +1,5 @@
 # Stage 1: BUILDER - Usa o JDK para compilação
-FROM eclipse-temurin:21-jdk-focal AS builder
+FROM maven:3.9.9-eclipse-temurin-21 AS builder
 WORKDIR /app
 COPY pom.xml .
 COPY src/ ./src/
@@ -8,7 +8,7 @@ COPY src/ ./src/
 RUN mvn clean package -DskipTests
 
 # Stage 2: RUNTIME - Usa apenas o JRE para execução (imagem menor)
-FROM eclipse-temurin:21-jre-focal
+FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
 # Usuário de segurança
