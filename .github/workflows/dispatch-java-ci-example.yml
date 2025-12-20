@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger `java-ci.yml` via API
+        id: dispatch_java_ci
         env:
           REPO: ${{ github.repository }}
           WORKFLOW_FILENAME: java-ci.yml
