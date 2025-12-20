@@ -133,14 +133,17 @@ jobs:
               core.info(`Lista de arquivos modificados:\n${changedFiles.join('\n')}`);
             }
 
-            // Extrair serviços únicos (assumindo estrutura backend/java/<framework>/<service>/...)
+            // Extrair serviços únicos (assumindo estrutura backend/java/<framework>/<tipo>/<service>/...)
             // Remove duplicidades quando múltiplos arquivos mudam no mesmo serviço.
             const serviceSet = new Set();
             for (const filenameRaw of changedFiles) {
               const filename = (filenameRaw ?? '').toString();
               if (!filename.startsWith('backend/java/')) continue;
               const parts = filename.split('/');
-              if (parts.length >= 4) {
+              // backend/java/<framework>/<tipo>/<service>/...
+              if (parts.length >= 5) {
+                serviceSet.add(parts.slice(0, 5).join('/'));
+              } else if (parts.length >= 4) {
                 serviceSet.add(parts.slice(0, 4).join('/'));
               } else if (parts.length >= 3) {
                 serviceSet.add(parts.slice(0, 3).join('/'));

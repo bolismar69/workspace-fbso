@@ -22,7 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(inputs.services) }}
+      matrix:
+        include: ${{ fromJson(inputs.services) }}
 
     steps:
       - name: Checkout do repositório

@@ -16,7 +16,7 @@ jobs:
         env:
           REPO: ${{ github.repository }}
           WORKFLOW_FILENAME: java-ci.yml
-          SERVICES_JSON: '[{"path":"backend/java/quarkus/ms-user-auth","goals":"clean install"},{"path":"backend/java/spring/ms-payment","goals":"clean install -DskipTests"}]'
+          SERVICES_JSON: '[{"path":"backend/java/spring/queue_workers/ms-transaction-processor-queue","goals":"clean install"}]'
         run: |
           echo "Dispatching $WORKFLOW_FILENAME on $REPO"
           OWNER=$(echo "$REPO" | cut -d/ -f1)
