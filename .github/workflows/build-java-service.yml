@@ -32,28 +32,44 @@ jobs:
 
       - name: Carregar variáveis de ambiente compartilhadas (valida e exporta para passos seguintes)
         id: load_shared_env
-        run: |
-          set -euo pipefail
-          if [ ! -f .github/docker.env ]; then
-            echo ".github/docker.env não encontrado" >&2
-            exit 1
-          fi
-          if [ ! -f .github/docker.java.env ]; then
-            echo ".github/docker.java.env não encontrado" >&2
-            exit 1
-          fi
-          while IFS= read -r line || [ -n "$line" ]; do
-            case "$line" in
-              ''|#*) continue ;;
-              *) echo "$line" >> $GITHUB_ENV ;;
-            esac
-          done < .github/docker.env
-          while IFS= read -r line || [ -n "$line" ]; do
-            case "$line" in
-              ''|#*) continue ;;
-              *) echo "$line" >> $GITHUB_ENV ;;
-            esac
-          done < .github/docker.java.env
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            function loadEnvFile(filePath) {
+              if (!fs.existsSync(filePath)) {
+                throw new Error(`${filePath} não encontrado`);
+              }
+
+              const raw = fs.readFileSync(filePath, 'utf8');
+              const lines = raw.split('\n');
+
+              for (const originalLine of lines) {
+                const line = (originalLine ?? '').replace(/\r$/, '');
+                const trimmed = line.trim();
+                if (!trimmed || trimmed.startsWith('#')) continue;
+
+                const eq = trimmed.indexOf('=');
+                if (eq <= 0) {
+                  core.warning(`Linha inválida ignorada em ${filePath}: ${trimmed}`);
+                  continue;
+                }
+
+                const key = trimmed.slice(0, eq).trim();
+                let value = trimmed.slice(eq + 1);
+
+                // Pequena compatibilidade com placeholder comum do bash
+                const sha = process.env.GITHUB_SHA || context.sha;
+                value = value.replace(/\$\{GITHUB_SHA:0:7\}/g, sha.substring(0, 7));
+                value = value.replace(/\$\{GITHUB_SHA\}/g, sha);
+
+                core.exportVariable(key, value);
+              }
+            }
+
+            loadEnvFile('.github/docker.env');
+            loadEnvFile('.github/docker.java.env');
 
       - name: Configurar Java
         id: setup_java
@@ -64,11 +80,19 @@ jobs:
 
       - name: Definir caminho sanitizado
         id: sanitize_path
-        run: |
-          set -euo pipefail
-          # substitui / por - e usa basename para evitar caminhos longos
-          SANITIZED=$(basename "${{ matrix.path }}" | tr '/' '-')
-          echo "SANITIZED_PATH=$SANITIZED" >> $GITHUB_ENV
+        uses: actions/github-script@v7
+        env:
+          MATRIX_PATH: ${{ matrix.path }}
+        with:
+          script: |
+            const matrixPath = (process.env.MATRIX_PATH ?? '').toString();
+            if (!matrixPath) throw new Error('MATRIX_PATH vazio');
+
+            const parts = matrixPath.split('/').filter(Boolean);
+            const baseName = parts[parts.length - 1] || matrixPath;
+            const sanitized = baseName.replace(/\//g, '-');
+
+            core.exportVariable('SANITIZED_PATH', sanitized);
 
       - name: Cache do Maven
         id: cache_maven
@@ -118,11 +142,33 @@ jobs:
 
       - name: Definir IMAGE_NAME e IMAGE_TAG
         id: define_image
-        run: |
-          set -euo pipefail
-          IMAGE_NAME=$(basename "${{ matrix.path }}" | tr '/' '-')
-          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
-          echo "IMAGE_TAG=${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_ORG }}/$IMAGE_NAME:${{ env.DOCKER_TAG_PREFIX }}-${{ github.sha }}" >> $GITHUB_ENV
+        uses: actions/github-script@v7
+        env:
+          MATRIX_PATH: ${{ matrix.path }}
+          DOCKER_REGISTRY: ${{ env.DOCKER_REGISTRY }}
+          DOCKER_ORG: ${{ env.DOCKER_ORG }}
+          DOCKER_TAG_PREFIX: ${{ env.DOCKER_TAG_PREFIX }}
+          GITHUB_SHA: ${{ github.sha }}
+        with:
+          script: |
+            const matrixPath = (process.env.MATRIX_PATH ?? '').toString();
+            if (!matrixPath) throw new Error('MATRIX_PATH vazio');
+
+            const parts = matrixPath.split('/').filter(Boolean);
+            const imageName = parts[parts.length - 1] || matrixPath;
+            core.exportVariable('IMAGE_NAME', imageName);
+
+            const registry = (process.env.DOCKER_REGISTRY ?? '').toString();
+            const org = (process.env.DOCKER_ORG ?? '').toString();
+            const prefix = (process.env.DOCKER_TAG_PREFIX ?? 'ci').toString();
+            const sha = (process.env.GITHUB_SHA ?? context.sha).toString();
+
+            if (!registry || !org) {
+              throw new Error('DOCKER_REGISTRY/DOCKER_ORG não definidos');
+            }
+
+            const imageTag = `${registry}/${org}/${imageName}:${prefix}-${sha}`;
+            core.exportVariable('IMAGE_TAG', imageTag);
 
       - name: Build & Push com build-push-action
         id: buildpush
