@@ -129,6 +129,9 @@ jobs:
             }
 
             core.info(`Arquivos modificados: ${changedFiles.length}`);
+            if (changedFiles.length > 0) {
+              core.info(`Lista de arquivos modificados:\n${changedFiles.join('\n')}`);
+            }
 
             // Extrair serviços únicos (assumindo estrutura backend/java/<framework>/<service>/...)
             // Remove duplicidades quando múltiplos arquivos mudam no mesmo serviço.
@@ -146,6 +149,9 @@ jobs:
 
             const services = Array.from(serviceSet).sort();
             core.info(`Serviços detectados: ${services.length}`);
+            if (services.length > 0) {
+              core.info(`Lista de serviços detectados:\n${services.join('\n')}`);
+            }
 
             const matrix = services.map(p => ({ path: p, goals: 'clean install' }));
             core.setOutput('matrix', JSON.stringify(matrix));
