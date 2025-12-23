@@ -1,0 +1,83 @@
+# syntax=docker/dockerfile:1.7
+ARG JAVA_VERSION=21
+ARG IMAGE_TO_BUILD=eclipse-temurin:21-jdk-jammy
+ARG IMAGE_TO_RUNTIME=eclipse-temurin:21-jre-jammy
+ARG APP_PORT=8080
+
+# Hooks opcionais (executados no build da imagem)
+ARG CMD_EXTRA_BUILDER_PRE_COPY=
+ARG CMD_EXTRA_BUILDER_POS_COMPILE=
+ARG CMD_EXTRA_RUNTIME_PRE_COPY=
+ARG CMD_EXTRA_RUNTIME_PRE_CMD=
+
+########################
+# Build
+########################
+FROM ${IMAGE_TO_BUILD} AS build
+WORKDIR /workspace
+
+RUN set -eux; \
+  if [ -n "${CMD_EXTRA_BUILDER_PRE_COPY}" ]; then sh -lc "${CMD_EXTRA_BUILDER_PRE_COPY}"; fi
+
+# 1) Camada: arquivos de build (melhor cache)
+# Maven
+COPY pom.xml ./
+COPY .mvn/ .mvn/
+COPY mvnw ./
+# Gradle
+COPY build.gradle* settings.gradle* gradle.properties ./
+COPY gradle/ gradle/
+COPY gradlew ./
+
+# 2) Aquece deps (cache)
+RUN --mount=type=cache,target=/root/.m2 \
+    --mount=type=cache,target=/root/.gradle \
+    set -eux; \
+    if [ -x ./mvnw ]; then ./mvnw -q -DskipTests dependency:go-offline || true; fi; \
+    if [ -x ./gradlew ]; then ./gradlew -q --no-daemon dependencies || true; fi
+
+# 3) Código
+COPY . .
+
+# 4) Build final (wrapper obrigatório)
+RUN --mount=type=cache,target=/root/.m2 \
+    --mount=type=cache,target=/root/.gradle \
+    set -eux; \
+    if [ -x ./mvnw ]; then \
+      ./mvnw -q -DskipTests package; \
+      cp "$(ls -1 target/*.jar | head -n 1)" /workspace/app.jar; \
+    elif [ -x ./gradlew ]; then \
+      ./gradlew -q --no-daemon build -x test; \
+      cp "$(ls -1 build/libs/*.jar | head -n 1)" /workspace/app.jar; \
+    else \
+      echo "ERRO: Padronize mvnw/gradlew no repo." && exit 1; \
+    fi
+
+RUN set -eux; \
+  if [ -n "${CMD_EXTRA_BUILDER_POS_COMPILE}" ]; then sh -lc "${CMD_EXTRA_BUILDER_POS_COMPILE}"; fi
+
+########################
+# Runtime
+########################
+FROM ${IMAGE_TO_RUNTIME} AS runtime
+ENV APP_PORT=${APP_PORT}
+ENV JAVA_OPTS=""
+
+WORKDIR /app
+
+# Hooks opcionais (runtime stage do build)
+RUN set -eux; \
+  if [ -n "${CMD_EXTRA_RUNTIME_PRE_COPY}" ]; then sh -lc "${CMD_EXTRA_RUNTIME_PRE_COPY}"; fi
+
+COPY --from=build /workspace/app.jar /app/app.jar
+
+RUN set -eux; \
+  if [ -n "${CMD_EXTRA_RUNTIME_PRE_CMD}" ]; then sh -lc "${CMD_EXTRA_RUNTIME_PRE_CMD}"; fi
+
+RUN set -eux; \
+  useradd -r -u 10001 -g root appuser; \
+  chown -R 10001:0 /app
+USER 10001
+
+EXPOSE ${APP_PORT}
+ENTRYPOINT ["sh","-c","exec java $JAVA_OPTS -jar /app/app.jar"]

@@ -1,4 +1,0 @@
-FROM eclipse-temurin:21-jre-jammy
-USER 1000
-WORKDIR /app
-ENTRYPOINT ["java", "-jar", "app.jar"]

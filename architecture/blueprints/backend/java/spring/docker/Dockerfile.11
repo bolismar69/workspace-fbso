@@ -1,0 +1,18 @@
+# Stage 1: Build - usa uma imagem completa para compilação
+FROM eclipse-temurin:11-jdk-focal AS builder
+WORKDIR /app
+COPY pom.xml .
+COPY src/ ./src/
+RUN mvn clean package -DskipTests
+
+# Stage 2: Runtime - usa apenas a JRE para reduzir o tamanho da imagem
+FROM eclipse-temurin:11-jre-focal
+WORKDIR /app
+# Copia o JAR final (empacotado pelo plugin Spring Boot)
+COPY --from=builder /app/target/*.jar app.jar
+
+# Configuração de segurança
+USER 1000
+
+# Execução do JAR
+ENTRYPOINT ["java", "-jar", "app.jar"]

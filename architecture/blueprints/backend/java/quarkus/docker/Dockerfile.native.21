@@ -1,0 +1,54 @@
+# syntax=docker/dockerfile:1.7
+ARG JAVA_VERSION=21
+# Builder Mandrel/GraalVM para Quarkus Native
+ARG IMAGE_TO_BUILD=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:23.1-java17
+ARG IMAGE_TO_RUNTIME=gcr.io/distroless/cc-debian12
+ARG APP_PORT=8080
+
+# Hooks opcionais (executados no build da imagem)
+ARG CMD_EXTRA_BUILDER_PRE_COPY=
+ARG CMD_EXTRA_BUILDER_POS_COMPILE=
+ARG CMD_EXTRA_RUNTIME_PRE_COPY=
+ARG CMD_EXTRA_RUNTIME_PRE_CMD=
+
+########################
+# Build Native
+########################
+FROM ${IMAGE_TO_BUILD} AS build
+WORKDIR /workspace
+
+RUN set -eux; \
+  if [ -n "${CMD_EXTRA_BUILDER_PRE_COPY}" ]; then sh -lc "${CMD_EXTRA_BUILDER_PRE_COPY}"; fi
+
+COPY pom.xml ./
+COPY .mvn/ .mvn/
+COPY mvnw ./
+
+RUN --mount=type=cache,target=/root/.m2 \
+    set -eux; \
+    chmod +x mvnw; \
+    ./mvnw -q -DskipTests dependency:go-offline || true
+
+COPY . .
+
+RUN --mount=type=cache,target=/root/.m2 \
+    set -eux; \
+    chmod +x mvnw; \
+    ./mvnw -q -DskipTests -Pnative package; \
+    cp "$(ls -1 target/*-runner | head -n 1)" /workspace/app
+
+RUN set -eux; \
+  if [ -n "${CMD_EXTRA_BUILDER_POS_COMPILE}" ]; then sh -lc "${CMD_EXTRA_BUILDER_POS_COMPILE}"; fi
+
+########################
+# Runtime Native
+########################
+FROM ${IMAGE_TO_RUNTIME} AS runtime
+WORKDIR /app
+
+# Hooks de runtime stage: imagens distroless não possuem shell, então só funcionam se a imagem runtime suportar /bin/sh.
+
+COPY --from=build /workspace/app /app/app
+USER 10001
+EXPOSE ${APP_PORT}
+ENTRYPOINT ["/app/app","-Dquarkus.http.host=0.0.0.0"]

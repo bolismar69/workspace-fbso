@@ -1,6 +1,0 @@
-# Stage 1: Build (Muda apenas a versão do JDK no builder)
-FROM quay.io/quarkus/ubi-quarkus-mandrel-builder:jdk-11 AS build
-# ... (restante do build multi-stage)
-# Stage 2: Runtime (Muda apenas a imagem minimal)
-FROM registry.access.redhat.com/ubi8/ubi-minimal
-# ... (restante do runtime)

@@ -1,0 +1,15 @@
+{
+  "blueprintStackType": [
+    {
+      "stack": "backend",
+      "platform": "java",
+      "framework": "spring",
+      "type": "queue_workers",
+      "platformVersion": 21,
+      "platformMode": "jvm",
+      "docker": {
+        "argExposePort": 8080
+      }
+    }
+  ]
+}

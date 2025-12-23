@@ -170,14 +170,174 @@ jobs:
             const imageTag = `${registry}/${org}/${imageName}:${prefix}-${sha}`;
             core.exportVariable('IMAGE_TAG', imageTag);
 
+      - name: Resolver blueprint e build args
+        id: resolve_blueprint
+        uses: actions/github-script@v7
+        env:
+          MATRIX_PATH: ${{ matrix.path }}
+          REGISTRY_FRAMEWORK_FILE: architecture/service_registry/blueprintFramework.json
+          REGISTRY_STACKTYPE_FILE: architecture/service_registry/blueprintStackType.json
+          REGISTRY_SOLUTIONS_FILE: architecture/service_registry/blueprintSolutions.json
+          DEFAULT_IMAGE_TO_BUILD_STANDARD: ${{ env.IMAGE_TO_BUILD_STANDARD }}
+          DEFAULT_IMAGE_TO_BUILD_SPRING: ${{ env.IMAGE_TO_BUILD_SPRING }}
+          DEFAULT_IMAGE_TO_BUILD_QUARKUS: ${{ env.IMAGE_TO_BUILD_QUARKUS }}
+          DEFAULT_IMAGE_TO_RUNTIME_JVM: ${{ env.IMAGE_TO_RUNTIME_JVM }}
+          DEFAULT_IMAGE_TO_RUNTIME_NATIVE: ${{ env.IMAGE_TO_RUNTIME_NATIVE }}
+          DEFAULT_PORT_TO_EXPOSE: ${{ env.PORT_TO_EXPOSE }}
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            function readJson(filePath) {
+              if (!fs.existsSync(filePath)) {
+                throw new Error(`Arquivo de registry não encontrado: ${filePath}`);
+              }
+              try {
+                return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+              } catch (err) {
+                throw new Error(`Falha ao parsear JSON: ${filePath}`);
+              }
+            }
+
+            function isObject(value) {
+              return value && typeof value === 'object' && !Array.isArray(value);
+            }
+
+            function deepMerge(base, override) {
+              if (!isObject(base)) base = {};
+              if (!isObject(override)) return base;
+              const out = { ...base };
+              for (const [key, value] of Object.entries(override)) {
+                if (isObject(value) && isObject(out[key])) {
+                  out[key] = deepMerge(out[key], value);
+                } else {
+                  out[key] = value;
+                }
+              }
+              return out;
+            }
+
+            const matrixPath = (process.env.MATRIX_PATH ?? '').toString();
+            if (!matrixPath) throw new Error('MATRIX_PATH vazio');
+
+            // Esperado: backend/java/<framework>/<type>/<service>
+            const parts = matrixPath.split('/').filter(Boolean);
+            if (parts.length < 5) {
+              throw new Error(`Caminho inesperado (precisa de 5+ segmentos): ${matrixPath}`);
+            }
+            const [stack, platform, framework, stackType, serviceName] = parts;
+
+            const fwFile = process.env.REGISTRY_FRAMEWORK_FILE;
+            const stFile = process.env.REGISTRY_STACKTYPE_FILE;
+            const solFile = process.env.REGISTRY_SOLUTIONS_FILE;
+
+            const fwJson = readJson(fwFile);
+            const stJson = readJson(stFile);
+            const solJson = readJson(solFile);
+
+            const fwEntries = fwJson.blueprintFramework ?? [];
+            const stEntries = stJson.blueprintStackType ?? [];
+            const solEntries = solJson.blueprintSolutions ?? [];
+
+            function findOne(list, predicate, label) {
+              const matches = list.filter(predicate);
+              if (matches.length > 1) {
+                core.warning(`Mais de uma entrada encontrada em ${label}; usando a primeira. total=${matches.length}`);
+              }
+              return matches[0] ?? null;
+            }
+
+            const frameworkCfg = findOne(
+              fwEntries,
+              (e) => e?.stack === stack && e?.platform === platform && e?.framework === framework,
+              'blueprintFramework'
+            );
+            const typeCfg = findOne(
+              stEntries,
+              (e) => e?.stack === stack && e?.platform === platform && e?.framework === framework && e?.type === stackType,
+              'blueprintStackType'
+            );
+            const solutionCfg = findOne(
+              solEntries,
+              (e) => e?.stack === stack && e?.platform === platform && e?.framework === framework && e?.type === stackType && e?.solutionName === serviceName,
+              'blueprintSolutions'
+            );
+
+            if (!frameworkCfg) {
+              throw new Error(`Sem configuração no registry para {stack/platform/framework} = {${stack}/${platform}/${framework}}`);
+            }
+
+            let merged = {};
+            merged = deepMerge(merged, frameworkCfg);
+            merged = deepMerge(merged, typeCfg || {});
+            merged = deepMerge(merged, solutionCfg || {});
+
+            const platformVersion = merged.platformVersion ?? 21;
+            const platformMode = (merged.platformMode ?? 'jvm').toString();
+
+            // Dockerfile central esperado
+            // Preferência: Dockerfile.<mode>.<version> (novo padrão)
+            // Fallback:    Dockerfile.<version> (padrão legado já existente no repo)
+            const dockerfilePreferred = `architecture/blueprints/${stack}/${platform}/${framework}/docker/Dockerfile.${platformMode}.${platformVersion}`;
+            const dockerfileLegacy = `architecture/blueprints/${stack}/${platform}/${framework}/docker/Dockerfile.${platformVersion}`;
+            const dockerfile = fs.existsSync(dockerfilePreferred)
+              ? dockerfilePreferred
+              : (fs.existsSync(dockerfileLegacy) ? dockerfileLegacy : null);
+            if (!dockerfile) {
+              throw new Error(`Dockerfile central não encontrado. Tentativas: ${dockerfilePreferred} | ${dockerfileLegacy}`);
+            }
+
+            // Defaults (se não vier do registry)
+            const defaultBuildByFramework = {
+              spring: process.env.DEFAULT_IMAGE_TO_BUILD_SPRING,
+              quarkus: process.env.DEFAULT_IMAGE_TO_BUILD_QUARKUS,
+              generic: process.env.DEFAULT_IMAGE_TO_BUILD_STANDARD,
+            };
+            const defaultRuntimeByMode = {
+              jvm: process.env.DEFAULT_IMAGE_TO_RUNTIME_JVM,
+              native: process.env.DEFAULT_IMAGE_TO_RUNTIME_NATIVE,
+            };
+
+            const dockerCfg = merged.docker ?? {};
+            const imageBuild = dockerCfg.argImageBuild || defaultBuildByFramework[framework] || process.env.DEFAULT_IMAGE_TO_BUILD_STANDARD;
+            const imageRuntime = dockerCfg.argImageRuntime || defaultRuntimeByMode[platformMode] || process.env.DEFAULT_IMAGE_TO_RUNTIME_JVM;
+            const exposePort = dockerCfg.argExposePort ?? (process.env.DEFAULT_PORT_TO_EXPOSE ? Number(process.env.DEFAULT_PORT_TO_EXPOSE) : 8080);
+
+            const cmdExtraBuilderPreCopy = (dockerCfg.argCmdExtraBuilderPreCopy ?? '').toString();
+            const cmdExtraBuilderPosCompile = (dockerCfg.argCmdExtraBuilderPosCompile ?? '').toString();
+            const cmdExtraRuntimePreCopy = (dockerCfg.argCmdExtraRuntimePreCopy ?? '').toString();
+            const cmdExtraRuntimePreCmd = (dockerCfg.argCmdExtraRuntimePreCmd ?? '').toString();
+
+            core.info(`Blueprint resolvido: ${stack}/${platform}/${framework}/${stackType}/${serviceName}`);
+            core.info(`Dockerfile central: ${dockerfile}`);
+            core.info(`platformVersion=${platformVersion}, platformMode=${platformMode}`);
+
+            core.setOutput('dockerfile', dockerfile);
+            core.setOutput('java_version', String(platformVersion));
+            core.setOutput('platform_mode', platformMode);
+            core.setOutput('image_to_build', imageBuild);
+            core.setOutput('image_to_runtime', imageRuntime);
+            core.setOutput('app_port', String(exposePort));
+            core.setOutput('cmd_extra_builder_pre_copy', cmdExtraBuilderPreCopy);
+            core.setOutput('cmd_extra_builder_pos_compile', cmdExtraBuilderPosCompile);
+            core.setOutput('cmd_extra_runtime_pre_copy', cmdExtraRuntimePreCopy);
+            core.setOutput('cmd_extra_runtime_pre_cmd', cmdExtraRuntimePreCmd);
+
       - name: Build & Push com build-push-action
         id: buildpush
         uses: docker/build-push-action@v4
         with:
           context: ${{ matrix.path }}
+          file: ${{ steps.resolve_blueprint.outputs.dockerfile }}
           push: true
           tags: ${{ env.IMAGE_TAG }}
           build-args: |
-            IMAGE_TO_BUILD=${{ env.IMAGE_TO_BUILD_STANDARD }}
-            IMAGE_TO_RUNTIME=${{ env.IMAGE_TO_RUNTIME_JVM }}
-            PORT_TO_EXPOSE=${{ env.PORT_TO_EXPOSE }}
+            JAVA_VERSION=${{ steps.resolve_blueprint.outputs.java_version }}
+            IMAGE_TO_BUILD=${{ steps.resolve_blueprint.outputs.image_to_build }}
+            IMAGE_TO_RUNTIME=${{ steps.resolve_blueprint.outputs.image_to_runtime }}
+            APP_PORT=${{ steps.resolve_blueprint.outputs.app_port }}
+            CMD_EXTRA_BUILDER_PRE_COPY=${{ steps.resolve_blueprint.outputs.cmd_extra_builder_pre_copy }}
+            CMD_EXTRA_BUILDER_POS_COMPILE=${{ steps.resolve_blueprint.outputs.cmd_extra_builder_pos_compile }}
+            CMD_EXTRA_RUNTIME_PRE_COPY=${{ steps.resolve_blueprint.outputs.cmd_extra_runtime_pre_copy }}
+            CMD_EXTRA_RUNTIME_PRE_CMD=${{ steps.resolve_blueprint.outputs.cmd_extra_runtime_pre_cmd }}

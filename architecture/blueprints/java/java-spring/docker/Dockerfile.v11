@@ -1,6 +1,0 @@
-# Stage 1: Build
-FROM eclipse-temurin:11-jdk-focal AS builder
-# ... (build commands)
-# Stage 2: Runtime
-FROM eclipse-temurin:11-jre-focal
-# ... (runtime commands)

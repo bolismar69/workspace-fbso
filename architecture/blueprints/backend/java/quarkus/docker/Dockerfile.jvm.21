@@ -1,0 +1,55 @@
+# syntax=docker/dockerfile:1.7
+ARG JAVA_VERSION=21
+ARG IMAGE_TO_BUILD=eclipse-temurin:21-jdk-jammy
+ARG IMAGE_TO_RUNTIME=gcr.io/distroless/java21-debian12
+ARG APP_PORT=8080
+
+# Hooks opcionais (executados no build da imagem)
+ARG CMD_EXTRA_BUILDER_PRE_COPY=
+ARG CMD_EXTRA_BUILDER_POS_COMPILE=
+ARG CMD_EXTRA_RUNTIME_PRE_COPY=
+ARG CMD_EXTRA_RUNTIME_PRE_CMD=
+
+########################
+# Build (JVM)
+########################
+FROM ${IMAGE_TO_BUILD} AS build
+WORKDIR /workspace
+
+RUN set -eux; \
+  if [ -n "${CMD_EXTRA_BUILDER_PRE_COPY}" ]; then sh -lc "${CMD_EXTRA_BUILDER_PRE_COPY}"; fi
+
+COPY pom.xml ./
+COPY .mvn/ .mvn/
+COPY mvnw ./
+
+RUN --mount=type=cache,target=/root/.m2 \
+    set -eux; \
+    if [ -x ./mvnw ]; then ./mvnw -q -DskipTests dependency:go-offline || true; else echo "ERRO: mvnw ausente" && exit 1; fi
+
+COPY . .
+
+# Quarkus JVM: por padrão gera quarkus-app/ (fast-jar) ou runner.jar (dependendo do projeto)
+RUN --mount=type=cache,target=/root/.m2 \
+    set -eux; \
+    ./mvnw -q -DskipTests package
+
+RUN set -eux; \
+  if [ -n "${CMD_EXTRA_BUILDER_POS_COMPILE}" ]; then sh -lc "${CMD_EXTRA_BUILDER_POS_COMPILE}"; fi
+
+########################
+# Runtime (JVM)
+########################
+FROM ${IMAGE_TO_RUNTIME} AS runtime
+ENV APP_PORT=${APP_PORT}
+ENV JAVA_OPTS=""
+
+WORKDIR /app
+
+# Observação: imagens distroless não possuem shell; hooks de runtime stage serão ignorados se não houver /bin/sh
+
+# Fast-jar (quarkus-app)
+COPY --from=build /workspace/target/quarkus-app/ /app/quarkus-app/
+
+EXPOSE ${APP_PORT}
+ENTRYPOINT ["java","-jar","/app/quarkus-app/quarkus-run.jar"]
