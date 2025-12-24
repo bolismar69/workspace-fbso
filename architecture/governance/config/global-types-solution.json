@@ -1,0 +1,19 @@
+{
+	"globalTypeSolution": [
+		{
+			"id": "backend-java-spring-21-queue-workers",
+			"stack": "backend",
+			"platform": "java",
+			"platformVersion": "21",
+			"framework": "spring",
+			"type": "queue_workers",
+			"docker": {
+				"argExposePort": 0,
+				"argCmdExtraBuilderPreCopy": "echo 'Stack: Configurando dependências de fila (RabbitMQ/SQS)...'"
+			},
+			"compliance": {
+				"maxCpu": "1000m"
+			}
+		}
+	]
+}

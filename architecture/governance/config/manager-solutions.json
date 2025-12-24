@@ -1,0 +1,17 @@
+{
+	"inventory": [
+		{
+			"stack": "backend",
+			"platform": "java",
+			"platformVersion": "21",
+			"framework": "spring",
+			"type": "queue_workers",
+			"name": "ms-transaction-processor-queue",
+			"status": "active",
+			"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue",
+			"docker": {
+				"argCompilationMode": "jvm"
+			}
+		}
+	]
+}

@@ -1,0 +1,52 @@
+{
+	"globalSolution": [
+		{
+			"id": "backend-java-spring-21-queue-workers-ms-transaction-processor-queue",
+			"stack": "backend",
+			"platform": "java",
+			"platformVersion": "21",
+			"framework": "spring",
+			"type": "queue_workers",
+			"name": "ms-transaction-processor-queue",
+			"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue",
+			"docker": {
+				"argCmdExtraRuntimePreCmd": "echo 'Solution: Aplicando tuning específico para transações...'"
+			},
+			"compliance": {
+				"maxMemory": "2Gi"
+			}
+		},
+		{
+			"id": "backend-java-spring-21-queue-workers-ms-notification-sender-queue",
+			"stack": "backend",
+			"platform": "java",
+			"platformVersion": "21",
+			"framework": "spring",
+			"type": "queue_workers",
+			"name": "ms-notification-sender-queue",
+			"path": "backend/java/spring/queue_workers/ms-notification-sender-queue",
+			"docker": {
+				"argCmdExtraRuntimePreCmd": "echo 'Solution: Aplicando tuning específico para envio de notificações...'"
+			},
+			"compliance": {
+				"maxMemory": "1Gi"
+			}
+		},
+		{
+			"id": "backend-java-spring-21-queue-workers-ms-data-sync-queue",
+			"stack": "backend",
+			"platform": "java",
+			"platformVersion": "21",
+			"framework": "spring",
+			"type": "queue_workers",
+			"name": "ms-data-sync-queue",
+			"path": "backend/java/spring/queue_workers/ms-data-sync-queue",
+			"docker": {
+				"argCmdExtraRuntimePreCmd": "echo 'Solution: Aplicando tuning específico para sincronização de dados...'"
+			},
+			"compliance": {
+				"maxMemory": "3Gi"
+			}
+		}
+	]
+}
