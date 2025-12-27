@@ -4,6 +4,7 @@
 			"stack": "backend",
 			"platform": "java",
 			"platformVersion": "21",
+			"platformDistributor": "temurin",
 			"framework": "spring",
 			"type": "queue_workers",
 			"name": "ms-transaction-processor-queue",

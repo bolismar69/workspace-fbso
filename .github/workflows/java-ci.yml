@@ -4,8 +4,15 @@ name: Java CI/CD Trigger
 # e aciona um workflow reutilizável para compilar os serviços e publicar
 # imagens Docker (build e push) quando aplicável.
 #
-# Expected output from `detect_services` step (JSON array):
-# [ { "path": "backend/java/quarkus/ms-user-auth", "goals": "clean install" }, ... ]
+# Expected output passed to build reusable (JSON array):
+# [
+#   {
+#     "path": "backend/java/...",
+#     "goals": "clean install",
+#     "platformVersion": "21",
+#     "platformDistributor": "temurin"
+#   }
+# ]
 
 on:
   push:
@@ -32,30 +39,38 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  detect_services:
-    name: Detectar serviços Java alterados
+  detect_solutions:
+    name: Detectar solutions alteradas (monorepo)
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
+    uses: ./.github/workflows/global_detection_solutions_changed.yml
+    with:
+      base_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+      head_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+
+  prepare_services:
+    name: Preparar matrix de serviços Java
     runs-on: ubuntu-latest
+    needs: [detect_solutions]
+    if: ${{ always() }}
     outputs:
-      matrix: ${{ steps.extract.outputs.matrix }}
-
+      matrix: ${{ steps.out.outputs.matrix }}
     steps:
-      - name: Checkout do repositório
-        id: checkout
-        uses: actions/checkout@v4
-
-      - name: Detectar serviços afetados
-        id: extract
+      - name: Preparar lista de serviços para build
+        id: out
         uses: actions/github-script@v7
+        env:
+          OVERRIDE: ${{ github.event.inputs.services }}
+          SOLUTIONS_JSON: ${{ needs.detect_solutions.outputs.solutions }}
         with:
           script: |
-            const servicesInputRaw = (context.payload?.inputs?.services ?? '').toString().trim();
+            const overrideRaw = (process.env.OVERRIDE ?? '').toString().trim();
 
             // Override manual via workflow_dispatch input (JSON array)
-            if (servicesInputRaw && servicesInputRaw !== 'null') {
+            if (overrideRaw && overrideRaw !== 'null') {
               core.info('Validando JSON de entrada (override via workflow_dispatch)...');
               let parsed;
               try {
-                parsed = JSON.parse(servicesInputRaw);
+                parsed = JSON.parse(overrideRaw);
               } catch (err) {
                 core.setFailed("Erro: input 'services' não é JSON válido");
                 return;
@@ -64,22 +79,24 @@ jobs:
                 core.setFailed("Erro: input 'services' deve ser um JSON array");
                 return;
               }
-              core.info('Usando override de serviços via workflow_dispatch');
 
-              // Deduplicar por path (mantém a primeira ocorrência; avisa se houver duplicadas)
               const seenPaths = new Set();
               const deduped = [];
               for (const entry of parsed) {
                 const path = (entry?.path ?? '').toString().trim();
                 if (!path) continue;
+
                 if (seenPaths.has(path)) {
                   core.warning(`Entrada duplicada ignorada no input.services: ${path}`);
                   continue;
                 }
                 seenPaths.add(path);
+
                 deduped.push({
                   path,
                   goals: (entry?.goals ?? 'clean install').toString(),
+                  platformVersion: (entry?.platformVersion ?? '21').toString(),
+                  platformDistributor: (entry?.platformDistributor ?? 'temurin').toString(),
                 });
               }
 
@@ -87,85 +104,36 @@ jobs:
               return;
             }
 
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-
-            let changedFiles = [];
-            if (context.eventName === 'pull_request') {
-              const prNumber = context.payload.pull_request.number;
-              core.info(`Listando arquivos do PR #${prNumber} via API...`);
-              const prFiles = await github.paginate(github.rest.pulls.listFiles, {
-                owner,
-                repo,
-                pull_number: prNumber,
-                per_page: 100,
-              });
-              changedFiles = prFiles.map(f => f.filename);
-            } else if (context.eventName === 'push') {
-              const base = context.payload.before;
-              const head = context.sha;
-
-              // Se for o primeiro push da branch (before = 0000...), usa fallback via payload.commits
-              if (!base || /^0+$/.test(base)) {
-                core.info('Push inicial detectado; usando lista de arquivos do payload de commits.');
-                const commits = context.payload.commits ?? [];
-                changedFiles = commits.flatMap(c => [
-                  ...(c.added ?? []),
-                  ...(c.modified ?? []),
-                  ...(c.removed ?? []),
-                ]);
-              } else {
-                core.info(`Comparando commits via API (${base}...${head})...`);
-                const compare = await github.rest.repos.compareCommitsWithBasehead({
-                  owner,
-                  repo,
-                  basehead: `${base}...${head}`,
-                });
-                changedFiles = (compare.data.files ?? []).map(f => f.filename);
-              }
-            } else {
-              core.info(`Evento '${context.eventName}' não suportado para detecção automática; matrix vazia.`);
-              changedFiles = [];
+            const solutionsRaw = (process.env.SOLUTIONS_JSON ?? '').toString().trim() || '[]';
+            let solutions = [];
+            try {
+              solutions = JSON.parse(solutionsRaw);
+            } catch (err) {
+              core.warning('Falha ao parsear SOLUTIONS_JSON; assumindo []');
+              solutions = [];
             }
 
-            core.info(`Arquivos modificados: ${changedFiles.length}`);
-            if (changedFiles.length > 0) {
-              core.info(`Lista de arquivos modificados:\n${changedFiles.join('\n')}`);
-            }
+            const services = (Array.isArray(solutions) ? solutions : [])
+              .filter(s => s?.stack === 'backend' && s?.platform === 'java')
+              .map(s => ({
+                path: s.path,
+                goals: 'clean install',
+                platformVersion: (s?.platformVersion ?? '21').toString(),
+                platformDistributor: (s?.platformDistributor ?? 'temurin').toString(),
+              }));
 
-            // Extrair serviços únicos (assumindo estrutura backend/java/<framework>/<tipo>/<service>/...)
-            // Remove duplicidades quando múltiplos arquivos mudam no mesmo serviço.
-            const serviceSet = new Set();
-            for (const filenameRaw of changedFiles) {
-              const filename = (filenameRaw ?? '').toString();
-              if (!filename.startsWith('backend/java/')) continue;
-              const parts = filename.split('/');
-              // backend/java/<framework>/<tipo>/<service>/...
-              if (parts.length >= 5) {
-                serviceSet.add(parts.slice(0, 5).join('/'));
-              } else if (parts.length >= 4) {
-                serviceSet.add(parts.slice(0, 4).join('/'));
-              } else if (parts.length >= 3) {
-                serviceSet.add(parts.slice(0, 3).join('/'));
-              }
-            }
-
-            const services = Array.from(serviceSet).sort();
-            core.info(`Serviços detectados: ${services.length}`);
-            if (services.length > 0) {
-              core.info(`Lista de serviços detectados:\n${services.join('\n')}`);
-            }
-
-            const matrix = services.map(p => ({ path: p, goals: 'clean install' }));
-            core.setOutput('matrix', JSON.stringify(matrix));
+            core.info(`Serviços Java preparados: ${services.length}`);
+            listServices = services.map(s => `- ${s.path} (Java ${s.platformDistributor} ${s.platformVersion}, goals: ${s.goals})`).join('\n');
+            core.info(`Lista de serviços:\n${listServices}`);
+            core.setOutput('matrix', JSON.stringify(services));
 
   build_matrix:
     name: Build dos serviços Java
-    needs: detect_services
-    if: ${{ needs.detect_services.outputs.matrix != '[]' && needs.detect_services.outputs.matrix != '' }}
-    uses: ./.github/workflows/build-java-service.yml
+    needs: prepare_services
+    if: ${{ needs.prepare_services.outputs.matrix != '[]' && needs.prepare_services.outputs.matrix != '' }}
+    uses: ./.github/workflows/java-reusable-build-solutions.yml
     with:
-      services: ${{ needs.detect_services.outputs.matrix }}
+      services: ${{ needs.prepare_services.outputs.matrix }}
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

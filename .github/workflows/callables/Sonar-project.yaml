@@ -11,7 +11,7 @@ on:
         required: true
         type: string
       maven-goals:
-        description: Comando Maven a executar (ex: clean install)
+        # description: Comando Maven a executar (ex: clean install)
         required: true
         type: string
 
