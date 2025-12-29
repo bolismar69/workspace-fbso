@@ -1,4 +1,4 @@
-name: Global Detection Solutions Changed
+name: Global Callables Detection Solutions Changed
 
 on:
   workflow_call:
