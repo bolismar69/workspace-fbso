@@ -1,4 +1,4 @@
-name: Java Reusable Build Solutions
+name: Global Callables Java Build Solutions
 
 # Template para build e push de serviços Java em monorepo.
 # Reutilizável via `workflow_call`.
