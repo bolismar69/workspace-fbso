@@ -15,6 +15,10 @@ Arquivos principais:
 - Build Java (reusable): [.github/workflows/global-callables-java-build-solutions.yml](../global-callables-java-build-solutions.yml)
 - Script de detecção/enriquecimento: [.github/scripts/detect_solutions_changed.py](../../scripts/detect_solutions_changed.py)
 - Inventory (governança): [architecture/governance/config/manager-solutions.json](../../../architecture/governance/config/manager-solutions.json)
+- Registries de governança (blueprints/merge):
+  - Framework: [architecture/governance/config/global-frameworks.json](../../../architecture/governance/config/global-frameworks.json)
+  - Type (stackType): [architecture/governance/config/global-types-solution.json](../../../architecture/governance/config/global-types-solution.json)
+  - Solution: [architecture/governance/config/global-solutions.json](../../../architecture/governance/config/global-solutions.json)
 - Env compartilhado Docker: [.github/docker.env](../../docker.env)
 - Env compartilhado Docker Java: [.github/docker.java.env](../../docker.java.env)
 
@@ -32,8 +36,20 @@ Arquivos principais:
    - Qualquer solution com inventory incompleto gera **WARNING** e é **removida da matrix**
 4. **Build Java** (reusable):
    - Trigger chama [.github/workflows/global-callables-java-build-solutions.yml](../global-callables-java-build-solutions.yml)
-   - Esse workflow faz `setup-java`, Maven build, resolve blueprint e executa Docker build/push
+   - Esse workflow faz `setup-java`, Maven build, resolve blueprint (merge de registries de governança) e executa Docker build/push
    - Carrega variáveis compartilhadas via [.github/docker.env](../../docker.env) e [.github/docker.java.env](../../docker.java.env)
+
+---
+
+## Schema dos registries de governança
+
+Schemas atuais esperados:
+- [architecture/governance/config/global-frameworks.json](../../../architecture/governance/config/global-frameworks.json)
+  - chave: `globalFramework` (array)
+- [architecture/governance/config/global-types-solution.json](../../../architecture/governance/config/global-types-solution.json)
+  - chave: `globalTypeSolution` (array)
+- [architecture/governance/config/global-solutions.json](../../../architecture/governance/config/global-solutions.json)
+  - chave: `globalSolution` (array)
 
 ---
 

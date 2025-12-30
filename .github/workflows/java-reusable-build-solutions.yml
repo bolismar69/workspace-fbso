@@ -1,30 +1,7 @@
-name: Global Callables Java Build Solutions
+name: Java Reusable Build Solutions
 
-# FUNÇÃO
-# - Build (Maven) + Docker build/push para serviços Java em monorepo.
-# - Executa em matrix: cada item do JSON `services` vira um job da matrix.
-# - Resolve blueprint (Dockerfile central + build args) via registries em `architecture/service_registry/*`.
-# - Carrega variáveis compartilhadas de `.github/docker.env` e `.github/docker.java.env`.
-#
-# INPUTS (workflow_call)
-# - services (obrigatório): string contendo JSON array, um item por serviço.
-#   Formato oficial (campos obrigatórios para Java):
-#   {
-#     "path": "backend/java/<framework>/<type>/<name>",
-#     "goals": "clean install",
-#     "platformVersion": "21",
-#     "platformDistributor": "temurin",
-#     "docker": { "argCompilationMode": "jvm|native" }
-#   }
-#   Campos opcionais (override do parsing do path):
-#   {"stack":"backend","platform":"java","framework":"spring|quarkus|generic","type":"...","name":"..."}
-#
-# Exemplo (caller)
-#   services: |
-#     [{"path":"backend/java/spring/microservices/ms-example","goals":"clean install","platformVersion":"21","platformDistributor":"temurin","docker":{"argCompilationMode":"jvm"}}]
-#
-# OUTPUTS (workflow_call)
-# - Este workflow não define outputs. Efeito: publica imagem Docker (push) no registry configurado.
+# Template para build e push de serviços Java em monorepo.
+# Reutilizável via `workflow_call`.
 
 on:
   workflow_call:
@@ -110,9 +87,9 @@ jobs:
           MATRIX_NAME: ${{ matrix.name }}
           MATRIX_PLATFORM_VERSION: ${{ matrix.platformVersion }}
           MATRIX_PLATFORM_COMPILATION_MODE: ${{ matrix.docker.argCompilationMode }}
-          REGISTRY_FRAMEWORK_FILE: architecture/governance/config/global-frameworks.json
-          REGISTRY_STACKTYPE_FILE: architecture/governance/config/global-types-solution.json
-          REGISTRY_SOLUTIONS_FILE: architecture/governance/config/global-solutions.json
+          REGISTRY_FRAMEWORK_FILE: architecture/service_registry/blueprintFramework.json
+          REGISTRY_STACKTYPE_FILE: architecture/service_registry/blueprintStackType.json
+          REGISTRY_SOLUTIONS_FILE: architecture/service_registry/blueprintSolutions.json
           DEFAULT_IMAGE_TO_BUILD_STANDARD: ${{ env.IMAGE_TO_BUILD_STANDARD }}
           DEFAULT_IMAGE_TO_BUILD_SPRING: ${{ env.IMAGE_TO_BUILD_SPRING }}
           DEFAULT_IMAGE_TO_BUILD_QUARKUS: ${{ env.IMAGE_TO_BUILD_QUARKUS }}
@@ -186,24 +163,13 @@ jobs:
             const stJson = readJson(stFile);
             const solJson = readJson(solFile);
 
-            // NOVO: schemas antigos blueprint* não são mais suportados.
-            const fwEntries = fwJson.globalFramework;
-            const stEntries = stJson.globalTypeSolution;
-            const solEntries = solJson.globalSolution;
+            const fwEntries = fwJson.blueprintFramework ?? fwJson.globalFramework ?? [];
+            const stEntries = stJson.blueprintStackType ?? stJson.globalTypeSolution ?? [];
+            const solEntries = solJson.blueprintSolutions ?? solJson.globalSolution ?? [];
 
-            if (!Array.isArray(fwEntries)) {
-              throw new Error(`Schema inválido em ${fwFile}. Esperado array em 'globalFramework'.`);
-            }
-            if (!Array.isArray(stEntries)) {
-              throw new Error(`Schema inválido em ${stFile}. Esperado array em 'globalTypeSolution'.`);
-            }
-            if (!Array.isArray(solEntries)) {
-              throw new Error(`Schema inválido em ${solFile}. Esperado array em 'globalSolution'.`);
-            }
-
-            const fwLabel = 'globalFramework';
-            const stLabel = 'globalTypeSolution';
-            const solLabel = 'globalSolution';
+            const fwLabel = fwJson.blueprintFramework ? 'blueprintFramework' : 'globalFramework';
+            const stLabel = stJson.blueprintStackType ? 'blueprintStackType' : 'globalTypeSolution';
+            const solLabel = solJson.blueprintSolutions ? 'blueprintSolutions' : 'globalSolution';
 
             function findOne(list, predicate, label) {
               const matches = list.filter(predicate);
