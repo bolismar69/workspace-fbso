@@ -1,22 +1,56 @@
 name: Global Callables Detection Solutions Changed
 
+# FUNÇÃO
+# - Detecta quais "solutions" (serviços/apps) foram alteradas entre dois SHAs no monorepo.
+# - Enriquecimento: a lista retornada é enriquecida a partir do inventory
+#   `architecture/governance/config/manager-solutions.json` (ex.: platformVersion, platformDistributor, docker.argCompilationMode).
+#
+# INPUTS (workflow_call)
+# - base_sha: SHA base para comparação (ex.: base do PR, ou github.event.before em push)
+# - head_sha: SHA head para comparação (ex.: head do PR, ou github.sha em push)
+#
+# Exemplo (caller PR/push)
+# - base_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+# - head_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+#
+# OUTPUTS (workflow_call)
+# - solutions: string contendo JSON array com objetos de solution detectadas e enriquecidas
+#   Exemplo:
+#   [
+#     {
+#       "path": "backend/java/spring/microservices/ms-example",
+#       "stack": "backend",
+#       "platform": "java",
+#       "framework": "spring",
+#       "type": "microservices",
+#       "name": "ms-example",
+#       "status": "active",
+#       "platformVersion": "21",
+#       "platformDistributor": "temurin",
+#       "docker": { "argCompilationMode": "jvm" }
+#     }
+#   ]
+# - paths: string contendo JSON array de paths (strings)
+#   Exemplo:
+#   ["backend/java/spring/microservices/ms-example"]
+
 on:
   workflow_call:
     inputs:
       base_sha:
-        description: "Base commit SHA (optional). If empty, inferred from event."
+        description: 'SHA base para comparação. Recomendado sempre informar (ex.: base do PR ou github.event.before no push).'
         required: false
         type: string
       head_sha:
-        description: "Head commit SHA (optional). If empty, inferred from event."
+        description: 'SHA head para comparação. Recomendado sempre informar (ex.: head do PR ou github.sha no push).'
         required: false
         type: string
     outputs:
       solutions:
-        description: "JSON array of discovered modified solutions with metadata."
+        description: 'String contendo JSON array de solutions alteradas e enriquecidas via inventory (manager-solutions.json).'
         value: ${{ jobs.detect_services.outputs.solutions }}
       paths:
-        description: "JSON array of modified solution paths."
+        description: 'String contendo JSON array de paths (solutions) alterados.'
         value: ${{ jobs.detect_services.outputs.paths }}
 
 jobs:

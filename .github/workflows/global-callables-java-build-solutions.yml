@@ -1,7 +1,30 @@
 name: Global Callables Java Build Solutions
 
-# Template para build e push de serviços Java em monorepo.
-# Reutilizável via `workflow_call`.
+# FUNÇÃO
+# - Build (Maven) + Docker build/push para serviços Java em monorepo.
+# - Executa em matrix: cada item do JSON `services` vira um job da matrix.
+# - Resolve blueprint (Dockerfile central + build args) via registries em `architecture/service_registry/*`.
+# - Carrega variáveis compartilhadas de `.github/docker.env` e `.github/docker.java.env`.
+#
+# INPUTS (workflow_call)
+# - services (obrigatório): string contendo JSON array, um item por serviço.
+#   Formato oficial (campos obrigatórios para Java):
+#   {
+#     "path": "backend/java/<framework>/<type>/<name>",
+#     "goals": "clean install",
+#     "platformVersion": "21",
+#     "platformDistributor": "temurin",
+#     "docker": { "argCompilationMode": "jvm|native" }
+#   }
+#   Campos opcionais (override do parsing do path):
+#   {"stack":"backend","platform":"java","framework":"spring|quarkus|generic","type":"...","name":"..."}
+#
+# Exemplo (caller)
+#   services: |
+#     [{"path":"backend/java/spring/microservices/ms-example","goals":"clean install","platformVersion":"21","platformDistributor":"temurin","docker":{"argCompilationMode":"jvm"}}]
+#
+# OUTPUTS (workflow_call)
+# - Este workflow não define outputs. Efeito: publica imagem Docker (push) no registry configurado.
 
 on:
   workflow_call:

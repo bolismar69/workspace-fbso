@@ -1,18 +1,45 @@
 name: CI/CD Trigger Java
 
-# Este workflow detecta mudanças em serviços Java dentro do monorepo
-# e aciona um workflow reutilizável para compilar os serviços e publicar
-# imagens Docker (build e push) quando aplicável.
+# FUNÇÃO
+# - Detecta changes em services Java no monorepo.
+# - Chama o reusable detector para descobrir solutions alteradas.
+# - Valida/enrijece o contrato do inventory e prepara uma matrix de build.
+# - Chama o reusable build para executar Maven + Docker build/push.
 #
-# Expected output passed to build reusable (JSON array):
-# [
-#   {
-#     "path": "backend/java/...",
+# INPUTS (workflow_dispatch)
+# - services (opcional): string contendo JSON array para sobrescrever a detecção automática.
+#   Use o formato oficial (um item por service):
+#   [{
+#     "path": "backend/java/spring/microservices/ms-example",
 #     "goals": "clean install",
+#     "stack": "backend",
+#     "platform": "java",
+#     "framework": "spring",
+#     "type": "microservices",
+#     "name": "ms-example",
+#     "status": "active",
 #     "platformVersion": "21",
-#     "platformDistributor": "temurin"
-#   }
-# ]
+#     "platformDistributor": "temurin",
+#     "docker": { "argCompilationMode": "jvm" }
+#   }]
+#
+# OUTPUTS (interno)
+# - prepare_services.outputs.matrix: string com JSON array no formato aceito pelo build reusable.
+#   Exemplo:
+#   [
+#     {
+#       "path": "backend/java/spring/microservices/ms-example",
+#       "goals": "clean install",
+#       "platformVersion": "21",
+#       "platformDistributor": "temurin",
+#       "docker": { "argCompilationMode": "jvm" }
+#     }
+#   ]
+#
+# OBS (governança)
+# - Se uma solution detectada estiver sem algum atributo obrigatório do inventory
+#   (ex.: platformVersion/platformDistributor/etc), o job `prepare_services` loga WARNING
+#   com prefixo `[inventory-incomplete]` e NÃO inclui a solution na matrix.
 
 on:
   push:
@@ -42,7 +69,7 @@ jobs:
   detect_solutions:
     name: Detectar solutions alteradas (monorepo)
     if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
-    uses: ./.github/workflows/global_detection_solutions_changed.yml
+    uses: ./.github/workflows/global-callables-detection-solutions-changed.yml
     with:
       base_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
       head_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
@@ -65,6 +92,55 @@ jobs:
           script: |
             const overrideRaw = (process.env.OVERRIDE ?? '').toString().trim();
 
+            const isNullishOrEmptyString = (v) =>
+              v === null || v === undefined || (typeof v === 'string' && v.trim() === '');
+
+            // Campos obrigatórios do inventory (manager-solutions.json) que precisam estar presentes no objeto solution
+            const REQUIRED_INVENTORY_FIELDS = [
+              'stack',
+              'platform',
+              'platformVersion',
+              'platformDistributor',
+              'framework',
+              'type',
+              'name',
+              'status',
+              'path',
+            ];
+
+            // Se quiser endurecer também docker (opcional aqui), habilite como obrigatório
+            const isDockerIncomplete = (s) =>
+              s?.docker === null || s?.docker === undefined || isNullishOrEmptyString(s?.docker?.argCompilationMode);
+
+            const validateInventoryShape = (s, originLabel) => {
+              const missing = REQUIRED_INVENTORY_FIELDS.filter((k) => isNullishOrEmptyString(s?.[k]));
+              const pathLabel = (s?.path ?? '<sem path>').toString();
+
+              if (missing.length > 0) {
+                core.warning(
+                  `[inventory-incomplete] (${originLabel}) Solution '${pathLabel}' com inventory incompleto. Faltando/NULL: ${missing.join(', ')}`
+                );
+                return { ok: false, missing };
+              }
+
+              // Se docker for considerado obrigatório, troque para ok:false
+              if (isDockerIncomplete(s)) {
+                core.warning(
+                  `[inventory-incomplete] (${originLabel}) Solution '${pathLabel}' com docker.argCompilationMode ausente/NULL`
+                );
+              }
+
+              return { ok: true, missing: [] };
+            };
+
+            const toJavaServiceMatrixEntry = (s) => ({
+              path: s.path,
+              goals: 'clean install',
+              platformVersion: s.platformVersion.toString(),
+              platformDistributor: s.platformDistributor.toString(),
+              docker: s.docker, // mantém passthrough caso o callable use
+            });
+
             // Override manual via workflow_dispatch input (JSON array)
             if (overrideRaw && overrideRaw !== 'null') {
               core.info('Validando JSON de entrada (override via workflow_dispatch)...');
@@ -81,26 +157,43 @@ jobs:
               }
 
               const seenPaths = new Set();
-              const deduped = [];
+              const services = [];
+
               for (const entry of parsed) {
                 const path = (entry?.path ?? '').toString().trim();
-                if (!path) continue;
-
+                if (!path) {
+                  core.warning(`[inventory-incomplete] (override) Entrada sem 'path' ignorada`);
+                  continue;
+                }
                 if (seenPaths.has(path)) {
                   core.warning(`Entrada duplicada ignorada no input.services: ${path}`);
                   continue;
                 }
                 seenPaths.add(path);
 
-                deduped.push({
+                // Para override, exigimos os mesmos obrigatórios (sem defaults)
+                const enriched = {
+                  ...entry,
                   path,
-                  goals: (entry?.goals ?? 'clean install').toString(),
-                  platformVersion: (entry?.platformVersion ?? '21').toString(),
-                  platformDistributor: (entry?.platformDistributor ?? 'temurin').toString(),
-                });
+                };
+
+                const v = validateInventoryShape(enriched, 'override');
+                if (!v.ok) {
+                  // Não entra na matrix se estiver incompleto
+                  continue;
+                }
+
+                // Só builda Java backend
+                if (enriched.stack !== 'backend' || enriched.platform !== 'java') {
+                  core.info(`Ignorando (override) solution não-Java backend: ${path}`);
+                  continue;
+                }
+
+                services.push(toJavaServiceMatrixEntry(enriched));
               }
 
-              core.setOutput('matrix', JSON.stringify(deduped));
+              core.info(`Serviços Java (override) preparados: ${services.length}`);
+              core.setOutput('matrix', JSON.stringify(services));
               return;
             }
 
@@ -113,25 +206,35 @@ jobs:
               solutions = [];
             }
 
-            const services = (Array.isArray(solutions) ? solutions : [])
-              .filter(s => s?.stack === 'backend' && s?.platform === 'java')
-              .map(s => ({
-                path: s.path,
-                goals: 'clean install',
-                platformVersion: (s?.platformVersion ?? '21').toString(),
-                platformDistributor: (s?.platformDistributor ?? 'temurin').toString(),
-              }));
+            const services = [];
+            for (const s of (Array.isArray(solutions) ? solutions : [])) {
+              // Primeiro: validar shape do inventory para a solution que veio do detector
+              // (isso garante WARNING quando faltar campos obrigatórios)
+              const v = validateInventoryShape(s, 'detector');
+              if (!v.ok) {
+                // Se estiver incompleto, não entra na matrix
+                continue;
+              }
+
+              // Segundo: filtrar apenas Java backend
+              if (s.stack !== 'backend' || s.platform !== 'java') continue;
+
+              services.push(toJavaServiceMatrixEntry(s));
+            }
 
             core.info(`Serviços Java preparados: ${services.length}`);
-            listServices = services.map(s => `- ${s.path} (Java ${s.platformDistributor} ${s.platformVersion}, goals: ${s.goals})`).join('\n');
+            const listServices = services
+              .map(s => `- ${s.path} (Java ${s.platformDistributor} ${s.platformVersion}, goals: ${s.goals})`)
+              .join('\n');
             core.info(`Lista de serviços:\n${listServices}`);
+
             core.setOutput('matrix', JSON.stringify(services));
 
   build_matrix:
     name: Build dos serviços Java
     needs: prepare_services
     if: ${{ needs.prepare_services.outputs.matrix != '[]' && needs.prepare_services.outputs.matrix != '' }}
-    uses: ./.github/workflows/java-reusable-build-solutions.yml
+    uses: ./.github/workflows/global-callables-java-build-solutions.yml
     with:
       services: ${{ needs.prepare_services.outputs.matrix }}
     secrets:
