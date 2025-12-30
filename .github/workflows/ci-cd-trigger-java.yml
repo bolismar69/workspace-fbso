@@ -1,4 +1,4 @@
-name: Java CI/CD Trigger
+name: CI/CD Trigger Java
 
 # Este workflow detecta mudanças em serviços Java dentro do monorepo
 # e aciona um workflow reutilizável para compilar os serviços e publicar
@@ -26,7 +26,7 @@ on:
   workflow_dispatch:
     inputs:
       services:
-        description: 'Opcional: JSON array de objetos {"path":"","goals":""} para sobrescrever a detecção automática'
+        description: 'Opcional: JSON array (formato oficial) para sobrescrever a detecção automática. Ex.: [{"path":"backend/java/...","goals":"clean install","platformVersion":"21","platformDistributor":"temurin","docker":{"argCompilationMode":"jvm"}}]'
         required: false
 
 permissions:
