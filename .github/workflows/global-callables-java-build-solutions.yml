@@ -110,9 +110,9 @@ jobs:
           MATRIX_NAME: ${{ matrix.name }}
           MATRIX_PLATFORM_VERSION: ${{ matrix.platformVersion }}
           MATRIX_PLATFORM_COMPILATION_MODE: ${{ matrix.docker.argCompilationMode }}
-          REGISTRY_FRAMEWORK_FILE: architecture/service_registry/blueprintFramework.json
-          REGISTRY_STACKTYPE_FILE: architecture/service_registry/blueprintStackType.json
-          REGISTRY_SOLUTIONS_FILE: architecture/service_registry/blueprintSolutions.json
+          REGISTRY_FRAMEWORK_FILE: architecture/governance/config/global-frameworks.json
+          REGISTRY_STACKTYPE_FILE: architecture/governance/config/global-types-solution.json
+          REGISTRY_SOLUTIONS_FILE: architecture/governance/config/global-solutions.json
           DEFAULT_IMAGE_TO_BUILD_STANDARD: ${{ env.IMAGE_TO_BUILD_STANDARD }}
           DEFAULT_IMAGE_TO_BUILD_SPRING: ${{ env.IMAGE_TO_BUILD_SPRING }}
           DEFAULT_IMAGE_TO_BUILD_QUARKUS: ${{ env.IMAGE_TO_BUILD_QUARKUS }}
