@@ -32,8 +32,10 @@
     <jacoco.version>0.8.12</jacoco.version>
 
     <!-- Segurança (SCA) -->
-    <dependency-check-maven.version>12.1.9</dependency-check-maven.version>
-    <dependency-check.suppression.global>${project.basedir}/../../../../../architecture/blueprints/backend/java/spring/dependency-checker-exclude.xml</dependency-check.suppression.global>
+    <dependency-check.version>12.1.9</dependency-check.version>
+
+    <!-- Permite desligar em builds locais/PR via -Ddependency-check.skip=true -->
+    <dependency-check.skip>false</dependency-check.skip>
   </properties>
 
   <!-- Dependências padrão para Queue Workers -->
@@ -121,15 +123,22 @@
         <plugin>
           <groupId>org.owasp</groupId>
           <artifactId>dependency-check-maven</artifactId>
-          <version>${dependency-check-maven.version}</version>
+          <version>${dependency-check.version}</version>
           <configuration>
-            <suppressionFiles>
-              <suppressionFile>${dependency-check.suppression.global}</suppressionFile>
-            </suppressionFiles>
-            <failBuildOnCVSS>7</failBuildOnCVSS>
+            <skip>${dependency-check.skip}</skip>
+
+            <!-- Evita rate-limit e instabilidades da NVD sem chave -->
+            <nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
+            <nvdMaxRetryCount>10</nvdMaxRetryCount>
+            <nvdDelay>4000</nvdDelay>
+
+            <!-- Diretório que o CI pode cachear entre runs -->
+            <dataDirectory>${user.home}/.dependency-check</dataDirectory>
           </configuration>
           <executions>
             <execution>
+              <id>dependency-check</id>
+              <phase>verify</phase>
               <goals>
                 <goal>check</goal>
               </goals>

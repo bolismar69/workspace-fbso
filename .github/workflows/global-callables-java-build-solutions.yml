@@ -339,15 +339,24 @@ jobs:
           key: ${{ runner.os }}-maven-${{ env.SANITIZED_PATH }}-${{ hashFiles(format('{0}/**/pom.xml', matrix.path)) }}
           restore-keys: ${{ runner.os }}-maven-
 
-      - name: Build do serviço com Maven (usa mvnw quando disponível)
-        id: maven_build
+      - name: Cache OWASP Dependency-Check DB
+        uses: actions/cache@v4
+        with:
+          path: ~/.dependency-check
+          key: ${{ runner.os }}-dependency-check-${{ github.ref_name }}
+          restore-keys: |
+            ${{ runner.os }}-dependency-check-
+
+      - name: Build do serviço com Maven (usa mvnm quando disponivel)
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
           set -euo pipefail
           cd ${{ matrix.path }}
           if [ -x ./mvnw ]; then
             ./mvnw ${{ matrix.goals }}
           else
-            mvn ${{ matrix.goals }}
+            mvn -B -U verify
           fi
 
       - name: Validar artefato gerado
