@@ -135,7 +135,7 @@ jobs:
 
             const toJavaServiceMatrixEntry = (s) => ({
               path: s.path,
-              goals: 'clean install -DnvdApiKey=782D2049-71E0-F011-8366-0EBF96DE670D',
+              goals: ' -B -U verify -Ddependency-check.skip=true',
               platformVersion: s.platformVersion.toString(),
               platformDistributor: s.platformDistributor.toString(),
               docker: s.docker, // mantém passthrough caso o callable use

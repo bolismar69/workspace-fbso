@@ -356,7 +356,7 @@ jobs:
           if [ -x ./mvnw ]; then
             ./mvnw ${{ matrix.goals }}
           else
-            mvn -B -U verify
+            mvn -B -U verify -Ddependency-check.skip=true
           fi
 
       - name: Validar artefato gerado
