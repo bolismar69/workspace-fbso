@@ -9,13 +9,31 @@ Thumbs.db
 !.vscode/launch.json
 !.vscode/tasks.json
 
+# STS (Spring Tool Suite)
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
 # IntelliJ / JetBrains
 .idea/
 *.iml
+*.iws
+*.ipr
 
 # Vim / swap
 *.swp
 *.swo
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 
 # --- Logs / temp ---
 *.log
@@ -49,12 +67,17 @@ htmlcov/
 
 # --- Java / Maven / Gradle ---
 target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+.mvn/wrapper/maven-wrapper.jar
 *.class
 *.jar
 *.war
 *.ear
 .gradle/
 build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 # --- Go ---
 /bin/

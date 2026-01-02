@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- pom.xml do serviço (ex: backend/java/spring/.../ms-xxx/pom.xml) -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Parent POM para padronização de Queue Workers (Spring) -->
+  <groupId>com.fbso.blueprints.backend.java.spring</groupId>
+  <artifactId>queue-workers-parent-v21</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <name>FBSO Blueprint - Java Spring Queue Workers (v21)</name>
+
+  <!-- Herda BOM/config padrão do Spring Boot -->
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.0.1</version>
+    <relativePath/>
+  </parent>
+
+  <properties>
+    <java.version>21</java.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Qualidade/relatórios -->
+    <maven.compiler.release>${java.version}</maven.compiler.release>
+    <surefire.version>3.2.5</surefire.version>
+    <failsafe.version>3.2.5</failsafe.version>
+    <jacoco.version>0.8.12</jacoco.version>
+
+    <!-- Segurança (SCA) -->
+    <dependency-check-maven.version>12.1.9</dependency-check-maven.version>
+    <dependency-check.suppression.global>${project.basedir}/../../../../../architecture/blueprints/backend/java/spring/dependency-checker-exclude.xml</dependency-check.suppression.global>
+  </properties>
+
+  <!-- Dependências padrão para Queue Workers -->
+  <dependencies>
+    <!-- AMQP (RabbitMQ), típico para listeners -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-amqp</artifactId>
+    </dependency>
+
+    <!-- Observabilidade/health -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <!-- Validação comum em payloads/config -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+
+    <!-- Testes -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!-- Compilação Java 21 -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <release>${maven.compiler.release}</release>
+          </configuration>
+        </plugin>
+
+        <!-- Testes unitários -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${surefire.version}</version>
+        </plugin>
+
+        <!-- Testes de integração (se habilitados em perfis) -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${failsafe.version}</version>
+        </plugin>
+
+        <!-- Cobertura -->
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>${jacoco.version}</version>
+          <executions>
+            <execution>
+              <id>prepare-agent</id>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>report</id>
+              <phase>test</phase>
+              <goals>
+                <goal>report</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Empacotamento executável (aplica aos filhos JAR) -->
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+
+        <plugin>
+          <groupId>org.owasp</groupId>
+          <artifactId>dependency-check-maven</artifactId>
+          <version>${dependency-check-maven.version}</version>
+          <configuration>
+            <suppressionFiles>
+              <suppressionFile>${dependency-check.suppression.global}</suppressionFile>
+            </suppressionFiles>
+            <failBuildOnCVSS>7</failBuildOnCVSS>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>dependency-check-local-suppression</id>
+      <activation>
+        <file>
+          <exists>${project.basedir}/dependency-checker-exclude.xml</exists>
+        </file>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.owasp</groupId>
+              <artifactId>dependency-check-maven</artifactId>
+              <configuration>
+                <suppressionFiles combine.children="append">
+                  <suppressionFile>${project.basedir}/dependency-checker-exclude.xml</suppressionFile>
+                </suppressionFiles>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
+
+</project>
