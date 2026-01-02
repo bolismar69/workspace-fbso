@@ -1,23 +1,15 @@
 # syntax=docker/dockerfile:1.7
-ARG JAVA_VERSION=21
 ARG IMAGE_TO_BUILD=eclipse-temurin:21-jdk-jammy
 ARG IMAGE_TO_RUNTIME=eclipse-temurin:21-jre-jammy
-ARG APP_PORT=8080
 
-# Hooks opcionais (executados no build da imagem)
-ARG CMD_EXTRA_BUILDER_PRE_COPY=
-ARG CMD_EXTRA_BUILDER_POS_COMPILE=
-ARG CMD_EXTRA_RUNTIME_PRE_COPY=
-ARG CMD_EXTRA_RUNTIME_PRE_CMD=
-
-########################
-# Build
-########################
 FROM ${IMAGE_TO_BUILD} AS build
+ARG CMD_EXTRA_BUILDER_PRE_COPY=""
+ARG CMD_EXTRA_BUILDER_POS_COMPILE=""
+
 WORKDIR /workspace
 
 RUN set -eux; \
-  if [ -n "${CMD_EXTRA_BUILDER_PRE_COPY}" ]; then sh -lc "${CMD_EXTRA_BUILDER_PRE_COPY}"; fi
+  if [ -n "${CMD_EXTRA_BUILDER_PRE_COPY:-}" ]; then sh -lc "${CMD_EXTRA_BUILDER_PRE_COPY}"; fi
 
 # 1) Camada: arquivos de build
 COPY pom.xml ./
@@ -39,29 +31,31 @@ RUN --mount=type=cache,target=/root/.m2 \
     cp "$(ls -1 target/*.jar | head -n 1)" /workspace/app.jar
 
 RUN set -eux; \
-  if [ -n "${CMD_EXTRA_BUILDER_POS_COMPILE}" ]; then sh -lc "${CMD_EXTRA_BUILDER_POS_COMPILE}"; fi
+  # (ex: mvn clean package ...)
+  if [ -n "${CMD_EXTRA_BUILDER_POS_COMPILE:-}" ]; then sh -lc "${CMD_EXTRA_BUILDER_POS_COMPILE}"; fi
 
-########################
-# Runtime
-########################
 FROM ${IMAGE_TO_RUNTIME} AS runtime
+ARG APP_PORT=8080
+ARG APP_USER=10001
+ARG CMD_EXTRA_RUNTIME_PRE_COPY=""
+ARG CMD_EXTRA_RUNTIME_PRE_CMD=""
+
 ENV APP_PORT=${APP_PORT}
-ENV JAVA_OPTS=""
 
 WORKDIR /app
 
 RUN set -eux; \
-  if [ -n "${CMD_EXTRA_RUNTIME_PRE_COPY}" ]; then sh -lc "${CMD_EXTRA_RUNTIME_PRE_COPY}"; fi
+  if [ -n "${CMD_EXTRA_RUNTIME_PRE_COPY:-}" ]; then sh -lc "${CMD_EXTRA_RUNTIME_PRE_COPY}"; fi
 
 COPY --from=build /workspace/app.jar /app/app.jar
 
 RUN set -eux; \
-  if [ -n "${CMD_EXTRA_RUNTIME_PRE_CMD}" ]; then sh -lc "${CMD_EXTRA_RUNTIME_PRE_CMD}"; fi
+  if [ -n "${CMD_EXTRA_RUNTIME_PRE_CMD:-}" ]; then sh -lc "${CMD_EXTRA_RUNTIME_PRE_CMD}"; fi
 
 RUN set -eux; \
-  useradd -r -u 10001 -g root appuser; \
-  chown -R 10001:0 /app
-USER 10001
+  useradd -r -u "${APP_USER}" -g root appuser; \
+  chown -R "${APP_USER}":0 /app
+USER ${APP_USER}
 
 EXPOSE ${APP_PORT}
 # Spring costuma respeitar SERVER_PORT/server.port; deixamos via env + JAVA_OPTS para ser flexível
