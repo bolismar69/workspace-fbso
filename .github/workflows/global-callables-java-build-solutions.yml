@@ -420,11 +420,12 @@ jobs:
         id: buildpush
         uses: docker/build-push-action@v4
         with:
-          context: ${{ matrix.path }}
+          context: .
           file: ${{ steps.resolve_blueprint.outputs.dockerfile }}
           push: true
           tags: ${{ env.IMAGE_TAG }}
           build-args: |
+            SERVICE_PATH=${{ matrix.path }}
             JAVA_VERSION=${{ steps.resolve_blueprint.outputs.java_version }}
             IMAGE_TO_BUILD=${{ steps.resolve_blueprint.outputs.image_to_build }}
             IMAGE_TO_RUNTIME=${{ steps.resolve_blueprint.outputs.image_to_runtime }}

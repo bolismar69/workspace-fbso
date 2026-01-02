@@ -1,0 +1,71 @@
+# Git / VCS
+.git
+.git/**
+
+# CI/local tooling
+.github
+.github/**
+
+# IDEs
+.vscode
+.vscode/**
+.idea
+.idea/**
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+**/node_modules
+**/node_modules/**
+**/.npm
+**/.npm/**
+**/.yarn
+**/.yarn/**
+**/.pnpm-store
+**/.pnpm-store/**
+
+# Java / Maven / Gradle build outputs
+**/target
+**/target/**
+**/build
+**/build/**
+**/.gradle
+**/.gradle/**
+
+# Python
+**/__pycache__
+**/__pycache__/**
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache
+**/.pytest_cache/**
+**/.mypy_cache
+**/.mypy_cache/**
+**/.venv
+**/.venv/**
+
+# Go
+**/bin
+**/bin/**
+**/dist
+**/dist/**
+
+# Dotnet
+**/bin
+**/obj
+**/obj/**
+
+# Logs
+**/*.log
+
+# IMPORTANT: keep Maven wrapper and blueprints in context
+!.mvn/
+!.mvn/**
+!mvnw
+!mvnw.cmd
+!architecture/
+!architecture/**
