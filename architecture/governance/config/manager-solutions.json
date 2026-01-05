@@ -11,7 +11,7 @@
 			"status": "active",
 			"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue",
 			"docker": {
-				"argCompilationMode": "jvm"
+				"argCompilationMode": "native"
 			}
 		}
 	]
