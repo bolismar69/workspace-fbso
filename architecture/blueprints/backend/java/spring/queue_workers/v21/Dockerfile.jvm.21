@@ -14,25 +14,23 @@ ARG CMD_EXTRA_RUNTIME_PRE_CMD=
 # Build
 ########################
 FROM ${IMAGE_TO_BUILD} AS build
+
+# novo: caminho do serviço dentro do monorepo
+ARG SERVICE_PATH
+
 WORKDIR /workspace
 
+# executa comando antes de copiar o repo inteiro
 RUN set -eux; \
   if [ -n "${CMD_EXTRA_BUILDER_PRE_COPY}" ]; then sh -lc "${CMD_EXTRA_BUILDER_PRE_COPY}"; fi
 
-# 1) Camada: arquivos de build
-COPY pom.xml ./
-COPY .mvn/ .mvn/
-COPY mvnw ./
-
-# 2) Aquece deps
-RUN --mount=type=cache,target=/root/.m2 \
-    set -eux; \
-    if [ -x ./mvnw ]; then ./mvnw -q -DskipTests dependency:go-offline || true; else echo "ERRO: mvnw ausente" && exit 1; fi
-
-# 3) Código
+# importante: com context na raiz, copia o repo inteiro
 COPY . .
 
-# 4) Build final
+# agora entra na pasta do serviço para executar o mvnw/pom daquele módulo
+WORKDIR /workspace/${SERVICE_PATH}
+
+# executa build final
 RUN --mount=type=cache,target=/root/.m2 \
     set -eux; \
     ./mvnw -q -DskipTests package; \

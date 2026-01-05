@@ -270,8 +270,10 @@ jobs:
             // Dockerfile central esperado
             // Preferência: Dockerfile.<mode>.<version> (novo padrão)
             // Fallback:    Dockerfile.<version> (padrão legado já existente no repo)
-            const dockerfilePreferred = `architecture/blueprints/${stack}/${platform}/${framework}/docker/Dockerfile.${platformMode}.${platformVersionMajor}`;
-            const dockerfileLegacy = `architecture/blueprints/${stack}/${platform}/${framework}/docker/Dockerfile.${platformVersionMajor}`;
+            // ANTIGA: const dockerfilePreferred = `architecture/blueprints/${stack}/${platform}/${framework}/docker/Dockerfile.${platformMode}.${platformVersionMajor}`;
+            const dockerfilePreferred = `architecture/blueprints/${stack}/${platform}/${framework}/${stackType}/v${platformVersionMajor}/Dockerfile.${platformMode}.${platformVersionMajor}`;
+            // ANTIGA: const dockerfileLegacy = `architecture/blueprints/${stack}/${platform}/${framework}/docker/Dockerfile.${platformVersionMajor}`;
+            const dockerfileLegacy = `architecture/blueprints/${stack}/${platform}/${framework}/${stackType}/v${platformVersionMajor}/Dockerfile.${platformVersionMajor}`;
             const dockerfile = fs.existsSync(dockerfilePreferred)
               ? dockerfilePreferred
               : (fs.existsSync(dockerfileLegacy) ? dockerfileLegacy : null);
