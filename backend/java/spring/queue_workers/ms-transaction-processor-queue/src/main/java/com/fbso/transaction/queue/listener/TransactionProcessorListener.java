@@ -23,7 +23,7 @@ public class TransactionProcessorListener {
         try {
              // Simulação de processamento
              Thread.sleep(100); 
-             log.info("Transação processada com sucesso !!!!!!!!!!!!!");
+             log.info("Transação processada com sucesso !!!!!!!!!!!!!!");
         } catch (InterruptedException e) {
              Thread.currentThread().interrupt();
              log.error("Erro ao processar transação: {}", e.getMessage());
