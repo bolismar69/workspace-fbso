@@ -38,6 +38,8 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
+      SONAR_TOKEN:
+        required: false
 
 jobs:
   build:
@@ -49,6 +51,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -349,6 +353,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-dependency-check-
 
+      - name: Verificação Checkstyle
+        if: ${{ startsWith(matrix.path, 'backend/java/spring/') }}
+        run: |
+          set -euo pipefail
+          cd ${{ matrix.path }}
+          if [ -x ./mvnw ]; then
+            ./mvnw -B -U -DskipTests checkstyle:check
+          else
+            mvn -B -U -DskipTests checkstyle:check
+          fi
+
       - name: Build do serviço com Maven (usa mvnm quando disponivel)
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
@@ -359,6 +374,32 @@ jobs:
             ./mvnw ${{ matrix.goals }}
           else
             mvn -B -U verify -Ddependency-check.skip=true
+          fi
+
+      - name: Verificação SonarQube
+        if: ${{ secrets.SONAR_TOKEN != '' }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          set -euo pipefail
+          cd ${{ matrix.path }}
+
+          # O sonar.projectKey não pode conter '/'
+          SONAR_PROJECT_KEY="bolismar69:${{ matrix.path }}"
+          SONAR_PROJECT_KEY="${SONAR_PROJECT_KEY//\//_}"
+
+          if [ -x ./mvnw ]; then
+            ./mvnw -B -U -Ddependency-check.skip=true sonar:sonar \
+              -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.organization=bolismar69 \
+              -Dsonar.login="$SONAR_TOKEN"
+          else
+            mvn -B -U -Ddependency-check.skip=true sonar:sonar \
+              -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.organization=bolismar69 \
+              -Dsonar.login="$SONAR_TOKEN"
           fi
 
       - name: Validar artefato gerado

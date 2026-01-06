@@ -28,6 +28,10 @@
     <!-- Native Image: o serviço deve definir a main class explicitamente -->
     <native.mainClass></native.mainClass>
 
+    <checkstyle.plugin.version>3.3.1</checkstyle.plugin.version>
+    <checkstyle.version>10.12.5</checkstyle.version>
+    <checkstyle.configLocation>google_checks.xml</checkstyle.configLocation>
+
     <!-- Qualidade/relatórios -->
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <surefire.version>3.2.5</surefire.version>
@@ -78,6 +82,27 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
             <release>${maven.compiler.release}</release>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${checkstyle.plugin.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>${checkstyle.version}</version>
+            </dependency>
+          </dependencies>
+          <configuration>
+            <configLocation>${checkstyle.configLocation}</configLocation>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <consoleOutput>true</consoleOutput>
+            <failsOnError>true</failsOnError>
+            <linkXRef>false</linkXRef>
+            <includeTestSourceDirectory>true</includeTestSourceDirectory>
           </configuration>
         </plugin>
 
