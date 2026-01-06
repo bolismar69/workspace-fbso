@@ -390,13 +390,13 @@ jobs:
           SONAR_PROJECT_KEY="${SONAR_PROJECT_KEY//\//_}"
 
           if [ -x ./mvnw ]; then
-            ./mvnw -B -U -Ddependency-check.skip=true sonar:sonar \
+            ./mvnw -B -U -DskipTests -Ddependency-check.skip=true org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
               -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
               -Dsonar.host.url=https://sonarcloud.io \
               -Dsonar.organization=bolismar69 \
               -Dsonar.login="$SONAR_TOKEN"
           else
-            mvn -B -U -Ddependency-check.skip=true sonar:sonar \
+            mvn -B -U -DskipTests -Ddependency-check.skip=true org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
               -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
               -Dsonar.host.url=https://sonarcloud.io \
               -Dsonar.organization=bolismar69 \
