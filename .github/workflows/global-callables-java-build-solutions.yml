@@ -39,13 +39,16 @@ on:
       DOCKERHUB_TOKEN:
         required: true
       SONAR_TOKEN:
-        required: true
+        required: false
       NVD_API_KEY:
-        required: true
+        required: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
     strategy:
       fail-fast: false
       matrix:
@@ -367,8 +370,6 @@ jobs:
           fi
 
       - name: Build do serviço com Maven (usa mvnm quando disponivel)
-        env:
-          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
           set -euo pipefail
           cd ${{ matrix.path }}
@@ -379,9 +380,7 @@ jobs:
           fi
 
       - name: Verificação SonarQube
-        if: ${{ secrets.SONAR_TOKEN != '' }}
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        if: ${{ env.SONAR_TOKEN != '' }}
         run: |
           set -euo pipefail
           cd ${{ matrix.path }}
