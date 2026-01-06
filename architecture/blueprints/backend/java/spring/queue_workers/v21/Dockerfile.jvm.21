@@ -16,7 +16,11 @@ ARG CMD_EXTRA_RUNTIME_PRE_CMD=
 FROM ${IMAGE_TO_BUILD} AS build
 
 # novo: caminho do serviço dentro do monorepo
-ARG SERVICE_PATH
+ARG SERVICE_PATH=.
+
+# Hooks opcionais precisam ser re-declarados no stage para estarem disponíveis em RUN
+ARG CMD_EXTRA_BUILDER_PRE_COPY
+ARG CMD_EXTRA_BUILDER_POS_COMPILE
 
 WORKDIR /workspace
 
@@ -32,9 +36,13 @@ WORKDIR /workspace/${SERVICE_PATH}
 
 # executa build final
 RUN --mount=type=cache,target=/root/.m2 \
-    set -eux; \
+  set -eux; \
+  if [ -x ./mvnw ]; then \
     ./mvnw -q -DskipTests package; \
-    cp "$(ls -1 target/*.jar | head -n 1)" /workspace/app.jar
+  else \
+    echo "ERRO: Padronize mvnw/gradlew no repo." && exit 1; \
+  fi; \
+  cp "$(ls -1 target/*.jar | head -n 1)" /workspace/app.jar
 
 RUN set -eux; \
   if [ -n "${CMD_EXTRA_BUILDER_POS_COMPILE}" ]; then sh -lc "${CMD_EXTRA_BUILDER_POS_COMPILE}"; fi
@@ -43,6 +51,11 @@ RUN set -eux; \
 # Runtime
 ########################
 FROM ${IMAGE_TO_RUNTIME} AS runtime
+ARG APP_PORT
+
+# Hooks opcionais precisam ser re-declarados no stage para estarem disponíveis em RUN
+ARG CMD_EXTRA_RUNTIME_PRE_COPY
+ARG CMD_EXTRA_RUNTIME_PRE_CMD
 ENV APP_PORT=${APP_PORT}
 ENV JAVA_OPTS=""
 

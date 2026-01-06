@@ -21,6 +21,8 @@
   <properties>
     <java.version>21</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <native.mainClass></native.mainClass>
     <maven.compiler.release>${java.version}</maven.compiler.release>
 
     <surefire.version>3.2.5</surefire.version>
@@ -101,6 +103,17 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.graalvm.buildtools</groupId>
+        <artifactId>native-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <mainClass>${native.mainClass}</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
 </project>

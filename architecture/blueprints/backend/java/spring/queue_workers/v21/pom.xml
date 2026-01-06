@@ -25,6 +25,9 @@
     <java.version>21</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+    <!-- Native Image: o serviço deve definir a main class explicitamente -->
+    <native.mainClass></native.mainClass>
+
     <!-- Qualidade/relatórios -->
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <surefire.version>3.2.5</surefire.version>
@@ -147,6 +150,18 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
+    <!-- Plugins herdados pelos serviços (sem forçar execução; só aplica quando o goal é chamado) -->
+    <plugins>
+      <plugin>
+        <groupId>org.graalvm.buildtools</groupId>
+        <artifactId>native-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <mainClass>${native.mainClass}</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
   <profiles>

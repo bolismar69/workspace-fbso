@@ -7,41 +7,34 @@ ARG IMAGE_TO_RUNTIME=gcr.io/distroless/cc-debian12
 # ARG SPRING_NATIVE_BUILDER=ghcr.io/graalvm/native-image-community:latest
 # FROM ${SPRING_NATIVE_BUILDER} AS build
 FROM ${IMAGE_TO_BUILD} AS build
+
+# novo: caminho do serviço dentro do monorepo
+ARG SERVICE_PATH=.
+
 WORKDIR /workspace
 
-# 1) Camada: arquivos de build
-COPY pom.xml ./
-COPY .mvn/ .mvn/
-COPY mvnw ./
-COPY build.gradle* settings.gradle* gradle.properties ./
-COPY gradle/ gradle/
-COPY gradlew ./
-
-# 2) Aquece deps (cache)
-RUN --mount=type=cache,target=/root/.m2 \
-    --mount=type=cache,target=/root/.gradle \
-    set -eux; \
-    if [ -x ./mvnw ]; then ./mvnw -q -DskipTests dependency:go-offline || true; fi; \
-    if [ -x ./gradlew ]; then ./gradlew -q --no-daemon dependencies || true; fi
-
-# 3) Código
+# importante: com context na raiz, copia o repo inteiro
 COPY . .
 
-# 4) Build Native (wrapper obrigatório)
-RUN --mount=type=cache,target=/root/.m2 \
-    --mount=type=cache,target=/root/.gradle \
-    set -eux; \
-    if [ -x ./mvnw ]; then \
-      # padrão do projeto: profile native configurado (spring-aot / native build tools)
-      ./mvnw -q -DskipTests -Pnative package; \
-    elif [ -x ./gradlew ]; then \
-      # padrão do projeto: task nativeCompile habilitada
-      ./gradlew -q --no-daemon nativeCompile; \
-    else \
-      echo "ERRO: Padronize mvnw/gradlew no repo." && exit 1; \
-    fi
+# agora entra na pasta do serviço para executar o mvnw/pom daquele módulo
+WORKDIR /workspace/${SERVICE_PATH}
 
-# 5) Normalize binário -> /workspace/app
+# Build Native (wrapper obrigatório)
+RUN --mount=type=cache,target=/root/.m2 \
+  --mount=type=cache,target=/root/.gradle \
+  set -eux; \
+  if [ -x ./mvnw ]; then \
+    # GraalVM Build Tools (plugin org.graalvm.buildtools:native-maven-plugin)
+    # Nota: evitar depender de profile 'native' no serviço; o goal explícito é mais robusto.
+    ./mvnw -q -DskipTests -Ddependency-check.skip=true native:compile; \
+  elif [ -x ./gradlew ]; then \
+    # Gradle (com Spring Native plugin configurado)
+    ./gradlew build nativeCompile; \
+  else \
+    echo "ERRO: Padronize mvnw/gradlew no repo." && exit 1; \
+  fi
+
+# Normalize binário -> /workspace/app
 # (Quando a org padronizar: troque este bloco por um COPY direto de ./out/app)
 RUN set -eux; \
   BIN=""; \
@@ -60,6 +53,7 @@ RUN set -eux; \
 ########################
 # FROM gcr.io/distroless/cc-debian12 AS runtime
 FROM ${IMAGE_TO_RUNTIME} AS runtime
+ARG APP_PORT
 WORKDIR /app
 COPY --from=build /workspace/app /app/app
 USER 10001
