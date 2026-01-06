@@ -39,7 +39,9 @@ on:
       DOCKERHUB_TOKEN:
         required: true
       SONAR_TOKEN:
-        required: false
+        required: true
+      NVD_API_KEY:
+        required: true
 
 jobs:
   build:
