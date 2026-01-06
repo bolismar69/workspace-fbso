@@ -10,6 +10,8 @@
 			"name": "ms-transaction-processor-queue",
 			"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue",
 			"docker": {
+				"argImageBuild": "ghcr.io/graalvm/native-image-community:latest",
+				"argImageRuntime": "gcr.io/distroless/cc-debian12:latest",
 				"argCmdExtraRuntimePreCmd": "echo 'Solution: Aplicando tuning específico para transações...'"
 			},
 			"compliance": {
