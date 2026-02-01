@@ -43,14 +43,14 @@ name: CI/CD Trigger Java
 # - build_matrix: chama o reusable de build Java em matrix.
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'backend/java/**'
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'backend/java/**'
+  # push:
+  #   branches: [ main ]
+  #   paths:
+  #     - 'backend/java/**'
+  # pull_request:
+  #   branches: [ main ]
+  #   paths:
+  #     - 'backend/java/**'
   workflow_dispatch:
     inputs:
       services:
