@@ -75,12 +75,12 @@ jobs:
       paths: ${{ steps.emit.outputs.paths }}
 
     steps:
-      - name: Checkout
+      - name: Realizando Checkout do repositorio
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Detect modified backend/frontend solutions
+      - name: Detectando soluções modificadas
         id: emit
         env:
           INPUT_BASE_SHA: ${{ inputs.base_sha }}
