@@ -1,0 +1,47 @@
+name: Call CI Backend Java
+
+# FUNÇÃO
+# - Workflow especialista (backend/java).
+# - Neste estágio inicial, apenas valida e imprime o payload recebido.
+# - Evolução futura: executar testes/build (Maven/Gradle), análise, build/push Docker, etc.
+#
+# INPUTS (workflow_call)
+# - services: JSON array string com solutions (itens do inventory, incluindo specification).
+#
+# OUTPUTS
+# - Nenhum.
+
+on:
+  workflow_call:
+    inputs:
+      services:
+        description: 'JSON array string de solutions (somente backend/java/*).'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  java:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log services (backend/java)
+        uses: actions/github-script@v7
+        env:
+          SERVICES_JSON: ${{ inputs.services }}
+        with:
+          script: |
+            let services;
+            try {
+              services = JSON.parse((process.env.SERVICES_JSON ?? '[]').toString());
+            } catch {
+              core.setFailed('inputs.services não é JSON válido');
+              return;
+            }
+            if (!Array.isArray(services)) {
+              core.setFailed('inputs.services deve ser um JSON array');
+              return;
+            }
+            core.info(`Services backend/java recebidos: ${services.length}`);
+            for (const s of services) core.info(`- ${s?.path ?? '<sem path>'}`);

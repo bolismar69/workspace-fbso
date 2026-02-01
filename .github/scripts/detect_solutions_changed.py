@@ -153,27 +153,46 @@ def _load_manager_inventory_by_path():
     if not isinstance(inventory, list):
         raise SystemExit("Inventory inválido: esperado array em solutions")
 
-    by_path = {}
-    for item in inventory:
-        item = dict(item or {})
-        spec = item.get("specification")
-        if not isinstance(spec, dict):
+    def _missing_base_fields(sol: Dict[str, Any]) -> List[str]:
+        missing: List[str] = []
+        for k in ("path", "stack", "platform", "framework", "type", "name", "status"):
+            v = sol.get(k)
+            if v is None or (isinstance(v, str) and not v.strip()):
+                missing.append(k)
+        return missing
+
+    by_path: Dict[str, Dict[str, Any]] = {}
+    for idx, raw in enumerate(inventory):
+        item = dict(raw or {})
+        p = (item.get("path") or "").strip()
+        if not p:
+            raise SystemExit(f"Inventory inválido: solution sem 'path' (index={idx})")
+
+        parts = [seg for seg in p.split("/") if seg]
+        if len(parts) != 5:
             raise SystemExit(
-                "Inventory inválido: cada solution deve conter 'specification' (objeto)."
+                f"Inventory inválido: path deve ter 5 níveis stack/platform/framework/type/name: '{p}'"
             )
 
-        # Backward-compat dos outputs: expõe alguns atalhos no topo,
-        # mas mantém o objeto specification original.
-        if item.get("platformVersion") is None and spec.get("platformVersion") is not None:
-            item["platformVersion"] = spec.get("platformVersion")
-        if item.get("platformDistributor") is None and spec.get("platformDistributor") is not None:
-            item["platformDistributor"] = spec.get("platformDistributor")
-        if item.get("docker") is None and spec.get("docker") is not None:
-            item["docker"] = spec.get("docker")
+        missing = _missing_base_fields(item)
+        if missing:
+            raise SystemExit(
+                f"Inventory inválido: solution '{p}' com campos obrigatórios ausentes: {', '.join(missing)}"
+            )
 
-        p = (item.get("path") or "").strip()
-        if p:
-            by_path[p] = item
+        # Enriquecimento opcional: manter specification se existir.
+        # Backward-compat dos outputs: expõe alguns atalhos no topo quando specification existir.
+        spec = item.get("specification")
+        if isinstance(spec, dict):
+            if item.get("platformVersion") is None and spec.get("platformVersion") is not None:
+                item["platformVersion"] = spec.get("platformVersion")
+            if item.get("platformDistributor") is None and spec.get("platformDistributor") is not None:
+                item["platformDistributor"] = spec.get("platformDistributor")
+            if item.get("docker") is None and spec.get("docker") is not None:
+                item["docker"] = spec.get("docker")
+
+        by_path[p] = item
+
     return by_path
 
 

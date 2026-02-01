@@ -40,27 +40,45 @@ def _load_manager_inventory_by_path() -> Dict[str, Dict[str, Any]]:
     if not isinstance(raw_items, list):
         raise SystemExit("Inventory inválido: esperado array em solutions")
 
+    def _missing_base_fields(sol: Dict[str, Any]) -> List[str]:
+        missing: List[str] = []
+        for k in ("path", "stack", "platform", "framework", "type", "name", "status"):
+            v = sol.get(k)
+            if v is None or (isinstance(v, str) and not v.strip()):
+                missing.append(k)
+        return missing
+
     by_path: Dict[str, Dict[str, Any]] = {}
-    for raw in raw_items:
+    for idx, raw in enumerate(raw_items):
         item = dict(raw or {})
-        spec = item.get("specification")
-        if not isinstance(spec, dict):
+        p = (item.get("path") or "").strip()
+        if not p:
+            raise SystemExit(f"Inventory inválido: solution sem 'path' (index={idx})")
+
+        parts = [seg for seg in p.split("/") if seg]
+        if len(parts) != 5:
             raise SystemExit(
-                "Inventory inválido: cada solution deve conter 'specification' (objeto)."
+                f"Inventory inválido: path deve ter 5 níveis stack/platform/framework/type/name: '{p}'"
             )
 
-        # Backward-compat dos outputs: expõe alguns atalhos no topo,
-        # mas mantém o objeto specification original.
-        if item.get("platformVersion") is None and spec.get("platformVersion") is not None:
-            item["platformVersion"] = spec.get("platformVersion")
-        if item.get("platformDistributor") is None and spec.get("platformDistributor") is not None:
-            item["platformDistributor"] = spec.get("platformDistributor")
-        if item.get("docker") is None and spec.get("docker") is not None:
-            item["docker"] = spec.get("docker")
+        missing = _missing_base_fields(item)
+        if missing:
+            raise SystemExit(
+                f"Inventory inválido: solution '{p}' com campos obrigatórios ausentes: {', '.join(missing)}"
+            )
 
-        p = (item.get("path") or "").strip()
-        if p:
-            by_path[p] = item
+        # Enriquecimento opcional: manter specification se existir.
+        # Backward-compat dos outputs: expõe alguns atalhos no topo quando specification existir.
+        spec = item.get("specification")
+        if isinstance(spec, dict):
+            if item.get("platformVersion") is None and spec.get("platformVersion") is not None:
+                item["platformVersion"] = spec.get("platformVersion")
+            if item.get("platformDistributor") is None and spec.get("platformDistributor") is not None:
+                item["platformDistributor"] = spec.get("platformDistributor")
+            if item.get("docker") is None and spec.get("docker") is not None:
+                item["docker"] = spec.get("docker")
+
+        by_path[p] = item
 
     return by_path
 
@@ -112,19 +130,33 @@ def _validate_required_fields(item: Dict[str, Any], strict: bool) -> List[str]:
             missing.append(key)
 
     if strict:
+        # Neste nível, `specification` é opcional. Só validamos campos de build
+        # se eles estiverem presentes (top-level ou em specification).
         spec = item.get("specification")
-        if not isinstance(spec, dict):
-            missing.append("specification")
-            return missing
 
-        for key in ("platformVersion", "platformDistributor"):
-            v = spec.get(key)
-            if v is None or (isinstance(v, str) and not str(v).strip()):
-                missing.append(f"specification.{key}")
+        platform_version = item.get("platformVersion")
+        platform_distributor = item.get("platformDistributor")
+        docker_obj = item.get("docker")
 
-        docker = spec.get("docker") or {}
-        if not isinstance(docker, dict) or not str(docker.get("argCompilationMode") or "").strip():
-            missing.append("specification.docker.argCompilationMode")
+        if isinstance(spec, dict):
+            platform_version = platform_version if platform_version is not None else spec.get("platformVersion")
+            platform_distributor = (
+                platform_distributor if platform_distributor is not None else spec.get("platformDistributor")
+            )
+            docker_obj = docker_obj if docker_obj is not None else spec.get("docker")
+
+        # Só exige se algum dos campos foi fornecido em algum lugar.
+        if platform_version is not None or platform_distributor is not None or docker_obj is not None:
+            if platform_version is None or (isinstance(platform_version, str) and not platform_version.strip()):
+                missing.append("platformVersion")
+            if platform_distributor is None or (
+                isinstance(platform_distributor, str) and not str(platform_distributor).strip()
+            ):
+                missing.append("platformDistributor")
+
+            docker = docker_obj or {}
+            if not isinstance(docker, dict) or not str(docker.get("argCompilationMode") or "").strip():
+                missing.append("docker.argCompilationMode")
 
     return missing
 
@@ -149,7 +181,10 @@ def main() -> int:
     parser.add_argument(
         "--strict",
         default=os.environ.get("INPUT_STRICT", "false"),
-        help="Se true, exige specification.platformVersion/specification.platformDistributor/specification.docker.argCompilationMode no inventory.",
+        help=(
+            "Se true, valida campos de build SOMENTE quando presentes (ex.: platformVersion/platformDistributor/docker.argCompilationMode). "
+            "Neste nível, specification é opcional e não é exigido."
+        ),
     )
     args = parser.parse_args()
 

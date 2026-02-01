@@ -5,15 +5,20 @@ name: CI Generic Backend
 # - Suporta 2 modos:
 #   - push/PR: detecta alterações via reusable detector (git diff) e valida contra o inventory.
 #   - workflow_dispatch/workflow_call: valida/enriquece `services` via reusable validator.
-# - Neste nível inicial, apenas valida e imprime o payload recebido.
-# - Evolução futura: build/test/lint específicos de backend.
+# - Roteia as solutions por plataforma (stack=backend): java/go/python/csharp.
+# - Chama o workflow especialista correspondente:
+#   - backend/csharp  -> call-ci-backend-csharp.yml
+#   - backend/go      -> call-ci-backend-go.yml
+#   - backend/python  -> call-ci-backend-python.yml
+#   - backend/java    -> call-ci-backend-java.yml
+# - Evolução futura: cada workflow especialista implementa build/test/lint da sua plataforma.
 #
 # INPUTS
 # - workflow_dispatch.services: obrigatório (JSON array string) com paths/objects contendo path (somente backend/*).
 # - workflow_call.services: obrigatório (JSON array string) com paths/objects contendo path (somente backend/*).
 #
 # OUTPUTS
-# - Nenhum. Efeito: logs do payload (nível inicial).
+# - Nenhum. Efeito: chama workflows especialistas conforme plataformas afetadas.
 
 on:
   push:
@@ -47,7 +52,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Objetivo: irá buscar as alteracoes ocorridas dentro da estrutura de pastas backend
   detect_solutions_changed:
     name: Detectar solutions alteradas (backend)
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
@@ -65,16 +69,24 @@ jobs:
     with:
       stack: backend
       services: ${{ github.event_name == 'workflow_call' && inputs.services || github.event.inputs.services }}
-      strict: 'true'
+      strict: 'false'
 
-  backend:
+  enrich_missing_specification:
+    name: Preencher specification via global types (backend)
     runs-on: ubuntu-latest
     needs: [detect_solutions_changed, detect_input_services]
     if: >-
-      ${{ needs.detect_input_services.result == 'success' || needs.detect_solutions_changed.result == 'success' }}
+      ${{ 
+        ( needs.detect_input_services.result == 'success' || needs.detect_solutions_changed.result == 'success' )
+      }}
+    outputs:
+      solutions: ${{ steps.enrich.outputs.solutions }}
+      paths: ${{ steps.enrich.outputs.paths }}
     steps:
-      - name: Log services (backend)
-        uses: actions/github-script@v7
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Aplicar defaults de specification (por tipo)
+        id: enrich
         env:
           SERVICES_JSON: >-
             ${{
@@ -82,6 +94,28 @@ jobs:
               || (needs.detect_solutions_changed.result == 'success' && needs.detect_solutions_changed.outputs.solutions)
               || '[]'
             }}
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/apply_global_types_specification.py \
+            --global-types architecture/governance/config/global-types-solution.json
+
+  route_backend_platforms:
+    name: Roteamento por plataforma (backend)
+    runs-on: ubuntu-latest
+    needs: enrich_missing_specification
+    if: >-
+      ${{ needs.enrich_missing_specification.result == 'success' }}
+    outputs:
+      java_services: ${{ steps.route.outputs.java_services }}
+      go_services: ${{ steps.route.outputs.go_services }}
+      python_services: ${{ steps.route.outputs.python_services }}
+      csharp_services: ${{ steps.route.outputs.csharp_services }}
+    steps:
+      - name: Roteiar services por plataforma
+        id: route
+        uses: actions/github-script@v7
+        env:
+          SERVICES_JSON: ${{ needs.enrich_missing_specification.outputs.solutions || '[]' }}
         with:
           script: |
             let services;
@@ -95,7 +129,79 @@ jobs:
               core.setFailed('SERVICES_JSON deve ser um JSON array');
               return;
             }
-            core.info(`Backend services recebidos: ${services.length}`);
+
+            const byPlatform = { java: [], go: [], python: [], csharp: [] };
+
+            const normalizePlatform = (rawPlatform, rawPath) => {
+              const p = (rawPlatform ?? '').toString().trim().toLowerCase();
+              if (p) {
+                if (p === 'c#' || p === 'csharp' || p === 'c-sharp') return 'csharp';
+                return p;
+              }
+              const path = (rawPath ?? '').toString().trim();
+              const parts = path.split('/').filter(Boolean);
+              if (parts.length >= 2) {
+                const fromPath = parts[1].toLowerCase();
+                if (fromPath === 'c#' || fromPath === 'csharp') return 'csharp';
+                return fromPath;
+              }
+              return '';
+            };
+
+            const seen = new Set();
             for (const s of services) {
-              core.info(`- ${s?.path ?? '<sem path>'}`);
+              const path = (s?.path ?? '').toString().trim();
+              if (!path) continue;
+              if (seen.has(path)) continue;
+              seen.add(path);
+
+              const platform = normalizePlatform(s?.platform, path);
+              if (platform === 'java') byPlatform.java.push(s);
+              else if (platform === 'go') byPlatform.go.push(s);
+              else if (platform === 'python') byPlatform.python.push(s);
+              else if (platform === 'csharp') byPlatform.csharp.push(s);
+              else core.warning(`Plataforma não roteada (ignorada): platform='${platform}' path='${path}'`);
             }
+
+            core.info(`Backend services recebidos: ${seen.size}`);
+            core.info(`- java: ${byPlatform.java.length}`);
+            core.info(`- go: ${byPlatform.go.length}`);
+            core.info(`- python: ${byPlatform.python.length}`);
+            core.info(`- csharp: ${byPlatform.csharp.length}`);
+
+            core.setOutput('java_services', JSON.stringify(byPlatform.java));
+            core.setOutput('go_services', JSON.stringify(byPlatform.go));
+            core.setOutput('python_services', JSON.stringify(byPlatform.python));
+            core.setOutput('csharp_services', JSON.stringify(byPlatform.csharp));
+
+  ci_backend_java:
+    name: CI Backend Java
+    needs: route_backend_platforms
+    if: ${{ needs.route_backend_platforms.outputs.java_services != '[]' && needs.route_backend_platforms.outputs.java_services != '' }}
+    uses: ./.github/workflows/call-ci-backend-java.yml
+    with:
+      services: ${{ needs.route_backend_platforms.outputs.java_services }}
+
+  ci_backend_go:
+    name: CI Backend Go
+    needs: route_backend_platforms
+    if: ${{ needs.route_backend_platforms.outputs.go_services != '[]' && needs.route_backend_platforms.outputs.go_services != '' }}
+    uses: ./.github/workflows/call-ci-backend-go.yml
+    with:
+      services: ${{ needs.route_backend_platforms.outputs.go_services }}
+
+  ci_backend_python:
+    name: CI Backend Python
+    needs: route_backend_platforms
+    if: ${{ needs.route_backend_platforms.outputs.python_services != '[]' && needs.route_backend_platforms.outputs.python_services != '' }}
+    uses: ./.github/workflows/call-ci-backend-python.yml
+    with:
+      services: ${{ needs.route_backend_platforms.outputs.python_services }}
+
+  ci_backend_csharp:
+    name: CI Backend CSharp
+    needs: route_backend_platforms
+    if: ${{ needs.route_backend_platforms.outputs.csharp_services != '[]' && needs.route_backend_platforms.outputs.csharp_services != '' }}
+    uses: ./.github/workflows/call-ci-backend-csharp.yml
+    with:
+      services: ${{ needs.route_backend_platforms.outputs.csharp_services }}
