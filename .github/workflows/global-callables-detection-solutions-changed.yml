@@ -33,8 +33,6 @@ name: Global Callables Detection Solutions Changed
 #       }
 #     }
 #   ]
-#   Observação: por compatibilidade, alguns campos podem aparecer também achatados no topo
-#   (ex.: platformVersion/platformDistributor/docker), derivados de specification.*.
 # - paths: string contendo JSON array de paths (strings)
 #   Exemplo:
 #   ["backend/java/spring/microservices/ms-example"]

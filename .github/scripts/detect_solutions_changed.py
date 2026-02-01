@@ -180,16 +180,8 @@ def _load_manager_inventory_by_path():
                 f"Inventory inválido: solution '{p}' com campos obrigatórios ausentes: {', '.join(missing)}"
             )
 
-        # Enriquecimento opcional: manter specification se existir.
-        # Backward-compat dos outputs: expõe alguns atalhos no topo quando specification existir.
-        spec = item.get("specification")
-        if isinstance(spec, dict):
-            if item.get("platformVersion") is None and spec.get("platformVersion") is not None:
-                item["platformVersion"] = spec.get("platformVersion")
-            if item.get("platformDistributor") is None and spec.get("platformDistributor") is not None:
-                item["platformDistributor"] = spec.get("platformDistributor")
-            if item.get("docker") is None and spec.get("docker") is not None:
-                item["docker"] = spec.get("docker")
+        # Mantém a estrutura exatamente como definida no inventory.
+        # Não achata (flatten) campos de `specification` para o topo.
 
         by_path[p] = item
 
