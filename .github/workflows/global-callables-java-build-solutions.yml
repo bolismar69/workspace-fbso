@@ -5,10 +5,12 @@ name: Global Callables Java Build Solutions
 # - Executa em matrix: cada item do JSON `services` vira um job da matrix.
 # - Resolve blueprint (Dockerfile central + build args) via registries em `architecture/service_registry/*`.
 # - Carrega variáveis compartilhadas de `.github/docker.env` e `.github/docker.java.env`.
+# - Observação: o inventory oficial usa `specification.*`, mas este workflow consome campos achatados
+#   para facilitar uso em matrix (platformVersion/platformDistributor/docker.argCompilationMode).
 #
 # INPUTS (workflow_call)
 # - services (obrigatório): string contendo JSON array, um item por serviço.
-#   Formato oficial (campos obrigatórios para Java):
+#   Formato esperado (campos obrigatórios para Java):
 #   {
 #     "path": "backend/java/<framework>/<type>/<name>",
 #     "goals": "clean install",
@@ -16,6 +18,7 @@ name: Global Callables Java Build Solutions
 #     "platformDistributor": "temurin",
 #     "docker": { "argCompilationMode": "jvm|native" }
 #   }
+#   Origem recomendada: saída do detector/validator (derivada de specification.* do inventory).
 #   Campos opcionais (override do parsing do path):
 #   {"stack":"backend","platform":"java","framework":"spring|quarkus|generic","type":"...","name":"..."}
 #
@@ -25,12 +28,20 @@ name: Global Callables Java Build Solutions
 #
 # OUTPUTS (workflow_call)
 # - Este workflow não define outputs. Efeito: publica imagem Docker (push) no registry configurado.
+#
+# STEPS (jobs.build)
+# - Checkout: obtém código do serviço.
+# - Setup Java: configura JDK via `actions/setup-java` usando platformVersion/platformDistributor.
+# - Load env: carrega `.github/docker.env` e `.github/docker.java.env`.
+# - Resolve blueprint: resolve Dockerfile/build args via registries/blueprints.
+# - Build/Test: executa Maven com `goals`.
+# - Docker: build/push da imagem conforme args resolvidos.
 
 on:
   workflow_call:
     inputs:
       services:
-        description: 'JSON array de objetos com os serviços a processar. Formato oficial: {"path":"...","goals":"...","platformVersion":"21","platformDistributor":"temurin","docker":{"argCompilationMode":"jvm|native"}}. Campos opcionais (override de parsing do path): {"stack":"backend","platform":"java","framework":"spring|quarkus|generic","type":"...","name":"..."}.'
+        description: 'JSON array de objetos com os serviços a processar. Esperado: {"path":"backend/java/<framework>/<type>/<name>","goals":"...","platformVersion":"21","platformDistributor":"temurin","docker":{"argCompilationMode":"jvm|native"}}. Recomendado passar a saída do detector/validator (derivada de specification.* do inventory).'
         required: true
         type: string
     secrets:

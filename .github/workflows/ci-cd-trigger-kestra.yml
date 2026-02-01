@@ -1,0 +1,42 @@
+name: CI/CD - Kestra (Flows)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'orchestration/kestra/**'
+      - 'devops/scripts/kestra/**'
+      - '.github/workflows/ci-cd-trigger-kestra.yml'
+
+jobs:
+  publish:
+    name: Publicar flows no Kestra
+    runs-on: ubuntu-latest
+    env:
+      KESTRA_URL: ${{ secrets.KESTRA_URL }}
+      KESTRA_API_TOKEN: ${{ secrets.KESTRA_API_TOKEN }}
+      KESTRA_BASIC_AUTH: ${{ secrets.KESTRA_BASIC_AUTH }}
+      KESTRA_API_FLOWS_ENDPOINT: ${{ vars.KESTRA_API_FLOWS_ENDPOINT }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verificar pré-requisitos
+        run: |
+          set -euo pipefail
+
+          if [ -z "${KESTRA_URL:-}" ]; then
+            echo "KESTRA_URL (secret) não configurado; pulando publicação." >&2
+            exit 0
+          fi
+
+          if [ -z "${KESTRA_API_TOKEN:-}" ] && [ -z "${KESTRA_BASIC_AUTH:-}" ]; then
+            echo "Defina KESTRA_API_TOKEN ou KESTRA_BASIC_AUTH; pulando publicação." >&2
+            exit 0
+          fi
+
+      - name: Publicar flows via API
+        run: |
+          set -euo pipefail
+          ./devops/scripts/kestra/publish_flows.sh

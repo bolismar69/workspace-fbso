@@ -1,0 +1,53 @@
+name: CI Generic Orchestration
+
+# FUNÇÃO
+# - Pipeline específico para orchestration.
+# - Neste nível inicial, apenas valida e imprime o payload recebido.
+# - Evolução futura: lint/validação de pipelines e deploys.
+#
+# INPUTS (workflow_call)
+# - services: string contendo JSON array com items do inventory (manager-solutions-inventory.json).
+#   Cada item é uma solution com `path` no formato stack/platform/framework/type/name e pode conter `specification{...}`.
+#
+# OUTPUTS
+# - Nenhum. Efeito: logs do payload (nível inicial).
+#
+# STEPS (jobs.orchestration)
+# - Log services: valida JSON e imprime `path` de cada item.
+
+on:
+  workflow_call:
+    inputs:
+      services:
+        description: 'String contendo JSON array de solutions (somente orchestration/*), no formato do inventory (inclui specification).*'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  orchestration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log services (orchestration)
+        uses: actions/github-script@v7
+        env:
+          SERVICES_JSON: ${{ inputs.services }}
+        with:
+          script: |
+            let services;
+            try {
+              services = JSON.parse((process.env.SERVICES_JSON ?? '[]').toString());
+            } catch {
+              core.setFailed('inputs.services não é JSON válido');
+              return;
+            }
+            if (!Array.isArray(services)) {
+              core.setFailed('inputs.services deve ser um JSON array');
+              return;
+            }
+            core.info(`Orchestration services recebidos: ${services.length}`);
+            for (const s of services) {
+              core.info(`- ${s?.path ?? '<sem path>'}`);
+            }

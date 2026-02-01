@@ -3,7 +3,8 @@ name: Global Callables Detection Solutions Changed
 # FUNÇÃO
 # - Detecta quais "solutions" (serviços/apps) foram alteradas entre dois SHAs no monorepo.
 # - Enriquecimento: a lista retornada é enriquecida a partir do inventory
-#   `architecture/governance/config/manager-solutions.json` (ex.: platformVersion, platformDistributor, docker.argCompilationMode).
+#   `architecture/governance/config/manager-solutions-inventory.json` (ex.: specification.platformVersion/specification.platformDistributor/specification.docker.argCompilationMode).
+# - Estrutura unificada do path: stack/platform/framework/type/name.
 #
 # INPUTS (workflow_call)
 # - base_sha: SHA base para comparação (ex.: base do PR, ou github.event.before em push)
@@ -25,18 +26,31 @@ name: Global Callables Detection Solutions Changed
 #       "type": "microservices",
 #       "name": "ms-example",
 #       "status": "active",
-#       "platformVersion": "21",
-#       "platformDistributor": "temurin",
-#       "docker": { "argCompilationMode": "jvm" }
+#       "specification": {
+#         "platformVersion": "21",
+#         "platformDistributor": "temurin",
+#         "docker": { "argCompilationMode": "jvm" }
+#       }
 #     }
 #   ]
+#   Observação: por compatibilidade, alguns campos podem aparecer também achatados no topo
+#   (ex.: platformVersion/platformDistributor/docker), derivados de specification.*.
 # - paths: string contendo JSON array de paths (strings)
 #   Exemplo:
 #   ["backend/java/spring/microservices/ms-example"]
+#
+# STEPS (jobs.detect_services)
+# - Checkout: necessário para `git diff`.
+# - Run Python: `.github/scripts/detect_solutions_changed.py` faz diff BASE..HEAD, extrai roots (5 níveis),
+#   valida contra o inventory e emite `solutions`/`paths` em JSON compact.
 
 on:
   workflow_call:
     inputs:
+      stack:
+        description: 'Opcional: filtrar detecção por stack (ex.: backend, frontend, orchestration).'
+        required: false
+        type: string
       base_sha:
         description: 'SHA base para comparação. Recomendado sempre informar (ex.: base do PR ou github.event.before no push).'
         required: false
@@ -47,7 +61,7 @@ on:
         type: string
     outputs:
       solutions:
-        description: 'String contendo JSON array de solutions alteradas e enriquecidas via inventory (manager-solutions.json).'
+        description: 'String contendo JSON array de solutions alteradas e enriquecidas via inventory (manager-solutions-inventory.json).'
         value: ${{ jobs.detect_services.outputs.solutions }}
       paths:
         description: 'String contendo JSON array de paths (solutions) alterados.'
@@ -71,6 +85,7 @@ jobs:
         env:
           INPUT_BASE_SHA: ${{ inputs.base_sha }}
           INPUT_HEAD_SHA: ${{ inputs.head_sha }}
+          INPUT_STACK: ${{ inputs.stack }}
         run: |
           set -euo pipefail
           python3 .github/scripts/detect_solutions_changed.py

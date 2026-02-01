@@ -8,12 +8,10 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-_MANAGER_SOLUTIONS_PATH = Path("architecture/governance/config/manager-solutions.json")
+_MANAGER_SOLUTIONS_PATH = Path("architecture/governance/config/manager-solutions-inventory.json")
 
-BACKEND_CHANGED_RE = re.compile(r"^backend/[^/]+/[^/]+/[^/]+/[^/]+/")
-FRONTEND_CHANGED_RE = re.compile(r"^frontend/[^/]+/[^/]+/[^/]+/")
-BACKEND_ROOT_RE = re.compile(r"^backend/([^/]+)/([^/]+)/([^/]+)/([^/]+)$")
-FRONTEND_ROOT_RE = re.compile(r"^frontend/([^/]+)/([^/]+)/([^/]+)$")
+STACKS = {"backend", "frontend", "orchestration"}
+SOLUTION_CHANGED_RE = re.compile(r"^(backend|frontend|orchestration)/[^/]+/[^/]+/[^/]+/[^/]+/")
 
 # Hash especial do Git para a "árvore vazia". Útil para push inicial
 # (quando o event.before vem como 40 zeros).
@@ -89,17 +87,11 @@ def _roots_from_changed_files(changed: List[str]) -> Set[str]:
     roots: Set[str] = set()
 
     for f in changed:
-        if BACKEND_CHANGED_RE.match(f):
+        if SOLUTION_CHANGED_RE.match(f):
             parts = f.split("/")
-            root = "/".join(parts[:5])
-            roots.add(root)
-            continue
-
-        if FRONTEND_CHANGED_RE.match(f):
-            parts = f.split("/")
-            root = "/".join(parts[:4])
-            roots.add(root)
-            continue
+            if len(parts) >= 6:
+                root = "/".join(parts[:5])
+                roots.add(root)
 
     return roots
 
@@ -111,17 +103,12 @@ def _build_outputs(roots: Set[str]) -> Tuple[List[Dict[str, str]], List[str]]:
     for root in roots:
         root = root.rstrip("/")
 
-        m = BACKEND_ROOT_RE.match(root)
-        if m:
-            stack = "backend"
-            platform, framework, typ, name = m.groups()
-        else:
-            m = FRONTEND_ROOT_RE.match(root)
-            if not m:
-                continue
-            stack = "frontend"
-            platform, typ, name = m.groups()
-            framework = platform  # regra atual do workflow
+        parts = root.split("/")
+        if len(parts) != 5:
+            continue
+        stack, platform, framework, typ, name = parts
+        if stack not in STACKS:
+            continue
 
         item = {
             "stack": stack,
@@ -150,12 +137,40 @@ def _load_manager_inventory_by_path():
     Retorna dict[path -> inventoryItem]
     """
     if not _MANAGER_SOLUTIONS_PATH.exists():
-        return {}
+        raise SystemExit(
+            f"Inventory não encontrado em '{_MANAGER_SOLUTIONS_PATH}'. "
+            "Verifique o path e commit do arquivo."
+        )
 
     data = json.loads(_MANAGER_SOLUTIONS_PATH.read_text(encoding="utf-8"))
-    inventory = data.get("inventory", []) or []
+    if "solutions" not in data:
+        raise SystemExit(
+            "Inventory inválido: esperado objeto com a chave 'solutions' (array). "
+            "O formato antigo não é mais aceito."
+        )
+
+    inventory = data.get("solutions") or []
+    if not isinstance(inventory, list):
+        raise SystemExit("Inventory inválido: esperado array em solutions")
+
     by_path = {}
     for item in inventory:
+        item = dict(item or {})
+        spec = item.get("specification")
+        if not isinstance(spec, dict):
+            raise SystemExit(
+                "Inventory inválido: cada solution deve conter 'specification' (objeto)."
+            )
+
+        # Backward-compat dos outputs: expõe alguns atalhos no topo,
+        # mas mantém o objeto specification original.
+        if item.get("platformVersion") is None and spec.get("platformVersion") is not None:
+            item["platformVersion"] = spec.get("platformVersion")
+        if item.get("platformDistributor") is None and spec.get("platformDistributor") is not None:
+            item["platformDistributor"] = spec.get("platformDistributor")
+        if item.get("docker") is None and spec.get("docker") is not None:
+            item["docker"] = spec.get("docker")
+
         p = (item.get("path") or "").strip()
         if p:
             by_path[p] = item
@@ -168,29 +183,28 @@ def _enrich_solutions_with_inventory(solutions):
     """
     inv_by_path = _load_manager_inventory_by_path()
     enriched = []
+    missing = []
 
     for s in (solutions or []):
         s = dict(s or {})
         p = (s.get("path") or "").strip()
         inv = inv_by_path.get(p)
 
-        if inv:
-            # Copiar campos de governança (inclui o novo platformDistributor)
-            for k in (
-                "stack",
-                "platform",
-                "platformVersion",
-                "platformDistributor",
-                "framework",
-                "type",
-                "name",
-                "status",
-                "docker",
-            ):
-                if s.get(k) is None and inv.get(k) is not None:
-                    s[k] = inv.get(k)
+        if not inv:
+            missing.append(p)
+            continue
 
-        enriched.append(s)
+        # Fonte de verdade: inventory (já contém specification + flatten compat)
+        merged = dict(inv)
+        enriched.append(merged)
+
+    if missing:
+        missing_list = "\n".join([f"- {p}" for p in sorted(set(missing))])
+        raise SystemExit(
+            "As seguintes solutions foram alteradas, mas não existem no inventory:\n"
+            f"{missing_list}\n"
+            "Atualize architecture/governance/config/manager-solutions-inventory.json"
+        )
 
     return enriched
 
@@ -199,6 +213,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Detect modified backend/frontend solutions in a monorepo.")
     parser.add_argument("--base", default=os.environ.get("INPUT_BASE_SHA", ""), help="Base commit SHA (optional)")
     parser.add_argument("--head", default=os.environ.get("INPUT_HEAD_SHA", ""), help="Head commit SHA (optional)")
+    parser.add_argument(
+        "--stack",
+        default=os.environ.get("INPUT_STACK", ""),
+        help="Optional stack filter (backend|frontend|orchestration)",
+    )
     args = parser.parse_args()
 
     base, head = _infer_base_head(args.base, args.head)
@@ -208,6 +227,13 @@ def main() -> int:
 
     changed = _get_changed_files(base, head)
     roots = _roots_from_changed_files(changed)
+
+    stack_filter = (args.stack or "").strip().lower()
+    if stack_filter:
+        if stack_filter not in STACKS:
+            raise SystemExit(f"Stack inválida: '{args.stack}'. Esperado backend|frontend|orchestration")
+        roots = {r for r in roots if r.startswith(f"{stack_filter}/")}
+
     solutions, paths = _build_outputs(roots)
 
     solutions = _enrich_solutions_with_inventory(solutions)

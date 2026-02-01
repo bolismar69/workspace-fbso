@@ -1,11 +1,13 @@
 {
-	"inventory": [
+	"solutions": [
 		{
-			"path": "backend/java/spring/queue_workers",
+			"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue",
 			"stack": "backend",
 			"platform": "java",
 			"framework": "spring",
 			"type": "queue_workers",
+			"name": "ms-transaction-processor-queue",
+			"status": "active",
 			"specification": {
 				"platformVersion": "21",
 				"platformDistributor": "temurin",

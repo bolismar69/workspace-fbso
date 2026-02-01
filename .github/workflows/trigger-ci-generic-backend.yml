@@ -1,0 +1,101 @@
+name: CI Generic Backend
+
+# FUNÇÃO
+# - Pipeline específico para backend.
+# - Suporta 2 modos:
+#   - push/PR: detecta alterações via reusable detector (git diff) e valida contra o inventory.
+#   - workflow_dispatch/workflow_call: valida/enriquece `services` via reusable validator.
+# - Neste nível inicial, apenas valida e imprime o payload recebido.
+# - Evolução futura: build/test/lint específicos de backend.
+#
+# INPUTS
+# - workflow_dispatch.services: obrigatório (JSON array string) com paths/objects contendo path (somente backend/*).
+# - workflow_call.services: obrigatório (JSON array string) com paths/objects contendo path (somente backend/*).
+#
+# OUTPUTS
+# - Nenhum. Efeito: logs do payload (nível inicial).
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+  workflow_dispatch:
+    inputs:
+      services:
+        description: 'Obrigatório: JSON array (formato oficial) para sobrescrever a detecção automática.'
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      services:
+        description: 'String contendo JSON array de solutions (somente backend/*).'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+  packages: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Objetivo: irá buscar as alteracoes ocorridas dentro da estrutura de pastas backend
+  detect_solutions_changed:
+    name: Detectar solutions alteradas (backend)
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+    uses: ./.github/workflows/global-callables-detection-solutions-changed.yml
+    with:
+      stack: backend
+      base_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before || github.sha }}
+      head_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+
+  detect_input_services:
+    name: Validar input.services (workflow_dispatch/workflow_call)
+    if: >-
+      ${{ github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' }}
+    uses: ./.github/workflows/global-callables-validate-input-services.yml
+    with:
+      stack: backend
+      services: ${{ github.event_name == 'workflow_call' && inputs.services || github.event.inputs.services }}
+      strict: 'true'
+
+  backend:
+    runs-on: ubuntu-latest
+    needs: [detect_solutions_changed, detect_input_services]
+    if: >-
+      ${{ needs.detect_input_services.result == 'success' || needs.detect_solutions_changed.result == 'success' }}
+    steps:
+      - name: Log services (backend)
+        uses: actions/github-script@v7
+        env:
+          SERVICES_JSON: >-
+            ${{
+              (needs.detect_input_services.result == 'success' && needs.detect_input_services.outputs.solutions)
+              || (needs.detect_solutions_changed.result == 'success' && needs.detect_solutions_changed.outputs.solutions)
+              || '[]'
+            }}
+        with:
+          script: |
+            let services;
+            try {
+              services = JSON.parse((process.env.SERVICES_JSON ?? '[]').toString());
+            } catch {
+              core.setFailed('SERVICES_JSON não é JSON válido');
+              return;
+            }
+            if (!Array.isArray(services)) {
+              core.setFailed('SERVICES_JSON deve ser um JSON array');
+              return;
+            }
+            core.info(`Backend services recebidos: ${services.length}`);
+            for (const s of services) {
+              core.info(`- ${s?.path ?? '<sem path>'}`);
+            }
