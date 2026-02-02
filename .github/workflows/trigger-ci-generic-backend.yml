@@ -87,10 +87,10 @@ jobs:
     name: Validar input.services (workflow_dispatch/workflow_call)
     if: >-
       ${{
-        success() || failure() || cancelled() || always() || 
         (
           github.event_name == 'workflow_call'
           && inputs.services
+          && inputs.services != ''
           && inputs.services != 'null'
           && inputs.services != '[]'
           && contains(inputs.services, '"path"')
@@ -99,6 +99,7 @@ jobs:
         (
           github.event_name == 'workflow_dispatch'
           && github.event.inputs.services
+          && github.event.inputs.services != ''
           && github.event.inputs.services != 'null'
           && github.event.inputs.services != '[]'
           && contains(github.event.inputs.services, '"path"')
