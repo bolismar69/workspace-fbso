@@ -57,5 +57,5 @@ jobs:
       - name: Step 3
         run: |
           echo "JOB-3 / STEP-3"
-          run: echo 'GITHUB-EVENT ==> ${{ toJSON( github.event) }}'
-          run: echo 'NEEDS ==> ${{ toJSON( needs ) }}'
+          echo "GITHUB-EVENT ==> ${{ toJSON( github.event) }}"
+          echo "NEEDS ==> ${{ toJSON( needs ) }}"
