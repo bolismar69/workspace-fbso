@@ -1,0 +1,38 @@
+name: My Teste
+
+on:
+  workflow_dispatch:
+    inputs:
+      services:
+        description: 'Valores possives: Job1, Job2, Ambos'
+        required: true
+        type: choice
+        options: 
+        - Job1
+        - Job2
+        - Ambos
+
+jobs:
+  job_1:
+    runs-on: ubuntu-latest
+    name: Job 1
+    if: >-
+      ${{ 
+          ( github.event_name == 'workflow_dispatch' && github.event.inputs.services && github.event.inputs.services == 'Job1'  )
+      }}
+    steps:
+      - name: Step 1
+        run: |
+          echo "JOB-1 / STEP-1 / ${{ github.event}}"
+
+  job_2:
+    runs-on: ubuntu-latest
+    name: Job 2
+    if: >-
+      ${{ 
+          ( github.event_name == 'workflow_dispatch' && github.event.inputs.services && github.event.inputs.services == 'Job2'  )
+      }}
+    steps:
+      - name: Step 2
+        run: |
+          echo "JOB-2 / STEP-2 / ${{ github.event}}"
