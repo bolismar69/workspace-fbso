@@ -85,7 +85,6 @@ jobs:
 
   detect_input_services:
     name: Validar input.services (workflow_dispatch/workflow_call)
-    needs: [notice_input_services]
     if: >-
       ${{
         success() || failure() || cancelled() || always() || 
