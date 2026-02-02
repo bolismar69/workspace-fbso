@@ -78,17 +78,35 @@ jobs:
   validate_input_services:
     name: Validar input.services (workflow_dispatch)
     if: >-
-      ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.services && github.event.inputs.services != 'null' && github.event.inputs.services != '[]' }}
+      ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.services && github.event.inputs.services != 'null' && github.event.inputs.services != '[]' && contains(github.event.inputs.services, '"path"') }}
     uses: ./.github/workflows/global-callables-validate-input-services.yml
     with:
       stack: backend
       services: ${{ github.event.inputs.services }}
       strict: 'true'
 
+  validate_identified_solutions:
+    name: Validar solutions identificadas (inventory)
+    needs: [detect_solutions, validate_input_services]
+    if: >-
+      ${{
+        always()
+        && ( needs.validate_input_services.result == 'success' || needs.detect_solutions.result == 'success' )
+      }}
+    uses: ./.github/workflows/global-callables-validate-identified-solutions.yml
+    with:
+      stack: backend
+      services: >-
+        ${{
+          (needs.validate_input_services.result == 'success' && needs.validate_input_services.outputs.solutions)
+          || (needs.detect_solutions.result == 'success' && needs.detect_solutions.outputs.solutions)
+          || '[]'
+        }}
+
   prepare_services:
     name: Preparar matrix de serviços Java
     runs-on: ubuntu-latest
-    needs: [detect_solutions, validate_input_services]
+    needs: [detect_solutions, validate_input_services, validate_identified_solutions]
     if: ${{ always() }}
     outputs:
       matrix: ${{ steps.out.outputs.matrix }}
@@ -99,15 +117,18 @@ jobs:
         env:
           SOLUTIONS_JSON: >-
             ${{
-              (needs.validate_input_services.result == 'success' && needs.validate_input_services.outputs.solutions)
-              || (needs.detect_solutions.result == 'success' && needs.detect_solutions.outputs.solutions)
+              (needs.validate_identified_solutions.result == 'success' && needs.validate_identified_solutions.outputs.solutions)
               || '[]'
             }}
-          ORIGIN_LABEL: ${{ needs.validate_input_services.result == 'success' && 'override' || 'detector' }}
+          ORIGIN_LABEL: >-
+            ${{
+              (needs.validate_input_services.result == 'success' && 'override')
+              || (needs.detect_solutions.result == 'success' && 'detector')
+              || 'none'
+            }}
         with:
           script: |
-            const originLabel = (process.env.ORIGIN_LABEL ?? 'detector').toString();
-
+            const originLabel = (process.env.ORIGIN_LABEL ?? 'none').toString();
             const isNullishOrEmptyString = (v) =>
               v === null || v === undefined || (typeof v === 'string' && v.trim() === '');
             const solutionsRaw = (process.env.SOLUTIONS_JSON ?? '').toString().trim() || '[]';

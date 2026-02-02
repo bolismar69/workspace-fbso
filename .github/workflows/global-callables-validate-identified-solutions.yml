@@ -1,0 +1,61 @@
+name: Global Callables Validate Identified Solutions
+
+# FUNÇÃO
+# - Valida paths identificados (detector) ou reportados (inputs) contra o inventory:
+#   `architecture/governance/config/manager-solutions-inventory.json`.
+# - Reporta (sem falhar):
+#   - paths não cadastrados no inventory
+#   - paths cadastrados porém status != active
+# - Retorna apenas as solutions válidas (presentes no inventory e status=active),
+#   com a estrutura COMPLETA do inventory.
+#
+# INPUTS (workflow_call)
+# - services: string contendo JSON array de objetos {path} (ou strings por compat)
+# - stack: opcional, filtra/valida prefixo do path (backend|frontend|orchestration)
+#
+# OUTPUTS (workflow_call)
+# - solutions: string contendo JSON array (full objects do inventory) das solutions válidas
+# - paths: string contendo JSON array de paths (strings) válidos
+
+on:
+  workflow_call:
+    inputs:
+      services:
+        description: 'String contendo JSON array de paths/objects {path} para validação no inventory.'
+        required: true
+        type: string
+      stack:
+        description: 'Opcional: filtrar/validar stack (backend|frontend|orchestration).'
+        required: false
+        type: string
+    outputs:
+      solutions:
+        description: 'String contendo JSON array de solutions válidas (full objects do inventory).'
+        value: ${{ jobs.validate.outputs.solutions }}
+      paths:
+        description: 'String contendo JSON array de paths válidos.'
+        value: ${{ jobs.validate.outputs.paths }}
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      solutions: ${{ steps.emit.outputs.solutions }}
+      paths: ${{ steps.emit.outputs.paths }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Validate identified solutions against inventory
+        id: emit
+        env:
+          INPUT_SERVICES: ${{ inputs.services }}
+          INPUT_STACK: ${{ inputs.stack }}
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/validate_identified_solutions.py

@@ -1,13 +1,13 @@
 name: Global Callables Validate Input Services
 
 # FUNÇÃO
-# - Valida e enriquece `services` (JSON string) fornecidos por workflow_dispatch/workflow_call.
-# - Usa o inventory `architecture/governance/config/manager-solutions-inventory.json` como fonte de verdade.
+# - Valida APENAS o layout de `services` (JSON string) fornecidos por workflow_dispatch/workflow_call.
+# - NÃO valida/enriquece via inventory (isso ocorre em job posterior).
 # - Retorna outputs compatíveis com o detector: `solutions` e `paths`.
 # - Estrutura unificada do path: stack/platform/framework/type/name.
 #
 # INPUTS (workflow_call)
-# - services: string contendo JSON array (objetos com `path` ou strings com paths)
+# - services: string contendo JSON array de objetos com `path`
 # - stack: opcional, valida prefixo do path (backend|frontend|orchestration)
 # - strict: opcional, se true exige specification.platformVersion/specification.platformDistributor/specification.docker.argCompilationMode no inventory
 #
@@ -18,14 +18,14 @@ name: Global Callables Validate Input Services
 # STEPS (jobs.validate)
 # - Checkout: lê o inventory versionado no repo.
 # - Run Python: `.github/scripts/validate_input_services.py` valida `services` (JSON),
-#   valida estrutura do path (5 níveis), confere existência no inventory e retorna `solutions`/`paths`.
+#   valida estrutura do path (5 níveis) e retorna `solutions`/`paths`.
 
 on:
   workflow_call:
     inputs:
       services:
         description: 'String contendo JSON array de solutions/paths para validação.'
-        required: true
+        required: false
         type: string
       stack:
         description: 'Opcional: valida que paths pertençam à stack (backend|frontend|orchestration).'
@@ -38,7 +38,7 @@ on:
         default: 'false'
     outputs:
       solutions:
-        description: 'String contendo JSON array de services validados/enriquecidos.'
+        description: 'String contendo JSON array de services validados (apenas objetos {path}).'
         value: ${{ jobs.validate.outputs.solutions }}
       paths:
         description: 'String contendo JSON array de paths validados.'

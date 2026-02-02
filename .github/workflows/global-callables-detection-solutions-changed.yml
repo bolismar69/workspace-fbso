@@ -2,8 +2,8 @@ name: Global Callables Detection Solutions Changed
 
 # FUNÇÃO
 # - Detecta quais "solutions" (serviços/apps) foram alteradas entre dois SHAs no monorepo.
-# - Enriquecimento: a lista retornada é enriquecida a partir do inventory
-#   `architecture/governance/config/manager-solutions-inventory.json` (ex.: specification.platformVersion/specification.platformDistributor/specification.docker.argCompilationMode).
+# - Saída propositalmente mínima: retorna apenas uma lista de objetos com {path} (únicos) e uma lista de paths.
+# - NÃO valida nem enriquece via inventory. A validação/enriquecimento acontece em job posterior.
 # - Estrutura unificada do path: stack/platform/framework/type/name.
 #
 # INPUTS (workflow_call)
@@ -15,22 +15,11 @@ name: Global Callables Detection Solutions Changed
 # - head_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
 #
 # OUTPUTS (workflow_call)
-# - solutions: string contendo JSON array com objetos de solution detectadas e enriquecidas
+# - solutions: string contendo JSON array com objetos {path}
 #   Exemplo:
 #   [
 #     {
-#       "path": "backend/java/spring/microservices/ms-example",
-#       "stack": "backend",
-#       "platform": "java",
-#       "framework": "spring",
-#       "type": "microservices",
-#       "name": "ms-example",
-#       "status": "active",
-#       "specification": {
-#         "platformVersion": "21",
-#         "platformDistributor": "temurin",
-#         "docker": { "argCompilationMode": "jvm" }
-#       }
+#       "path": "backend/java/spring/microservices/ms-example"
 #     }
 #   ]
 # - paths: string contendo JSON array de paths (strings)
@@ -40,7 +29,7 @@ name: Global Callables Detection Solutions Changed
 # STEPS (jobs.detect_services)
 # - Checkout: necessário para `git diff`.
 # - Run Python: `.github/scripts/detect_solutions_changed.py` faz diff BASE..HEAD, extrai roots (5 níveis),
-#   valida contra o inventory e emite `solutions`/`paths` em JSON compact.
+#   e emite `solutions`/`paths` em JSON compact.
 
 on:
   workflow_call:
@@ -59,7 +48,7 @@ on:
         type: string
     outputs:
       solutions:
-        description: 'String contendo JSON array de solutions alteradas e enriquecidas via inventory (manager-solutions-inventory.json).'
+        description: 'String contendo JSON array de solutions alteradas (apenas objetos {path}).'
         value: ${{ jobs.detect_services.outputs.solutions }}
       paths:
         description: 'String contendo JSON array de paths (solutions) alterados.'

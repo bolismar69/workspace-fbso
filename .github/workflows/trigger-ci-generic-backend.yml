@@ -3,8 +3,9 @@ name: CI Generic Backend
 # FUNÇÃO
 # - Pipeline específico para backend.
 # - Suporta 2 modos:
-#   - push/PR: detecta alterações via reusable detector (git diff) e valida contra o inventory.
-#   - workflow_dispatch/workflow_call: valida/enriquece `services` via reusable validator.
+#   - push/PR: detecta alterações via reusable detector (git diff) e retorna apenas {path}.
+#   - workflow_dispatch/workflow_call: valida apenas o layout de `services` (lista de {path}).
+# - Validação/enriquecimento contra o inventory ocorre em job dedicado: validate_identified_solutions.
 # - Roteia as solutions por plataforma (stack=backend): java/go/python/csharp.
 # - Chama o workflow especialista correspondente:
 #   - backend/csharp  -> call-ci-backend-csharp.yml
@@ -14,8 +15,8 @@ name: CI Generic Backend
 # - Evolução futura: cada workflow especialista implementa build/test/lint da sua plataforma.
 #
 # INPUTS
-# - workflow_dispatch.services: obrigatório (JSON array string) com paths/objects contendo path (somente backend/*).
-# - workflow_call.services: obrigatório (JSON array string) com paths/objects contendo path (somente backend/*).
+# - workflow_dispatch.services: opcional (JSON array string) no formato [{"path":"..."}] para sobrescrever a detecção automática.
+# - workflow_call.services: opcional (JSON array string) no formato [{"path":"..."}] para sobrescrever a detecção automática.
 #
 # OUTPUTS
 # - Nenhum. Efeito: chama workflows especialistas conforme plataformas afetadas.
@@ -32,14 +33,14 @@ on:
   workflow_dispatch:
     inputs:
       services:
-        description: 'Obrigatório: JSON array (formato oficial) para sobrescrever a detecção automática.'
-        required: true
+        description: 'Opcional: JSON array (formato oficial) para sobrescrever a detecção automática.'
+        required: false
         type: string
   workflow_call:
     inputs:
       services:
         description: 'String contendo JSON array de solutions (somente backend/*).'
-        required: true
+        required: false
         type: string
 
 permissions:
@@ -52,6 +53,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  notice_input_services:
+    name: Aviso sobre input.services
+    runs-on: ubuntu-latest
+    if: >-
+      ${{
+        (
+          github.event_name == 'workflow_call'
+          && ( !inputs.services || inputs.services == 'null' || inputs.services == '[]' || !contains(inputs.services, '"path"') )
+        )
+        ||
+        (
+          github.event_name == 'workflow_dispatch'
+          && ( !github.event.inputs.services || github.event.inputs.services == 'null' || github.event.inputs.services == '[]' || !contains(github.event.inputs.services, '"path"') )
+        )
+      }}
+    steps:
+      - name: Informar ocorrência
+        run: |
+          echo "input.services não foi informado ou não segue o layout esperado [{\"path\":\"...\"}]"
+          echo "Resultado: detect_input_services ficará como skipped."
+
   detect_solutions_changed:
     name: Detectar solutions alteradas (backend)
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
@@ -64,21 +86,52 @@ jobs:
   detect_input_services:
     name: Validar input.services (workflow_dispatch/workflow_call)
     if: >-
-      ${{ github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' }}
+      ${{
+        (
+          github.event_name == 'workflow_call'
+          && inputs.services
+          && inputs.services != 'null'
+          && inputs.services != '[]'
+          && contains(inputs.services, '"path"')
+        )
+        ||
+        (
+          github.event_name == 'workflow_dispatch'
+          && github.event.inputs.services
+          && github.event.inputs.services != 'null'
+          && github.event.inputs.services != '[]'
+          && contains(github.event.inputs.services, '"path"')
+        )
+      }}
     uses: ./.github/workflows/global-callables-validate-input-services.yml
     with:
       stack: backend
       services: ${{ github.event_name == 'workflow_call' && inputs.services || github.event.inputs.services }}
       strict: 'false'
 
+  validate_identified_solutions:
+    name: Validar solutions identificadas (inventory)
+    needs: [detect_solutions_changed, detect_input_services]
+    if: >-
+      ${{
+        always()
+        && ( needs.detect_input_services.result == 'success' || needs.detect_solutions_changed.result == 'success' )
+      }}
+    uses: ./.github/workflows/global-callables-validate-identified-solutions.yml
+    with:
+      stack: backend
+      services: >-
+        ${{
+          (needs.detect_input_services.result == 'success' && needs.detect_input_services.outputs.solutions)
+          || (needs.detect_solutions_changed.result == 'success' && needs.detect_solutions_changed.outputs.solutions)
+          || '[]'
+        }}
+
   enrich_missing_specification:
     name: Preencher specification via global types (backend)
     runs-on: ubuntu-latest
-    needs: [detect_solutions_changed, detect_input_services]
-    if: >-
-      ${{ 
-        ( needs.detect_input_services.result == 'success' || needs.detect_solutions_changed.result == 'success' )
-      }}
+    needs: validate_identified_solutions
+    if: ${{ needs.validate_identified_solutions.result == 'success' }}
     outputs:
       solutions: ${{ steps.enrich.outputs.solutions }}
       paths: ${{ steps.enrich.outputs.paths }}
@@ -88,12 +141,7 @@ jobs:
       - name: Aplicar defaults de specification (por tipo)
         id: enrich
         env:
-          SERVICES_JSON: >-
-            ${{
-              (needs.detect_input_services.result == 'success' && needs.detect_input_services.outputs.solutions)
-              || (needs.detect_solutions_changed.result == 'success' && needs.detect_solutions_changed.outputs.solutions)
-              || '[]'
-            }}
+          SERVICES_JSON: ${{ needs.validate_identified_solutions.outputs.solutions || '[]' }}
         run: |
           set -euo pipefail
           python3 .github/scripts/apply_global_types_specification.py \
