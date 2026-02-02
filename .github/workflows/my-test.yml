@@ -18,7 +18,10 @@ jobs:
     name: Job 1
     if: >-
       ${{ 
-          ( github.event_name == 'workflow_dispatch' && github.event.inputs.services && github.event.inputs.services == 'Job1'  )
+          ( github.event_name == 'workflow_dispatch' 
+          && github.event.inputs.services 
+          && ( github.event.inputs.services == 'Job1' || github.event.inputs.services == 'Ambos' )
+          )
       }}
     steps:
       - name: Step 1
@@ -30,7 +33,10 @@ jobs:
     name: Job 2
     if: >-
       ${{ 
-          ( github.event_name == 'workflow_dispatch' && github.event.inputs.services && github.event.inputs.services == 'Job2'  )
+          ( github.event_name == 'workflow_dispatch' 
+          && github.event.inputs.services 
+          && ( github.event.inputs.services == 'Job2' || github.event.inputs.services == 'Ambos' )
+          )
       }}
     steps:
       - name: Step 2
