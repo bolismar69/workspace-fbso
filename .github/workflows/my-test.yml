@@ -42,3 +42,16 @@ jobs:
       - name: Step 2
         run: |
           echo "JOB-2 / STEP-2 / ${{ github.event.inputs.services }}"
+
+  job_3:
+    runs-on: ubuntu-latest
+    name: Job 3
+    needs: [job_1, job_2]
+    if: >-
+      ${{ 
+        ( needs.job_1.result == 'success' || needs.job_2.result == 'success' )
+      }}
+    steps:
+      - name: Step 3
+        run: |
+          echo "JOB-3 / STEP-3"
