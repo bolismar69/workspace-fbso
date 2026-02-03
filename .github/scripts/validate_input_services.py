@@ -29,8 +29,13 @@ def _parse_services(raw: str) -> Tuple[List[Dict[str, Any]], List[str]]:
     except Exception:
         raise SystemExit("input.services não é JSON válido")
 
-    if not isinstance(parsed, list) or len(parsed) == 0:
-        raise SystemExit("input.services deve ser um JSON array não-vazio")
+    if not isinstance(parsed, list):
+        raise SystemExit("input.services deve ser um JSON array")
+
+    # Nota: tratamos array vazio como 'sem override' aqui para não travar o workflow.
+    # O job já tende a ser skipped pelo workflow quando services == '[]'.
+    if len(parsed) == 0:
+        return [], []
 
     paths: List[str] = []
     entries: List[Dict[str, Any]] = []
@@ -116,8 +121,15 @@ def main() -> int:
         normalized_paths.append(p)
 
     if errors:
-        msg = "\n".join(["Falha na validação do layout de input.services:"] + [f"- {e}" for e in errors])
-        raise SystemExit(msg)
+        print("Itens inválidos em input.services (serão ignorados):", file=sys.stderr)
+        for e in errors:
+            print(f"- {e}", file=sys.stderr)
+
+    if not normalized:
+        print(
+            "Nenhum item válido restou após a validação; seguindo com lista vazia (nenhuma solution será processada).",
+            file=sys.stderr,
+        )
 
     paths = sorted(set([str(p).strip() for p in normalized_paths if str(p).strip()]))
     normalized = sorted({str(s.get("path")): s for s in normalized}.values(), key=lambda x: str(x.get("path")))
