@@ -157,7 +157,7 @@ jobs:
     name: Roteamento por plataforma (backend)
     runs-on: ubuntu-latest
     needs: enrich_missing_specification
-    if: ${{ needs.enrich_missing_specification.outputs.solutions != '' && needs.enrich_missing_specification.outputs.solutions != '[]' }}
+    if: ${{ always() && needs.enrich_missing_specification.outputs.solutions != '' && needs.enrich_missing_specification.outputs.solutions != '[]' }}
     outputs:
       java_services: ${{ steps.route.outputs.java_services }}
       go_services: ${{ steps.route.outputs.go_services }}
