@@ -53,6 +53,7 @@ jobs:
               core.setFailed('inputs.services não é JSON válido');
               return;
             }
+            core.info(`Services backend/java recebidos: ${services}`);
             if (!Array.isArray(services)) {
               core.setFailed('inputs.services deve ser um JSON array');
               return;
