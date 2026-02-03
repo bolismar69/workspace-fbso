@@ -24,12 +24,26 @@ permissions:
 
 jobs:
   call_ci_java:
+    name: Call CI Backend Java
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.services) }}
+
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Log services (backend/java)
         uses: actions/github-script@v7
         env:
-          SERVICES_JSON: ${{ inputs.services }}
+          SERVICES_JSON: ${{ toJson(matrix) }}
         with:
           script: |
             let services;
@@ -45,3 +59,166 @@ jobs:
             }
             core.info(`Services backend/java recebidos: ${services.length}`);
             for (const s of services) core.info(`- ${s?.path ?? '<sem path>'}`);
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: ${{ matrix.specification.platformDistributor }}
+          java-version: ${{ matrix.specification.platformVersion }}
+          cache: maven
+
+      - name: Definir caminho sanitizado
+        id: sanitize_path
+        uses: actions/github-script@v7
+        env:
+          MATRIX_PATH: ${{ matrix.path }}
+        with:
+          script: |
+            const matrixPath = (process.env.MATRIX_PATH ?? '').toString();
+            if (!matrixPath) throw new Error('MATRIX_PATH vazio');
+
+            const parts = matrixPath.split('/').filter(Boolean);
+            const baseName = parts[parts.length - 1] || matrixPath;
+            const sanitized = baseName.replace(/\//g, '-');
+
+            core.exportVariable('SANITIZED_PATH', sanitized);
+
+
+      - name: Cache do Maven
+        id: cache_maven
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ env.SANITIZED_PATH }}-${{ hashFiles(format('{0}/**/pom.xml', matrix.path)) }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      - name: Cache OWASP Dependency-Check DB
+        uses: actions/cache@v4
+        with:
+          path: ~/.dependency-check
+          key: ${{ runner.os }}-dependency-check-${{ github.ref_name }}
+          restore-keys: |
+            ${{ runner.os }}-dependency-check-
+
+      - name: Verificação Checkstyle
+        if: ${{ startsWith(matrix.path, 'backend/java/spring/') }}
+        run: |
+          set -euo pipefail
+          cd ${{ matrix.path }}
+          if [ -x ./mvnw ]; then
+            ./mvnw -B -U -DskipTests checkstyle:check
+          else
+            mvn -B -U -DskipTests checkstyle:check
+          fi
+
+      - name: Build do serviço com Maven (usa mvnm quando disponivel)
+        run: |
+          set -euo pipefail
+          cd ${{ matrix.path }}
+          if [ -x ./mvnw ]; then
+            ./mvnw ${{ matrix.goals }}
+          else
+            mvn -B -U verify -Ddependency-check.skip=true
+          fi
+
+      - name: Verificação SonarQube
+        if: ${{ env.SONAR_TOKEN != '' }}
+        run: |
+          set -euo pipefail
+          cd ${{ matrix.path }}
+
+          # O sonar.projectKey não pode conter '/'
+          SONAR_PROJECT_KEY="bolismar69:${{ matrix.path }}"
+          SONAR_PROJECT_KEY="${SONAR_PROJECT_KEY//\//_}"
+
+          if [ -x ./mvnw ]; then
+            ./mvnw -B -U -DskipTests -Ddependency-check.skip=true org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+              -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.organization=bolismar69 \
+              -Dsonar.login="$SONAR_TOKEN"
+          else
+            mvn -B -U -DskipTests -Ddependency-check.skip=true org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+              -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.organization=bolismar69 \
+              -Dsonar.login="$SONAR_TOKEN"
+          fi
+
+      - name: Validar artefato gerado
+        id: validate_artifact
+        run: |
+          set -euo pipefail
+          cd ${{ matrix.path }}
+          if compgen -G "target/*.jar" > /dev/null; then
+            echo "OK - artifact JAR encontrado"
+          elif [ -d target ] && [ "$(ls -A target)" ]; then
+            echo "OK - diretório target contém arquivos"
+          else
+            echo "Artifact ausente em ${{ matrix.path }}" >&2
+            ls -la || true
+            exit 1
+          fi
+
+      - name: Preparar Docker Buildx
+        id: setup_buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login no registry Docker
+        id: docker_login
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Definir IMAGE_NAME e IMAGE_TAG
+        id: define_image
+        uses: actions/github-script@v7
+        env:
+          MATRIX_PATH: ${{ matrix.path }}
+          DOCKER_REGISTRY: ${{ env.DOCKER_REGISTRY }}
+          DOCKER_ORG: ${{ env.DOCKER_ORG }}
+          DOCKER_TAG_PREFIX: ${{ env.DOCKER_TAG_PREFIX }}
+          GITHUB_SHA: ${{ github.sha }}
+        with:
+          script: |
+            const matrixPath = (process.env.MATRIX_PATH ?? '').toString();
+            if (!matrixPath) throw new Error('MATRIX_PATH vazio');
+
+            const parts = matrixPath.split('/').filter(Boolean);
+            const imageName = parts[parts.length - 1] || matrixPath;
+            core.exportVariable('IMAGE_NAME', imageName);
+
+            const registry = (process.env.DOCKER_REGISTRY ?? '').toString();
+            const org = (process.env.DOCKER_ORG ?? '').toString();
+            const prefix = (process.env.DOCKER_TAG_PREFIX ?? 'ci').toString();
+            const sha = (process.env.GITHUB_SHA ?? context.sha).toString();
+
+            if (!registry || !org) {
+              throw new Error('DOCKER_REGISTRY/DOCKER_ORG não definidos');
+            }
+
+            const imageTag = `${registry}/${org}/${imageName}:${prefix}-${sha}`;
+            core.exportVariable('IMAGE_TAG', imageTag);
+
+      - name: Build & Push com build-push-action
+        id: buildpush
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ${{ steps.resolve_blueprint.outputs.dockerfile }}
+          push: true
+          tags: ${{ env.IMAGE_TAG }}
+          build-args: |
+            SERVICE_PATH=${{ matrix.path }}
+            JAVA_VERSION=${{ steps.resolve_blueprint.outputs.java_version }}
+            IMAGE_TO_BUILD=${{ steps.resolve_blueprint.outputs.image_to_build }}
+            IMAGE_TO_RUNTIME=${{ steps.resolve_blueprint.outputs.image_to_runtime }}
+            APP_PORT=${{ steps.resolve_blueprint.outputs.app_port }}
+            CMD_EXTRA_BUILDER_PRE_COPY=${{ steps.resolve_blueprint.outputs.cmd_extra_builder_pre_copy }}
+            CMD_EXTRA_BUILDER_POS_COMPILE=${{ steps.resolve_blueprint.outputs.cmd_extra_builder_pos_compile }}
+            CMD_EXTRA_RUNTIME_PRE_COPY=${{ steps.resolve_blueprint.outputs.cmd_extra_runtime_pre_copy }}
+            CMD_EXTRA_RUNTIME_PRE_CMD=${{ steps.resolve_blueprint.outputs.cmd_extra_runtime_pre_cmd }}
+
+
