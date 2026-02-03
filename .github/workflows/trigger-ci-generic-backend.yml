@@ -238,7 +238,7 @@ jobs:
   ci_backend_java:
     name: CI Backend Java
     needs: route_backend_platforms
-    if: ${{ needs.route_backend_platforms.outputs.java_services != '[]' && needs.route_backend_platforms.outputs.java_services != '' }}
+    if: ${{ always() && needs.route_backend_platforms.outputs.java_services != '[]' && needs.route_backend_platforms.outputs.java_services != '' }}
     uses: ./.github/workflows/call-ci-backend-java.yml
     with:
       services: ${{ needs.route_backend_platforms.outputs.java_services }}
@@ -246,7 +246,7 @@ jobs:
   ci_backend_go:
     name: CI Backend Go
     needs: route_backend_platforms
-    if: ${{ needs.route_backend_platforms.outputs.go_services != '[]' && needs.route_backend_platforms.outputs.go_services != '' }}
+    if: ${{ always() && needs.route_backend_platforms.outputs.go_services != '[]' && needs.route_backend_platforms.outputs.go_services != '' }}
     uses: ./.github/workflows/call-ci-backend-go.yml
     with:
       services: ${{ needs.route_backend_platforms.outputs.go_services }}
@@ -254,7 +254,7 @@ jobs:
   ci_backend_python:
     name: CI Backend Python
     needs: route_backend_platforms
-    if: ${{ needs.route_backend_platforms.outputs.python_services != '[]' && needs.route_backend_platforms.outputs.python_services != '' }}
+    if: ${{ always() && needs.route_backend_platforms.outputs.python_services != '[]' && needs.route_backend_platforms.outputs.python_services != '' }}
     uses: ./.github/workflows/call-ci-backend-python.yml
     with:
       services: ${{ needs.route_backend_platforms.outputs.python_services }}
@@ -262,7 +262,7 @@ jobs:
   ci_backend_csharp:
     name: CI Backend CSharp
     needs: route_backend_platforms
-    if: ${{ needs.route_backend_platforms.outputs.csharp_services != '[]' && needs.route_backend_platforms.outputs.csharp_services != '' }}
+    if: ${{ always() && needs.route_backend_platforms.outputs.csharp_services != '[]' && needs.route_backend_platforms.outputs.csharp_services != '' }}
     uses: ./.github/workflows/call-ci-backend-csharp.yml
     with:
       services: ${{ needs.route_backend_platforms.outputs.csharp_services }}
