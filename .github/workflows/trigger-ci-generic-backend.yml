@@ -127,11 +127,21 @@ jobs:
     name: Preencher specification via global types (backend)
     runs-on: ubuntu-latest
     needs: validate_identified_solutions
-    if: ${{ needs.validate_identified_solutions.result == 'success' }}
+    if: ${{ always() && needs.validate_identified_solutions.outputs.solutions != '' && needs.validate_identified_solutions.outputs.solutions != '[]' }}
     outputs:
       solutions: ${{ steps.enrich.outputs.solutions }}
       paths: ${{ steps.enrich.outputs.paths }}
     steps:
+      - name: Diagnóstico (validate_identified_solutions)
+        env:
+          VALIDATE_RESULT: ${{ needs.validate_identified_solutions.result }}
+          VALIDATE_SOLUTIONS: ${{ needs.validate_identified_solutions.outputs.solutions }}
+          VALIDATE_PATHS: ${{ needs.validate_identified_solutions.outputs.paths }}
+        run: |
+          set -euo pipefail
+          echo "needs.validate_identified_solutions.result=$VALIDATE_RESULT"
+          echo "needs.validate_identified_solutions.outputs.paths=${VALIDATE_PATHS:-}"
+          echo "needs.validate_identified_solutions.outputs.solutions=${VALIDATE_SOLUTIONS:-}"
       - name: Checkout
         uses: actions/checkout@v4
       - name: Aplicar defaults de specification (por tipo)
