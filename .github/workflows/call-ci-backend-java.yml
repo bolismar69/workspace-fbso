@@ -137,7 +137,7 @@ jobs:
           cd ${{ matrix.path }}
 
           # O sonar.projectKey não pode conter '/'
-          # SONAR_PROJECT_KEY="bolismar69:${{ matrix.path }}"
+          SONAR_PROJECT_KEY="bolismar69:${{ matrix.path }}"
           SONAR_PROJECT_KEY="${SONAR_PROJECT_KEY//\//_}"
 
           if [ -x ./mvnw ]; then
