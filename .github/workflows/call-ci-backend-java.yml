@@ -40,27 +40,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Log services (backend/java)
-        uses: actions/github-script@v7
-        env:
-          SERVICES_JSON: ${{ toJson(matrix) }}
-        with:
-          script: |
-            let services;
-            try {
-              services = JSON.parse((process.env.SERVICES_JSON ?? '[]').toString());
-            } catch {
-              core.setFailed('inputs.services não é JSON válido');
-              return;
-            }
-            core.info(`Services backend/java recebidos: ${services}`);
-            if (!Array.isArray(services)) {
-              core.setFailed('inputs.services deve ser um JSON array');
-              return;
-            }
-            core.info(`Services backend/java recebidos: ${services.length}`);
-            for (const s of services) core.info(`- ${s?.path ?? '<sem path>'}`);
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -83,7 +62,6 @@ jobs:
             const sanitized = baseName.replace(/\//g, '-');
 
             core.exportVariable('SANITIZED_PATH', sanitized);
-
 
       - name: Cache do Maven
         id: cache_maven
@@ -129,7 +107,7 @@ jobs:
           cd ${{ matrix.path }}
 
           # O sonar.projectKey não pode conter '/'
-          SONAR_PROJECT_KEY="bolismar69:${{ matrix.path }}"
+          # SONAR_PROJECT_KEY="bolismar69:${{ matrix.path }}"
           SONAR_PROJECT_KEY="${SONAR_PROJECT_KEY//\//_}"
 
           if [ -x ./mvnw ]; then
@@ -213,13 +191,12 @@ jobs:
           tags: ${{ env.IMAGE_TAG }}
           build-args: |
             SERVICE_PATH=${{ matrix.path }}
-            JAVA_VERSION=${{ steps.resolve_blueprint.outputs.java_version }}
-            IMAGE_TO_BUILD=${{ steps.resolve_blueprint.outputs.image_to_build }}
-            IMAGE_TO_RUNTIME=${{ steps.resolve_blueprint.outputs.image_to_runtime }}
-            APP_PORT=${{ steps.resolve_blueprint.outputs.app_port }}
-            CMD_EXTRA_BUILDER_PRE_COPY=${{ steps.resolve_blueprint.outputs.cmd_extra_builder_pre_copy }}
-            CMD_EXTRA_BUILDER_POS_COMPILE=${{ steps.resolve_blueprint.outputs.cmd_extra_builder_pos_compile }}
-            CMD_EXTRA_RUNTIME_PRE_COPY=${{ steps.resolve_blueprint.outputs.cmd_extra_runtime_pre_copy }}
-            CMD_EXTRA_RUNTIME_PRE_CMD=${{ steps.resolve_blueprint.outputs.cmd_extra_runtime_pre_cmd }}
-
-
+            JAVA_VERSION=${{ matrix.specification.platformVersion }}
+            IMAGE_TO_BUILD=${{ matrix.specification.docker.argImageBuild }}
+            IMAGE_TO_RUNTIME=${{ matrix.specification.docker.argImageRuntime }}
+            APP_PORT=${{ matrix.specification.docker.argExposePort }}
+            CMD_EXTRA_BUILDER_PRE_COPY=${{ matrix.specification.docker.argCmdExtraBuilderPreCopy }}
+            CMD_EXTRA_BUILDER_POS_COMPILE=${{ matrix.specification.docker.argCmdExtraBuilderPosCompile }}
+            CMD_EXTRA_RUNTIME_PRE_COPY=${{ matrix.specification.docker.argCmdExtraRuntimePreCopy }}
+            CMD_EXTRA_RUNTIME_PRE_CMD=${{ matrix.specification.docker.argCmdExtraRuntimePreCmd }}
+            COMPILATION_MODE=${{ matrix.specification.docker.argCompilationMode }}
