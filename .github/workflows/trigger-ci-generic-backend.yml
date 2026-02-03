@@ -44,6 +44,7 @@ on:
         description: 'Opcional: JSON array (formato oficial) para sobrescrever a detecção automática.'
         required: false
         type: string
+        default: '[{"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue"},{"path": "frontend/javascript/react/web_apps/web-ecommerce-sales"},{"path": "orchestration/kestra/flows/etl/etl-bank-files-process"}]'
   workflow_call:
     inputs:
       services:
