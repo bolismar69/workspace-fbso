@@ -80,7 +80,7 @@ jobs:
             ${{ runner.os }}-dependency-check-
 
       - name: Verificação Checkstyle
-        if: ${{ startsWith(matrix.path, 'backend/java/spring/') }}
+        # if: ${{ startsWith(matrix.path, 'backend/java/spring/') }}
         run: |
           set -euo pipefail
           cd ${{ matrix.path }}
@@ -95,9 +95,19 @@ jobs:
           set -euo pipefail
           cd ${{ matrix.path }}
           if [ -x ./mvnw ]; then
-            ./mvnw ${{ matrix.goals }}
+            ./mvnw clean install -DskipTests -B
           else
-            mvn -B -U verify -Ddependency-check.skip=true
+            mvn clean install -DskipTests -B
+          fi
+
+      - name: Run Unit Tests
+        run: |
+          set -euo pipefail
+          cd ${{ matrix.path }}
+          if [ -x ./mvnw ]; then
+            ./mvnw test -B
+          else
+            mvn test -B
           fi
 
       - name: Verificação SonarQube
