@@ -18,6 +18,15 @@ on:
         description: 'JSON array string de solutions (somente backend/csharp/*).'
         required: true
         type: string
+    # secrets:
+    #   DOCKERHUB_USERNAME:
+    #     required: true
+    #   DOCKERHUB_TOKEN:
+    #     required: true
+    #   SONAR_TOKEN:
+    #     required: false
+    #   NVD_API_KEY:
+    #     required: false
 
 permissions:
   contents: read
