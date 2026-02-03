@@ -250,6 +250,11 @@ jobs:
     uses: ./.github/workflows/call-ci-backend-java.yml
     with:
       services: ${{ needs.route_backend_platforms.outputs.java_services }}
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   ci_backend_go:
     name: CI Backend Go
@@ -258,6 +263,11 @@ jobs:
     uses: ./.github/workflows/call-ci-backend-go.yml
     with:
       services: ${{ needs.route_backend_platforms.outputs.go_services }}
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   ci_backend_python:
     name: CI Backend Python
@@ -266,6 +276,11 @@ jobs:
     uses: ./.github/workflows/call-ci-backend-python.yml
     with:
       services: ${{ needs.route_backend_platforms.outputs.python_services }}
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   ci_backend_csharp:
     name: CI Backend CSharp
@@ -274,3 +289,8 @@ jobs:
     uses: ./.github/workflows/call-ci-backend-csharp.yml
     with:
       services: ${{ needs.route_backend_platforms.outputs.csharp_services }}
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
