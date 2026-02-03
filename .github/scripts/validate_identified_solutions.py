@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Validate identified solutions against the manager inventory.
 
-This script receives a JSON array of services (usually produced by the detector
+This script recINPUT_SERVICESeives a JSON array of services (usually produced by the detector
 or by validate_input_services) and validates them against:
   architecture/governance/config/manager-solutions-inventory.json
 

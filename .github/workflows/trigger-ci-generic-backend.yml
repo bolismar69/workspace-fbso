@@ -157,14 +157,21 @@ jobs:
     name: Roteamento por plataforma (backend)
     runs-on: ubuntu-latest
     needs: enrich_missing_specification
-    if: >-
-      ${{ needs.enrich_missing_specification.result == 'success' }}
+    if: ${{ needs.enrich_missing_specification.outputs.solutions != '' && needs.enrich_missing_specification.outputs.solutions != '[]' }}
     outputs:
       java_services: ${{ steps.route.outputs.java_services }}
       go_services: ${{ steps.route.outputs.go_services }}
       python_services: ${{ steps.route.outputs.python_services }}
       csharp_services: ${{ steps.route.outputs.csharp_services }}
     steps:
+      - name: Diagnóstico (enrich_missing_specification)
+        env:
+          ENRICH_SOLUTIONS: ${{ needs.enrich_missing_specification.outputs.solutions }}
+          ENRICH_PATHS: ${{ needs.enrich_missing_specification.outputs.paths }}
+        run: |
+          set -euo pipefail
+          echo "needs.enrich_missing_specification.outputs.paths=${ENRICH_PATHS:-}"
+          echo "needs.enrich_missing_specification.outputs.solutions=${ENRICH_SOLUTIONS:-}"
       - name: Roteiar services por plataforma
         id: route
         uses: actions/github-script@v7
