@@ -17,6 +17,14 @@ name: CI Generic Backend
 # INPUTS
 # - workflow_dispatch.services: opcional (JSON array string) no formato [{"path":"..."}] para sobrescrever a detecção automática.
 # - workflow_call.services: opcional (JSON array string) no formato [{"path":"..."}] para sobrescrever a detecção automática.
+# - Exemplos de input.services recomendado (apenas paths; o workflow enriquece via inventory):
+#   1: [{"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue"}]
+#   2: 
+#     [
+#     {"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue"},
+#     {"path": "frontend/javascript/react/web_apps/web-ecommerce-sales"},
+#     {"path": "orchestration/kestra/flows/etl/etl-bank-files-process"}
+#     ]
 #
 # OUTPUTS
 # - Nenhum. Efeito: chama workflows especialistas conforme plataformas afetadas.

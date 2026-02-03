@@ -90,14 +90,25 @@ jobs:
             mvn -B -U -DskipTests checkstyle:check
           fi
 
+      - name: OWASP Dependency Analysis
+        if: ${{ env.NVD_API_KEY != '' }}
+        run: |
+          set -euo pipefail
+          cd ${{ matrix.path }}
+          if [ -x ./mvnw ]; then
+            ./mvnw org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true
+          else
+            mvn org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true
+          fi
+
       - name: Build do serviço com Maven (usa mvnm quando disponivel)
         run: |
           set -euo pipefail
           cd ${{ matrix.path }}
           if [ -x ./mvnw ]; then
-            ./mvnw clean install -DskipTests -B
+            ./mvnw clean install -DskipTests -B -Ddependency-check.skip=true
           else
-            mvn clean install -DskipTests -B
+            mvn clean install -DskipTests -B -Ddependency-check.skip=true
           fi
 
       - name: Run Unit Tests
