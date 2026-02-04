@@ -158,7 +158,7 @@
             <!-- Evita rate-limit e instabilidades da NVD sem chave -->
             <nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
             <nvdMaxRetryCount>10</nvdMaxRetryCount>
-            <nvdDelay>4000</nvdDelay>
+            <!-- <nvdDelay>4000</nvdDelay> -->
 
             <!-- Diretório que o CI pode cachear entre runs -->
             <dataDirectory>${user.home}/.dependency-check</dataDirectory>

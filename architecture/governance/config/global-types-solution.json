@@ -10,6 +10,7 @@
 				"platformVersion": "21",
 				"platformDistributor": "temurin",
 				"docker": {
+					"dockerfile": "architecture/blueprints/backend/java/spring/queue_workers/v21/Dockerfile.native.21",
 					"argCompilationMode": "native",
 					"argImageBuild": "eclipse-temurin:21-jdk-jammy",
 					"argImageRuntime": "eclipse-temurin:21-jre-jammy",

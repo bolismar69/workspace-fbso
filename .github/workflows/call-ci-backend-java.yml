@@ -49,6 +49,48 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Carregar variáveis Docker (env compartilhado)
+        id: load_docker_env
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            function loadEnvFile(filePath) {
+              if (!fs.existsSync(filePath)) {
+                core.warning(`Arquivo env não encontrado: ${filePath}`);
+                return;
+              }
+
+              const raw = fs.readFileSync(filePath, 'utf8');
+              const lines = raw.split('\n');
+
+              for (const originalLine of lines) {
+                const line = (originalLine ?? '').replace(/\r$/, '');
+                const trimmed = line.trim();
+                if (!trimmed || trimmed.startsWith('#')) continue;
+
+                const eq = trimmed.indexOf('=');
+                if (eq <= 0) {
+                  core.warning(`Linha inválida ignorada em ${filePath}: ${trimmed}`);
+                  continue;
+                }
+
+                const key = trimmed.slice(0, eq).trim();
+                let value = trimmed.slice(eq + 1);
+
+                // Compatibilidade com placeholder comum do bash
+                const sha = process.env.GITHUB_SHA || context.sha;
+                value = value.replace(/\$\{GITHUB_SHA:0:7\}/g, sha.substring(0, 7));
+                value = value.replace(/\$\{GITHUB_SHA\}/g, sha);
+
+                core.exportVariable(key, value);
+              }
+            }
+
+            loadEnvFile('.github/docker.env');
+            loadEnvFile('.github/docker.java.env');
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -71,13 +113,14 @@ jobs:
             const sanitized = baseName.replace(/\//g, '-');
 
             core.exportVariable('SANITIZED_PATH', sanitized);
+            core.setOutput('sanitized_path', sanitized);
 
       - name: Cache do Maven
         id: cache_maven
         uses: actions/cache@v3
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ env.SANITIZED_PATH }}-${{ hashFiles(format('{0}/**/pom.xml', matrix.path)) }}
+          key: ${{ runner.os }}-maven-${{ steps.sanitize_path.outputs.sanitized_path }}-${{ hashFiles(format('{0}/**/pom.xml', matrix.path)) }}
           restore-keys: ${{ runner.os }}-maven-
 
       - name: Cache OWASP Dependency-Check DB
@@ -177,48 +220,58 @@ jobs:
         id: docker_login
         uses: docker/login-action@v2
         with:
-          registry: ${{ env.DOCKER_REGISTRY }}
+          # registry: ${{ env.DOCKER_REGISTRY }}
+          registry: "docker.io"
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Definir IMAGE_NAME e IMAGE_TAG
-        id: define_image
+        id: define_image_e_tag
         uses: actions/github-script@v7
         env:
-          MATRIX_PATH: ${{ matrix.path }}
-          DOCKER_REGISTRY: ${{ env.DOCKER_REGISTRY }}
+          IMAGE_NAME: ${{ matrix.name }}
+          # DOCKER_REGISTRY: ${{ env.DOCKER_REGISTRY }}
+          DOCKER_REGISTRY: "docker.io"
           DOCKER_ORG: ${{ env.DOCKER_ORG }}
           DOCKER_TAG_PREFIX: ${{ env.DOCKER_TAG_PREFIX }}
           GITHUB_SHA: ${{ github.sha }}
         with:
           script: |
-            const matrixPath = (process.env.MATRIX_PATH ?? '').toString();
-            if (!matrixPath) throw new Error('MATRIX_PATH vazio');
-
-            const parts = matrixPath.split('/').filter(Boolean);
-            const imageName = parts[parts.length - 1] || matrixPath;
-            core.exportVariable('IMAGE_NAME', imageName);
+            const imageName = (process.env.IMAGE_NAME ?? '').toString();
+            if (!imageName) throw new Error('IMAGE_NAME vazio');
 
             const registry = (process.env.DOCKER_REGISTRY ?? '').toString();
             const org = (process.env.DOCKER_ORG ?? '').toString();
             const prefix = (process.env.DOCKER_TAG_PREFIX ?? 'ci').toString();
             const sha = (process.env.GITHUB_SHA ?? context.sha).toString();
+            const datahoraformatoYYYYMMDDHHMMSS = () => {
+              const now = new Date();
+              const YYYY = now.getUTCFullYear().toString().padStart(4, '0');
+              const MM = (now.getUTCMonth() + 1).toString().padStart(2, '0');
+              const DD = now.getUTCDate().toString().padStart(2, '0');
+              const HH = now.getUTCHours().toString().padStart(2, '0');
+              const mm = now.getUTCMinutes().toString().padStart(2, '0');
+              const ss = now.getUTCSeconds().toString().padStart(2, '0');
+              return `${YYYY}${MM}${DD}${HH}${mm}${ss}`;
+            };
 
             if (!registry || !org) {
               throw new Error('DOCKER_REGISTRY/DOCKER_ORG não definidos');
             }
 
-            const imageTag = `${registry}/${org}/${imageName}:${prefix}-${sha}`;
+            const imageTag = `${registry}/${org}/${imageName}:${prefix}-${datahoraformatoYYYYMMDDHHMMSS()}-${sha}`;
             core.exportVariable('IMAGE_TAG', imageTag);
+            core.setOutput('image_tag', imageTag);
 
       - name: Build & Push com build-push-action
         id: buildpush
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ${{ steps.resolve_blueprint.outputs.dockerfile }}
+          # steps.resolve_blueprint.outputs.dockerfile -- ANTIGA VARIAVEL DE PATH DO DOCKERFILE
+          file: ${{ matrix.specification.docker.dockerfile }}
           push: true
-          tags: ${{ env.IMAGE_TAG }}
+          tags: ${{ steps.define_image_e_tag.outputs.image_tag }}
           build-args: |
             SERVICE_PATH=${{ matrix.path }}
             JAVA_VERSION=${{ matrix.specification.platformVersion }}
