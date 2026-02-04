@@ -71,25 +71,6 @@ jobs:
       base_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before || github.sha }}
       head_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
 
-  # notice_input_services:
-  #   name: Aviso sobre input.services
-  #   runs-on: ubuntu-latest
-  #   if: >-
-  #     ${{
-  #       (github.event_name == 'workflow_call'
-  #         && ( !inputs.services || inputs.services == 'null' || inputs.services == '[]' || !contains(inputs.services, '"path"') )
-  #       )
-  #       ||
-  #       (github.event_name == 'workflow_dispatch'
-  #         && ( !github.event.inputs.services || github.event.inputs.services == 'null' || github.event.inputs.services == '[]' || !contains(github.event.inputs.services, '"path"') )
-  #       )
-  #     }}
-  #   steps:
-  #     - name: Informar ocorrência
-  #       run: |
-  #         echo "input.services não foi informado ou não segue o layout esperado [{\"path\":\"...\"}]"
-  #         echo "Resultado: detect_input_services ficará como skipped."
-
   detect_input_services:
     name: Validar input.services (workflow_dispatch/workflow_call)
     if: >-

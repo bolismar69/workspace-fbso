@@ -126,7 +126,8 @@ jobs:
       - name: Cache OWASP Dependency-Check DB
         uses: actions/cache@v4
         with:
-          path: ~/.dependency-check
+          # path: ~/.dependency-check
+          path: ~/.m2/repository/org/owasp/dependency-check-data/
           key: ${{ runner.os }}-dependency-check-${{ github.ref_name }}
           restore-keys: |
             ${{ runner.os }}-dependency-check-
