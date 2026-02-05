@@ -44,15 +44,7 @@ on:
         description: 'Opcional: JSON array (formato oficial) para sobrescrever a detecção automática.'
         required: false
         type: string
-        default: |
-          '[
-          {"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue"},
-          {"path": "backend/csharp/.net/queue_workers/ms-transaction-processor-queue"},
-          {"path": "backend/go/gin/queue_workers/ms-transaction-processor-queue"},
-          {"path": "backend/python/django/queue_workers/ms-transaction-processor-queue"},
-          {"path": "frontend/javascript/react/web_apps/web-ecommerce-sales"},
-          {"path": "orchestration/kestra/flows/etl/etl-bank-files-process"}
-          ]'
+        default: '[{"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue"},{"path": "backend/csharp/.net/queue_workers/ms-transaction-processor-queue"},{"path": "backend/go/gin/queue_workers/ms-transaction-processor-queue"},{"path": "backend/python/django/queue_workers/ms-transaction-processor-queue"},{"path": "frontend/javascript/react/web_apps/web-ecommerce-sales"},{"path": "orchestration/kestra/flows/etl/etl-bank-files-process"}]'
 
   workflow_call:
     inputs:
