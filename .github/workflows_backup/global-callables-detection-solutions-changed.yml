@@ -1,0 +1,78 @@
+name: Global Callables Detection Solutions Changed
+
+# FUNÇÃO
+# - Detecta quais "solutions" (serviços/apps) foram alteradas entre dois SHAs no monorepo.
+# - Saída propositalmente mínima: retorna apenas uma lista de objetos com {path} (únicos) e uma lista de paths.
+# - NÃO valida nem enriquece via inventory. A validação/enriquecimento acontece em job posterior.
+# - Estrutura unificada do path: stack/platform/framework/type/name.
+#
+# INPUTS (workflow_call)
+# - base_sha: SHA base para comparação (ex.: base do PR, ou github.event.before em push)
+# - head_sha: SHA head para comparação (ex.: head do PR, ou github.sha em push)
+#
+# Exemplo (caller PR/push)
+# - base_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+# - head_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+#
+# OUTPUTS (workflow_call)
+# - solutions: string contendo JSON array com objetos {path}
+#   Exemplo:
+#   [
+#     {
+#       "path": "backend/java/spring/microservices/ms-example"
+#     }
+#   ]
+# - paths: string contendo JSON array de paths (strings)
+#   Exemplo:
+#   ["backend/java/spring/microservices/ms-example"]
+#
+# STEPS (jobs.detect_services)
+# - Checkout: necessário para `git diff`.
+# - Run Python: `.github/scripts/detect_solutions_changed.py` faz diff BASE..HEAD, extrai roots (5 níveis),
+#   e emite `solutions`/`paths` em JSON compact.
+
+on:
+  workflow_call:
+    inputs:
+      stack:
+        description: 'Opcional: filtrar detecção por stack (ex.: backend, frontend, orchestration).'
+        required: false
+        type: string
+      base_sha:
+        description: 'SHA base para comparação. Recomendado sempre informar (ex.: base do PR ou github.event.before no push).'
+        required: false
+        type: string
+      head_sha:
+        description: 'SHA head para comparação. Recomendado sempre informar (ex.: head do PR ou github.sha no push).'
+        required: false
+        type: string
+    outputs:
+      solutions:
+        description: 'String contendo JSON array de solutions alteradas (apenas objetos {path}).'
+        value: ${{ jobs.detect_services.outputs.solutions }}
+      paths:
+        description: 'String contendo JSON array de paths (solutions) alterados.'
+        value: ${{ jobs.detect_services.outputs.paths }}
+
+jobs:
+  detect_services:
+    runs-on: ubuntu-latest
+    outputs:
+      solutions: ${{ steps.emit.outputs.solutions }}
+      paths: ${{ steps.emit.outputs.paths }}
+
+    steps:
+      - name: Realizando Checkout do repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detectando soluções modificadas
+        id: emit
+        env:
+          INPUT_BASE_SHA: ${{ inputs.base_sha }}
+          INPUT_HEAD_SHA: ${{ inputs.head_sha }}
+          INPUT_STACK: ${{ inputs.stack }}
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/detect_solutions_changed.py

@@ -38,6 +38,21 @@ jobs:
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+      # === Docker (GitHub Variables) ===
+      DOCKER_PORT_TO_EXPOSE: ${{ vars.DOCKER_PORT_TO_EXPOSE }}
+      DOCKER_APP_OUTPUT_PATH: ${{ vars.DOCKER_APP_OUTPUT_PATH }}
+      DOCKER_APP_USER: ${{ vars.DOCKER_APP_USER }}
+      DOCKER_TAG_PREFIX: ${{ vars.DOCKER_TAG_PREFIX }}
+      DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+      DOCKER_ORG: ${{ vars.DOCKER_ORG }}
+
+      # === Docker Java (GitHub Variables) ===
+      DOCKER_JAVA_IMAGE_TO_BUILD_STANDARD: ${{ vars.DOCKER_JAVA_IMAGE_TO_BUILD_STANDARD }}
+      DOCKER_JAVA_IMAGE_TO_BUILD_SPRING: ${{ vars.DOCKER_JAVA_IMAGE_TO_BUILD_SPRING }}
+      DOCKER_JAVA_IMAGE_TO_BUILD_QUARKUS: ${{ vars.DOCKER_JAVA_IMAGE_TO_BUILD_QUARKUS }}
+      DOCKER_JAVA_IMAGE_TO_RUNTIME_JVM: ${{ vars.DOCKER_JAVA_IMAGE_TO_RUNTIME_JVM }}
+      DOCKER_JAVA_IMAGE_TO_RUNTIME_NATIVE: ${{ vars.DOCKER_JAVA_IMAGE_TO_RUNTIME_NATIVE }}
+      DOCKER_JAVA_ARGS: ${{ vars.DOCKER_JAVA_ARGS }}
     strategy:
       fail-fast: false
       matrix:
@@ -49,47 +64,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Carregar variáveis Docker (env compartilhado)
-        id: load_docker_env
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-
-            function loadEnvFile(filePath) {
-              if (!fs.existsSync(filePath)) {
-                core.warning(`Arquivo env não encontrado: ${filePath}`);
-                return;
-              }
-
-              const raw = fs.readFileSync(filePath, 'utf8');
-              const lines = raw.split('\n');
-
-              for (const originalLine of lines) {
-                const line = (originalLine ?? '').replace(/\r$/, '');
-                const trimmed = line.trim();
-                if (!trimmed || trimmed.startsWith('#')) continue;
-
-                const eq = trimmed.indexOf('=');
-                if (eq <= 0) {
-                  core.warning(`Linha inválida ignorada em ${filePath}: ${trimmed}`);
-                  continue;
-                }
-
-                const key = trimmed.slice(0, eq).trim();
-                let value = trimmed.slice(eq + 1);
-
-                // Compatibilidade com placeholder comum do bash
-                const sha = process.env.GITHUB_SHA || context.sha;
-                value = value.replace(/\$\{GITHUB_SHA:0:7\}/g, sha.substring(0, 7));
-                value = value.replace(/\$\{GITHUB_SHA\}/g, sha);
-
-                core.exportVariable(key, value);
-              }
-            }
-
-            loadEnvFile('.github/docker.env');
-            loadEnvFile('.github/docker.java.env');
+      - name: Definir variáveis derivadas (Docker)
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+          echo "DOCKER_TAG_SUFFIX=-${GITHUB_SHA::7}" >> "$GITHUB_ENV"
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -221,8 +201,7 @@ jobs:
         id: docker_login
         uses: docker/login-action@v2
         with:
-          # registry: ${{ env.DOCKER_REGISTRY }}
-          registry: "docker.io"
+          registry: ${{ env.DOCKER_REGISTRY }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
@@ -231,8 +210,7 @@ jobs:
         uses: actions/github-script@v7
         env:
           IMAGE_NAME: ${{ matrix.name }}
-          # DOCKER_REGISTRY: ${{ env.DOCKER_REGISTRY }}
-          DOCKER_REGISTRY: "docker.io"
+          DOCKER_REGISTRY: ${{ env.DOCKER_REGISTRY }}
           DOCKER_ORG: ${{ env.DOCKER_ORG }}
           DOCKER_TAG_PREFIX: ${{ env.DOCKER_TAG_PREFIX }}
           GITHUB_SHA: ${{ github.sha }}

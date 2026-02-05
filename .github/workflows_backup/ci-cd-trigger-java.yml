@@ -70,7 +70,7 @@ jobs:
   detect_solutions:
     name: Detectar solutions alteradas (monorepo)
     if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
-    uses: ./.github/workflows/global-callables-detection-solutions-changed.yml
+    uses: ./.github/workflows/util-detection-solutions-changed.yml
     with:
       base_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
       head_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
@@ -79,7 +79,7 @@ jobs:
     name: Validar input.services (workflow_dispatch)
     if: >-
       ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.services && github.event.inputs.services != 'null' && github.event.inputs.services != '[]' && contains(github.event.inputs.services, '"path"') }}
-    uses: ./.github/workflows/global-callables-validate-input-services.yml
+    uses: ./.github/workflows/util-validate-input-services.yml
     with:
       stack: backend
       services: ${{ github.event.inputs.services }}
@@ -93,7 +93,7 @@ jobs:
         always()
         && ( needs.validate_input_services.result == 'success' || needs.detect_solutions.result == 'success' )
       }}
-    uses: ./.github/workflows/global-callables-validate-identified-solutions.yml
+    uses: ./.github/workflows/util-validate-identified-solutions.yml
     with:
       stack: backend
       services: >-

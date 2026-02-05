@@ -1,0 +1,70 @@
+name: Global Callables Validate Input Services
+
+# FUNÇÃO
+# - Valida APENAS o layout de `services` (JSON string) fornecidos por workflow_dispatch/workflow_call.
+# - NÃO valida/enriquece via inventory (isso ocorre em job posterior).
+# - Retorna outputs compatíveis com o detector: `solutions` e `paths`.
+# - Estrutura unificada do path: stack/platform/framework/type/name.
+#
+# INPUTS (workflow_call)
+# - services: string contendo JSON array de objetos com `path`
+# - stack: opcional, valida prefixo do path (backend|frontend|orchestration)
+# - strict: opcional, se true exige specification.platformVersion/specification.platformDistributor/specification.docker.argCompilationMode no inventory
+#
+# OUTPUTS (workflow_call)
+# - solutions: string contendo JSON array (enriquecido a partir do inventory)
+# - paths: string contendo JSON array de paths (strings)
+#
+# STEPS (jobs.validate)
+# - Checkout: lê o inventory versionado no repo.
+# - Run Python: `.github/scripts/validate_input_services.py` valida `services` (JSON),
+#   valida estrutura do path (5 níveis) e retorna `solutions`/`paths`.
+
+on:
+  workflow_call:
+    inputs:
+      services:
+        description: 'String contendo JSON array de solutions/paths para validação.'
+        required: false
+        type: string
+      stack:
+        description: 'Opcional: valida que paths pertençam à stack (backend|frontend|orchestration).'
+        required: false
+        type: string
+      strict:
+        description: 'Opcional: se true, exige campos mínimos de build no inventory.'
+        required: false
+        type: string
+        default: 'false'
+    outputs:
+      solutions:
+        description: 'String contendo JSON array de services validados (apenas objetos {path}).'
+        value: ${{ jobs.validate.outputs.solutions }}
+      paths:
+        description: 'String contendo JSON array de paths validados.'
+        value: ${{ jobs.validate.outputs.paths }}
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      solutions: ${{ steps.emit.outputs.solutions }}
+      paths: ${{ steps.emit.outputs.paths }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Validate input services
+        id: emit
+        env:
+          INPUT_SERVICES: ${{ inputs.services }}
+          INPUT_STACK: ${{ inputs.stack }}
+          INPUT_STRICT: ${{ inputs.strict }}
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/validate_input_services.py

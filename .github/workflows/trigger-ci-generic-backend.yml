@@ -66,7 +66,7 @@ jobs:
   detect_solutions_changed:
     name: Detectar solutions alteradas (backend)
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-    uses: ./.github/workflows/global-callables-detection-solutions-changed.yml
+    uses: ./.github/workflows/util-detection-solutions-changed.yml
     with:
       stack: backend
       base_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before || github.sha }}
@@ -90,7 +90,7 @@ jobs:
           && contains(github.event.inputs.services, '"path"')
         )
       }}
-    uses: ./.github/workflows/global-callables-validate-input-services.yml
+    uses: ./.github/workflows/util-validate-input-services.yml
     with:
       stack: backend
       services: ${{ github.event_name == 'workflow_call' && inputs.services || github.event.inputs.services }}
@@ -104,7 +104,7 @@ jobs:
         always()
         && ( needs.detect_input_services.result == 'success' || needs.detect_solutions_changed.result == 'success' )
       }}
-    uses: ./.github/workflows/global-callables-validate-identified-solutions.yml
+    uses: ./.github/workflows/util-validate-identified-solutions.yml
     with:
       stack: backend
       services: >-

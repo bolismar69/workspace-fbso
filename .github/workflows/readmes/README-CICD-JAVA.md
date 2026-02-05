@@ -11,7 +11,7 @@ Este documento descreve como o pipeline de CI/CD Java funciona no monorepo, incl
 
 Arquivos principais:
 - Trigger/orquestração: [.github/workflows/ci-cd-trigger-java.yml](../ci-cd-trigger-java.yml)
-- Detector (reusable): [.github/workflows/global-callables-detection-solutions-changed.yml](../global-callables-detection-solutions-changed.yml)
+- Detector (reusable): [.github/workflows/util-detection-solutions-changed.yml](../util-detection-solutions-changed.yml)
 - Build Java (reusable): [.github/workflows/global-callables-java-build-solutions.yml](../global-callables-java-build-solutions.yml)
 - Script de detecção/enriquecimento: [.github/scripts/detect_solutions_changed.py](../../scripts/detect_solutions_changed.py)
 - Inventory (governança): [architecture/governance/config/manager-solutions.json](../../../architecture/governance/config/manager-solutions.json)
@@ -19,8 +19,8 @@ Arquivos principais:
   - Framework: [architecture/governance/config/global-frameworks.json](../../../architecture/governance/config/global-frameworks.json)
   - Type (stackType): [architecture/governance/config/global-types-solution.json](../../../architecture/governance/config/global-types-solution.json)
   - Solution: [architecture/governance/config/global-solutions.json](../../../architecture/governance/config/global-solutions.json)
-- Env compartilhado Docker: [.github/docker.env](../../docker.env)
-- Env compartilhado Docker Java: [.github/docker.java.env](../../docker.java.env)
+- Template Docker (exemplo): [.github/docker.env.example](../../docker.env.example)
+- Template Docker Java (exemplo): [.github/docker.java.env.example](../../docker.java.env.example)
 
 ---
 
@@ -28,7 +28,7 @@ Arquivos principais:
 
 1. **Trigger**: [.github/workflows/ci-cd-trigger-java.yml](../ci-cd-trigger-java.yml) (push/PR em `backend/java/**` ou `workflow_dispatch`)
 2. **Detecção de solutions alteradas** (reusable):
-   - Chama [.github/workflows/global-callables-detection-solutions-changed.yml](../global-callables-detection-solutions-changed.yml)
+   - Chama [.github/workflows/util-detection-solutions-changed.yml](../util-detection-solutions-changed.yml)
    - Executa o script [.github/scripts/detect_solutions_changed.py](../../scripts/detect_solutions_changed.py)
    - O script detecta paths alterados entre SHAs e **enriquece** os objetos com dados do inventory [architecture/governance/config/manager-solutions.json](../../../architecture/governance/config/manager-solutions.json)
 3. **Preparação da matrix Java**:
@@ -37,7 +37,7 @@ Arquivos principais:
 4. **Build Java** (reusable):
    - Trigger chama [.github/workflows/global-callables-java-build-solutions.yml](../global-callables-java-build-solutions.yml)
    - Esse workflow faz `setup-java`, Maven build, resolve blueprint (merge de registries de governança) e executa Docker build/push
-   - Carrega variáveis compartilhadas via [.github/docker.env](../../docker.env) e [.github/docker.java.env](../../docker.java.env)
+  - Usa GitHub Variables para defaults Docker (veja templates em [.github/docker.env.example](../../docker.env.example) e [.github/docker.java.env.example](../../docker.java.env.example))
 
 ---
 
@@ -91,7 +91,7 @@ Exemplo (inventory item):
 
 ## Outputs do detector (workflow_call)
 
-O reusable detector [.github/workflows/global-callables-detection-solutions-changed.yml](../global-callables-detection-solutions-changed.yml) retorna:
+O reusable detector [.github/workflows/util-detection-solutions-changed.yml](../util-detection-solutions-changed.yml) retorna:
 
 - `outputs.solutions`: JSON array de objetos (solutions) **enriquecidos pelo inventory**
 - `outputs.paths`: JSON array de paths alterados
@@ -169,11 +169,13 @@ Padronização adotada:
 
 ## Variáveis Docker compartilhadas
 
-O build reusable carrega:
-- [.github/docker.env](../../docker.env)
-- [.github/docker.java.env](../../docker.java.env)
+O build usa GitHub Actions Variables (Settings -> Secrets and variables -> Actions -> Variables).
 
-Esses arquivos definem defaults como registry/org/tag prefix e nomes padrão de imagens builder/runtime.
+Templates (referência de nomes/valores):
+- [.github/docker.env.example](../../docker.env.example)
+- [.github/docker.java.env.example](../../docker.java.env.example)
+
+Essas variables definem defaults como registry/org/tag prefix e nomes padrão de imagens builder/runtime.
 
 ---
 

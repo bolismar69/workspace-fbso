@@ -6,7 +6,7 @@ on:
     paths:
       - 'orchestration/kestra/**'
       - 'devops/scripts/kestra/**'
-      - '.github/workflows/ci-cd-trigger-kestra.yml'
+      - '.github/workflows/call-ci-cd-trigger-kestra.yml'
 
 jobs:
   publish:
