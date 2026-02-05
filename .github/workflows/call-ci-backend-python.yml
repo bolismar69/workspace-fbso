@@ -49,18 +49,7 @@ jobs:
         env:
           SERVICES_JSON: ${{ matrix.path }}
         run: |
-          let services;
-          try {
-            services = JSON.parse((process.env.SERVICES_JSON ?? '[]').toString());
-          } catch {
-            core.setFailed('inputs.services não é JSON válido');
-            return;
-          }
-          if (!Array.isArray(services)) {
-            core.setFailed('inputs.services deve ser um JSON array');
-            return;
-          }
-          core.info(`Services backend/python recebidos: ${services.length}`);
+          echo "Service backend/csharp recebido: ${SERVICES_JSON}"
 
   # python:
   #   runs-on: ubuntu-latest
