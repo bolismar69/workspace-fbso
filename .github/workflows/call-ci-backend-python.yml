@@ -46,6 +46,8 @@ jobs:
           fetch-depth: 0
 
       - name: Log services (backend/python)
+        env:
+          SERVICES_JSON: ${{ matrix.path }}
         run: |
           let services;
           try {
