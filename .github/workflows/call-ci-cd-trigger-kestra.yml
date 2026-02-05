@@ -13,9 +13,6 @@ jobs:
     name: Publicar flows no Kestra
     runs-on: ubuntu-latest
     env:
-      KESTRA_URL: ${{ secrets.KESTRA_URL }}
-      KESTRA_API_TOKEN: ${{ secrets.KESTRA_API_TOKEN }}
-      KESTRA_BASIC_AUTH: ${{ secrets.KESTRA_BASIC_AUTH }}
       KESTRA_API_FLOWS_ENDPOINT: ${{ vars.KESTRA_API_FLOWS_ENDPOINT }}
 
     steps:
@@ -23,6 +20,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Verificar pré-requisitos
+        env:
+          KESTRA_URL: ${{ secrets.KESTRA_URL }}
+          KESTRA_API_TOKEN: ${{ secrets.KESTRA_API_TOKEN }}
+          KESTRA_BASIC_AUTH: ${{ secrets.KESTRA_BASIC_AUTH }}
         run: |
           set -euo pipefail
 
@@ -37,6 +38,11 @@ jobs:
           fi
 
       - name: Publicar flows via API
+        env:
+          KESTRA_URL: ${{ secrets.KESTRA_URL }}
+          KESTRA_API_TOKEN: ${{ secrets.KESTRA_API_TOKEN }}
+          KESTRA_BASIC_AUTH: ${{ secrets.KESTRA_BASIC_AUTH }}
+          KESTRA_API_FLOWS_ENDPOINT: ${{ vars.KESTRA_API_FLOWS_ENDPOINT }}
         run: |
           set -euo pipefail
           ./devops/scripts/kestra/publish_flows.sh

@@ -36,8 +36,6 @@ jobs:
     name: Call CI Backend Java
     runs-on: ubuntu-latest
     env:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
       # === Docker (GitHub Variables) ===
       DOCKER_PORT_TO_EXPOSE: ${{ vars.DOCKER_PORT_TO_EXPOSE }}
       DOCKER_APP_OUTPUT_PATH: ${{ vars.DOCKER_APP_OUTPUT_PATH }}
@@ -124,9 +122,16 @@ jobs:
           fi
 
       - name: OWASP Dependency Analysis
-        if: ${{ env.NVD_API_KEY != '' }}
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
           set -euo pipefail
+
+          if [ -z "${NVD_API_KEY:-}" ]; then
+            echo "NVD_API_KEY (secret) não configurado; pulando OWASP Dependency-Check." >&2
+            exit 0
+          fi
+
           cd ${{ matrix.path }}
           if [ -x ./mvnw ]; then
             ./mvnw org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true
@@ -155,9 +160,16 @@ jobs:
           fi
 
       - name: Verificação SonarQube
-        if: ${{ env.SONAR_TOKEN != '' }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           set -euo pipefail
+
+          if [ -z "${SONAR_TOKEN:-}" ]; then
+            echo "SONAR_TOKEN (secret) não configurado; pulando SonarQube." >&2
+            exit 0
+          fi
+
           cd ${{ matrix.path }}
 
           # O sonar.projectKey não pode conter '/'
