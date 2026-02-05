@@ -14,8 +14,8 @@
 				"docker": {
 					"dockerfile": "architecture/blueprints/backend/java/spring/queue_workers/v21/Dockerfile.native.21",
 					"argCompilationMode": "native",
-					"argImageBuild": "eclipse-temurin:21-jdk-jammy",
-					"argImageRuntime": "eclipse-temurin:21-jre-jammy",
+					"argImageBuild": "ghcr.io/graalvm/native-image-community:latest",
+					"argImageRuntime": "gcr.io/distroless/cc-debian12",
 					"argExposePort": 8080,
 					"argCmdExtraBuilderPreCopy": "echo 'Framework: Preparando ambiente...'",
 					"argCmdExtraBuilderPosCompile": "echo 'Framework: Compilação concluída.'",
