@@ -78,13 +78,25 @@ jobs:
           cache-dependency-path: |
             ${{ matrix.path }}/pom.xml
             ${{ matrix.path }}/**/pom.xml
+            ${{ matrix.path }}/mvnw
+            ${{ matrix.path }}/.mvn/maven.config
+            ${{ matrix.path }}/.mvn/wrapper/maven-wrapper.properties
+            ${{ matrix.path }}/.mvn/wrapper/maven-wrapper.jar
 
       - name: Cache OWASP Dependency-Check DB
         uses: actions/cache@v4
         with:
           # path: ~/.dependency-check
           path: ~/.m2/repository/org/owasp/dependency-check-data/
-          key: ${{ runner.os }}-dependency-check-${{ github.ref_name }}
+          key: >-
+            ${{ runner.os }}-dependency-check-${{ hashFiles(
+              format('{0}/pom.xml', matrix.path),
+              format('{0}/**/pom.xml', matrix.path),
+              format('{0}/mvnw', matrix.path),
+              format('{0}/.mvn/maven.config', matrix.path),
+              format('{0}/.mvn/wrapper/maven-wrapper.properties', matrix.path),
+              format('{0}/.mvn/wrapper/maven-wrapper.jar', matrix.path)
+            ) }}
           restore-keys: |
             ${{ runner.os }}-dependency-check-
 
