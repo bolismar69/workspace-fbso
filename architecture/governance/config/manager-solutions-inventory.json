@@ -10,7 +10,7 @@
 			"status": "active",
 			"specification": {
 				"platformVersion": "21",
-				"platformDistributor": "temurin",
+				"platformDistributor": "graalvm",
 				"docker": {
 					"dockerfile": "architecture/blueprints/backend/java/spring/queue_workers/v21/Dockerfile.native.21",
 					"argCompilationMode": "native",

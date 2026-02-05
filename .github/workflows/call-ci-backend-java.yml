@@ -75,31 +75,9 @@ jobs:
           distribution: ${{ matrix.specification.platformDistributor }}
           java-version: ${{ matrix.specification.platformVersion }}
           cache: maven
-
-      - name: Definir caminho sanitizado
-        id: sanitize_path
-        uses: actions/github-script@v7
-        env:
-          MATRIX_PATH: ${{ matrix.path }}
-        with:
-          script: |
-            const matrixPath = (process.env.MATRIX_PATH ?? '').toString();
-            if (!matrixPath) throw new Error('MATRIX_PATH vazio');
-
-            const parts = matrixPath.split('/').filter(Boolean);
-            const baseName = parts[parts.length - 1] || matrixPath;
-            const sanitized = baseName.replace(/\//g, '-');
-
-            core.exportVariable('SANITIZED_PATH', sanitized);
-            core.setOutput('sanitized_path', sanitized);
-
-      - name: Cache do Maven
-        id: cache_maven
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ steps.sanitize_path.outputs.sanitized_path }}-${{ hashFiles(format('{0}/**/pom.xml', matrix.path)) }}
-          restore-keys: ${{ runner.os }}-maven-
+          cache-dependency-path: |
+            ${{ matrix.path }}/pom.xml
+            ${{ matrix.path }}/**/pom.xml
 
       - name: Cache OWASP Dependency-Check DB
         uses: actions/cache@v4
