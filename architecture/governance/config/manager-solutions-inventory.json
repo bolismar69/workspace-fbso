@@ -43,6 +43,105 @@
 					}
 				}
 			}
+		},
+		{
+			"path": "backend/csharp/.net/queue_workers/ms-transaction-processor-queue",
+			"stack": "backend",
+			"platform": "csharp",
+			"framework": ".net",
+			"type": "queue_workers",
+			"name": "ms-transaction-processor-queue",
+			"status": "active",
+			"specification": {
+				"platformVersion": "8.0",
+				"platformDistributor": "microsoft",
+				"compliance": {
+					"sonarqubeThreshold": "80",
+					"vulnerabilitySeverityLimit": "high",
+					"maxCpu": "500m",
+					"maxMemory": "1Gi",
+					"licensePolicy": {
+						"allowList": [
+							"Apache-2.0",
+							"MIT",
+							"BSD-3-Clause",
+							"EPL-2.0"
+						],
+						"denyList": [
+							"GPL-3.0",
+							"AGPL-3.0",
+							"LGPL-3.0"
+						],
+						"actionOnUnknown": "warn"
+					}
+				}
+			}
+		},
+		{
+			"path": "backend/go/gin/queue_workers/ms-transaction-processor-queue",
+			"stack": "backend",
+			"platform": "go",
+			"framework": "gin",
+			"type": "queue_workers",
+			"name": "ms-transaction-processor-queue",
+			"status": "active",
+			"specification": {
+				"platformVersion": "1.22",
+				"platformDistributor": "golang",
+				"compliance": {
+					"sonarqubeThreshold": "80",
+					"vulnerabilitySeverityLimit": "high",
+					"maxCpu": "500m",
+					"maxMemory": "1Gi",
+					"licensePolicy": {
+						"allowList": [
+							"Apache-2.0",
+							"MIT",
+							"BSD-3-Clause",
+							"EPL-2.0"
+						],
+						"denyList": [
+							"GPL-3.0",
+							"AGPL-3.0",
+							"LGPL-3.0"
+						],
+						"actionOnUnknown": "warn"
+					}
+				}
+			}
+		},
+		{
+			"path": "backend/python/django/queue_workers/ms-transaction-processor-queue",
+			"stack": "backend",
+			"platform": "python",
+			"framework": "django",
+			"type": "queue_workers",
+			"name": "ms-transaction-processor-queue",
+			"status": "active",
+			"specification": {
+				"platformVersion": "3.12",
+				"platformDistributor": "python",
+				"compliance": {
+					"sonarqubeThreshold": "80",
+					"vulnerabilitySeverityLimit": "high",
+					"maxCpu": "500m",
+					"maxMemory": "1Gi",
+					"licensePolicy": {
+						"allowList": [
+							"Apache-2.0",
+							"MIT",
+							"BSD-3-Clause",
+							"EPL-2.0"
+						],
+						"denyList": [
+							"GPL-3.0",
+							"AGPL-3.0",
+							"LGPL-3.0"
+						],
+						"actionOnUnknown": "warn"
+					}
+				}
+			}
 		}
 	]
 }

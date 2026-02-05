@@ -32,25 +32,53 @@ permissions:
   contents: read
 
 jobs:
-  go:
+  call-ci-go:
+    name: Call CI Backend Go
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.services) }}
     steps:
-      - name: Log services (backend/go)
-        uses: actions/github-script@v7
-        env:
-          SERVICES_JSON: ${{ inputs.services }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          script: |
-            let services;
-            try {
-              services = JSON.parse((process.env.SERVICES_JSON ?? '[]').toString());
-            } catch {
-              core.setFailed('inputs.services não é JSON válido');
-              return;
-            }
-            if (!Array.isArray(services)) {
-              core.setFailed('inputs.services deve ser um JSON array');
-              return;
-            }
-            core.info(`Services backend/go recebidos: ${services.length}`);
-            for (const s of services) core.info(`- ${s?.path ?? '<sem path>'}`);
+          fetch-depth: 0
+
+      - name: Log services (backend/go)
+        run: |
+          let services;
+          try {
+            services = JSON.parse((process.env.SERVICES_JSON ?? '[]').toString());
+          } catch {
+            core.setFailed('inputs.services não é JSON válido');
+            return;
+          }
+          if (!Array.isArray(services)) {
+            core.setFailed('inputs.services deve ser um JSON array');
+            return;
+          }
+          core.info(`Services backend/go recebidos: ${services.length}`);
+
+  # go:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Log services (backend/go)
+  #       uses: actions/github-script@v7
+  #       env:
+  #         SERVICES_JSON: ${{ inputs.services }}
+  #       with:
+  #         script: |
+  #           let services;
+  #           try {
+  #             services = JSON.parse((process.env.SERVICES_JSON ?? '[]').toString());
+  #           } catch {
+  #             core.setFailed('inputs.services não é JSON válido');
+  #             return;
+  #           }
+  #           if (!Array.isArray(services)) {
+  #             core.setFailed('inputs.services deve ser um JSON array');
+  #             return;
+  #           }
+  #           core.info(`Services backend/go recebidos: ${services.length}`);
+  #           for (const s of services) core.info(`- ${s?.path ?? '<sem path>'}`);
