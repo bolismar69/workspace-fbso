@@ -111,6 +111,7 @@ jobs:
           else
             mvn -B -U -DskipTests checkstyle:check
           fi
+      # TODO: extrair lógica de análise Checkstyle para ação reutilizável, consumida por este e outros workflows (ex: CI Genérico Frontend)
 
       - name: OWASP Dependency Analysis
         timeout-minutes: ${{ fromJSON(vars.JOB_CI_TIMEOUT_OWASP_MINUTES || '20') }}
@@ -130,6 +131,21 @@ jobs:
           else
             mvn org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true
           fi
+      
+      # TODO: extrair lógica de análise de vulnerabilidades para ação reutilizável, consumida por este e outros workflows (ex: CI Genérico Frontend)
+      # - name: Análise de vulnerabilidades com Snyk
+      #   if: ${{ secrets.SNYK_TOKEN }}
+      #   env:
+      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      #   run: |
+      #     set -euo pipefail
+      #     cd ${{ matrix.path }}
+      #     if [ -f "pom.xml" ]; then
+      #       snyk test --all-projects --severity-threshold=high
+      #     else
+      #       echo "pom.xml não encontrado em ${{ matrix.path }}; pulando Snyk." >&2
+      #       exit 0
+      #     fi
 
       - name: Build do serviço com Maven (usa mvnm quando disponivel)
         run: |
@@ -150,6 +166,7 @@ jobs:
           else
             mvn test -B
           fi
+      # TODO: extrair lógica de execução de testes para ação reutilizável, consumida por este e outros workflows (ex: CI Genérico Frontend)
 
       - name: Verificação SonarQube
         env:
@@ -181,6 +198,7 @@ jobs:
               -Dsonar.organization=bolismar69 \
               -Dsonar.login="$SONAR_TOKEN"
           fi
+      # TODO: extrair lógica de análise SonarQube para ação reutilizável, consumida por este e outros workflows (ex: CI Genérico Frontend)
 
       - name: Validar artefato gerado
         id: validate-artifact
@@ -196,6 +214,15 @@ jobs:
             ls -la || true
             exit 1
           fi
+
+      # PROCESSO DE RELEASE - CRIACAO DE IMAGEM DO SERVICO COM DOCKER
+      - name: Hadolint no Dockerfile
+        uses: hadolint/hadolint-action@v2
+        with:
+          dockerfile: ${{ matrix.specification.docker.dockerfile }} 
+          # fail-level: error
+          verbose: true
+      # TODO: extrair lógica de build/push Docker para ação reutilizável, consumida por este e outros workflows (ex: CI Genérico Frontend)
 
       - name: Preparar Docker Buildx
         id: setup-buildx
@@ -270,3 +297,28 @@ jobs:
             CMD_EXTRA_RUNTIME_PRE_COPY=${{ matrix.specification.docker.argCmdExtraRuntimePreCopy }}
             CMD_EXTRA_RUNTIME_PRE_CMD=${{ matrix.specification.docker.argCmdExtraRuntimePreCmd }}
             COMPILATION_MODE=${{ matrix.specification.docker.argCompilationMode }}
+
+      - name: Execucao analise da imagem gerada com Trivy
+        uses: aquasecurity/trivy-action@v0.7.0
+        with:
+          image-ref: ${{ steps['define-image-e-tag'].outputs.image_tag }}
+          scan-type: 'vuln,config,image'
+          format: 'sarif'
+          # format: 'table'
+          output: 'trivy-docker-report.txt'
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+          # ignore-unfixed: true
+          # vuln-type: 'os,library'
+          # fail-on: 'HIGH,CRITICAL'
+          # scan-referrer: true
+          # scan-build-info: true
+          # scan-diff: true
+          # scan-removed-packages: true
+          # show-progress: true
+          # exit-code: '1'
+      
+      - name: Upload Trivy report to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          category: docker-results
+          sarif_file: 'trivy-docker-report.txt'

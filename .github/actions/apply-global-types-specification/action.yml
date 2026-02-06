@@ -1,0 +1,52 @@
+name: Apply global types specification
+description: Fill missing/empty specification on services using global-types-solution.json and output solutions/paths.
+author: FBSO
+
+inputs:
+  services:
+    description: JSON array string of service objects (usually full inventory objects)
+    required: true
+  global-types-path:
+    description: Path to global types file
+    required: false
+    default: architecture/governance/config/global-types-solution.json
+  python-version:
+    description: Python version to use
+    required: false
+    default: '3.11'
+  skip-checkout:
+    description: If true, assumes repository is already checked out
+    required: false
+    default: 'false'
+
+outputs:
+  solutions:
+    description: JSON array string of enriched services
+    value: ${{ steps.emit.outputs.solutions }}
+  paths:
+    description: JSON array string of paths
+    value: ${{ steps.emit.outputs.paths }}
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      if: ${{ inputs.skip-checkout != 'true' }}
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Apply global types specification
+      id: emit
+      shell: bash
+      env:
+        SERVICES_JSON: ${{ inputs.services }}
+      run: |
+        set -euo pipefail
+        python3 .github/scripts/apply_global_types_specification.py \
+          --global-types "${{ inputs.global-types-path }}"
