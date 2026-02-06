@@ -226,7 +226,8 @@ jobs:
             const registry = (process.env.DOCKER_REGISTRY ?? '').toString();
             const org = (process.env.DOCKER_ORG ?? '').toString();
             const prefix = (process.env.DOCKER_TAG_PREFIX ?? 'ci').toString();
-            const sha = (process.env.GITHUB_SHA ?? context.sha).toString();
+            const shaFull = (process.env.GITHUB_SHA ?? context.sha).toString();
+            const shaShort = shaFull.slice(0, 7);
             const datahoraformatoYYYYMMDDHHMMSS = () => {
               const now = new Date();
               const YYYY = now.getUTCFullYear().toString().padStart(4, '0');
@@ -242,7 +243,7 @@ jobs:
               throw new Error('DOCKER_REGISTRY/DOCKER_ORG não definidos');
             }
 
-            const imageTag = `${registry}/${org}/${imageName}:${prefix}-${datahoraformatoYYYYMMDDHHMMSS()}-${sha}`;
+            const imageTag = `${registry}/${org}/${imageName}:${prefix}-${datahoraformatoYYYYMMDDHHMMSS()}-${shaShort}`;
             core.exportVariable('IMAGE_TAG', imageTag);
             core.setOutput('image_tag', imageTag);
 
@@ -256,6 +257,8 @@ jobs:
           file: ${{ matrix.specification.docker.dockerfile }}
           push: true
           tags: ${{ steps['define-image-e-tag'].outputs.image_tag }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
           build-args: |
             SERVICE_PATH=${{ matrix.path }}
             JAVA_VERSION=${{ matrix.specification.platformVersion }}
