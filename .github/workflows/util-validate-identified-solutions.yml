@@ -51,6 +51,11 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ vars.CI_PYTHON_VERSION || '3.11' }}
+
       - name: Validate identified solutions against inventory
         id: emit
         env:

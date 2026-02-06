@@ -26,7 +26,7 @@ name: Global Callables Detection Solutions Changed
 #   Exemplo:
 #   ["backend/java/spring/microservices/ms-example"]
 #
-# STEPS (jobs.detect_services)
+# STEPS (jobs.detect-services)
 # - Checkout: necessário para `git diff`.
 # - Run Python: `.github/scripts/detect_solutions_changed.py` faz diff BASE..HEAD, extrai roots (5 níveis),
 #   e emite `solutions`/`paths` em JSON compact.
@@ -49,13 +49,13 @@ on:
     outputs:
       solutions:
         description: 'String contendo JSON array de solutions alteradas (apenas objetos {path}).'
-        value: ${{ jobs.detect_services.outputs.solutions }}
+        value: ${{ jobs['detect-services'].outputs.solutions }}
       paths:
         description: 'String contendo JSON array de paths (solutions) alterados.'
-        value: ${{ jobs.detect_services.outputs.paths }}
+        value: ${{ jobs['detect-services'].outputs.paths }}
 
 jobs:
-  detect_services:
+  detect-services:
     runs-on: ubuntu-latest
     outputs:
       solutions: ${{ steps.emit.outputs.solutions }}
@@ -66,6 +66,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ vars.CI_PYTHON_VERSION || '3.11' }}
 
       - name: Detectando soluções modificadas
         id: emit

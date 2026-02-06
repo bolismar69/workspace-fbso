@@ -5,7 +5,7 @@ name: CI Generic Backend
 # - Suporta 2 modos:
 #   - push/PR: detecta alterações via reusable detector (git diff) e retorna apenas {path}.
 #   - workflow_dispatch/workflow_call: valida apenas o layout de `services` (lista de {path}).
-# - Validação/enriquecimento contra o inventory ocorre em job dedicado: validate_identified_solutions.
+# - Validação/enriquecimento contra o inventory ocorre em job dedicado: validate-identified-solutions.
 # - Roteia as solutions por plataforma (stack=backend): java/go/python/csharp.
 # - Chama o workflow especialista correspondente:
 #   - backend/csharp  -> call-ci-backend-csharp.yml
@@ -17,14 +17,6 @@ name: CI Generic Backend
 # INPUTS
 # - workflow_dispatch.services: opcional (JSON array string) no formato [{"path":"..."}] para sobrescrever a detecção automática.
 # - workflow_call.services: opcional (JSON array string) no formato [{"path":"..."}] para sobrescrever a detecção automática.
-# - Exemplos de input.services recomendado (apenas paths; o workflow enriquece via inventory):
-#   1: [{"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue"}]
-#   2: 
-#     [
-#     {"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue"},
-#     {"path": "frontend/javascript/react/web_apps/web-ecommerce-sales"},
-#     {"path": "orchestration/kestra/flows/etl/etl-bank-files-process"}
-#     ]
 #
 # OUTPUTS
 # - Nenhum. Efeito: chama workflows especialistas conforme plataformas afetadas.
@@ -45,7 +37,6 @@ on:
         required: false
         type: string
         default: '[{"path": "backend/java/spring/queue_workers/ms-transaction-processor-queue"},{"path": "backend/csharp/.net/queue_workers/ms-transaction-processor-queue"},{"path": "backend/go/gin/queue_workers/ms-transaction-processor-queue"},{"path": "backend/python/django/queue_workers/ms-transaction-processor-queue"},{"path": "frontend/javascript/react/web_apps/web-ecommerce-sales"},{"path": "orchestration/kestra/flows/etl/etl-bank-files-process"}]'
-
   workflow_call:
     inputs:
       services:
@@ -63,28 +54,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  detect_solutions_changed:
+  detect-solutions-changed:
     name: Detectar solutions alteradas (backend)
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
     uses: ./.github/workflows/util-detection-solutions-changed.yml
     with:
       stack: backend
-      base_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before || github.sha }}
+      base_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
       head_sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
 
-  detect_input_services:
+  detect-input-services:
     name: Validar input.services (workflow_dispatch/workflow_call)
     if: >-
       ${{
         (github.event_name == 'workflow_call'
-          && inputs.services
+          && inputs.services != ''
           && inputs.services != 'null'
           && inputs.services != '[]'
           && contains(inputs.services, '"path"')
         )
         ||
         (github.event_name == 'workflow_dispatch'
-          && github.event.inputs.services
+          && github.event.inputs.services != ''
           && github.event.inputs.services != 'null'
           && github.event.inputs.services != '[]'
           && contains(github.event.inputs.services, '"path"')
@@ -96,78 +87,80 @@ jobs:
       services: ${{ github.event_name == 'workflow_call' && inputs.services || github.event.inputs.services }}
       strict: 'false'
 
-  validate_identified_solutions:
+  validate-identified-solutions:
     name: Validar solutions identificadas (inventory)
-    needs: [detect_solutions_changed, detect_input_services]
-    if: >-
-      ${{
-        always()
-        && ( needs.detect_input_services.result == 'success' || needs.detect_solutions_changed.result == 'success' )
-      }}
+    needs: [detect-solutions-changed, detect-input-services]
     uses: ./.github/workflows/util-validate-identified-solutions.yml
     with:
       stack: backend
       services: >-
         ${{
-          (needs.detect_input_services.result == 'success' && needs.detect_input_services.outputs.solutions)
-          || (needs.detect_solutions_changed.result == 'success' && needs.detect_solutions_changed.outputs.solutions)
+          (needs['detect-input-services'].result == 'success' && fromJSON(toJSON(needs['detect-input-services'].outputs)).solutions)
+          || (needs['detect-solutions-changed'].result == 'success' && fromJSON(toJSON(needs['detect-solutions-changed'].outputs)).solutions)
           || '[]'
         }}
 
-  enrich_missing_specification:
+  enrich-missing-specification:
     name: Preencher specification via global types (backend)
     runs-on: ubuntu-latest
-    needs: validate_identified_solutions
-    if: ${{ always() && needs.validate_identified_solutions.outputs.solutions != '' && needs.validate_identified_solutions.outputs.solutions != '[]' }}
+    needs: validate-identified-solutions
+    if: ${{ always() && needs['validate-identified-solutions'].result == 'success' && fromJSON(toJSON(needs['validate-identified-solutions'].outputs)).solutions != '' && fromJSON(toJSON(needs['validate-identified-solutions'].outputs)).solutions != '[]' }}
     outputs:
       solutions: ${{ steps.enrich.outputs.solutions }}
       paths: ${{ steps.enrich.outputs.paths }}
     steps:
-      - name: Diagnóstico (validate_identified_solutions)
+      - name: Diagnóstico (validate-identified-solutions)
         env:
-          VALIDATE_RESULT: ${{ needs.validate_identified_solutions.result }}
-          VALIDATE_SOLUTIONS: ${{ needs.validate_identified_solutions.outputs.solutions }}
-          VALIDATE_PATHS: ${{ needs.validate_identified_solutions.outputs.paths }}
+          VALIDATE_RESULT: ${{ needs['validate-identified-solutions'].result }}
+          VALIDATE_SOLUTIONS: ${{ fromJSON(toJSON(needs['validate-identified-solutions'].outputs)).solutions }}
+          VALIDATE_PATHS: ${{ fromJSON(toJSON(needs['validate-identified-solutions'].outputs)).paths }}
         run: |
           set -euo pipefail
-          echo "needs.validate_identified_solutions.result=$VALIDATE_RESULT"
-          echo "needs.validate_identified_solutions.outputs.paths=${VALIDATE_PATHS:-}"
-          echo "needs.validate_identified_solutions.outputs.solutions=${VALIDATE_SOLUTIONS:-}"
+          echo "needs.validate-identified-solutions.result=$VALIDATE_RESULT"
+          echo "needs.validate-identified-solutions.outputs.paths=${VALIDATE_PATHS:-}"
+          echo "needs.validate-identified-solutions.outputs.solutions=${VALIDATE_SOLUTIONS:-}"
+
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ vars.CI_PYTHON_VERSION || '3.11' }}
+
       - name: Aplicar defaults de specification (por tipo)
         id: enrich
         env:
-          SERVICES_JSON: ${{ needs.validate_identified_solutions.outputs.solutions || '[]' }}
+          SERVICES_JSON: ${{ fromJSON(toJSON(needs['validate-identified-solutions'].outputs)).solutions || '[]' }}
         run: |
           set -euo pipefail
           python3 .github/scripts/apply_global_types_specification.py \
             --global-types architecture/governance/config/global-types-solution.json
 
-  route_backend_platforms:
+  route-backend-platforms:
     name: Roteamento por plataforma (backend)
     runs-on: ubuntu-latest
-    needs: enrich_missing_specification
-    if: ${{ always() && needs.enrich_missing_specification.outputs.solutions != '' && needs.enrich_missing_specification.outputs.solutions != '[]' }}
+    needs: enrich-missing-specification
+    if: ${{ always() && needs['enrich-missing-specification'].outputs['solutions'] != '' && needs['enrich-missing-specification'].outputs['solutions'] != '[]' }}
     outputs:
       java_services: ${{ steps.route.outputs.java_services }}
       go_services: ${{ steps.route.outputs.go_services }}
       python_services: ${{ steps.route.outputs.python_services }}
       csharp_services: ${{ steps.route.outputs.csharp_services }}
     steps:
-      - name: Diagnóstico (enrich_missing_specification)
+      - name: Diagnóstico (enrich-missing-specification)
         env:
-          ENRICH_SOLUTIONS: ${{ needs.enrich_missing_specification.outputs.solutions }}
-          ENRICH_PATHS: ${{ needs.enrich_missing_specification.outputs.paths }}
+          ENRICH_SOLUTIONS: ${{ needs['enrich-missing-specification'].outputs['solutions'] }}
+          ENRICH_PATHS: ${{ needs['enrich-missing-specification'].outputs['paths'] }}
         run: |
           set -euo pipefail
-          echo "needs.enrich_missing_specification.outputs.paths=${ENRICH_PATHS:-}"
-          echo "needs.enrich_missing_specification.outputs.solutions=${ENRICH_SOLUTIONS:-}"
+          echo "needs.enrich-missing-specification.outputs.paths=${ENRICH_PATHS:-}"
+          echo "needs.enrich-missing-specification.outputs.solutions=${ENRICH_SOLUTIONS:-}"
       - name: Roteiar services por plataforma
         id: route
         uses: actions/github-script@v7
         env:
-          SERVICES_JSON: ${{ needs.enrich_missing_specification.outputs.solutions || '[]' }}
+          SERVICES_JSON: ${{ needs['enrich-missing-specification'].outputs['solutions'] || '[]' }}
         with:
           script: |
             let services;
@@ -226,54 +219,39 @@ jobs:
             core.setOutput('python_services', JSON.stringify(byPlatform.python));
             core.setOutput('csharp_services', JSON.stringify(byPlatform.csharp));
 
-  ci_backend_java:
+  ci-backend-java:
     name: CI Backend Java
-    needs: route_backend_platforms
-    if: ${{ always() && needs.route_backend_platforms.outputs.java_services != '[]' && needs.route_backend_platforms.outputs.java_services != '' }}
+    needs: route-backend-platforms
+    if: ${{ always() && needs['route-backend-platforms'].outputs.java_services != '[]' && needs['route-backend-platforms'].outputs.java_services != '' }}
     uses: ./.github/workflows/call-ci-backend-java.yml
     with:
-      services: ${{ needs.route_backend_platforms.outputs.java_services }}
+      services: ${{ needs['route-backend-platforms'].outputs.java_services }}
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  ci_backend_go:
+  ci-backend-go:
     name: CI Backend Go
-    needs: route_backend_platforms
-    if: ${{ always() && needs.route_backend_platforms.outputs.go_services != '[]' && needs.route_backend_platforms.outputs.go_services != '' }}
+    needs: route-backend-platforms
+    if: ${{ always() && needs['route-backend-platforms'].outputs.go_services != '[]' && needs['route-backend-platforms'].outputs.go_services != '' }}
     uses: ./.github/workflows/call-ci-backend-go.yml
     with:
-      services: ${{ needs.route_backend_platforms.outputs.go_services }}
-    # secrets:
-    #   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-    #   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-    #   NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-    #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      services: ${{ needs['route-backend-platforms'].outputs.go_services }}
 
-  ci_backend_python:
+  ci-backend-python:
     name: CI Backend Python
-    needs: route_backend_platforms
-    if: ${{ always() && needs.route_backend_platforms.outputs.python_services != '[]' && needs.route_backend_platforms.outputs.python_services != '' }}
+    needs: route-backend-platforms
+    if: ${{ always() && needs['route-backend-platforms'].outputs.python_services != '[]' && needs['route-backend-platforms'].outputs.python_services != '' }}
     uses: ./.github/workflows/call-ci-backend-python.yml
     with:
-      services: ${{ needs.route_backend_platforms.outputs.python_services }}
-    # secrets:
-    #   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-    #   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-    #   NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-    #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      services: ${{ needs['route-backend-platforms'].outputs.python_services }}
 
-  ci_backend_csharp:
+  ci-backend-csharp:
     name: CI Backend CSharp
-    needs: route_backend_platforms
-    if: ${{ always() && needs.route_backend_platforms.outputs.csharp_services != '[]' && needs.route_backend_platforms.outputs.csharp_services != '' }}
+    needs: route-backend-platforms
+    if: ${{ always() && needs['route-backend-platforms'].outputs.csharp_services != '[]' && needs['route-backend-platforms'].outputs.csharp_services != '' }}
     uses: ./.github/workflows/call-ci-backend-csharp.yml
     with:
-      services: ${{ needs.route_backend_platforms.outputs.csharp_services }}
-    # secrets:
-    #   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-    #   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-    #   NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-    #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      services: ${{ needs['route-backend-platforms'].outputs.csharp_services }}
