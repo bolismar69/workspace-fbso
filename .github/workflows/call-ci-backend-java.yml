@@ -222,7 +222,7 @@ jobs:
           dockerfile: ${{ matrix.specification.docker.dockerfile }} 
           # fail-level: error
           verbose: true
-      # TODO: extrair lógica de build/push Docker para ação reutilizável, consumida por este e outros workflows (ex: CI Genérico Frontend)
+      # TODO: logar e extrair lógica de build/push Docker para ação reutilizável, consumida por este e outros workflows (ex: CI Genérico Frontend)
 
       - name: Preparar Docker Buildx
         id: setup-buildx
