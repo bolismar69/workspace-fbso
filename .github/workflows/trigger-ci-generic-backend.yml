@@ -89,19 +89,19 @@ jobs:
       services: ${{ github.event_name == 'workflow_call' && inputs.services || github.event.inputs.services }}
       strict: 'false'
 
-  verificar:
-    name: Verificar se há solutions a processar
-    needs: [detect-input-services]
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Diagnóstico
-        run: |
-          set -euo pipefail
-          echo "needs.detect-solutions-changed.result=${{ needs['detect-solutions-changed'].result }}"
-          echo "needs.detect-solutions-changed.outputs.solutions=${{ fromJSON(toJSON(needs['detect-solutions-changed'].outputs)).solutions }}"
-          echo "needs.detect-input-services.result=${{ needs['detect-input-services'].result }}"
-          echo "needs.detect-input-services.outputs.solutions=${{ fromJSON(toJSON(needs['detect-input-services'].outputs)).solutions }}"
+  # verificar:
+  #   name: Verificar se há solutions a processar
+  #   needs: [detect-input-services, detect-solutions-changed]
+  #   if: ${{ always() }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Diagnóstico
+  #       run: |
+  #         set -euo pipefail
+  #         echo "needs.detect-solutions-changed.result=${{ needs['detect-solutions-changed'].result }}"
+  #         echo "needs.detect-solutions-changed.outputs.solutions=${{ fromJSON(toJSON(needs['detect-solutions-changed'].outputs)).solutions }}"
+  #         echo "needs.detect-input-services.result=${{ needs['detect-input-services'].result }}"
+  #         echo "needs.detect-input-services.outputs.solutions=${{ fromJSON(toJSON(needs['detect-input-services'].outputs)).solutions }}"
 
   validate-identified-solutions:
     name: Validar solutions identificadas (inventory)
