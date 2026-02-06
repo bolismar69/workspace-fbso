@@ -1,0 +1,88 @@
+name: Route services by platform
+description: Route services JSON array into per-platform buckets (java/go/python/csharp), mirroring trigger-ci-generic-backend logic.
+author: FBSO
+
+inputs:
+  services:
+    description: JSON array string of services (objects that include at least {path}, optionally platform)
+    required: true
+
+outputs:
+  java_services:
+    description: JSON array string of java services
+    value: ${{ steps.route.outputs.java_services }}
+  go_services:
+    description: JSON array string of go services
+    value: ${{ steps.route.outputs.go_services }}
+  python_services:
+    description: JSON array string of python services
+    value: ${{ steps.route.outputs.python_services }}
+  csharp_services:
+    description: JSON array string of csharp services
+    value: ${{ steps.route.outputs.csharp_services }}
+
+runs:
+  using: composite
+  steps:
+    - name: Route services by platform
+      id: route
+      uses: actions/github-script@v7
+      env:
+        SERVICES_JSON: ${{ inputs.services }}
+      with:
+        script: |
+          let services;
+          try {
+            services = JSON.parse((process.env.SERVICES_JSON ?? '[]').toString());
+          } catch {
+            core.setFailed('SERVICES_JSON não é JSON válido');
+            return;
+          }
+          if (!Array.isArray(services)) {
+            core.setFailed('SERVICES_JSON deve ser um JSON array');
+            return;
+          }
+
+          const byPlatform = { java: [], go: [], python: [], csharp: [] };
+
+          const normalizePlatform = (rawPlatform, rawPath) => {
+            const p = (rawPlatform ?? '').toString().trim().toLowerCase();
+            if (p) {
+              if (p === 'c#' || p === 'csharp' || p === 'c-sharp') return 'csharp';
+              return p;
+            }
+            const path = (rawPath ?? '').toString().trim();
+            const parts = path.split('/').filter(Boolean);
+            if (parts.length >= 2) {
+              const fromPath = parts[1].toLowerCase();
+              if (fromPath === 'c#' || fromPath === 'csharp') return 'csharp';
+              return fromPath;
+            }
+            return '';
+          };
+
+          const seen = new Set();
+          for (const s of services) {
+            const path = (s?.path ?? '').toString().trim();
+            if (!path) continue;
+            if (seen.has(path)) continue;
+            seen.add(path);
+
+            const platform = normalizePlatform(s?.platform, path);
+            if (platform === 'java') byPlatform.java.push(s);
+            else if (platform === 'go') byPlatform.go.push(s);
+            else if (platform === 'python') byPlatform.python.push(s);
+            else if (platform === 'csharp') byPlatform.csharp.push(s);
+            else core.warning(`Plataforma não roteada (ignorada): platform='${platform}' path='${path}'`);
+          }
+
+          core.info(`Services recebidos: ${seen.size}`);
+          core.info(`- java: ${byPlatform.java.length}`);
+          core.info(`- go: ${byPlatform.go.length}`);
+          core.info(`- python: ${byPlatform.python.length}`);
+          core.info(`- csharp: ${byPlatform.csharp.length}`);
+
+          core.setOutput('java_services', JSON.stringify(byPlatform.java));
+          core.setOutput('go_services', JSON.stringify(byPlatform.go));
+          core.setOutput('python_services', JSON.stringify(byPlatform.python));
+          core.setOutput('csharp_services', JSON.stringify(byPlatform.csharp));

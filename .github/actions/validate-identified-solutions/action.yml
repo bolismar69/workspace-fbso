@@ -1,0 +1,51 @@
+name: Validate identified solutions
+description: Validate detected/reported services against manager inventory and output validated active solutions/paths.
+author: FBSO
+
+inputs:
+  services:
+    description: JSON array string with objects {path} (strings accepted for compatibility)
+    required: true
+  stack:
+    description: Optional stack filter (backend|frontend|orchestration)
+    required: false
+  python-version:
+    description: Python version to use
+    required: false
+    default: '3.11'
+  skip-checkout:
+    description: If true, assumes repository is already checked out
+    required: false
+    default: 'false'
+
+outputs:
+  solutions:
+    description: JSON array string of full inventory solution objects
+    value: ${{ steps.emit.outputs.solutions }}
+  paths:
+    description: JSON array string of validated active paths
+    value: ${{ steps.emit.outputs.paths }}
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      if: ${{ inputs.skip-checkout != 'true' }}
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Validate identified solutions
+      id: emit
+      shell: bash
+      env:
+        INPUT_SERVICES: ${{ inputs.services }}
+        INPUT_STACK: ${{ inputs.stack }}
+      run: |
+        set -euo pipefail
+        python3 .github/scripts/validate_identified_solutions.py
