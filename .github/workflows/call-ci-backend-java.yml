@@ -217,7 +217,7 @@ jobs:
 
       # PROCESSO DE RELEASE - CRIACAO DE IMAGEM DO SERVICO COM DOCKER
       - name: Hadolint no Dockerfile
-        uses: hadolint/hadolint-action@v2
+        uses: hadolint/hadolint-action@v3.3.0
         with:
           dockerfile: ${{ matrix.specification.docker.dockerfile }} 
           # fail-level: error
@@ -299,7 +299,7 @@ jobs:
             COMPILATION_MODE=${{ matrix.specification.docker.argCompilationMode }}
 
       - name: Execucao analise da imagem gerada com Trivy
-        uses: aquasecurity/trivy-action@v0.7.0
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           image-ref: ${{ steps['define-image-e-tag'].outputs.image_tag }}
           scan-type: 'vuln,config,image'
