@@ -10,7 +10,6 @@ name: Call CI Backend Java
 #
 # OUTPUTS
 # - Nenhum.
-
 on:
   workflow_call:
     inputs:
