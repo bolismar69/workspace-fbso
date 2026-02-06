@@ -5,7 +5,7 @@
 
 ---
 
-![example event parameter](https://github.com/bolismar69/workspace-fbso/actions/workflows/trigger-ci-generic-backend.yml/badge.svg)
+![example event parameter]  (https://github.com/bolismar69/workspace-fbso/actions/workflows/trigger-ci-generic-backend.yml/badge.svg)
 
 ---
 

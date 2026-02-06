@@ -60,34 +60,31 @@
 # * @ORG-java-tech-lead
 
 # Docker e workflows compartilhados
-/.github/** @bolismar69@gmail.com
+/.github/ @bolismar69@gmail.com
 
 # Proprietários de Arquitetura
-/architecture/** @bolismar69@gmail.com
+/architecture/ @bolismar69@gmail.com
 
 # Proprietários de DevOps
-/devops/** @bolismar69@gmail.com
+/devops/ @bolismar69@gmail.com
 
 # Proprietários de Orchestration
-/orchestration/** @bolismar69@gmail.com
+/orchestration/ @bolismar69@gmail.com
 
 # Java (backend)
-/backend/java/generic/** @bolismar69@gmail.com
+/backend/java/generic/ @bolismar69@gmail.com
 
 # Spring
-/backend/java/spring/** @bolismar69@gmail.com
+/backend/java/spring/ @bolismar69@gmail.com
 
 # Quarkus
-/backend/java/quarkus/** @bolismar69@gmail.com
+/backend/java/quarkus/ @bolismar69@gmail.com
 
 # Frontend
-/frontend/** @bolismar69@gmail.com
+/frontend/ @bolismar69@gmail.com
 
 # data_science
-/data_science/** @bolismar69@gmail.com
+/data_science/ @bolismar69@gmail.com
 
 # data_engineering
-/data_engineering/** @bolismar69@gmail.com
-
-# todas as pastas
-/** @bolismar69@gmail.com
+/data_engineering/ @bolismar69@gmail.com
