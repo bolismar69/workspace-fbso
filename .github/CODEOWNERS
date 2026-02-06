@@ -79,3 +79,6 @@
 
 # Quarkus
 /backend/java/quarkus/** @bolismar69@gmail.com
+
+# Frontend
+/frontend/** @bolismar69@gmail.com
