@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+    "**/go.mod": "go.mod",
+    "**/go.sum": "go.sum",
+    "**/App.tsx": "App.tsx",
+    "**/App.ts": "App.ts",
+    "**/index.tsx": "index.tsx",
+    "**/index.ts": "index.ts",
+    "**/main.tsx": "main.tsx",
+    "**/main.ts": "main.ts",
+  }
+}

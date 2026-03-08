@@ -1,0 +1,16 @@
+services:
+  web_app-cnpj-validacao:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:8080
+
+  e2e:
+    build:
+      context: .
+      dockerfile: Dockerfile.e2e
+    depends_on:
+      - web_app-cnpj-validacao
+    environment:
+      - BASE_URL=http://web_app-cnpj-validacao:8080/

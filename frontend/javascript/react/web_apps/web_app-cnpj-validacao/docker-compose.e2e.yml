@@ -1,0 +1,18 @@
+services:
+  web_app-cnpj-validacao:
+    image: web-app-cnpj-validacao:react
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "18080:80"
+
+  e2e:
+    image: web-app-cnpj-validacao:react-e2e
+    build:
+      context: .
+      dockerfile: Dockerfile.e2e
+    environment:
+      - WEB_URL=http://web_app-cnpj-validacao
+    depends_on:
+      - web_app-cnpj-validacao

@@ -1,0 +1,16 @@
+{
+  "name": "web_app-cnpj-validacao",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Página simples (AngularJS + TypeScript) para validar CNPJ",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && mkdir -p dist && cp src/index.html dist/index.html && cp node_modules/angular/angular.min.js dist/angular.min.js",
+    "build:clean": "rm -rf dist && npm run build"
+  },
+  "dependencies": {
+    "angular": "1.8.3"
+  },
+  "devDependencies": {
+    "typescript": "5.5.4"
+  }
+}

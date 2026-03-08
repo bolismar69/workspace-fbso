@@ -1,0 +1,14 @@
+services:
+  mobile_app-cnpj-validacao:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+  e2e:
+    build:
+      context: .
+      dockerfile: Dockerfile.e2e
+    depends_on:
+      - mobile_app-cnpj-validacao
+    environment:
+      - BASE_URL=http://mobile_app-cnpj-validacao/

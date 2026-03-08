@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR" ng-app="cnpjApp">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Validação de CNPJ</title>
+    <script src="./angular.min.js"></script>
+    <script src="./app.js"></script>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+      label { display: block; margin-bottom: 8px; font-weight: 600; }
+      input { font-size: 16px; padding: 10px 12px; width: 320px; max-width: 100%; }
+      .hint { color: #555; margin-top: 6px; }
+      .result { margin-top: 16px; padding: 12px; border: 1px solid #ddd; width: 520px; max-width: 100%; }
+      .row { margin-top: 6px; }
+      .ok { color: #0a7a0a; font-weight: 700; }
+      .bad { color: #b00020; font-weight: 700; }
+      code { background: #f6f6f6; padding: 2px 6px; }
+    </style>
+  </head>
+  <body ng-controller="MainController as vm">
+    <h1>Validação de CNPJ</h1>
+
+    <label for="cnpj">CNPJ</label>
+    <input
+      id="cnpj"
+      name="cnpj"
+      type="text"
+      placeholder="99.999.999/9999-99"
+      ng-model="vm.cnpj"
+      ng-change="vm.onChange()"
+      cnpj-mask
+      data-testid="cnpj-input"
+      autocomplete="off"
+    />
+    <div class="hint">Máscara: <code>99.999.999/9999-99</code></div>
+
+    <div class="result" data-testid="result">
+      <div class="row">input: <code data-testid="input-value">{{ vm.inputOrNull() }}</code></div>
+      <div class="row">normalized: <code data-testid="normalized-value">{{ vm.normalizedOrNull() }}</code></div>
+      <div class="row">
+        valid:
+        <span data-testid="valid-value" ng-class="{ ok: vm.valid, bad: !vm.valid }">{{ vm.valid }}</span>
+      </div>
+      <div class="row">
+        <span data-testid="valid-label" ng-class="{ ok: vm.valid, bad: !vm.valid }">{{ vm.valid ? 'Válido' : 'Inválido' }}</span>
+      </div>
+    </div>
+  </body>
+</html>

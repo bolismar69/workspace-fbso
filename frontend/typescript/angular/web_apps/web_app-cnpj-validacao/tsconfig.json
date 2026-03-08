@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "none",
+    "strict": true,
+    "outFile": "dist/app.js",
+    "sourceMap": false
+  },
+  "files": [
+    "src/cnpj.ts",
+    "src/app.ts"
+  ]
+}

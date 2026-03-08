@@ -1,0 +1,22 @@
+.git
+**/.DS_Store
+**/*.log
+
+# Go build artifacts
+**/*.exe
+**/*.out
+**/*.test
+**/*.prof
+**/coverage*
+
+# Local tooling
+.vscode
+.idea
+
+# Dependency caches
+**/vendor
+
+# OS / temp
+**/tmp
+**/temp
+

@@ -1,0 +1,16 @@
+.dart_tool/
+.packages
+.pub-cache/
+build/
+
+android/.gradle/
+android/local.properties
+ios/Pods/
+
+.vscode/
+.idea/
+*.iml
+
+# E2E
+.e2e/
+e2e/node_modules/

@@ -1,0 +1,48 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+@using WebAppCnpjValidacao.Domain
+
+<PageTitle>Validação de CNPJ</PageTitle>
+
+<h1>Validação de CNPJ</h1>
+
+<div class="mb-3" style="max-width: 360px;">
+	<label for="cnpj" class="form-label">CNPJ</label>
+	<input id="cnpj"
+		   class="form-control"
+		   inputmode="numeric"
+		   autocomplete="off"
+		   placeholder="99.999.999/9999-99"
+		   value="@_cnpjMasked"
+		   @oninput="OnInput"
+		   data-testid="cnpj-input" />
+</div>
+
+<div class="mt-3">
+	<div><strong>input:</strong> <span data-testid="result-input">@Display(_input)</span></div>
+	<div><strong>normalized:</strong> <span data-testid="result-normalized">@Display(_normalized)</span></div>
+	<div><strong>valid:</strong> <span data-testid="result-valid">@DisplayBool(_valid)</span></div>
+</div>
+
+@code {
+	private string _cnpjMasked = string.Empty;
+
+	private string? _input;
+	private string? _normalized;
+	private bool? _valid;
+
+	private void OnInput(ChangeEventArgs e)
+	{
+		var raw = e.Value?.ToString() ?? string.Empty;
+		_cnpjMasked = CnpjValidator.FormatMasked(raw);
+
+		_input = string.IsNullOrWhiteSpace(raw) ? null : raw;
+		_normalized = CnpjValidator.Normalize(raw);
+		_valid = _normalized is null ? null : CnpjValidator.IsValid(_normalized);
+	}
+
+	private static string Display(string? value) => value ?? "null";
+
+	private static string DisplayBool(bool? value) => value is null ? "null" : (value.Value ? "true" : "false");
+}

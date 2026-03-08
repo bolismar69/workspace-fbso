@@ -1,0 +1,25 @@
+# Build outputs
+**/target/
+**/build/
+**/out/
+
+# VCS
+.git/
+
+# IDE/editor
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS / temp
+.DS_Store
+*.swp
+*.swo
+*.tmp
+*.log
+
+# Node (caso exista no monorepo)
+**/node_modules/

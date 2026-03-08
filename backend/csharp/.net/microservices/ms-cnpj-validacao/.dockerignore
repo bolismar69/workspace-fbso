@@ -1,0 +1,15 @@
+.git
+**/.DS_Store
+**/*.log
+
+# .NET build output
+**/bin
+**/obj
+
+# IDE
+.vscode
+.idea
+
+# Test results
+**/TestResults
+

@@ -1,0 +1,7 @@
+services:
+  tests:
+    image: ms-cnpj-validacao:csharp-tests
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: test

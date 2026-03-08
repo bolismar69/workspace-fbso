@@ -1,0 +1,23 @@
+.git
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+
+.vscode
+.idea
+
+*.log
+
+# Virtual envs
+.venv
+venv
+ENV
+
+# OS / temp
+**/.DS_Store
+**/tmp
+**/temp

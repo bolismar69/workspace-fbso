@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/playwright:v1.49.1-jammy
+WORKDIR /e2e
+
+COPY e2e/package.json ./package.json
+RUN npm install --no-audit --no-fund
+
+COPY e2e/run-tests.js ./run-tests.js
+
+ENV BASE_URL=http://mobile_app-cnpj-validacao/
+CMD ["node", "run-tests.js"]

@@ -1,0 +1,7 @@
+services:
+  mobile_app-cnpj-validacao:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "18080:80"

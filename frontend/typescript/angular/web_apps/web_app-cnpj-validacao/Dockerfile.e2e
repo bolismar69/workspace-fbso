@@ -1,0 +1,12 @@
+# syntax=docker/dockerfile:1
+
+FROM mcr.microsoft.com/playwright:v1.50.1-jammy
+WORKDIR /e2e
+
+COPY e2e/package.json ./package.json
+RUN npm install
+
+COPY e2e/run-tests.js ./run-tests.js
+
+ENV WEB_URL=http://web_app-cnpj-validacao
+CMD ["npm", "test"]
