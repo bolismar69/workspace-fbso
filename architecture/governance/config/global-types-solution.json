@@ -43,6 +43,48 @@
 			}
 		},
 		{
+			"path": "backend/java/spring/microservices",
+			"stack": "backend",
+			"platform": "java",
+			"framework": "spring",
+			"type": "microservices",
+			"specification": {
+				"platformVersion": "21",
+				"platformDistributor": "graalvm",
+				"docker": {
+					"dockerfile": "architecture/blueprints/backend/java/spring/microservices/v21/Dockerfile.native.21",
+					"argCompilationMode": "native",
+					"argImageBuild": "ghcr.io/graalvm/native-image-community:latest",
+					"argImageRuntime": "gcr.io/distroless/cc-debian12",
+					"argExposePort": 8080,
+					"argCmdExtraBuilderPreCopy": "echo 'Framework: Preparando ambiente...'",
+					"argCmdExtraBuilderPosCompile": "echo 'Framework: Compilação concluída.'",
+					"argCmdExtraRuntimePreCopy": "echo 'Framework: Preparando runtime...'",
+					"argCmdExtraRuntimePreCmd": "echo 'Framework: Finalizando imagem...'"
+				},
+				"compliance": {
+					"sonarqubeThreshold": "80",
+					"vulnerabilitySeverityLimit": "high",
+					"maxCpu": "500m",
+					"maxMemory": "1Gi",
+					"licensePolicy": {
+						"allowList": [
+							"Apache-2.0",
+							"MIT",
+							"BSD-3-Clause",
+							"EPL-2.0"
+						],
+						"denyList": [
+							"GPL-3.0",
+							"AGPL-3.0",
+							"LGPL-3.0"
+						],
+						"actionOnUnknown": "warn"
+					}
+				}
+			}
+		},
+		{
 			"path": "backend/csharp/.net/queue_workers",
 			"stack": "backend",
 			"platform": "csharp",

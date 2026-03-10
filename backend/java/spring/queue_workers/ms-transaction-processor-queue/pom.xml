@@ -9,7 +9,7 @@
 		<version>1.0.0</version>
 		<relativePath>../../../../../architecture/blueprints/backend/java/spring/queue_workers/v21/pom.xml</relativePath>
 	</parent>
-	<groupId>com.fbso.ms</groupId>
+	<groupId>com.fbso.transaction</groupId>
 	<artifactId>ms-transaction-processor-queue</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>ms-transaction-processor-queue</name>

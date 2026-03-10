@@ -3,30 +3,26 @@ package br.com.estudo.cnpj.api;
 import br.com.estudo.cnpj.CnpjValidator;
 import br.com.estudo.cnpj.api.dto.CnpjValidationRequest;
 import br.com.estudo.cnpj.api.dto.CnpjValidationResponse;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Path("/cnpj")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
+@RestController
+@RequestMapping("/cnpj")
 public class CnpjResource {
 
-    @GET
-    @Path("/validate")
-    public CnpjValidationResponse validateGet(@QueryParam("value") String value) {
+    @GetMapping("/validate")
+    public CnpjValidationResponse validateGet(@RequestParam("value") String value) {
         String normalized = CnpjValidator.normalize(value);
         boolean valid = CnpjValidator.isValid(value);
         return new CnpjValidationResponse(value, normalized, valid);
     }
 
-    @POST
-    @Path("/validate")
-    public CnpjValidationResponse validatePost(CnpjValidationRequest request) {
+    @PostMapping("/validate")
+    public CnpjValidationResponse validatePost(@RequestBody(required = false) CnpjValidationRequest request) {
         String input = (request == null) ? null : request.cnpj();
         String normalized = CnpjValidator.normalize(input);
         boolean valid = CnpjValidator.isValid(input);

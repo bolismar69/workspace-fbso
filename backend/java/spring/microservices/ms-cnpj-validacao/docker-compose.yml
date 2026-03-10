@@ -1,8 +1,0 @@
-services:
-  ms-cnpj-validacao:
-    image: ms-cnpj-validacao:native
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "18080:8080"

@@ -1,0 +1,79 @@
+# syntax=docker/dockerfile:1.7
+ARG JAVA_VERSION=21
+ARG IMAGE_TO_BUILD=eclipse-temurin:21-jdk-jammy
+ARG IMAGE_TO_RUNTIME=eclipse-temurin:21-jre-jammy
+ARG APP_PORT=8080
+
+# Hooks opcionais (executados no build da imagem)
+ARG CMD_EXTRA_BUILDER_PRE_COPY=
+ARG CMD_EXTRA_BUILDER_POS_COMPILE=
+ARG CMD_EXTRA_RUNTIME_PRE_COPY=
+ARG CMD_EXTRA_RUNTIME_PRE_CMD=
+
+########################
+# Build
+########################
+FROM ${IMAGE_TO_BUILD} AS build
+
+# caminho do serviço dentro do monorepo
+ARG SERVICE_PATH=.
+
+# Hooks opcionais precisam ser re-declarados no stage para estarem disponíveis em RUN
+ARG CMD_EXTRA_BUILDER_PRE_COPY
+ARG CMD_EXTRA_BUILDER_POS_COMPILE
+
+WORKDIR /workspace
+
+# executa comando antes de copiar o repo inteiro
+RUN set -eux; \
+  if [ -n "${CMD_EXTRA_BUILDER_PRE_COPY}" ]; then sh -lc "${CMD_EXTRA_BUILDER_PRE_COPY}"; fi
+
+# importante: com context na raiz, copia o repo inteiro
+COPY . .
+
+# agora entra na pasta do serviço para executar o mvnw/pom daquele módulo
+WORKDIR /workspace/${SERVICE_PATH}
+
+# executa build final
+RUN --mount=type=cache,target=/root/.m2 \
+  set -eux; \
+  if [ -x ./mvnw ]; then \
+    ./mvnw -q -DskipTests package; \
+  else \
+    echo "ERRO: Padronize mvnw/gradlew no repo." && exit 1; \
+  fi; \
+  cp "$(ls -1 target/*.jar | head -n 1)" /workspace/app.jar
+
+RUN set -eux; \
+  if [ -n "${CMD_EXTRA_BUILDER_POS_COMPILE}" ]; then sh -lc "${CMD_EXTRA_BUILDER_POS_COMPILE}"; fi
+
+########################
+# Runtime
+########################
+FROM ${IMAGE_TO_RUNTIME} AS runtime
+ARG APP_PORT
+
+# Hooks opcionais precisam ser re-declarados no stage para estarem disponíveis em RUN
+ARG CMD_EXTRA_RUNTIME_PRE_COPY
+ARG CMD_EXTRA_RUNTIME_PRE_CMD
+ENV APP_PORT=${APP_PORT}
+ENV JAVA_OPTS=""
+
+WORKDIR /app
+
+RUN set -eux; \
+  if [ -n "${CMD_EXTRA_RUNTIME_PRE_COPY}" ]; then sh -lc "${CMD_EXTRA_RUNTIME_PRE_COPY}"; fi
+
+COPY --from=build /workspace/app.jar /app/app.jar
+
+RUN set -eux; \
+  if [ -n "${CMD_EXTRA_RUNTIME_PRE_CMD}" ]; then sh -lc "${CMD_EXTRA_RUNTIME_PRE_CMD}"; fi
+
+RUN set -eux; \
+  useradd -r -u 10001 -g root appuser; \
+  chown -R 10001:0 /app
+USER 10001
+
+EXPOSE ${APP_PORT}
+# Spring costuma respeitar SERVER_PORT/server.port; deixamos via env + JAVA_OPTS para ser flexível
+ENTRYPOINT ["sh","-c","exec java $JAVA_OPTS -Dserver.port=$APP_PORT -jar /app/app.jar"]

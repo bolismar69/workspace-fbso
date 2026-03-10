@@ -1,4 +1,4 @@
-package br.com.estudo.cnpj;
+package com.fbso.cnpj;
 
 import java.util.Objects;
 

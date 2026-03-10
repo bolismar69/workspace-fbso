@@ -1,0 +1,11 @@
+# Configuração Padrão do Serviço
+server:
+  port: 8080 # Porta para Health Check (Actuator)
+
+# Configuração de Logs
+logging:
+  level:
+    root: INFO
+    org.springframework: WARN
+    com.fbso: DEBUG # Nível de debug para o nosso código de negócio
+
