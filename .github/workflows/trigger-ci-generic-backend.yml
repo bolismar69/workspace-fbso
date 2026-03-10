@@ -1,5 +1,5 @@
 name: CI Generic Backend
-run-name: CI Genérico Backend - EVENTO/{{ github.event_name }} - BRANCH/{{ github.ref }} - REPOSITORY/{{ github.repository }} - NUMBER/{{ github.run_number }} - ACTOR/{{ github.actor }}
+run-name: CI Genérico Backend - EVENTO/${{ github.event_name }} - BRANCH/${{ github.ref_name }} - REPOSITORY/${{ github.repository }} - NUMBER/${{ github.run_number }} - ACTOR/${{ github.actor }}
 
 # FUNÇÃO
 # - Pipeline específico para backend.

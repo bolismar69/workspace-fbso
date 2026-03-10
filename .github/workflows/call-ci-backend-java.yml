@@ -130,7 +130,14 @@ jobs:
           else
             mvn org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true
           fi
-      
+
+      - name: Upload OWASP Report
+        uses: actions/upload-artifact@v4
+        if: always() # Garante que o relatório suba mesmo se encontrar falhas
+        with:
+          name: owasp-report-${{ matrix.name }}
+          path: ${{ matrix.path }}/target/dependency-check-report.html
+
       # TODO: extrair lógica de análise de vulnerabilidades para ação reutilizável, consumida por este e outros workflows (ex: CI Genérico Frontend)
       # - name: Análise de vulnerabilidades com Snyk
       #   if: ${{ secrets.SNYK_TOKEN }}
