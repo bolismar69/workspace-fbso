@@ -31,9 +31,109 @@ permissions:
   contents: read
 
 jobs:
+  prepare-dependency-check-db:
+    name: Prepare OWASP Dependency-Check DB (NVD)
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ fromJSON(vars.JOB_CI_TIMEOUT_OWASP_MINUTES || '20') }}
+    outputs:
+      java_distribution: ${{ steps.resolve-java.outputs.distribution }}
+      java_version: ${{ steps.resolve-java.outputs.java_version }}
+      has_db: ${{ steps.update-only.outputs.has_db }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve Java toolchain (from inputs.services[0])
+        id: resolve-java
+        uses: actions/github-script@v7
+        env:
+          SERVICES_JSON: ${{ inputs.services }}
+        with:
+          script: |
+            let services;
+            try {
+              services = JSON.parse((process.env.SERVICES_JSON ?? '[]').toString());
+            } catch {
+              core.setFailed('inputs.services não é JSON válido');
+              return;
+            }
+            const first = Array.isArray(services) ? services[0] : null;
+            const distribution = (first?.specification?.platformDistributor ?? 'temurin').toString();
+            const javaVersion = (first?.specification?.platformVersion ?? '21').toString();
+            core.setOutput('distribution', distribution);
+            core.setOutput('java_version', javaVersion);
+
+      - name: Setup Java (for dependency-check:update-only)
+        uses: actions/setup-java@v4
+        with:
+          distribution: ${{ steps.resolve-java.outputs.distribution }}
+          java-version: ${{ steps.resolve-java.outputs.java_version }}
+          cache: maven
+
+      - name: Compute Dependency-Check cache key (weekly)
+        id: dc-cache-key
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "key=${{ runner.os }}-dependency-check-db-v1-$(date -u +%G-W%V)" >> "$GITHUB_OUTPUT"
+          echo "restore_prefix=${{ runner.os }}-dependency-check-db-v1-" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Dependency-Check DB (shared)
+        uses: actions/cache@v4
+        with:
+          path: ~/.dependency-check
+          key: ${{ steps.dc-cache-key.outputs.key }}
+          restore-keys: |
+            ${{ steps.dc-cache-key.outputs.restore_prefix }}
+
+      - name: Update-only (download NVD once)
+        id: update-only
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.dependency-check"
+
+          if [ -z "${NVD_API_KEY:-}" ]; then
+            echo "NVD_API_KEY (secret) não configurado; pulando update-only." >&2
+            echo "has_db=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Usa blueprint já versionado no repo para executar o plugin
+          cd architecture/blueprints/backend/java/spring/queue_workers/v21
+
+          for i in 1 2 3; do
+            echo "dependency-check:update-only attempt=$i"
+            mvn -B -U org.owasp:dependency-check-maven:update-only && break
+            sleep $((i * 20))
+          done
+
+          # Sanity-check: garante que existe conteúdo após o update
+          if [ ! -d "$HOME/.dependency-check" ] || [ -z "$(ls -A "$HOME/.dependency-check" 2>/dev/null)" ]; then
+            echo "Dependency-Check DB vazia após update-only" >&2
+            exit 1
+          fi
+
+          echo "has_db=true" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Dependency-Check DB artifact
+        if: steps.update-only.outputs.has_db == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-db
+          path: ~/.dependency-check
+          retention-days: 1
+
   call-ci-java:
     name: Call CI Backend Java
     runs-on: ubuntu-latest
+    needs: [prepare-dependency-check-db]
+    if: always()
     timeout-minutes: ${{ fromJSON(vars.JOB_CI_TIMEOUT_MINUTES || '60') }}
     env:
       # === Docker (GitHub Variables) ===
@@ -83,22 +183,12 @@ jobs:
             ${{ matrix.path }}/.mvn/wrapper/maven-wrapper.properties
             ${{ matrix.path }}/.mvn/wrapper/maven-wrapper.jar
 
-      - name: Cache OWASP Dependency-Check DB
-        uses: actions/cache@v4
+      - name: Download Dependency-Check DB artifact
+        if: needs.prepare-dependency-check-db.result == 'success' && needs.prepare-dependency-check-db.outputs.has_db == 'true'
+        uses: actions/download-artifact@v4
         with:
-          # path: ~/.dependency-check
-          path: ~/.m2/repository/org/owasp/dependency-check-data/
-          key: >-
-            ${{ runner.os }}-dependency-check-${{ hashFiles(
-              format('{0}/pom.xml', matrix.path),
-              format('{0}/**/pom.xml', matrix.path),
-              format('{0}/mvnw', matrix.path),
-              format('{0}/.mvn/maven.config', matrix.path),
-              format('{0}/.mvn/wrapper/maven-wrapper.properties', matrix.path),
-              format('{0}/.mvn/wrapper/maven-wrapper.jar', matrix.path)
-            ) }}
-          restore-keys: |
-            ${{ runner.os }}-dependency-check-
+          name: dependency-check-db
+          path: ~/.dependency-check
 
       - name: Verificação Checkstyle
         # if: ${{ startsWith(matrix.path, 'backend/java/spring/') }}
@@ -124,11 +214,16 @@ jobs:
             exit 0
           fi
 
+          if [ ! -d "$HOME/.dependency-check" ] || [ -z "$(ls -A "$HOME/.dependency-check" 2>/dev/null)" ]; then
+            echo "Dependency-Check DB não disponível. O job preparatório não gerou/forneceu a DB." >&2
+            exit 1
+          fi
+
           cd ${{ matrix.path }}
           if [ -x ./mvnw ]; then
-            ./mvnw org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true
+            ./mvnw org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true -DdataDirectory="$HOME/.dependency-check" -DautoUpdate=false
           else
-            mvn org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true
+            mvn org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true -DdataDirectory="$HOME/.dependency-check" -DautoUpdate=false
           fi
 
       - name: Upload OWASP Report
