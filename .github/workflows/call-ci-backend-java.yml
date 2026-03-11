@@ -66,6 +66,28 @@ jobs:
             core.setOutput('distribution', distribution);
             core.setOutput('java_version', javaVersion);
 
+      - name: Resolve first service path (from inputs.services[0])
+        id: resolve-service
+        uses: actions/github-script@v7
+        env:
+          SERVICES_JSON: ${{ inputs.services }}
+        with:
+          script: |
+            let services;
+            try {
+              services = JSON.parse((process.env.SERVICES_JSON ?? '[]').toString());
+            } catch {
+              core.setFailed('inputs.services não é JSON válido');
+              return;
+            }
+            const first = Array.isArray(services) ? services[0] : null;
+            const path = (first?.path ?? '').toString().trim();
+            if (!path) {
+              core.setFailed('inputs.services[0].path vazio; não é possível preparar a DB');
+              return;
+            }
+            core.setOutput('service_path', path);
+
       - name: Setup Java (for dependency-check:update-only)
         uses: actions/setup-java@v4
         with:
@@ -93,6 +115,7 @@ jobs:
         id: update-only
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+          SERVICE_PATH: ${{ steps.resolve-service.outputs.service_path }}
         shell: bash
         run: |
           set -euo pipefail
@@ -104,12 +127,16 @@ jobs:
             exit 0
           fi
 
-          # Usa blueprint já versionado no repo para executar o plugin
-          cd architecture/blueprints/backend/java/spring/queue_workers/v21
+          # Executa o plugin dentro de um serviço real (onde o plugin está declarado/herdado)
+          cd "$SERVICE_PATH"
 
           for i in 1 2 3; do
             echo "dependency-check:update-only attempt=$i"
-            mvn -B -U org.owasp:dependency-check-maven:update-only && break
+            if [ -x ./mvnw ]; then
+              ./mvnw -B -U org.owasp:dependency-check-maven:update-only && break
+            else
+              mvn -B -U org.owasp:dependency-check-maven:update-only && break
+            fi
             sleep $((i * 20))
           done
 
@@ -127,6 +154,7 @@ jobs:
         with:
           name: dependency-check-db
           path: ~/.dependency-check
+          if-no-files-found: error
           retention-days: 1
 
   call-ci-java:
@@ -221,9 +249,13 @@ jobs:
 
           cd ${{ matrix.path }}
           if [ -x ./mvnw ]; then
-            ./mvnw org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true -DdataDirectory="$HOME/.dependency-check" -DautoUpdate=false
+            ./mvnw org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true \
+              -DdataDirectory="$HOME/.dependency-check" -Dodc.dataDirectory="$HOME/.dependency-check" \
+              -DautoUpdate=false -Dodc.autoUpdate=false
           else
-            mvn org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true -DdataDirectory="$HOME/.dependency-check" -DautoUpdate=false
+            mvn org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true \
+              -DdataDirectory="$HOME/.dependency-check" -Dodc.dataDirectory="$HOME/.dependency-check" \
+              -DautoUpdate=false -Dodc.autoUpdate=false
           fi
 
       - name: Upload OWASP Report
