@@ -95,6 +95,18 @@ jobs:
           java-version: ${{ steps.resolve-java.outputs.java_version }}
           cache: maven
 
+      - name: Diagnóstico (NVD_API_KEY presente?)
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -n "${NVD_API_KEY:-}" ]; then
+            echo "OK: NVD_API_KEY está configurado (valor oculto)."
+          else
+            echo "WARN: NVD_API_KEY está vazio/não disponível neste run."
+          fi
+
       - name: Compute Dependency-Check cache key (weekly)
         id: dc-cache-key
         shell: bash
@@ -133,9 +145,13 @@ jobs:
           for i in 1 2 3; do
             echo "dependency-check:update-only attempt=$i"
             if [ -x ./mvnw ]; then
-              ./mvnw -B -U org.owasp:dependency-check-maven:update-only && break
+              ./mvnw -B -U org.owasp:dependency-check-maven:update-only \
+                -DnvdApiKey="$NVD_API_KEY" -Dodc.nvdApiKey="$NVD_API_KEY" \
+                -DdataDirectory="$HOME/.dependency-check" -Dodc.dataDirectory="$HOME/.dependency-check" && break
             else
-              mvn -B -U org.owasp:dependency-check-maven:update-only && break
+              mvn -B -U org.owasp:dependency-check-maven:update-only \
+                -DnvdApiKey="$NVD_API_KEY" -Dodc.nvdApiKey="$NVD_API_KEY" \
+                -DdataDirectory="$HOME/.dependency-check" -Dodc.dataDirectory="$HOME/.dependency-check" && break
             fi
             sleep $((i * 20))
           done
@@ -251,11 +267,13 @@ jobs:
           if [ -x ./mvnw ]; then
             ./mvnw org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true \
               -DdataDirectory="$HOME/.dependency-check" -Dodc.dataDirectory="$HOME/.dependency-check" \
-              -DautoUpdate=false -Dodc.autoUpdate=false
+              -DautoUpdate=false -Dodc.autoUpdate=false \
+              -DnvdApiKey="$NVD_API_KEY" -Dodc.nvdApiKey="$NVD_API_KEY"
           else
             mvn org.owasp:dependency-check-maven:check -B -DskipTests -Dcheckstyle.skip=true \
               -DdataDirectory="$HOME/.dependency-check" -Dodc.dataDirectory="$HOME/.dependency-check" \
-              -DautoUpdate=false -Dodc.autoUpdate=false
+              -DautoUpdate=false -Dodc.autoUpdate=false \
+              -DnvdApiKey="$NVD_API_KEY" -Dodc.nvdApiKey="$NVD_API_KEY"
           fi
 
       - name: Upload OWASP Report
