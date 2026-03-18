@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-geolocalidade
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-geolocalidade
+  template:
+    metadata:
+      labels:
+        app: ms-geolocalidade
+    spec:
+      containers:
+        - name: ms-geolocalidade
+          image: ms-geolocalidade:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          env:
+            - name: AWESOME_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ms-geolocalidade-secrets
+                  key: awesomeApiToken
+            - name: AWESOME_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ms-geolocalidade-secrets
+                  key: awesomeApiKey

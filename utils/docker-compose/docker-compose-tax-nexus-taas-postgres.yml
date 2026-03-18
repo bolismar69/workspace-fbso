@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # --- INFRAESTRUTURA ---
+
+  db-tax-nexus-dev:
+      image: postgres:16-alpine
+      container_name: pg-tax-nexus
+      environment:
+        - POSTGRES_DB=tax_nexus_db
+        - POSTGRES_USER=bolismar
+        - POSTGRES_PASSWORD=admin_tax
+      ports:
+        - "5432:5432"
+      volumes:
+        - postgresdata:/var/lib/postgresql/data
+      networks:
+        - tax-nexus-net
+
+networks:
+  tax-nexus-net:
+    driver: bridge
+
+volumes:
+  postgresdata:
+    driver: local
+    name: postgresdata
+    driver_opts:
+      type: none
+      device: /home/bolismar/docker-volume/postgresdata
+      o: bind

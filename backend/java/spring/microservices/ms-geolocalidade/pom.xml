@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.fbso.blueprints.backend.java.spring</groupId>
+    <artifactId>microservices-parent-v21</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../../../../../architecture/blueprints/backend/java/spring/microservices/v21/pom.xml</relativePath>
+  </parent>
+
+  <groupId>com.fbso.geolocalidade</groupId>
+  <artifactId>ms-geolocalidade</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <name>ms-geolocalidade</name>
+  <description>Microserviço de geolocalização e vizinhança por CEP (AwesomeAPI + IBGE DTB)</description>
+
+  <properties>
+    <native.mainClass>com.fbso.geolocalidade.GeoApplication</native.mainClass>
+  </properties>
+
+  <dependencies>
+    <!-- Web/Actuator/Validation/Test vêm do parent -->
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-cache</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.ben-manes.caffeine</groupId>
+      <artifactId>caffeine</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <configuration>
+          <skip>true</skip>
+          <suppressionFile>dependency-checker-exclude.xml</suppressionFile>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

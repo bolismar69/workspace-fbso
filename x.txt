@@ -1,0 +1,322 @@
+.
+├── architecture
+│   ├── adr
+│   │   ├── data_standards
+│   │   ├── java
+│   │   ├── orchestration
+│   │   └── python
+│   ├── blueprints
+│   │   └── backend
+│   │       └── java
+│   │           ├── generic
+│   │           │   ├── docker
+│   │           │   └── src
+│   │           │       ├── main
+│   │           │       │   └── java
+│   │           │       │       └── com
+│   │           │       │           └── fbso
+│   │           │       │               └── core
+│   │           │       │                   ├── application
+│   │           │       │                   ├── domain
+│   │           │       │                   ├── infrastructure
+│   │           │       │                   └── interfaces
+│   │           │       └── test
+│   │           │           └── java
+│   │           │               └── com
+│   │           │                   └── fbso
+│   │           │                       └── core
+│   │           │                           ├── application
+│   │           │                           ├── domain
+│   │           │                           ├── infrastructure
+│   │           │                           └── interfaces
+│   │           ├── quarkus
+│   │           │   └── docker
+│   │           └── spring
+│   │               ├── application-models
+│   │               │   ├── batch-processor
+│   │               │   ├── queue-listener
+│   │               │   │   └── src
+│   │               │   │       └── main
+│   │               │   │           └── java
+│   │               │   │               └── com
+│   │               │   │                   └── fbso
+│   │               │   │                       └── queue
+│   │               │   └── rest-api
+│   │               ├── automation
+│   │               │   ├── v11
+│   │               │   ├── v17
+│   │               │   ├── v21
+│   │               │   ├── v25
+│   │               │   └── v8
+│   │               ├── batch_services
+│   │               │   ├── v11
+│   │               │   ├── v17
+│   │               │   ├── v21
+│   │               │   ├── v25
+│   │               │   └── v8
+│   │               ├── docker
+│   │               ├── ia_automation
+│   │               │   ├── v11
+│   │               │   ├── v17
+│   │               │   ├── v21
+│   │               │   ├── v25
+│   │               │   └── v8
+│   │               ├── microservices
+│   │               │   ├── v11
+│   │               │   ├── v17
+│   │               │   ├── v21
+│   │               │   ├── v25
+│   │               │   └── v8
+│   │               └── queue_workers
+│   │                   ├── v11
+│   │                   ├── v17
+│   │                   ├── v21
+│   │                   ├── v25
+│   │                   └── v8
+│   ├── data_standards
+│   │   ├── avro
+│   │   └── protobuf
+│   │       ├── common
+│   │       └── tax-engine-core
+│   ├── design_system
+│   └── governance
+│       └── config
+├── backend
+│   ├── csharp
+│   │   └── libs
+│   ├── go
+│   │   ├── fiber
+│   │   │   ├── batch_services
+│   │   │   ├── microservices
+│   │   │   └── queue_workers
+│   │   ├── gin
+│   │   │   ├── batch_services
+│   │   │   ├── microservices
+│   │   │   └── queue_workers
+│   │   │       └── ms-transaction-processor-queue
+│   │   ├── go-native
+│   │   │   ├── batch_services
+│   │   │   ├── microservices
+│   │   │   │   └── ms-cnpj-validacao
+│   │   │   └── queue_workers
+│   │   └── libs
+│   │       ├── gin
+│   │       └── go-native
+│   ├── java
+│   │   ├── generic
+│   │   ├── libs
+│   │   │   ├── quarkus
+│   │   │   └── spring
+│   │   ├── quarkus
+│   │   │   ├── batch_services
+│   │   │   ├── microservices
+│   │   │   └── queue_workers
+│   │   └── spring
+│   │       ├── batch_services
+│   │       ├── microservices
+│   │       │   └── ms-cnpj-validacao
+│   │       │       └── src
+│   │       │           ├── main
+│   │       │           │   ├── java
+│   │       │           │   │   └── com
+│   │       │           │   │       └── fbso
+│   │       │           │   │           └── cnpj
+│   │       │           │   │               └── api
+│   │       │           │   │                   └── dto
+│   │       │           │   └── resources
+│   │       │           └── test
+│   │       │               └── java
+│   │       │                   └── br
+│   │       │                       └── com
+│   │       │                           └── estudo
+│   │       │                               └── cnpj
+│   │       │                                   └── api
+│   │       └── queue_workers
+│   │           └── ms-transaction-processor-queue
+│   │               └── src
+│   │                   ├── main
+│   │                   │   ├── java
+│   │                   │   │   └── com
+│   │                   │   │       └── fbso
+│   │                   │   │           └── transaction
+│   │                   │   │               ├── config
+│   │                   │   │               └── queue
+│   │                   │   │                   └── listener
+│   │                   │   └── resources
+│   │                   └── test
+│   └── python
+│       ├── django
+│       │   ├── automation
+│       │   ├── batch_services
+│       │   ├── ia_automation
+│       │   ├── microservices
+│       │   │   └── ms-cnpj-validacao
+│       │   │       └── __pycache__
+│       │   └── queue_workers
+│       │       └── ms-transaction-processor-queue
+│       ├── flask
+│       │   ├── automation
+│       │   ├── batch_services
+│       │   ├── ia_automation
+│       │   ├── microservices
+│       │   └── queue_workers
+│       └── libs
+│           ├── django
+│           └── flask
+├── data_engineering
+│   ├── databases
+│   │   ├── db-mysql
+│   │   │   ├── functions
+│   │   │   ├── procedures
+│   │   │   └── tables
+│   │   ├── db-oracle
+│   │   │   ├── functions
+│   │   │   ├── procedures
+│   │   │   └── tables
+│   │   └── db-postgresql
+│   │       ├── functions
+│   │       ├── procedures
+│   │       └── tables
+│   ├── etl_scripts
+│   ├── integrations
+│   └── pipelines
+├── data_science
+│   ├── datasets
+│   ├── ml_models
+│   └── notebooks
+├── devops
+│   ├── argocd
+│   │   └── applications
+│   ├── automation_libs
+│   ├── kestra
+│   └── scripts
+│       └── kestra
+├── frontend
+│   ├── csharp
+│   │   └── dotnet
+│   │       ├── desktop_apps
+│   │       ├── libs
+│   │       └── web_apps
+│   │           └── web_app-cnpj-validacao
+│   │               ├── e2e
+│   │               └── WebAppCnpjValidacao
+│   │                   ├── Components
+│   │                   │   ├── Layout
+│   │                   │   └── Pages
+│   │                   ├── Domain
+│   │                   ├── obj
+│   │                   ├── Properties
+│   │                   └── wwwroot
+│   │                       └── bootstrap
+│   ├── dart
+│   │   └── flutter
+│   │       ├── android_apps
+│   │       ├── ios_apps
+│   │       ├── libs
+│   │       ├── mobile_apps
+│   │       │   └── mobile_app-cnpj-validacao
+│   │       │       ├── android
+│   │       │       │   ├── app
+│   │       │       │   │   └── src
+│   │       │       │   │       ├── debug
+│   │       │       │   │       ├── main
+│   │       │       │   │       │   ├── kotlin
+│   │       │       │   │       │   │   └── com
+│   │       │       │   │       │   │       └── example
+│   │       │       │   │       │   │           └── mobile_app_cnpj_validacao
+│   │       │       │   │       │   └── res
+│   │       │       │   │       │       ├── drawable
+│   │       │       │   │       │       ├── drawable-v21
+│   │       │       │   │       │       ├── mipmap-hdpi
+│   │       │       │   │       │       ├── mipmap-mdpi
+│   │       │       │   │       │       ├── mipmap-xhdpi
+│   │       │       │   │       │       ├── mipmap-xxhdpi
+│   │       │       │   │       │       ├── mipmap-xxxhdpi
+│   │       │       │   │       │       ├── values
+│   │       │       │   │       │       └── values-night
+│   │       │       │   │       └── profile
+│   │       │       │   └── gradle
+│   │       │       │       └── wrapper
+│   │       │       ├── e2e
+│   │       │       ├── ios
+│   │       │       │   ├── Flutter
+│   │       │       │   ├── Runner
+│   │       │       │   │   ├── Assets.xcassets
+│   │       │       │   │   │   ├── AppIcon.appiconset
+│   │       │       │   │   │   └── LaunchImage.imageset
+│   │       │       │   │   └── Base.lproj
+│   │       │       │   ├── RunnerTests
+│   │       │       │   ├── Runner.xcodeproj
+│   │       │       │   │   ├── project.xcworkspace
+│   │       │       │   │   │   └── xcshareddata
+│   │       │       │   │   └── xcshareddata
+│   │       │       │   │       └── xcschemes
+│   │       │       │   └── Runner.xcworkspace
+│   │       │       │       └── xcshareddata
+│   │       │       ├── lib
+│   │       │       ├── linux
+│   │       │       │   ├── flutter
+│   │       │       │   └── runner
+│   │       │       ├── macos
+│   │       │       │   ├── Flutter
+│   │       │       │   ├── Runner
+│   │       │       │   │   ├── Assets.xcassets
+│   │       │       │   │   │   └── AppIcon.appiconset
+│   │       │       │   │   ├── Base.lproj
+│   │       │       │   │   └── Configs
+│   │       │       │   ├── RunnerTests
+│   │       │       │   ├── Runner.xcodeproj
+│   │       │       │   │   ├── project.xcworkspace
+│   │       │       │   │   │   └── xcshareddata
+│   │       │       │   │   └── xcshareddata
+│   │       │       │   │       └── xcschemes
+│   │       │       │   └── Runner.xcworkspace
+│   │       │       │       └── xcshareddata
+│   │       │       ├── test
+│   │       │       ├── web
+│   │       │       │   └── icons
+│   │       │       └── windows
+│   │       │           ├── flutter
+│   │       │           └── runner
+│   │       │               └── resources
+│   │       ├── multiplatform_apps
+│   │       └── web_apps
+│   ├── javascript
+│   │   ├── react
+│   │   │   ├── libs
+│   │   │   └── web_apps
+│   │   │       └── web_app-cnpj-validacao
+│   │   │           ├── e2e
+│   │   │           └── src
+│   │   └── react_native
+│   │       ├── android_apps
+│   │       ├── ios_apps
+│   │       └── mobile_apps
+│   │           └── mobile_app-cnpj-validacao
+│   │               ├── assets
+│   │               ├── e2e
+│   │               └── src
+│   ├── kotlin
+│   │   ├── compose_multiplatform
+│   │   │   └── android_apps
+│   │   └── kotlin_js
+│   │       └── android_apps
+│   ├── swift
+│   │   └── swift_ui
+│   │       └── ios_apps
+│   └── typescript
+│       └── angular
+│           ├── libs
+│           └── web_apps
+│               └── web_app-cnpj-validacao
+│                   ├── e2e
+│                   └── src
+└── orchestration
+    └── kestra
+        └── flows
+            ├── automation
+            ├── enterprise-integrations
+            ├── etl
+            └── integration-hub
+
+320 directories

@@ -1,0 +1,63 @@
+# Força o contexto de execução para a raiz do monorepo, 
+# independente de onde o Makefile esteja guardado.
+ROOT_DIR := $(abspath $(lastword $(MAKEFILE_LIST))/../../..)
+
+# Variáveis Globais
+DOCKER_USER=bolismar69
+SYSTEM_NAME=tax-nexus-taas
+VERSION=latest
+
+# Caminhos dos Projetos (Sincronizados com seu Inventário)
+# PATH_GATEWAY=backend/go/gin/microservices/ms-tax-nexus-taas-gateway
+PATH_GATEWAY=$(ROOT_DIR)/backend/go/gin/microservices/ms-tax-nexus-taas-gateway
+
+# PATH_ENGINE=backend/go/fiber/microservices/ms-tax-nexus-taas-calc-engine
+PATH_ENGINE=$(ROOT_DIR)/backend/go/fiber/microservices/ms-tax-nexus-taas-calc-engine
+
+# PATH_PORTAL=frontend/javascript/react/web_apps/web_app-tax-nexus-portal
+PATH_PORTAL=$(ROOT_DIR)/frontend/javascript/react/web_apps/web_app-tax-nexus-portal
+
+# Blueprints
+# BLUEPRINT_GIN=architecture/blueprints/backend/go/gin/v1/Dockerfile
+BLUEPRINT_GIN=$(ROOT_DIR)/architecture/blueprints/backend/go/gin/v1/Dockerfile
+
+# BLUEPRINT_FIBER=architecture/blueprints/backend/go/fiber/v1/Dockerfile
+BLUEPRINT_FIBER=$(ROOT_DIR)/architecture/blueprints/backend/go/fiber/v1/Dockerfile
+
+# BLUEPRINT_REACT=architecture/blueprints/frontend/javascript/react/web_apps/v18/Dockerfile.v18
+BLUEPRINT_REACT=$(ROOT_DIR)/architecture/blueprints/frontend/javascript/react/web_apps/v18/Dockerfile.v18
+
+.PHONY: help build-all run-all clean-docker
+
+help:
+	@echo "🎨 TaxNexus (TaaS) - Operações de Governança"
+	@echo "------------------------------------------"
+	@echo "make build-all    - Builda todas as imagens usando os Blueprints"
+	@echo "make build-go     - Builda apenas os microserviços Go"
+	@echo "make build-portal - Builda o frontend React"
+	@echo "make run-local    - Executa o Linter Gari para validar caminhos"
+	@echo "make audit        - Roda o script de auditoria de governança"
+
+# Auditoria e Limpeza (Usando seu script Gari)
+audit:
+	@python3 devops/scripts/governance_gari.py
+
+# Build de Microserviços Go usando Blueprints Externos
+build-go:
+	@echo "🚀 Buildando Gateway (Gin)..."
+	docker build -t $(DOCKER_USER)/ms-tax-nexus-gateway:$(VERSION) -f $(BLUEPRINT_GIN) $(PATH_GATEWAY)
+	@echo "⚡ Buildando Calc Engine (Fiber)..."
+	docker build -t $(DOCKER_USER)/ms-tax-nexus-calc-engine:$(VERSION) -f $(BLUEPRINT_FIBER) $(PATH_ENGINE)
+
+# Build do Frontend React
+build-portal:
+	@echo "🌐 Buildando Portal React..."
+	docker build -t $(DOCKER_USER)/web-app-tax-portal:$(VERSION) -f $(BLUEPRINT_REACT) $(PATH_PORTAL)
+
+# Build Completo
+build-all: build-go build-portal
+	@echo "✅ Todas as imagens do TaxNexus (TaaS) foram geradas com sucesso."
+
+# Limpeza de Containers
+clean-docker:
+	docker system prune -f

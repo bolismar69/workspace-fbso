@@ -1,0 +1,23 @@
+# Estágio de Compilação
+FROM golang:1.22-alpine AS builder
+
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+# Compilação estática para maior segurança e portabilidade
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+
+# Estágio de Runtime (Segurança Máxima)
+FROM gcr.io/distroless/static-debian12
+
+WORKDIR /
+COPY --from=builder /app/main /main
+
+# Porta padrão definida na governança para APIs
+EXPOSE 8080
+
+USER nonroot:nonroot
+
+ENTRYPOINT ["/main"]

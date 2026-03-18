@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  # --- INFRAESTRUTURA ---
+
+  db-tax-nexus-dev:
+    image: postgres:16-alpine
+    container_name: pg-tax-nexus
+    environment:
+      - POSTGRES_DB=tax_nexus_db
+      - POSTGRES_USER=bolismar
+      - POSTGRES_PASSWORD=admin_tax
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+    networks:
+      - tax-nexus-net
+
+  redis-tax-cache:
+    image: redis:7-alpine
+    container_name: redis-tax-rules
+    ports:
+      - "6379:6379"
+    networks:
+      - tax-nexus-net
+
+  kafka-broker:
+    image: apache/kafka-native:latest # apache/kafka:latest
+    container_name: kafka-tax-events
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://localhost:9092,CONTROLLER://localhost:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 3
+    networks:
+      - tax-nexus-net
+
+  kafka-ui:
+      image: provectuslabs/kafka-ui:latest
+      container_name: kafka-ui
+      ports:
+        - "8090:8080"
+      restart: always
+      environment:
+        KAFKA_CLUSTERS_0_NAME: local
+        # IMPORTANTE: Use o nome do serviço do seu kafka-native aqui
+        KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-broker:9092 
+      depends_on:
+        - kafka-broker # Nome do seu serviço kafka
+      networks:
+        - tax-nexus-net
+
+  # --- MICROSERVIÇOS (TaaS) ---
+  tax-gateway:
+    image: ${DOCKER_USER:-bolismar69}/ms-tax-nexus-gateway:latest
+    container_name: ms-tax-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_BROKERS=kafka-broker:9092
+      - ENGINE_URL=http://calc-engine:3000
+    depends_on:
+      - kafka-broker
+    networks:
+      - tax-nexus-net
+
+  calc-engine:
+    image: ${DOCKER_USER:-bolismar69}/ms-tax-nexus-calc-engine:latest
+    container_name: ms-calc-engine
+    ports:
+      - "3000:3000"
+    environment:
+      - REDIS_HOST=redis-tax-cache
+      - REDIS_PORT=6379
+    depends_on:
+      - redis-tax-cache
+    networks:
+      - tax-nexus-net
+
+  tax-portal:
+    image: ${DOCKER_USER:-bolismar69}/web-app-tax-portal:latest
+    container_name: web-app-portal
+    ports:
+      - "80:5173" # Mapeia a porta 80 do host para a 8080 do Nginx
+    depends_on:
+      - tax-gateway
+    networks:
+      - tax-nexus-net
+
+networks:
+  tax-nexus-net:
+    driver: bridge
+
+volumes:
+  postgresdata:
+    driver: local
+    name: postgresdata
+    driver_opts:
+      type: none
+      device: /home/bolismar/docker-volume/postgresdata
+      o: bind

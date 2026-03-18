@@ -1,0 +1,46 @@
+id: flow-tax-ingestion-sync
+namespace: tax.nexus.taas
+description: "Fluxo de sincronização e validação fiscal para o ecossistema TaxNexus"
+labels:
+  systemNamespaces: tax.nexus.taas
+
+tasks:
+  - id: get_pending_tax_data
+    type: io.kestra.plugin.jdbc.oracle.Query
+    url: "jdbc:oracle:thin:@//${{ secret.ORACLE_HOST }}:1521/${{ secret.ORACLE_SID }}"
+    username: "${{ secret.ORACLE_USER }}"
+    password: "${{ secret.ORACLE_PASS }}"
+    sql: |
+      SELECT cnpj, id_transacao, valor_base 
+      FROM tb_tax_pending 
+      WHERE status = 'PENDENTE' 
+      FETCH NEXT 100 ROWS ONLY
+    fetchType: FETCH
+
+  - id: process_tax_validation
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{ outputs.get_pending_tax_data.rows }}"
+    concurrencyLimit: 10
+    tasks:
+      - id: send_to_gateway
+        type: io.kestra.plugin.core.http.Request
+        uri: "http://ms-tax-gateway:8080/v1/process"
+        method: POST
+        contentType: application/json
+        body: 
+          cnpj: "{{ parent.taskrun.value.cnpj }}"
+          transactionId: "{{ parent.taskrun.value.id_transacao }}"
+          systemSource: "kestra-taas"
+
+  - id: update_oracle_status
+    type: io.kestra.plugin.jdbc.oracle.Batch
+    url: "jdbc:oracle:thin:@//${{ secret.ORACLE_HOST }}:1521/${{ secret.ORACLE_SID }}"
+    username: "${{ secret.ORACLE_USER }}"
+    password: "${{ secret.ORACLE_PASS }}"
+    sql: "UPDATE tb_tax_pending SET status = 'PROCESSADO', data_processamento = CURRENT_TIMESTAMP WHERE id_transacao = ?"
+    values: "{{ outputs.get_pending_tax_data.rows | map(row -> row.id_transacao) | list }}"
+
+triggers:
+  - id: schedule_sync
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "*/15 * * * *" # Executa a cada 15 minutos

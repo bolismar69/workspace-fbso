@@ -1,0 +1,27 @@
+# Estágio de Compilação
+FROM golang:1.22-alpine AS builder
+
+# Instala dependências de build se necessário (ex: gcc para algumas libs)
+RUN apk add --no-cache git
+
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+# Otimizações de compilação para performance (omitindo símbolos de debug)
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o main .
+
+# Estágio de Runtime
+FROM alpine:3.19
+
+# Alpine é preferível aqui se o Fiber precisar de bibliotecas de sistema para performance
+RUN apk add --no-cache ca-certificates
+
+WORKDIR /
+COPY --from=builder /app/main /main
+
+# Porta interna padrão para motores de cálculo
+EXPOSE 3000
+
+ENTRYPOINT ["/main"]

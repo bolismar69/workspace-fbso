@@ -8,6 +8,7 @@
 			"type": "queue_workers",
 			"name": "ms-transaction-processor-queue",
 			"status": "active",
+			"systemNamespace": "transaction-processing",
 			"specification": {
 				"platformVersion": "21",
 				"platformDistributor": "graalvm",
@@ -42,6 +43,14 @@
 						"actionOnUnknown": "warn"
 					}
 				}
+			},
+			"dependsOn": {
+				"contracts": [],
+				"databases": [],
+				"services": [],
+				"orchestration": [],
+				"applications": [],
+				"devops": []
 			}
 		},
 		{
@@ -52,6 +61,7 @@
 			"type": "microservices",
 			"name": "ms-cnpj-validacao",
 			"status": "active",
+			"systemNamespace": "cnpj-validation",
 			"specification": {
 				"platformVersion": "21",
 				"platformDistributor": "graalvm",
@@ -86,6 +96,14 @@
 						"actionOnUnknown": "warn"
 					}
 				}
+			},
+			"dependsOn": {
+				"contracts": [],
+				"databases": [],
+				"services": [],
+				"orchestration": [],
+				"applications": [],
+				"devops": []
 			}
 		},
 		{
@@ -96,6 +114,7 @@
 			"type": "queue_workers",
 			"name": "ms-transaction-processor-queue",
 			"status": "active",
+			"systemNamespace": "transaction-processing",
 			"specification": {
 				"platformVersion": "8.0",
 				"platformDistributor": "microsoft",
@@ -119,6 +138,14 @@
 						"actionOnUnknown": "warn"
 					}
 				}
+			},
+			"dependsOn": {
+				"contracts": [],
+				"databases": [],
+				"services": [],
+				"orchestration": [],
+				"applications": [],
+				"devops": []
 			}
 		},
 		{
@@ -129,6 +156,7 @@
 			"type": "queue_workers",
 			"name": "ms-transaction-processor-queue",
 			"status": "active",
+			"systemNamespace": "transaction-processing",
 			"specification": {
 				"platformVersion": "1.22",
 				"platformDistributor": "golang",
@@ -152,6 +180,14 @@
 						"actionOnUnknown": "warn"
 					}
 				}
+			},
+			"dependsOn": {
+				"contracts": [],
+				"databases": [],
+				"services": [],
+				"orchestration": [],
+				"applications": [],
+				"devops": []
 			}
 		},
 		{
@@ -162,6 +198,7 @@
 			"type": "queue_workers",
 			"name": "ms-transaction-processor-queue",
 			"status": "active",
+			"systemNamespace": "transaction-processing",
 			"specification": {
 				"platformVersion": "3.12",
 				"platformDistributor": "python",
@@ -185,7 +222,131 @@
 						"actionOnUnknown": "warn"
 					}
 				}
+			},
+			"dependsOn": {
+				"contracts": [],
+				"databases": [],
+				"services": [],
+				"orchestration": [],
+				"applications": [],
+				"devops": []
 			}
-		}
+		},
+		{
+			"path": "backend/java/spring/queue_workers/tax-nexus-processor",
+			"stack": "backend",
+			"platform": "java",
+			"framework": "spring",
+			"type": "queue_workers",
+			"name": "tax-nexus-transaction-processor",
+			"status": "active",
+			"systemNamespace": "tax-nexus-taas",
+			"specification": {
+				"platformVersion": "21",
+				"platformDistributor": "graalvm",
+				"docker": {
+					"dockerfile": "architecture/blueprints/backend/java/spring/queue_workers/v21/Dockerfile.native.21",
+					"argCompilationMode": "native",
+					"argImageBuild": "ghcr.io/graalvm/native-image-community:latest",
+					"argImageRuntime": "gcr.io/distroless/cc-debian12",
+					"argExposePort": 8080
+				},
+				"compliance": {
+					"sonarqubeThreshold": "85",
+					"vulnerabilitySeverityLimit": "high",
+					"maxCpu": "1000m",
+					"maxMemory": "2Gi",
+					"licensePolicy": {
+						"allowList": [
+							"Apache-2.0",
+							"MIT",
+							"BSD-3-Clause",
+							"EPL-2.0"
+						],
+						"denyList": [
+							"GPL-3.0",
+							"AGPL-3.0"
+						],
+						"actionOnUnknown": "warn"
+					}
+				}
+			},
+			"dependsOn": {
+				"services": [
+					"backend/go/fiber/microservices/ms-calculo-fiscal-core"
+				],
+				"orchestration": [
+					"orchestration/kestra/flows/etl/tax-nexus-sync-oracle"
+				],
+				"applications": [
+					"frontend/typescript/angular/web_apps/web-app-tax-nexus-portal"
+				],
+				"devops": [
+					"kafka-cluster-internal",
+					"db-oracle-tax-nexus",
+					"redis-cache-tax-rules"
+				],
+				"contracts": [
+					"architecture/data_standards/protobuf/tax-engine-core"
+				]
+			}
+		},
+		{
+			"path": "frontend/javascript/react/web_apps/web_app-tax-nexus-portal",
+			"stack": "frontend",
+			"platform": "javascript",
+			"framework": "react",
+			"type": "applications",
+			"name": "web-app-tax-nexus-portal",
+			"status": "active",
+			"systemNamespace": "tax-nexus-taas",
+			"specification": {
+				"platformVersion": "18.x",
+				"platformDistributor": "node",
+				"docker": {
+					"dockerfile": "architecture/blueprints/frontend/javascript/react/web_apps/v18/Dockerfile.v18",
+					"argImageBuild": "node:18-alpine",
+					"argImageRuntime": "nginx:alpine",
+					"argExposePort": 5173,
+					"argCmdExtraBuilderPreCopy": "echo 'Framework: Preparando ambiente...'",
+					"argCmdExtraBuilderPosCompile": "echo 'Framework: Compilação concluída.'",
+					"argCmdExtraRuntimePreCopy": "echo 'Framework: Preparando runtime...'",
+					"argCmdExtraRuntimePreCmd": "echo 'Framework: Finalizando imagem...'"
+				},
+				"compliance": {
+					"sonarqubeThreshold": "80",
+					"maxCpu": "200m",
+					"maxMemory": "512Mi"
+				}
+			},
+			"dependsOn": {
+				"services": [
+					"backend/go/gin/microservices/api-tax-nexus-gateway"
+				],
+				"contracts": [
+					"architecture/data_standards/protobuf/tax-engine-core"
+				]
+			}
+		},
+		{
+      "path": "backend/go/gin/microservices/ms-tax-nexus-taas-gateway",
+			"stack": "backend",
+			"platform": "go",
+			"framework": "gin",
+			"type": "microservices",
+			"name": "ms-tax-nexus-taas-gateway",
+      "status": "active",
+      "systemNamespace": "tax-nexus-taas"
+    },
+    {
+      "path": "backend/go/fiber/microservices/ms-tax-nexus-taas-calc-engine",
+			"stack": "backend",
+			"platform": "go",
+			"framework": "fiber",
+			"type": "microservices",
+			"name": "ms-tax-nexus-taas-calc-engine",
+      "status": "active",
+      "systemNamespace": "tax-nexus-taas"
+    }
 	]
 }

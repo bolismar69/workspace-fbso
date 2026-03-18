@@ -34,7 +34,7 @@ jobs:
   prepare-dependency-check-db:
     name: Prepare OWASP Dependency-Check DB (NVD)
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ fromJSON(vars.JOB_CI_TIMEOUT_OWASP_MINUTES || '20') }}
+    timeout-minutes: ${{ fromJSON(vars.JOB_CI_TIMEOUT_MINUTES || '60') }}
     outputs:
       java_distribution: ${{ steps.resolve-java.outputs.distribution }}
       java_version: ${{ steps.resolve-java.outputs.java_version }}
