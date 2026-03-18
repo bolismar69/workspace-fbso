@@ -37,6 +37,8 @@ public class AwesomeCepService {
       return restClient.get().uri(url).retrieve().body(AwesomeCepDTO.class);
     } catch (RestClientResponseException ex) {
       throw new AwesomeApiException("Erro na geocodificação do CEP: status=" + ex.getStatusCode().value(), ex);
+    } catch (Exception ex) {
+      throw new AwesomeApiException("Erro na geocodificação do CEP: " + ex.getClass().getSimpleName(), ex);
     }
   }
 
@@ -47,7 +49,6 @@ public class AwesomeCepService {
     try {
       AwesomeCepDTO[] response = restClient.get()
           .uri(url)
-          .header(HttpHeaders.AUTHORIZATION, "")
           .header("x-api-key", props.key() == null ? "" : props.key())
           .retrieve()
           .body(AwesomeCepDTO[].class);
@@ -58,6 +59,8 @@ public class AwesomeCepService {
       return Arrays.asList(response);
     } catch (RestClientResponseException ex) {
       throw new AwesomeApiException("Erro na busca por raio: status=" + ex.getStatusCode().value(), ex);
+    } catch (Exception ex) {
+      throw new AwesomeApiException("Erro na busca por raio: " + ex.getClass().getSimpleName(), ex);
     }
   }
 }
