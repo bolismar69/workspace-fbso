@@ -18,6 +18,12 @@ Por padrão o serviço sobe com H2 (memória).
 ./mvnw spring-boot:run
 ```
 
+ou
+
+```bash
+cd backend/java/spring/microservices/ms-geolocalidade && ./mvnw -q spring-boot:run -Dspring-boot.run.arguments=--server.port=8081
+```
+
 ## Endpoint
 
 `GET /api/v1/localidades/vizinhas-agil?cep=01001000&raio=5`
@@ -41,3 +47,15 @@ O `Dockerfile` assume build com **context na raiz do monorepo**.
 ```bash
 docker build -f backend/java/spring/microservices/ms-geolocalidade/Dockerfile -t ms-geolocalidade:latest .
 ```
+
+
+## ADENDO DE INFORMACOES DE SITES PESQUISADOS COMO BASE DE CONHECIMENTO
+
+https://www.ibge.gov.br/geociencias/organizacao-do-territorio/divisao-regional/23701-divisao-territorial-brasileira.html
+
+https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html?edicao=38891&t=resultados
+
+https://www.ibge.gov.br/geociencias/organizacao-do-territorio/estrutura-territorial.html
+
+
+

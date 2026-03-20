@@ -1,4 +1,6 @@
-package com.fbso.geolocalidade.service;
+package com.fbso.geolocalidade.utils;
+
+import com.fbso.geolocalidade.exception.InvalidCepException;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

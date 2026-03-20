@@ -9,13 +9,13 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LocalidadeOrchestrator {
+public class LocalidadeService {
 
   private final AwesomeCepService awesomeService;
   private final MunicipioRepository municipioRepository;
   private final SubdistritoRepository subdistritoRepository;
 
-  public LocalidadeOrchestrator(
+  public LocalidadeService(
       AwesomeCepService awesomeService,
       MunicipioRepository municipioRepository,
       SubdistritoRepository subdistritoRepository) {
@@ -32,7 +32,7 @@ public class LocalidadeOrchestrator {
         .map(v -> {
           String subdistritoOficial = subdistritoRepository
               .findNomeByCodigo(v.city_ibge() == null ? "" : v.city_ibge())
-              .orElse("Sede / Não Informado");
+              .orElse(null); // Se não encontrar subdistrito, deixa como null para diferenciar "Sede" de "Não Informado"
 
           return new VizinhoEnriquecidoDTO(
               v.cep(),
@@ -40,7 +40,7 @@ public class LocalidadeOrchestrator {
               v.city_ibge(),
               v.district(),
               subdistritoOficial,
-              parseDoubleOrNull(v.d()));
+              v.distance_km());
         })
         .toList();
 
@@ -50,23 +50,11 @@ public class LocalidadeOrchestrator {
           .map(m -> new LocalidadeDetalhadaDTO(
               m.getCodigoIbge7(),
               m.getNomeMunicipio(),
-              m.getUfSigla(),
-              origemApi.lat(),
-              origemApi.lng()))
+              m.getUfSigla()
+          ))
           .orElse(null);
     }
 
     return new RespostaCompletaDTO(origemApi, localidadeInfo, vizinhosEnriquecidos);
-  }
-
-  private static Double parseDoubleOrNull(String value) {
-    if (value == null || value.isBlank()) {
-      return null;
-    }
-    try {
-      return Double.parseDouble(value);
-    } catch (NumberFormatException ex) {
-      return null;
-    }
   }
 }

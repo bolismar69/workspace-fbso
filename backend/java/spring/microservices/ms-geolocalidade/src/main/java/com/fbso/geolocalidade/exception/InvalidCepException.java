@@ -1,4 +1,4 @@
-package com.fbso.geolocalidade.service;
+package com.fbso.geolocalidade.exception;
 
 public class InvalidCepException extends RuntimeException {
   public InvalidCepException(String message) {

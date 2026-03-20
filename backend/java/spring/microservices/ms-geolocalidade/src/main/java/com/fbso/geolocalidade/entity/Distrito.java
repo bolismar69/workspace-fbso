@@ -9,11 +9,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "subdistrito")
-public class Subdistrito {
+@Table(name = "distrito")
+public class Distrito {
 
   @Id
-  @Column(name = "id", length = 11, nullable = false)
+  @Column(name = "id", length = 9, nullable = false)
   private String id;
 
   @Column(name = "codigo", length = 2, nullable = false)
@@ -23,16 +23,16 @@ public class Subdistrito {
   private String nome;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "distrito_id", referencedColumnName = "id", nullable = false)
-  private Distrito distrito;
+  @JoinColumn(name = "municipio_id", referencedColumnName = "id", nullable = false)
+  private Municipio municipio;
 
-  protected Subdistrito() {}
+  protected Distrito() {}
 
-  public Subdistrito(String id, String codigo, String nome, Distrito distrito) {
+  public Distrito(String id, String codigo, String nome, Municipio municipio) {
     this.id = id;
     this.codigo = codigo;
     this.nome = nome;
-    this.distrito = distrito;
+    this.municipio = municipio;
   }
 
   public String getId() {
@@ -47,16 +47,7 @@ public class Subdistrito {
     return nome;
   }
 
-  public Distrito getDistrito() {
-    return distrito;
-  }
-
-  // ---- Legacy getters (mantidos para reuso do SubdistritoRepository) ----
-  public String getCodigoSubdistrito11() {
-    return id;
-  }
-
-  public String getNomeSubdistrito() {
-    return nome;
+  public Municipio getMunicipio() {
+    return municipio;
   }
 }

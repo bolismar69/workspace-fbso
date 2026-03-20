@@ -58,6 +58,8 @@ O microserviço passa a ser um **Orquestrador de APIs** com cache local:
 ```java
 public record AwesomeCepDTO(
     String cep,
+    String address_type,
+    String address_name,
     String address,
     String state,
     String city,
@@ -142,7 +144,7 @@ Este DTO refletirá exatamente a estrutura que você solicitou, unindo os dados 
 
 ```java
 public record RespostaCompletaDTO(
-    AwesomeCepDTO viacep, // Payload original (usaremos o da AwesomeAPI que é similar)
+    AwesomeCepDTO zipcodeInfo, // Payload original (usaremos o da AwesomeAPI que é similar)
     LocalidadeDetalhadaDTO localidade, // Dados do CEP de origem na base local
     List<VizinhoEnriquecidoDTO> cidadesProximas // Lista de vizinhos com nomes do IBGE
 ) {}
@@ -415,13 +417,18 @@ No **Kubernetes**, certifique-se de que o volume contendo os arquivos CSV está 
 **Resposta:**
 ```json
 {
-  "viacep": {
+  "zipcodeInfo": {
     "cep": "01001000",
+    "address_type": "Praça",
+    "address_name": "da Sé",
     "address": "Praça da Sé",
     "city": "São Paulo",
     "city_ibge": "3550308",
     "lat": "-23.5502784",
-    "lng": "-46.6342179"
+    "lng": "-46.6342179",
+    "district": "Sé",
+    "distanciaKm": null
+
   },
   "localidade": {
     "codigoIbge": "3550308",
