@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: spring-batch-geolocalidade
+
+  # Configuração do Banco de Dados (Exemplo PostgreSQL)
+  datasource:
+      # 'testdb' será criado na raiz do projeto (ou no container)
+      url: jdbc:h2:file:./data/testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;CASE_INSENSITIVE_IDENTIFIERS=TRUE
+      username: sa
+      password: 
+      driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true # Permite aceder a http://localhost:8080/h2-console
+      path: /h2-console
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop # Limpa o banco a cada execução de teste
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 100
+        order_inserts: true
+
+  # Configurações do Spring Batch
+  batch:
+    job:
+      enabled: false # Impede que o Job rode no startup. Você o dispara via Scheduler ou Endpoint.
+    jdbc:
+      initialize-schema: always # Cria as tabelas internas do Batch (JOB_INSTANCE, etc)
+
+# Variáveis customizadas da aplicação
+app:
+  import:
+    path: ${APP_IMPORT_PATH:/mnt/data/ibge} # Caminho definido no README e K8S
+
+# Configurações de Log (opcional para debug de performance)
+logging:
+  level:
+    org.springframework.batch: INFO
+    org.hibernate.SQL: ERROR

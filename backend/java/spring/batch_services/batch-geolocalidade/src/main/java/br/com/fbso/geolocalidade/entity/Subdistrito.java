@@ -1,0 +1,79 @@
+package br.com.fbso.geolocalidade.entity;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "subdistrito")
+public class Subdistrito {
+
+  @Id
+  @Column(name = "id", length = 11, nullable = false)
+  private String id;
+
+  @Column(name = "codigo", length = 2, nullable = false)
+  private String codigo;
+
+  @Column(name = "nome", length = 100, nullable = false)
+  private String nome;
+
+  @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.MERGE)
+  @JoinColumn(name = "distrito_id", referencedColumnName = "id", nullable = false)
+  private Distrito distrito;
+
+  protected Subdistrito() {}
+
+  public Subdistrito(String id, String codigo, String nome, Distrito distrito) {
+    this.id = id;
+    this.codigo = codigo;
+    this.nome = nome;
+    this.distrito = distrito;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public void setCodigo(String codigo) {
+    this.codigo = codigo;
+  }
+
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  public void setDistrito(Distrito distrito) {
+    this.distrito = distrito;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public String getCodigo() {
+    return codigo;
+  }
+
+  public String getNome() {
+    return nome;
+  }
+
+  public Distrito getDistrito() {
+    return distrito;
+  }
+
+  // ---- Legacy getters (mantidos para reuso do SubdistritoRepository) ----
+  public String getCodigoSubdistrito11() {
+    return id;
+  }
+
+  public String getNomeSubdistrito() {
+    return nome;
+  }
+}
