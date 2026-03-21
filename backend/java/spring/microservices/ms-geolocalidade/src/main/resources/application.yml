@@ -5,23 +5,51 @@ spring:
   application:
     name: ms-geolocalidade
 
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+  # CONFIGURAÇÃO DO BANCO DE DADOS (H2 - IN MEMORY)
+  # h2:
+  #   console:
+  #     enabled: true
+  #     path: /h2-console
 
-  # default: dev-friendly in-memory DB
+  # # default: dev-friendly in-memory DB
+  # datasource:
+  #   url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:geodb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
+  #   username: ${SPRING_DATASOURCE_USERNAME:sa}
+  #   password: ${SPRING_DATASOURCE_PASSWORD:}
+  #   driver-class-name: ${SPRING_DATASOURCE_DRIVER:org.h2.Driver}
+
+  # jpa:
+  #   hibernate:
+  #     ddl-auto: ${SPRING_JPA_DDL_AUTO:update}
+  #   open-in-view: false
+
+
+  # Configuração do Banco de Dados (PostgreSQL)
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:geodb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
-    username: ${SPRING_DATASOURCE_USERNAME:sa}
-    password: ${SPRING_DATASOURCE_PASSWORD:}
-    driver-class-name: ${SPRING_DATASOURCE_DRIVER:org.h2.Driver}
+    # currentSchema define o schema padrão da conexão.
+    # - Spring Batch cria suas tabelas METADATA no schema padrão (aqui: spring_batch)
+    # - Tabelas de negócio são criadas/consultadas via hibernate.default_schema=localidade
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/worker_db?currentSchema=localidade}
+    username: ${SPRING_DATASOURCE_USERNAME:worker_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:worker_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      schema: ${SPRING_DATASOURCE_SCHEMA:localidade}
 
   jpa:
     hibernate:
-      ddl-auto: ${SPRING_JPA_DDL_AUTO:update}
+      # Em ambientes gerenciados, prefira migrations (Flyway/Liquibase) + validate.
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    show-sql: false
     open-in-view: false
+    properties:
+      hibernate:
+        default_schema: ${SPRING_JPA_SCHEMA:localidade}
+        jdbc:
+          batch_size: 100
+        order_inserts: true
 
+# LOGGING
 logging:
   pattern:
     level: "%5p [req:%X{requestId}]"
@@ -30,6 +58,7 @@ logging:
     org.springframework: WARN
     com.fbso: DEBUG
 
+# CONFIGURACOES ESPECIFICAS DA APLICACAO
 awesomeapi:
   token: ${AWESOME_API_TOKEN:}
   key: ${AWESOME_API_KEY:}

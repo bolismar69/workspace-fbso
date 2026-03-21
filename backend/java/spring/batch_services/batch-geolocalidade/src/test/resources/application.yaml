@@ -1,0 +1,29 @@
+spring:
+  # Testes usam H2 para não depender de Postgres local
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: false
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+
+app:
+  import:
+    path: /tmp/work/data/ibge
+    files:
+      municipios: DTB_Municipios.csv
+      distritos: DTB_Distritos.csv
+      subdistritos: DTB_Subdistritos.csv

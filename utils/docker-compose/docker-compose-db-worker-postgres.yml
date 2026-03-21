@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # --- INFRAESTRUTURA ---
+
+  db-worker:
+      image: postgres:16-alpine
+      container_name: db-pg-worker
+      environment:
+        - POSTGRES_DB=worker_db
+        - POSTGRES_USER=worker_user
+        - POSTGRES_PASSWORD=worker_pass
+      ports:
+        - "5432:5432"
+      volumes:
+        - postgresdata:/var/lib/postgresql/data
+      networks:
+        - worker-net
+
+networks:
+  worker-net:
+    driver: bridge
+
+volumes:
+  postgresdata:
+    driver: local
+    name: postgresworkerdata
+    driver_opts:
+      type: none
+      device: /home/bolismar/docker-volume/postgresworkerdata
+      o: bind

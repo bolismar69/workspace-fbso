@@ -62,6 +62,19 @@ Thumbs.db
 # Logs
 **/*.log
 
+# Local databases (ex.: H2)
+**/*.mv.db
+**/*.trace.db
+**/*.db.lock
+
+# Env/secrets (evita vazamento no build context)
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+
 # IMPORTANT: keep Maven wrapper and blueprints in context
 !.mvn/
 !.mvn/**

@@ -24,6 +24,9 @@ import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +38,15 @@ public class BatchConfig {
 
   @Value("${app.import.path}")
   private String importPath;
+
+  @Value("${app.import.files.municipios:DTB_Municipios.csv}")
+  private String municipiosFile;
+
+  @Value("${app.import.files.distritos:DTB_Distritos.csv}")
+  private String distritosFile;
+
+  @Value("${app.import.files.subdistritos:DTB_Subdistritos.csv}")
+  private String subdistritosFile;
   
   private final JobRepository jobRepository;
   private final PlatformTransactionManager transactionManager;
@@ -104,52 +116,121 @@ public class BatchConfig {
     // O caminho vem da variável de ambiente APP_IMPORT_PATH definida no README/K8S
     // String path = System.getenv("APP_IMPORT_PATH") + "/RELATORIO_DTB_BRASIL_2024_MUNICIPIOS.csv";
     
+    DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+    tokenizer.setDelimiter(",");
+    tokenizer.setStrict(false); // tolera colunas extras (ex.: vírgula final)
+    tokenizer.setNames(
+      "ufId", "ufNome",
+      "regiaoInterId", "regiaoInterNome",
+      "regiaoImedId", "regiaoImedNome",
+      "municipioCodCurto", "municipioIdCompleto", "municipioNome"
+    );
+
+    DefaultLineMapper<MunicipioCsvDTO> lineMapper = new DefaultLineMapper<>();
+    lineMapper.setLineTokenizer(tokenizer);
+    lineMapper.setFieldSetMapper((FieldSet fs) -> new MunicipioCsvDTO(
+      fs.readString(0),
+      fs.readString(1),
+      fs.readString(2),
+      fs.readString(3),
+      fs.readString(4),
+      fs.readString(5),
+      fs.readString(6),
+      fs.readString(7),
+      fs.readString(8)
+    ));
+    lineMapper.afterPropertiesSet();
+
     return new FlatFileItemReaderBuilder<MunicipioCsvDTO>()
       .name("municipioReader")
-      .resource(new FileSystemResource(importPath + "/RELATORIO_DTB_BRASIL_2024_MUNICIPIOS.csv"))
+      .resource(new FileSystemResource(importPath + "/" + municipiosFile))
       .linesToSkip(7) // Pula os metadados do IBGE
-      .delimited()
-      .names("ufId", "ufNome", 
-              "regiaoInterId", "regiaoInterNome", 
-              "regiaoImedId", "regiaoImedNome", 
-              "municipioCodCurto", "municipioIdCompleto", "municipioNome")
-      .targetType(MunicipioCsvDTO.class)
-      .encoding("ISO-8859-1") // Encoding padrão dos arquivos do IBGE
+      .lineMapper(lineMapper)
+      .encoding("UTF-8")
       .build();
   }
 
   @Bean
   public FlatFileItemReader<DistritoCsvDTO> distritoReader() {
+    DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+    tokenizer.setDelimiter(",");
+    tokenizer.setStrict(false);
+    tokenizer.setNames(
+      "ufId", "ufNome",
+      "regInterId", "regInterNome",
+      "regImedId", "regImedNome",
+      "munCod", "municipioId", "munNome",
+      "distritoCodCurto", "distritoIdCompleto", "distritoNome"
+    );
+
+    DefaultLineMapper<DistritoCsvDTO> lineMapper = new DefaultLineMapper<>();
+    lineMapper.setLineTokenizer(tokenizer);
+    lineMapper.setFieldSetMapper((FieldSet fs) -> new DistritoCsvDTO(
+      fs.readString(0),
+      fs.readString(1),
+      fs.readString(2),
+      fs.readString(3),
+      fs.readString(4),
+      fs.readString(5),
+      fs.readString(6),
+      fs.readString(7),
+      fs.readString(8),
+      fs.readString(9),
+      fs.readString(10),
+      fs.readString(11)
+    ));
+    lineMapper.afterPropertiesSet();
+
     return new FlatFileItemReaderBuilder<DistritoCsvDTO>()
       .name("distritoReader")
-      .resource(new FileSystemResource(importPath + "/RELATORIO_DTB_BRASIL_2024_DISTRITOS.csv"))
+      .resource(new FileSystemResource(importPath + "/" + distritosFile))
       .linesToSkip(7)
-      .delimited()
-      .names("ufId", "ufNome",
-              "regInterId", "regInterNome", 
-              "regImedId", "regImedNome", 
-              "munCod", "municipioId", "munNome", 
-              "distritoCodCurto", "distritoIdCompleto", "distritoNome")
-      .targetType(DistritoCsvDTO.class)
-      .encoding("ISO-8859-1")
+      .lineMapper(lineMapper)
+      .encoding("UTF-8")
       .build();
   }
 
   @Bean
   public FlatFileItemReader<SubdistritoCsvDTO> subdistritoReader() {
+    DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+    tokenizer.setDelimiter(",");
+    tokenizer.setStrict(false);
+    tokenizer.setNames(
+      "ufId", "ufNome",
+      "regInterId", "regInterNome",
+      "regImedId", "regImedNome",
+      "munCod", "municipioId", "munNome",
+      "distCod", "distritoId", "distNome",
+      "subdistritoCodCurto", "subdistritoIdCompleto", "subdistritoNome"
+    );
+
+    DefaultLineMapper<SubdistritoCsvDTO> lineMapper = new DefaultLineMapper<>();
+    lineMapper.setLineTokenizer(tokenizer);
+    lineMapper.setFieldSetMapper((FieldSet fs) -> new SubdistritoCsvDTO(
+      fs.readString(0),
+      fs.readString(1),
+      fs.readString(2),
+      fs.readString(3),
+      fs.readString(4),
+      fs.readString(5),
+      fs.readString(6),
+      fs.readString(7),
+      fs.readString(8),
+      fs.readString(9),
+      fs.readString(10),
+      fs.readString(11),
+      fs.readString(12),
+      fs.readString(13),
+      fs.readString(14)
+    ));
+    lineMapper.afterPropertiesSet();
+
     return new FlatFileItemReaderBuilder<SubdistritoCsvDTO>()
       .name("subdistritoReader")
-      .resource(new FileSystemResource(importPath + "/RELATORIO_DTB_BRASIL_2024_SUBDISTRITOS.csv"))
+      .resource(new FileSystemResource(importPath + "/" + subdistritosFile))
       .linesToSkip(7)
-      .delimited()
-      .names("ufId", "ufNome", 
-              "regInterId", "regInterNome",
-              "regImedId", "regImedNome",
-              "munCod","municipioId", "munNome",
-              "distCod", "distritoId", "distNome",
-              "subdistritoCodCurto", "subdistritoIdCompleto", "subdistritoNome")
-      .targetType(SubdistritoCsvDTO.class)
-      .encoding("ISO-8859-1")
+      .lineMapper(lineMapper)
+      .encoding("UTF-8")
       .build();
   }
 
