@@ -1,6 +1,6 @@
 package com.fbso.geolocalidade.service;
 
-import com.fbso.geolocalidade.dto.MunicipioDTO.UfDTO;
+import com.fbso.geolocalidade.dto.UfDTO;
 import com.fbso.geolocalidade.repository.UfRepository;
 import java.util.List;
 import org.springframework.data.domain.Sort;

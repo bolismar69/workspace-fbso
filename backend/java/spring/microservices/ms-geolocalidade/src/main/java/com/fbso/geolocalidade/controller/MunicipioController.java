@@ -42,10 +42,10 @@ public class MunicipioController {
     return ResponseEntity.ok(PageResponseDTO.ofObject(municipioService.buscarMunicipios(pageRequest)));
   }
 
-  @GetMapping("/id/{id:\\d+}")
-  public ResponseEntity<PageResponseDTO<Object>> buscarMunicipioPorId(@PathVariable @NotBlank String id) {
+  @GetMapping("/ibge/{codigo-ibge:\\d+}")
+  public ResponseEntity<PageResponseDTO<Object>> buscarMunicipioPorId(@PathVariable("codigo-ibge") @NotBlank String codigoIbge) {
     var pageRequest = PageRequest.of(0, 1, Sort.by("id").ascending());
-    var municipio = municipioService.buscarMunicipioPorId(id).orElse(null);
+    var municipio = municipioService.buscarMunicipioPorId(codigoIbge).orElse(null);
 
     Page<MunicipioDTO> page = (municipio == null)
         ? new PageImpl<>(List.of(), pageRequest, 0)
@@ -58,15 +58,14 @@ public class MunicipioController {
   public ResponseEntity<PageResponseDTO<Object>> buscarMunicipiosPorNome(
       @PathVariable @NotBlank String nomeMunicipio,
       @PageableDefault(size = 10) Pageable pageable) {
-    int requestedSize = pageable.getPageSize();
-    int size = Math.min(Math.max(requestedSize, 1), 50);
+    var pageRequest = PageRequest.of(0, 1, Sort.by("id").ascending());
+    var page = municipioService.buscarMunicipiosPorNome(nomeMunicipio, pageRequest);
+    var municipio = page.getContent().isEmpty() ? null : page.getContent().get(0);
 
-    var pageRequest = PageRequest.of(
-        pageable.getPageNumber(),
-        size,
-        Sort.by("id").ascending());
+    Page<MunicipioDTO> resultPage = (municipio == null)
+      ? new PageImpl<>(List.of(), pageRequest, 0)
+      : new PageImpl<>(List.of(municipio), pageRequest, 1);
 
-    return ResponseEntity.ok(PageResponseDTO.ofObject(
-        municipioService.buscarMunicipiosPorNome(nomeMunicipio, pageRequest)));
+    return ResponseEntity.ok(PageResponseDTO.ofObject(resultPage));
   }
 }

@@ -57,4 +57,13 @@ public interface MunicipioRepository extends JpaRepository<Municipio, String> {
 			String sigla,
 			String nome,
 			Pageable pageable);
+
+	@EntityGraph(attributePaths = {
+			"regiaoImediata",
+			"regiaoImediata.regiaoIntermediaria",
+			"regiaoImediata.regiaoIntermediaria.uf"
+	})
+	Optional<Municipio> findByIdAndRegiaoImediata_RegiaoIntermediaria_Uf_SiglaIgnoreCase(
+			String id,
+			String sigla);
 }

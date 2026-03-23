@@ -2,12 +2,7 @@ package com.fbso.geolocalidade.service;
 
 import com.fbso.geolocalidade.dto.MunicipioDTO;
 import com.fbso.geolocalidade.dto.MunicipioDTO.DistritoDTO;
-import com.fbso.geolocalidade.dto.MunicipioDTO.LocalidadeDTO;
-import com.fbso.geolocalidade.dto.MunicipioDTO.MunicipioInfoDTO;
-import com.fbso.geolocalidade.dto.MunicipioDTO.RegiaoImediataDTO;
-import com.fbso.geolocalidade.dto.MunicipioDTO.RegiaoIntermediariaDTO;
 import com.fbso.geolocalidade.dto.MunicipioDTO.SubdistritoDTO;
-import com.fbso.geolocalidade.dto.MunicipioDTO.UfDTO;
 import com.fbso.geolocalidade.entity.Distrito;
 import com.fbso.geolocalidade.entity.Municipio;
 import com.fbso.geolocalidade.entity.RegiaoImediata;
@@ -85,67 +80,70 @@ public class MunicipioService {
         .map(list -> list.get(0));
   }
 
+  @Transactional(readOnly = true)
+  public Optional<MunicipioDTO> buscarMunicipioPorUfSiglaEId(String siglaUf, String id) {
+    return municipioRepository.findByIdAndRegiaoImediata_RegiaoIntermediaria_Uf_SiglaIgnoreCase(id, siglaUf)
+        .map(m -> mapMunicipios(List.of(m)))
+        .filter(list -> !list.isEmpty())
+        .map(list -> list.get(0));
+  }
+
   private List<MunicipioDTO> mapMunicipios(List<Municipio> municipios) {
     List<String> municipioIds = municipios.stream().map(Municipio::getId).toList();
 
-    Map<String, Distrito> primeiroDistritoPorMunicipioId = new HashMap<>();
-    if (!municipioIds.isEmpty()) {
-      for (Distrito distrito : distritoRepository.findByMunicipioIdInOrderByIdAsc(municipioIds)) {
-        String municipioId = distrito.getMunicipio().getId();
-        primeiroDistritoPorMunicipioId.putIfAbsent(municipioId, distrito);
-      }
+    Map<String, List<Distrito>> distritosPorMunicipioId = new HashMap<>();
+    List<Distrito> distritos = municipioIds.isEmpty()
+        ? List.of()
+        : distritoRepository.findByMunicipioIdInOrderByIdAsc(municipioIds);
+
+    for (Distrito distrito : distritos) {
+      String municipioId = distrito.getMunicipio().getId();
+      distritosPorMunicipioId.computeIfAbsent(municipioId, k -> new ArrayList<>()).add(distrito);
     }
 
-    List<String> distritoIds = primeiroDistritoPorMunicipioId.values().stream().map(Distrito::getId).toList();
+    List<String> distritoIds = distritos.stream().map(Distrito::getId).toList();
 
-    Map<String, Subdistrito> primeiroSubdistritoPorDistritoId = new HashMap<>();
-    if (!distritoIds.isEmpty()) {
-      for (Subdistrito subdistrito : subdistritoRepository.findByDistritoIdInOrderByIdAsc(distritoIds)) {
-        String distritoId = subdistrito.getDistrito().getId();
-        primeiroSubdistritoPorDistritoId.putIfAbsent(distritoId, subdistrito);
-      }
+    Map<String, List<Subdistrito>> subdistritosPorDistritoId = new HashMap<>();
+    List<Subdistrito> subdistritos = distritoIds.isEmpty()
+        ? List.of()
+        : subdistritoRepository.findByDistritoIdInOrderByIdAsc(distritoIds);
+
+    for (Subdistrito subdistrito : subdistritos) {
+      String distritoId = subdistrito.getDistrito().getId();
+      subdistritosPorDistritoId.computeIfAbsent(distritoId, k -> new ArrayList<>()).add(subdistrito);
     }
 
     List<MunicipioDTO> result = new ArrayList<>(municipios.size());
     for (Municipio municipio : municipios) {
-      Distrito distrito = primeiroDistritoPorMunicipioId.get(municipio.getId());
-      Subdistrito subdistrito = distrito == null ? null : primeiroSubdistritoPorDistritoId.get(distrito.getId());
+      List<DistritoDTO> distritoDTOs = distritosPorMunicipioId.getOrDefault(municipio.getId(), List.of()).stream()
+        .map(d -> {
+        List<SubdistritoDTO> subdistritoDTOs = subdistritosPorDistritoId.getOrDefault(d.getId(), List.of()).stream()
+          .map(s -> new SubdistritoDTO(s.getId(), s.getCodigo(), s.getNome()))
+          .toList();
 
-      result.add(new MunicipioDTO(new LocalidadeDTO(
-          toUfDTO(municipio),
-          toRegiaoIntermediariaDTO(municipio),
-          toRegiaoImediataDTO(municipio),
-          new MunicipioInfoDTO(municipio.getId(), municipio.getCodigo(), municipio.getNome()),
-          distrito == null ? null : new DistritoDTO(distrito.getId(), distrito.getCodigo(), distrito.getNome()),
-          subdistrito == null ? null : new SubdistritoDTO(subdistrito.getId(), subdistrito.getCodigo(), subdistrito.getNome())
-      )));
+        return new DistritoDTO(d.getId(), d.getCodigo(), d.getNome(), subdistritoDTOs);
+        })
+        .toList();
+
+        Uf uf = getUf(municipio);
+        RegiaoIntermediaria regiaoIntermediaria = getRegiaoIntermediaria(municipio);
+        RegiaoImediata regiaoImediata = municipio.getRegiaoImediata();
+
+      result.add(new MunicipioDTO(
+        municipio.getId(),
+        municipio.getNome(),
+        municipio.getCodigo(),
+        uf == null ? null : uf.getId(),
+        uf == null ? null : uf.getNome(),
+        uf == null ? null : uf.getSigla(),
+        regiaoIntermediaria == null ? null : regiaoIntermediaria.getId(),
+        regiaoIntermediaria == null ? null : regiaoIntermediaria.getNome(),
+        regiaoImediata == null ? null : regiaoImediata.getId(),
+        regiaoImediata == null ? null : regiaoImediata.getNome(),
+        distritoDTOs));
     }
 
     return result;
-  }
-
-  private static UfDTO toUfDTO(Municipio municipio) {
-    Uf uf = getUf(municipio);
-    if (uf == null) {
-      return null;
-    }
-    return new UfDTO(uf.getId(), uf.getSigla(), uf.getNome());
-  }
-
-  private static RegiaoIntermediariaDTO toRegiaoIntermediariaDTO(Municipio municipio) {
-    RegiaoIntermediaria ri = getRegiaoIntermediaria(municipio);
-    if (ri == null) {
-      return null;
-    }
-    return new RegiaoIntermediariaDTO(ri.getId(), ri.getNome());
-  }
-
-  private static RegiaoImediataDTO toRegiaoImediataDTO(Municipio municipio) {
-    RegiaoImediata r = municipio.getRegiaoImediata();
-    if (r == null) {
-      return null;
-    }
-    return new RegiaoImediataDTO(r.getId(), r.getNome());
   }
 
   private static RegiaoIntermediaria getRegiaoIntermediaria(Municipio municipio) {
