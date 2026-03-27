@@ -1,8 +1,10 @@
 package com.fbso.geolocalidade.controller;
 
 import com.fbso.geolocalidade.dto.AwesomeCepDTO;
-import com.fbso.geolocalidade.dto.PageResponseDTO;
-import com.fbso.geolocalidade.exception.AwesomeApiException;
+import com.fbso.geolocalidade.dto.AwesomeCepResponseDTO;
+import com.fbso.geolocalidade.dto.CepInfoDTO;
+import com.fbso.geolocalidade.dto.PageInfoDTO;
+import com.fbso.geolocalidade.dto.SingleResponseDTO;
 import com.fbso.geolocalidade.service.AwesomeCepService;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
@@ -27,11 +29,13 @@ public class CepController {
   }
 
   @GetMapping("/cep/{cep}")
-  public ResponseEntity<PageResponseDTO<Object>> buscarCepAwesome(@PathVariable @NotBlank String cep) {
+  public ResponseEntity<SingleResponseDTO<Object>> buscarCepAwesome(@PathVariable @NotBlank String cep) {
     AwesomeCepDTO dto = awesomeCepService.obterCoordenadas(cep);
 
     var content = (dto == null) ? List.<AwesomeCepDTO>of() : List.of(dto);
     var page = new PageImpl<>(content, PageRequest.of(0, 1), content.size());
-    return ResponseEntity.ok(PageResponseDTO.ofObject(page));
+
+    CepInfoDTO payload = (dto == null) ? null : new CepInfoDTO(AwesomeCepResponseDTO.from(dto));
+    return ResponseEntity.ok(SingleResponseDTO.of(payload, PageInfoDTO.of(page)));
   }
 }

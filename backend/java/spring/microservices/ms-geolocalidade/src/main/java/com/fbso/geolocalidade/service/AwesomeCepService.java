@@ -74,7 +74,7 @@ public class AwesomeCepService {
     }
   }
 
-  public List<AwesomeCepDTO> buscarVizinhosNoRaio(String lat, String lng, Double raioKm) {
+  public List<AwesomeCepDTO> buscarCepsVizinhosNoRaio(String lat, String lng, Double raioKm) {
     if ((props.token() == null || props.token().isBlank()) && (props.key() == null || props.key().isBlank())) {
       throw new AwesomeApiException(
           "AwesomeAPI: credenciais não configuradas (defina AWESOME_API_TOKEN ou AWESOME_API_KEY)");

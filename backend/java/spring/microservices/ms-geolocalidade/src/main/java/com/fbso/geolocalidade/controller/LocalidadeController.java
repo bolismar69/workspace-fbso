@@ -23,11 +23,11 @@ public class LocalidadeController {
     this.localidadeService = localidadeService;
   }
 
-  @GetMapping("/vizinhas-agil")
-  public ResponseEntity<PageResponseDTO<Object>> buscarVizinhasAwesome(
+  @GetMapping("/ceps-proximos")
+  public ResponseEntity<PageResponseDTO<Object>> buscarCepsProximosAwesome(
       @RequestParam @NotBlank String cep,
       @RequestParam(defaultValue = "5") @Positive Double raio) {
-    RespostaCompletaDTO dto = localidadeService.processarBuscaPorCep(cep, raio);
+    RespostaCompletaDTO dto = localidadeService.processarBuscaPorCepsProximos(cep, raio);
     return ResponseEntity.ok(PageResponseDTO.success(dto));
   }
 }

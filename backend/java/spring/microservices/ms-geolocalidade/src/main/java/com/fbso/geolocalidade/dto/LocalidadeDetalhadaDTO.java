@@ -1,7 +1,7 @@
 package com.fbso.geolocalidade.dto;
 
 public record LocalidadeDetalhadaDTO(
-    String city_ibge,
+    String cityIbge,
     String city,
     String state
 ) {}

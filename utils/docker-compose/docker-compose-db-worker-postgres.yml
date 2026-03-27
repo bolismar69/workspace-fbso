@@ -17,6 +17,14 @@ services:
       networks:
         - worker-net
 
+  redis-tax-cache:
+    image: redis:7-alpine
+    container_name: redis-tax-rules
+    ports:
+      - "6379:6379"
+    networks:
+      - worker-net
+
 networks:
   worker-net:
     driver: bridge

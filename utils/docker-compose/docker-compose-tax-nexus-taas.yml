@@ -3,19 +3,19 @@ version: '3.8'
 services:
   # --- INFRAESTRUTURA ---
 
-  db-tax-nexus-dev:
-    image: postgres:16-alpine
-    container_name: pg-tax-nexus
-    environment:
-      - POSTGRES_DB=tax_nexus_db
-      - POSTGRES_USER=bolismar
-      - POSTGRES_PASSWORD=admin_tax
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgresdata:/var/lib/postgresql/data
-    networks:
-      - tax-nexus-net
+  db-worker:
+      image: postgres:16-alpine
+      container_name: db-pg-worker
+      environment:
+        - POSTGRES_DB=worker_db
+        - POSTGRES_USER=worker_user
+        - POSTGRES_PASSWORD=worker_pass
+      ports:
+        - "5432:5432"
+      volumes:
+        - postgresdata:/var/lib/postgresql/data
+      networks:
+        - tax-nexus-net
 
   redis-tax-cache:
     image: redis:7-alpine

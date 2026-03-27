@@ -370,7 +370,11 @@ Exemplo (estrutura):
 ## Build nativo (GraalVM)
 
 ```bash
+
 ./mvnw -DskipTests native:compile
+
+./mvnw -DskipTests -Dnative-image.args="--threads.auto"   native:compile
+
 ```
 
 ## Docker (imagem nativa)
