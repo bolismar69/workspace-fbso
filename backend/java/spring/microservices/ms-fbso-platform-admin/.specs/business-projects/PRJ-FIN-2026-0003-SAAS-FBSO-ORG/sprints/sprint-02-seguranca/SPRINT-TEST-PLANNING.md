@@ -8,6 +8,8 @@
 
 ---
 
+> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
+
 ## 1. Visão Geral
 
 - **Tasks implementadas:** 8 (T-009 a T-015, T-015.1)

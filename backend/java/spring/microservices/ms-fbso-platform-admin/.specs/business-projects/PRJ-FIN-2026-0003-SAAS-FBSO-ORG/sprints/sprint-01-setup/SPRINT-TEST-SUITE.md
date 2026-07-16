@@ -10,6 +10,8 @@
 
 ---
 
+> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
+
 ## 1. Testes de Compilação e Estrutura
 
 | ID | Descrição | Nível | Ref. TEST_PLAN |

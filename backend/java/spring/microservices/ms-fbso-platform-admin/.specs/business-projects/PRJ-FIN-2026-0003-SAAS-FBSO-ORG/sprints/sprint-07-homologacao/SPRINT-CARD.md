@@ -9,6 +9,13 @@
 
 ---
 
+> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/java-fbso-platform-admin`. Antes de começar, execute:
+> ```bash
+> git checkout feature/java-fbso-platform-admin
+> git branch --show-current  # deve exibir: feature/java-fbso-platform-admin
+> ```
+> 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-branch-de-desenvolvimento)
+
 ## 🎯 Sprint Goal
 
 **"Suite de regressão 100% verde. Dashboard p95 ≤ 3s com 1000 tenants. OpenAPI 3.0 documentando 37 endpoints. Zero vulnerabilidades críticas/high em SAST. Deploy staging validado com smoke tests. Deploy produção com rollback plan documentado. LGPD: zero dados pessoais em logs. Go-live em 30/10."**

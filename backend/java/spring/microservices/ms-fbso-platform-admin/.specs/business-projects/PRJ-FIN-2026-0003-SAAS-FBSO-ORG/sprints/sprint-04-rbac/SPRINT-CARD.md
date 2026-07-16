@@ -9,6 +9,13 @@
 
 ---
 
+> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/java-fbso-platform-admin`. Antes de começar, execute:
+> ```bash
+> git checkout feature/java-fbso-platform-admin
+> git branch --show-current  # deve exibir: feature/java-fbso-platform-admin
+> ```
+> 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-branch-de-desenvolvimento)
+
 ## 🎯 Sprint Goal
 
 **"4 papéis (Admin Tenant, Gerente BU, Operador BU, Auditor) aplicados com matriz de permissões RN10-01. Gestão de usuários com convite por e-mail. Vinculação Usuário × Unidade × Módulo. Bloqueio de acesso direto com 403 amigável em PT-BR."**

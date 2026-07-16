@@ -3,7 +3,7 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot + PostgreSQL
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.5
+- **Versão:** 1.6
 - **Data:** 16 de Julho de 2026
 - **Status:** Em Execução — Sprint 3 (M2+M3) iniciada em 16/07/2026
 
@@ -466,6 +466,37 @@ curl http://localhost:8081/api/v1/dashboard/admin/summary \
 | `staging` | Homologação (K8s) | postgres.staging.svc | keycloak.staging.svc |
 | `prod` | Produção (K8s) | postgres.prod.svc | keycloak.prod.svc |
 
+### 8.4 Branch de Desenvolvimento
+
+> **🚫 Obrigatório:** Toda e qualquer implementação relacionada a este projeto de negócio (`PRJ-FIN-2026-0003-SAAS-FBSO-ORG`) **DEVE** ser feita exclusivamente na branch abaixo. NÃO commitar diretamente em `main` ou em qualquer outra branch.
+
+| Item | Valor |
+|:---|:---|
+| **Branch** | `feature/java-fbso-platform-admin` |
+| **Repositório** | `backend/java/spring/microservices/ms-fbso-platform-admin` |
+| **Base** | `main` |
+| **Propósito** | Branch única para todas as tarefas dos 7 sprints (Sprint 1 a 7) do escopo FASE 0–3 |
+| **Criada em** | 16/07/2026 |
+
+**Fluxo de trabalho:**
+
+```bash
+# 1. Certifique-se de estar na branch correta
+git checkout feature/java-fbso-platform-admin
+
+# 2. Atualize com o remote (se aplicável)
+git pull origin feature/java-fbso-platform-admin
+
+# 3. Trabalhe normalmente — todos os commits vão para esta branch
+git add .
+git commit -m "feat(sprint-3): implementa endpoint X (T-0XX)"
+
+# 4. Ao finalizar uma sprint, faça push
+git push origin feature/java-fbso-platform-admin
+```
+
+> ⚠️ **Atenção:** Antes de iniciar qualquer tarefa, verifique com `git branch --show-current` se você está na branch `feature/java-fbso-platform-admin`. Commits em branches erradas serão rejeitados no code review.
+
 ---
 
 ## 9. Referência Rápida para o Time Técnico
@@ -491,6 +522,7 @@ curl http://localhost:8081/api/v1/dashboard/admin/summary \
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.5 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Execução". | Time Técnico |
+| 1.6 | 16/07/2026 | Adicionada seção 8.4 — Branch de Desenvolvimento (`feature/java-fbso-platform-admin`) como obrigatória para todas as tarefas do projeto. | Time Técnico |
 | 1.4 | 15/07/2026 | Revisão Caveman (DOCS-SERVICE-CAVEMAN-REVIEW.md): Adicionado AuditEntry à tabela de entidades (§4.1, 10→11). Corrigida contagem ADR (8→7, §5.2). Corrigido RLS "11 tabelas"→"5 tabelas" (§6.1). Atualizadas versões dos artefatos em §3.3. | Caveman/IA |
 | 1.2 | 14/07/2026 | Adicionado PostgreSQL Row-Level Security (RLS) como camada 1 de defesa em profundidade no isolamento multi-tenant (§6.1). Novo ADR-08 (§5.2). Atualizada sequência de segurança (§7.1) com migration V003 para RLS. Estratégia de 3 camadas: RLS (banco) + BaseRepository (aplicação) + Teste de Isolamento (detecção). | Agente Arquiteto/IA |
 | 1.1 | 14/07/2026 | Correção pós-gate: 7 não-conformidades resolvidas do PRD_SCOPE_FAIL_REPORT.md v1.0. Adicionadas seções: §4.4 Matriz de Rastreabilidade, §4.5 Cobertura de Features/US, §4.6 Cobertura de BRs, §6.6 Regras de Negócio (18 RNs), §6.7 Cobertura de NFRs (8 NFRs). Atualizada §7.2 com referência explícita a critérios de aceite por US. NCs resolvidas: NC-001 a NC-007. | Agente Corretor PRD/IA |

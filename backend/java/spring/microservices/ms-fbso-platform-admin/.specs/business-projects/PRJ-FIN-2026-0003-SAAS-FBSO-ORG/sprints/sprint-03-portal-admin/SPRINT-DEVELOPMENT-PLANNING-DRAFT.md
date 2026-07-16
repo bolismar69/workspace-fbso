@@ -9,6 +9,8 @@
 
 ---
 
+> 🚫 **BRANCH OBRIGATÓRIA:** `feature/java-fbso-platform-admin` — ver [PRD.md §8.4](../../PRD.md#84-branch-de-desenvolvimento)
+
 ## 1. Diagnóstico da Situação Atual
 
 ### 1.1 Progresso Acumulado (Sprints 1-2)

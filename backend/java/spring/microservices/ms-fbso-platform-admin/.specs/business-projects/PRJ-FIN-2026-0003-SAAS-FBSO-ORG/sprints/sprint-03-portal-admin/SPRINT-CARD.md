@@ -10,6 +10,13 @@
 
 ---
 
+> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/java-fbso-platform-admin`. Antes de começar, execute:
+> ```bash
+> git checkout feature/java-fbso-platform-admin
+> git branch --show-current  # deve exibir: feature/java-fbso-platform-admin
+> ```
+> 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-branch-de-desenvolvimento)
+
 ## 🎯 Sprint Goal
 
 **"Dashboard administrativo exibe métricas operacionais do SaaS em ≤3s. CRUD completo de Tenants, Planos e Assinaturas funcional. Auditoria registra 100% das ações administrativas e é consultável com filtros."**
