@@ -1,0 +1,221 @@
+openapi: 3.1.0
+info:
+  title: batch-geolocalidade — API Contract
+  version: 0.0.1
+  description: >
+    ## Visão Geral
+
+    **batch-geolocalidade** é um serviço **Spring Batch headless** — ele NÃO expõe endpoints REST.
+
+    O serviço é executado via linha de comando como um job efêmero que:
+    1. Lê arquivos CSV do IBGE (Divisão Territorial Brasileira)
+    2. Processa e transforma os dados via Spring Batch
+    3. Persiste as entidades no PostgreSQL (schema `localidade`)
+    4. Encerra o processo com exit code 0 (sucesso) ou 1 (falha)
+
+    ### Interface de Execução
+
+    A única forma de interagir com o serviço é via **linha de comando**:
+
+    ```bash
+    java -jar target/spring-batch-geolocalidade-0.0.1-SNAPSHOT.jar --app.loadtest.enabled=true
+    ```
+
+    ### Jobs Spring Batch (Interface Interna)
+
+    Embora não sejam endpoints REST, os Jobs do Spring Batch representam a
+    "API" de processamento do serviço. O `JobLauncher` permite disparar Jobs
+    programaticamente se necessário.
+
+    ### Endpoints Futuros (Planejados)
+
+    Os endpoints abaixo são planejados para uma versão futura que exporá REST
+    para disparo de jobs e consulta de status.
+
+  contact:
+    name: Time de Engenharia FBSO
+
+servers:
+  - url: http://localhost:8080
+    description: Local (não expõe endpoints REST atualmente)
+
+tags:
+  - name: Jobs
+    description: Jobs Spring Batch (interface de processamento)
+  - name: Health
+    description: Health check futuro
+
+paths:
+  /actuator/health:
+    get:
+      summary: Health Check (planejado)
+      description: >
+        **⚠️ NÃO IMPLEMENTADO.** Planejado para versão futura com Spring Actuator.
+        Quando implementado, retornará o status do serviço e dos jobs.
+      tags:
+        - Health
+      x-unimplemented: true
+      responses:
+        '200':
+          description: Serviço saudável
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Serviço não saudável
+
+  /jobs/importacao-geolocalidade:
+    post:
+      summary: Disparar Job de Importação (planejado)
+      description: >
+        **⚠️ NÃO IMPLEMENTADO.** Planejado para versão futura.
+        Dispararia o job `importacaoGeolocalidadeJob` sob demanda
+        em vez de apenas via LoadTestRunner.
+      tags:
+        - Jobs
+      x-unimplemented: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobLaunchRequest'
+      responses:
+        '202':
+          description: Job disparado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobLaunchResponse'
+        '409':
+          description: Job já está em execução
+
+  /jobs/importacao-geolocalidade/status:
+    get:
+      summary: Consultar Status do Job (planejado)
+      description: >
+        **⚠️ NÃO IMPLEMENTADO.** Planejado para versão futura.
+        Retornaria o status da última execução do job.
+      tags:
+        - Jobs
+      x-unimplemented: true
+      parameters:
+        - name: executionId
+          in: query
+          schema:
+            type: integer
+          description: ID da execução (opcional; default = última execução)
+      responses:
+        '200':
+          description: Status do job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatusResponse'
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [UP, DOWN]
+          example: UP
+        components:
+          type: object
+          properties:
+            db:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: UP
+            batch:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: UP
+
+    JobLaunchRequest:
+      type: object
+      properties:
+        importPath:
+          type: string
+          description: Caminho alternativo para os CSVs
+          example: /tmp/work/data/ibge
+        files:
+          type: object
+          properties:
+            municipios:
+              type: string
+              example: DTB_Municipios.csv
+            distritos:
+              type: string
+              example: DTB_Distritos.csv
+            subdistritos:
+              type: string
+              example: DTB_Subdistritos.csv
+
+    JobLaunchResponse:
+      type: object
+      properties:
+        executionId:
+          type: integer
+          example: 42
+        jobName:
+          type: string
+          example: importacaoGeolocalidadeJob
+        status:
+          type: string
+          example: STARTED
+
+    JobStatusResponse:
+      type: object
+      properties:
+        executionId:
+          type: integer
+          example: 42
+        jobName:
+          type: string
+          example: importacaoGeolocalidadeJob
+        status:
+          type: string
+          enum: [STARTING, STARTED, STOPPING, STOPPED, FAILED, COMPLETED, ABANDONED, UNKNOWN]
+          example: COMPLETED
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        durationMs:
+          type: integer
+          example: 45230
+        metrics:
+          $ref: '#/components/schemas/JobMetrics'
+
+    JobMetrics:
+      type: object
+      properties:
+        municipios:
+          type: integer
+          description: Total de municípios importados
+          example: 5570
+        distritos:
+          type: integer
+          description: Total de distritos importados
+          example: 10407
+        subdistritos:
+          type: integer
+          description: Total de subdistritos importados
+          example: 684
+        readCount:
+          type: integer
+        writeCount:
+          type: integer
+        skipCount:
+          type: integer
+
+  securitySchemes: {}
