@@ -9,12 +9,12 @@
 
 ---
 
-> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/java-fbso-platform-admin`. Antes de começar, execute:
+> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/sprint-07-homologacao`. Antes de começar, execute:
 > ```bash
-> git checkout feature/java-fbso-platform-admin
-> git branch --show-current  # deve exibir: feature/java-fbso-platform-admin
+> git checkout feature/sprint-07-homologacao
+> git branch --show-current  # deve exibir: feature/sprint-07-homologacao
 > ```
-> 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-branch-de-desenvolvimento)
+> 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-estratégia-de-branching--uma-branch-por-sprint)
 
 ## 🎯 Sprint Goal
 
