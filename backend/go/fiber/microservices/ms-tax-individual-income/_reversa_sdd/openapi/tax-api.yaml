@@ -1,0 +1,136 @@
+openapi: 3.0.3
+info:
+  title: TaxNexus Individual Income API
+  description: API para cálculo de imposto de renda de pessoa física (IRPF) com suporte a múltiplos modelos e transição para a reforma de 2026. 🟢
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Servidor Local 🟢
+paths:
+  /calculate/irpf:
+    post:
+      summary: Calcula IRPF nos modelos completo e simplificado
+      description: Processa renda bruta e deduções para retornar o valor devido em ambos os modelos, recomendando o mais vantajoso. 🟢
+      operationId: calculateIRPF
+      responses:
+        '200':
+          description: Cálculos realizados com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/TaxResponse'
+                example:
+                  completa:
+                    tax_amount: 150.50
+                    is_recommended: false
+                  simplificada:
+                    tax_amount: 120.00
+                    is_recommended: true
+        '400':
+          description: Corpo da requisição inválido 🟢
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno no processamento 🟢
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxRequest'
+
+components:
+  schemas:
+    TaxRequest:
+      type: object
+      required:
+        - tax_code
+        - gross_income
+      properties:
+        tax_code:
+          type: string
+          example: "IRPF"
+          description: Código do imposto (sempre IRPF para esta unit). 🟢
+        gross_income:
+          type: number
+          format: decimal
+          example: 5000.00
+          description: Valor bruto da renda no período. 🟢
+        calculation_type:
+          type: string
+          enum: [monthly, annual]
+          example: "monthly"
+          description: Tipo de periodicidade do cálculo. 🟢
+        reference_date:
+          type: string
+          format: date
+          example: "2026-06-08"
+          description: Data para determinar a vigência das tabelas. Se omitida, usa hoje. 🟢
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxInput'
+          description: Lista de deduções e parâmetros (educação, saúde, dependentes, etc). 🟢
+
+    TaxInput:
+      type: object
+      properties:
+        key:
+          type: string
+          example: "education_expenses"
+        value:
+          type: number
+          format: decimal
+          example: 200.00
+        unit:
+          type: string
+          example: "currency"
+
+    TaxResponse:
+      type: object
+      properties:
+        reference_date:
+          type: string
+        gross_income:
+          type: number
+        total_deduction_amount:
+          type: number
+        base_value:
+          type: number
+        tax_amount:
+          type: number
+        effective_rate:
+          type: number
+        is_recommended:
+          type: boolean
+        applied_rule:
+          type: string
+          description: Descrição da faixa e alíquota aplicada. 🟢
+        deduction_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeductionDetail'
+
+    DeductionDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          example: "deduction_for_education"
+        amount:
+          type: number
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "corpo da requisição inválido"

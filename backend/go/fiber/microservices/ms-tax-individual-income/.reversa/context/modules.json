@@ -1,0 +1,144 @@
+{
+  "generated_at": "2026-06-08T15:20:00Z",
+  "modules": [
+    {
+      "name": "handlers",
+      "path": "handlers",
+      "purpose": "Processamento de requisições HTTP e roteamento",
+      "primary_files": ["handlers/tax_handler.go"],
+      "functions": [
+        {
+          "name": "CalculateIRPF",
+          "file": "handlers/tax_handler.go",
+          "params": ["c *fiber.Ctx"],
+          "returns": "error",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [],
+      "business_rules": [
+        {
+          "description": "Define data de referência padrão (agora) se omitida na requisição",
+          "location": "handlers/tax_handler.go:42",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["services", "models"],
+      "algorithms": [],
+      "complexity": "low"
+    },
+    {
+      "name": "services",
+      "path": "services",
+      "purpose": "Lógica de negócio e cálculos de impostos",
+      "primary_files": ["services/calculation_service.go", "services/inss_client.go"],
+      "functions": [
+        {
+          "name": "Calculate",
+          "file": "services/calculation_service.go",
+          "params": ["ctx context.Context", "req models.UniversalTaxRequest"],
+          "returns": "(map[string]models.TaxResponse, error)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "calculateCompleta",
+          "file": "services/calculation_service.go",
+          "params": ["ctx context.Context", "req models.UniversalTaxRequest", "inputs, configs map[string]decimal.Decimal"],
+          "returns": "(models.TaxResponse, error)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "calculateSimplificada",
+          "file": "services/calculation_service.go",
+          "params": ["ctx context.Context", "req models.UniversalTaxRequest", "configs map[string]decimal.Decimal"],
+          "returns": "(models.TaxResponse, error)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "FetchINSS",
+          "file": "services/inss_client.go",
+          "params": ["ctx context.Context", "req models.UniversalTaxRequest"],
+          "returns": "(models.TaxResponse, error)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "CalculationResult",
+          "fields": [
+            { "name": "Key", "type": "string", "required": true },
+            { "name": "Res", "type": "models.TaxResponse", "required": true },
+            { "name": "Err", "type": "error", "required": false }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Cálculo paralelo de modelos 'completo' e 'simplificado'",
+          "location": "services/calculation_service.go:104",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Recomendação automática do modelo com menor valor de imposto",
+          "location": "services/calculation_service.go:127",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Lógica de transição tributária para o ano de 2026",
+          "location": "services/calculation_service.go:230",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["repository", "models", "decimal", "slog"],
+      "algorithms": ["Cálculo progressivo de IRPF", "Redução adicional por faixa de transição 2026"],
+      "complexity": "high"
+    },
+    {
+      "name": "data",
+      "path": "data",
+      "purpose": "Definição de schema e carga inicial de regras tributárias",
+      "primary_files": ["data/init.sql"],
+      "functions": [],
+      "entities": [
+        {
+          "name": "tax_definitions",
+          "fields": [
+            { "name": "tax_code", "type": "VARCHAR(20)", "required": true },
+            { "name": "name", "type": "TEXT", "required": true },
+            { "name": "sphere", "type": "CHAR(1)", "required": true }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "tax_rules_history",
+          "fields": [
+            { "name": "range_min", "type": "DECIMAL", "required": true },
+            { "name": "range_max", "type": "DECIMAL", "required": false },
+            { "name": "aliq_percent", "type": "DECIMAL", "required": true },
+            { "name": "deduction_val", "type": "DECIMAL", "required": true }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "tax_configs",
+          "fields": [
+            { "name": "config_key", "type": "VARCHAR(50)", "required": true },
+            { "name": "config_value", "type": "DECIMAL", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Persistência de limites de dedução e parâmetros por data de vigência",
+          "location": "data/init.sql:31",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": [],
+      "algorithms": [],
+      "complexity": "low"
+    }
+  ]
+}

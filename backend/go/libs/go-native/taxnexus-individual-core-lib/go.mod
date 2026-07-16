@@ -1,4 +1,4 @@
-module taxnexus-core-lib
+module taxnexus-individual-core-lib
 
 go 1.25.6
 

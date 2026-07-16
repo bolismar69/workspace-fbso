@@ -1,31 +1,32 @@
-// path: backend/go/libs/go-native/taxnexus-core-lib/models/tax_models.go
+// path: backend/go/libs/go-native/taxnexus-individual-core-lib/models/tax_models.go
 package models
 
 import (
 	"time"
-	"github.com/shopspring/decimal"
+
 	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
 
 type TaxDefinition struct {
-	ID                int             `db:"id" json:"id"`
-	TaxCode           string          `db:"tax_code" json:"tax_code"`
-	Name              string          `db:"name" json:"name"`
-	Sphere            string          `db:"sphere" json:"sphere"`
-	RoundingPrecision int             `db:"rounding_precision" json:"rounding_precision"`
-	Active            bool            `db:"active" json:"active"`
+	ID                int    `db:"id" json:"id"`
+	TaxCode           string `db:"tax_code" json:"tax_code"`
+	Name              string `db:"name" json:"name"`
+	Sphere            string `db:"sphere" json:"sphere"`
+	RoundingPrecision int    `db:"rounding_precision" json:"rounding_precision"`
+	Active            bool   `db:"active" json:"active"`
 }
 
 type TaxRule struct {
-	ID              int             `db:"id" json:"id"`
-	TaxDefinitionID int             `db:"tax_definition_id" json:"tax_definition_id"`
-	Description     string          `db:"description" json:"description"`
-	RangeMin        decimal.Decimal `db:"range_min" json:"range_min"`
+	ID              int              `db:"id" json:"id"`
+	TaxDefinitionID int              `db:"tax_definition_id" json:"tax_definition_id"`
+	Description     string           `db:"description" json:"description"`
+	RangeMin        decimal.Decimal  `db:"range_min" json:"range_min"`
 	RangeMax        *decimal.Decimal `db:"range_max" json:"range_max"` // Pointer para lidar com NULL
-	AliqPercent     decimal.Decimal `db:"aliq_percent" json:"aliq_percent"`
-	DeductionVal    decimal.Decimal `db:"deduction_val" json:"deduction_val"`
-	ValidFrom       time.Time       `db:"valid_from" json:"valid_from"`
-	ValidTo         *time.Time      `db:"valid_to" json:"valid_to"`
+	AliqPercent     decimal.Decimal  `db:"aliq_percent" json:"aliq_percent"`
+	DeductionVal    decimal.Decimal  `db:"deduction_val" json:"deduction_val"`
+	ValidFrom       time.Time        `db:"valid_from" json:"valid_from"`
+	ValidTo         *time.Time       `db:"valid_to" json:"valid_to"`
 }
 
 type TaxCalculationLog struct {
@@ -46,24 +47,24 @@ type TaxRequest struct {
 	PensionDeductionAmount     decimal.Decimal `json:"pension_deduction_amount"`     // Valor fixo
 	PensionDeductionPercentage decimal.Decimal `json:"pension_deduction_percentage"` // Percentual (ex: 11.0)
 	DependentsCount            int             `json:"dependents_count"`
-	EducationExpenses          decimal.Decimal `json:"education_expenses"`           // Gasto real com educação
-	HealthExpenses             decimal.Decimal `json:"health_expenses"`              // Gasto real com saúde
-	PGBLContribution           decimal.Decimal `json:"pgbl_contribution"`           // Contribuição PGBL
+	EducationExpenses          decimal.Decimal `json:"education_expenses"` // Gasto real com educação
+	HealthExpenses             decimal.Decimal `json:"health_expenses"`    // Gasto real com saúde
+	PGBLContribution           decimal.Decimal `json:"pgbl_contribution"`  // Contribuição PGBL
 	OtherDeductions            decimal.Decimal `json:"other_deductions"`
 }
 
-type TaxInput struct {
+type DocumentoFiscalRequest struct {
 	Key   string          `json:"key"`
 	Value decimal.Decimal `json:"value"`
-	Unit  string          `json:"unit"` 
+	Unit  string          `json:"unit"`
 }
 
 type UniversalTaxRequest struct {
-	TaxCode         string          `json:"tax_code"`
-	CalculationType string          `json:"calculation_type"`
-	ReferenceDate   time.Time       `json:"reference_date"`
-	GrossIncome     decimal.Decimal `json:"gross_income"`
-	Inputs          []TaxInput      `json:"inputs"`
+	TaxCode         string                   `json:"tax_code"`
+	CalculationType string                   `json:"calculation_type"`
+	ReferenceDate   time.Time                `json:"reference_date"`
+	GrossIncome     decimal.Decimal          `json:"gross_income"`
+	Inputs          []DocumentoFiscalRequest `json:"inputs"`
 }
 
 // DeductionDetail para o detalhamento na saída
@@ -82,6 +83,6 @@ type TaxResponse struct {
 	EffectiveRate        decimal.Decimal   `json:"effective_rate"`
 	IsRecommended        bool              `json:"is_recommended"`
 	DeductionDetails     []DeductionDetail `json:"deduction_details"`
-	AppliedRule    			 string            `json:"applied_rule_summary"`
-  UsedConfigs    			 map[string]string `json:"used_configs"`
+	AppliedRule          string            `json:"applied_rule_summary"`
+	UsedConfigs          map[string]string `json:"used_configs"`
 }
