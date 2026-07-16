@@ -1,0 +1,80 @@
+# =============================================================================
+# ms-fbso-platform-admin — Configuração Padrão
+# =============================================================================
+# Profiles ativos: dev (default), staging, prod
+# Ativar profile: spring.profiles.active=dev|staging|prod
+# =============================================================================
+
+spring:
+  application:
+    name: ms-fbso-platform-admin
+
+  # ---- Datasource PostgreSQL (overridden per profile) ----
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/fbso_platform}
+    username: ${DATASOURCE_USERNAME:fbso_admin}
+    password: ${DATASOURCE_PASSWORD:fbso_admin}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1200000
+
+  # ---- Flyway Migrations ----
+  flyway:
+    enabled: true
+    schemas: fbso_platform
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  # ---- Jackson (ISO 8601, PT-BR) ----
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+  # ---- Email (SMTP) ----
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+# ---- Keycloak / OAuth2 Resource Server (JWT RS256) ----
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:8080/realms/fbso-platform/protocol/openid-connect/certs}
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/fbso-platform}
+
+# ---- Server ----
+server:
+  port: ${SERVER_PORT:8080}
+
+# ---- Actuator / Health Checks ----
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# ---- Logging ----
+logging:
+  level:
+    root: INFO
+    com.fbso.platform.admin: ${LOG_LEVEL:INFO}
+    org.springframework.security: INFO
+    org.flywaydb: INFO

@@ -1,0 +1,18 @@
+# =============================================================================
+# Profile: dev — Desenvolvimento Local
+# =============================================================================
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fbso_platform
+    username: fbso_admin
+    password: fbso_admin
+
+  flyway:
+    clean-disabled: false  # permitir clean apenas em dev
+
+logging:
+  level:
+    root: INFO
+    com.fbso.platform.admin: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.jdbc: DEBUG
