@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-06-10T00:00:00Z",
+  "project_root": "/home/bolismar/work/taxnexus-individual-core-lib",
+  "languages": [
+    { "name": "Go", "extensions": [".go"], "file_count": 4 }
+  ],
+  "primary_language": "Go",
+  "frameworks": [
+    { "name": "shopspring/decimal", "version": "1.4.0", "source": "go.mod" },
+    { "name": "pgx (pgxpool / PostgreSQL)", "version": "5.9.1", "source": "go.mod" },
+    { "name": "go-redis", "version": "9.18.0", "source": "go.mod" },
+    { "name": "google/uuid", "version": "1.6.0", "source": "go.mod" }
+  ],
+  "package_manager": "go modules",
+  "go_version": "1.25.6",
+  "module_name": "taxnexus-core-lib",
+  "artifact_type": "library",
+  "entry_points": [
+    { "path": "db/postgres.go", "type": "factory", "symbol": "ConnectPostgres" },
+    { "path": "cache/redis.go", "type": "factory", "symbol": "ConnectRedis" },
+    { "path": "repository/tax_repository.go", "type": "factory", "symbol": "NewTaxRepository" }
+  ],
+  "config_files": [
+    "go.mod",
+    "go.sum",
+    "README.md"
+  ],
+  "env_vars": [
+    "DATABASE_URL",
+    "REDIS_ADDR"
+  ],
+  "ci_cd": [],
+  "docker": {},
+  "database_hints": [
+    { "path": "repository/tax_repository.go", "type": "embedded_sql", "schema": "individual_tax_rates", "tables": ["tax_configs", "tax_rules_history", "tax_definitions"] },
+    { "path": "models/tax_models.go", "type": "orm_like_structs", "note": "structs com tags db: mapeando tax_definitions, tax_rules e log de cálculo" }
+  ],
+  "test_framework": null,
+  "test_file_count": 0,
+  "modules": [
+    "models",
+    "repository",
+    "db",
+    "cache"
+  ],
+  "total_files": 8,
+  "external_dependencies": [
+    { "name": "PostgreSQL", "via": "pgxpool", "config": "DATABASE_URL" },
+    { "name": "Redis", "via": "go-redis", "config": "REDIS_ADDR" }
+  ],
+  "gaps": [
+    "Recorte de monorepo: comentarios '// path: backend/go/libs/go-native/...' indicam que a camada de servico/calculo que consome este repository nao esta presente.",
+    "DTOs TaxRequest/TaxResponse/UniversalTaxRequest definidos em models mas sem consumidor neste recorte.",
+    "test_conn.go citado no README esta ausente.",
+    "TaxCalculationLog nao e lido nem escrito por nenhuma query deste repositorio."
+  ],
+  "organization_suggestion": {
+    "granularity": "module",
+    "rationale": "O projeto e uma biblioteca Go organizada em pacotes top-level coesos (models, repository, db, cache), cada um com API publica propria — o pacote e a unidade natural de spec.",
+    "signals": [
+      { "type": "top_level_package_folders", "evidence": ["models/", "repository/", "db/", "cache/"] }
+    ],
+    "features": []
+  }
+}

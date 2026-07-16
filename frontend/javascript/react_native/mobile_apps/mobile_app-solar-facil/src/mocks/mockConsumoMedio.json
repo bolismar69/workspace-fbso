@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "0-100 kWh",
+    "initialValue": 0,
+    "finalValue": 100,
+    "unit": "kWh",
+    "description": "0-100 kWh",
+    "status": "active"
+  },
+  {
+    "id": 2,
+    "name": "101-200 kWh",
+    "initialValue": 101,
+    "finalValue": 200,
+    "unit": "kWh",
+    "description": "101-200 kWh",
+    "status": "active"
+  },
+  {
+    "id": 3,
+    "name": "201-300 kWh",
+    "initialValue": 201,
+    "finalValue": 300,
+    "unit": "kWh",
+    "description": "201-300 kWh",
+    "status": "active"
+  },
+  {
+    "id": 4,
+    "name": "301-400 kWh",
+    "initialValue": 301,
+    "finalValue": 400,
+    "unit": "kWh",
+    "description": "301-400 kWh",
+    "status": "active"
+  },
+  {
+    "id": 5,
+    "name": "401-500 kWh",
+    "initialValue": 401,
+    "finalValue": 500,
+    "unit": "kWh",
+    "description": "401-500 kWh",
+    "status": "active"
+  },
+  {
+    "id": 6,
+    "name": "+500 kWh",
+    "initialValue": 501,
+    "finalValue": 999999999999999,
+    "unit": "kWh",
+    "description": "+500 kWh",
+    "status": "active"
+  }
+]

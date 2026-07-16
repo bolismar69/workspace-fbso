@@ -21,9 +21,9 @@ type CalculationResult struct {
 }
 
 type CalculationService struct {
-	repo   *repository.TaxRepository
+	repo       *repository.TaxRepository
 	inssClient *INSSClient // Novo campo para comunicação com MS de INSS
-	logger *slog.Logger
+	logger     *slog.Logger
 }
 
 func NewCalculationService(repo *repository.TaxRepository, inssURL string) *CalculationService {
@@ -129,9 +129,11 @@ func (s *CalculationService) Calculate(ctx context.Context, req models.Universal
 	if c, okC := results["completa"]; okC {
 		if s, okS := results["simplificada"]; okS {
 			if s.TaxAmount.LessThan(c.TaxAmount) {
-				s.IsRecommended = true; results["simplificada"] = s
+				s.IsRecommended = true
+				results["simplificada"] = s
 			} else {
-				c.IsRecommended = true; results["completa"] = c
+				c.IsRecommended = true
+				results["completa"] = c
 			}
 		}
 	}
@@ -169,17 +171,23 @@ func (s *CalculationService) calculateCompleta(ctx context.Context, req models.U
 
 	depQty := inputs["dependents_qty"]
 	depKey := "dependent_deduction_monthly"
-	if req.CalculationType == "annual" { depKey = "dependent_deduction_annual" }
+	if req.CalculationType == "annual" {
+		depKey = "dependent_deduction_annual"
+	}
 	depRate := configs[depKey]
-	if depRate.IsZero() { depRate = decimal.NewFromFloat(189.59) }
-	
+	if depRate.IsZero() {
+		depRate = decimal.NewFromFloat(189.59)
+	}
+
 	depTotal := depQty.Mul(depRate)
 	details = append(details, models.DeductionDetail{Type: "deduction_for_dependents", Amount: depTotal.Round(2)})
 
 	eduSpent := inputs["education_expenses"]
 	if eduSpent.GreaterThan(decimal.Zero) {
 		eduLimitKey := "education_limit_monthly"
-		if req.CalculationType == "annual" { eduLimitKey = "education_limit_annual" }
+		if req.CalculationType == "annual" {
+			eduLimitKey = "education_limit_annual"
+		}
 		eduLimit := configs[eduLimitKey]
 		totalEduLimit := eduLimit.Mul(decimal.NewFromInt(int64(1 + int(depQty.IntPart()))))
 		eduDeduction := decimal.Min(eduSpent, totalEduLimit)
@@ -197,13 +205,17 @@ func (s *CalculationService) calculateCompleta(ctx context.Context, req models.U
 			pgblSpent = req.GrossIncome.Mul(pgblSpent.Div(decimal.NewFromInt(100)))
 		}
 		pgblLimitPct := configs["pgbl_limit_percentage"]
-		if pgblLimitPct.IsZero() { pgblLimitPct = decimal.NewFromInt(12) }
+		if pgblLimitPct.IsZero() {
+			pgblLimitPct = decimal.NewFromInt(12)
+		}
 		pgblLimit := req.GrossIncome.Mul(pgblLimitPct.Div(decimal.NewFromInt(100)))
 		pgblDeduction := decimal.Min(pgblSpent, pgblLimit)
 		details = append(details, models.DeductionDetail{Type: "deduction_for_pgbl", Amount: pgblDeduction.Round(2)})
 	}
 
-	for _, d := range details { totalDeduction = totalDeduction.Add(d.Amount) }
+	for _, d := range details {
+		totalDeduction = totalDeduction.Add(d.Amount)
+	}
 	baseValue := req.GrossIncome.Sub(totalDeduction)
 
 	return s.runTaxMath(ctx, req, baseValue, totalDeduction, details, configs)
@@ -212,11 +224,17 @@ func (s *CalculationService) calculateCompleta(ctx context.Context, req models.U
 func (s *CalculationService) calculateSimplificada(ctx context.Context, req models.UniversalTaxRequest, configs map[string]decimal.Decimal) (models.TaxResponse, error) {
 	discount := req.GrossIncome.Mul(decimal.NewFromFloat(0.20))
 	limitKey := "simplified_discount_monthly_limit"
-	if req.CalculationType == "annual" { limitKey = "simplified_discount_annual_limit" }
+	if req.CalculationType == "annual" {
+		limitKey = "simplified_discount_annual_limit"
+	}
 	limit := configs[limitKey]
-	if limit.IsZero() { limit = decimal.NewFromFloat(564.80) }
+	if limit.IsZero() {
+		limit = decimal.NewFromFloat(564.80)
+	}
 
-	if discount.GreaterThan(limit) { discount = limit }
+	if discount.GreaterThan(limit) {
+		discount = limit
+	}
 
 	details := []models.DeductionDetail{{Type: "simplified_discount", Amount: discount.Round(2)}}
 	return s.runTaxMath(ctx, req, req.GrossIncome.Sub(discount), discount, details, configs)
@@ -224,8 +242,10 @@ func (s *CalculationService) calculateSimplificada(ctx context.Context, req mode
 
 func (s *CalculationService) runTaxMath(ctx context.Context, req models.UniversalTaxRequest, baseValue, totalDeduction decimal.Decimal, details []models.DeductionDetail, configs map[string]decimal.Decimal) (models.TaxResponse, error) {
 	l := s.getLogger(ctx)
-	if baseValue.IsNegative() { baseValue = decimal.Zero }
-	
+	if baseValue.IsNegative() {
+		baseValue = decimal.Zero
+	}
+
 	rule, err := s.repo.GetApplicableRule(ctx, req.TaxCode, baseValue, req.ReferenceDate)
 	if err != nil {
 		l.Error("regra de imposto nao encontrada", "base_value", baseValue)
@@ -233,9 +253,9 @@ func (s *CalculationService) runTaxMath(ctx context.Context, req models.Universa
 	}
 
 	// 1. Prepara Metadata para o Response
-	appliedRuleStr := fmt.Sprintf("Faixa: %s a %v | Alíquota: %s%% | Parcela a Deduzir: %s", 
+	appliedRuleStr := fmt.Sprintf("Faixa: %s a %v | Alíquota: %s%% | Parcela a Deduzir: %s",
 		rule.RangeMin, rule.RangeMax, rule.AliqPercent, rule.DeductionVal)
-	
+
 	usedConfigsMap := make(map[string]string)
 	for k, v := range configs {
 		usedConfigsMap[k] = v.String()
@@ -247,7 +267,9 @@ func (s *CalculationService) runTaxMath(ctx context.Context, req models.Universa
 	// Cálculo do imposto
 	aliqFactor := rule.AliqPercent.Div(decimal.NewFromInt(100))
 	taxAmount := baseValue.Mul(aliqFactor).Sub(rule.DeductionVal)
-	if taxAmount.IsNegative() { taxAmount = decimal.Zero }
+	if taxAmount.IsNegative() {
+		taxAmount = decimal.Zero
+	}
 
 	// Lógica de transição 2026
 	date2026 := time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -264,7 +286,9 @@ func (s *CalculationService) runTaxMath(ctx context.Context, req models.Universa
 			fB := configs["transition_2026_factor_b"]
 			reduction := fA.Sub(fB.Mul(baseValue))
 			if reduction.GreaterThan(decimal.Zero) {
-				if reduction.GreaterThan(taxAmount) { reduction = taxAmount }
+				if reduction.GreaterThan(taxAmount) {
+					reduction = taxAmount
+				}
 				taxAmount = taxAmount.Sub(reduction)
 				details = append(details, models.DeductionDetail{Type: "reforma_2026_reducao_adicional", Amount: reduction.Round(2).Neg()})
 			}
@@ -289,9 +313,11 @@ func (s *CalculationService) runTaxMath(ctx context.Context, req models.Universa
 	}, nil
 }
 
-func (s *CalculationService) getUnit(inputs []models.TaxInput, key string) (string, bool) {
+func (s *CalculationService) getUnit(inputs []models.DocumentoFiscalRequest, key string) (string, bool) {
 	for _, in := range inputs {
-		if in.Key == key { return in.Unit, true }
+		if in.Key == key {
+			return in.Unit, true
+		}
 	}
 	return "", false
 }

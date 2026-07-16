@@ -1,0 +1,18 @@
+{
+  "name": "Revisão de Código Solar Facil",
+  "description": "Checklist e boas práticas para revisão de código no projeto Solar Facil.",
+  "prompt": [
+    "Você está revisando código para o projeto Solar Facil.",
+    "Checklist para revisão:",
+    "- O código segue as convenções de estilo (ESLint, Prettier)?",
+    "- Há testes cobrindo a nova funcionalidade ou correção?",
+    "- O commit segue o padrão Conventional Commits?",
+    "- O código está bem estruturado e com nomes descritivos?",
+    "- Há documentação suficiente para entender a mudança?",
+    "- O código afeta segurança ou performance? Se sim, houve análise?",
+    "- Não há credenciais ou informações sensíveis no código?",
+    "Após revisar, aprove ou solicite mudanças conforme necessário.",
+    "Use este prompt para listar pontos críticos de revisão e sugerir melhorias."
+  ],
+  "tags": ["code-review", "best-practices"]
+}

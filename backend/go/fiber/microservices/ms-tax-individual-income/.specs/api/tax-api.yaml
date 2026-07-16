@@ -1,0 +1,387 @@
+openapi: 3.0.3
+
+info:
+  title: TaxNexus Individual Income API
+  description: >
+    API para cálculo de imposto de renda de pessoa física (IRPF) com suporte
+    a múltiplos modelos (Completo e Simplificado), integração com INSS,
+    regras de transição da Reforma Tributária 2026, e health checks para
+    orquestradores (K8s, Docker).
+
+    **Autenticação:** O serviço não implementa autenticação no endpoint.
+    Opera em rede interna presumida (trusted network).
+
+    **Rastreabilidade:** Toda requisição recebe um `X-Request-ID` automático
+    propagado para serviços downstream (INSS).
+  version: 1.1.0
+
+servers:
+  - url: http://localhost:3000
+    description: Raiz (health checks sem prefixo /api)
+  - url: http://localhost:3000/api/v1
+    description: Ambiente de desenvolvimento local (API v1)
+
+paths:
+  /healthz:
+    get:
+      summary: Liveness probe
+      description: >
+        Verifica se o processo está vivo, sem realizar I/O externo.
+        Uso: Kubernetes livenessProbe, Docker HEALTHCHECK.
+      operationId: liveness
+      tags: [Health]
+      responses:
+        '200':
+          description: Processo vivo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LivenessResponse'
+              example:
+                status: "alive"
+                timestamp: "2026-06-20T21:29:11Z"
+
+  /health:
+    get:
+      summary: Readiness probe
+      description: >
+        Verifica a saúde de todos os componentes (PostgreSQL, Redis).
+        Retorna 200 se todos healthy, 503 se algum unhealthy.
+        Uso: Kubernetes readinessProbe, balanceadores de carga.
+      operationId: readiness
+      tags: [Health]
+      responses:
+        '200':
+          description: Todos os componentes healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "healthy"
+                timestamp: "2026-06-20T21:29:11Z"
+                components:
+                  postgresql:
+                    status: "healthy"
+                    latency_ms: 2
+                  redis:
+                    status: "healthy"
+                    latency_ms: 1
+        '503':
+          description: Um ou mais componentes unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "unhealthy"
+                timestamp: "2026-06-20T21:29:11Z"
+                components:
+                  postgresql:
+                    status: "unhealthy"
+                    latency_ms: 2001
+                    error: "context deadline exceeded"
+                  redis:
+                    status: "healthy"
+                    latency_ms: 1
+
+  /api/v1/health:
+    get:
+      summary: Readiness probe (grupo API)
+      description: Idêntico ao `/health`, dentro do prefixo `/api/v1`.
+      operationId: readinessApiV1
+      tags: [Health]
+      responses:
+        '200':
+          description: Todos os componentes healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Um ou mais componentes unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /api/v1/calculate/irpf:
+    post:
+      summary: Calcula IRPF nos modelos Completo e Simplificado
+      description: >
+        Processa dados financeiros do contribuinte, executa os cálculos
+        Completo e Simplificado em paralelo, e retorna ambos os resultados
+        com recomendação do modelo mais vantajoso.
+      operationId: calculateIRPF
+      tags: [Cálculo]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UniversalTaxRequest'
+            examples:
+              mensal:
+                summary: Cálculo mensal com dependentes e despesas
+                value:
+                  tax_code: "IRPF"
+                  reference_date: "2025-12-31T23:59:59Z"
+                  calculation_type: "monthly"
+                  gross_income: "36000.00"
+                  inputs:
+                    - { key: "pension_percentage", value: "11.0", unit: "percentage" }
+                    - { key: "dependents_qty", value: "1", unit: "count" }
+                    - { key: "pgbl_contribution", value: "1200.11", unit: "amount" }
+                    - { key: "education_expenses", value: "3340.23", unit: "amount" }
+                    - { key: "health_expenses", value: "1233.23", unit: "amount" }
+              anual:
+                summary: Cálculo anual simplificado
+                value:
+                  tax_code: "IRPF"
+                  reference_date: "2025-12-31T23:59:59Z"
+                  calculation_type: "annual"
+                  gross_income: "80000.00"
+                  inputs:
+                    - { key: "dependents_qty", value: "0", unit: "count" }
+      responses:
+        '200':
+          description: Cálculo realizado com sucesso. Retorna ambos os modelos.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/TaxResponse'
+              example:
+                simplificada:
+                  reference_date: "2025-12-31"
+                  gross_income: "80000.00"
+                  total_deduction_amount: "16000.00"
+                  base_value: "64000.00"
+                  tax_amount: "3200.50"
+                  effective_rate: "4.00"
+                  deduction_details:
+                    - { type: "simplified_discount", amount: "16000.00" }
+                  applied_rule: "Faixa: 3751.06 a 4664.68 | Alíquota: 22.5% | Parcela a Deduzir: 662.77"
+                  used_configs:
+                    simplified_discount_annual_limit: "6777.60"
+                  is_recommended: true
+                completa:
+                  reference_date: "2025-12-31"
+                  gross_income: "80000.00"
+                  total_deduction_amount: "12000.00"
+                  base_value: "68000.00"
+                  tax_amount: "4500.00"
+                  effective_rate: "5.63"
+                  deduction_details:
+                    - { type: "deduction_social_security", amount: "8000.00" }
+                    - { type: "deduction_for_dependents", amount: "0.00" }
+                    - { type: "deduction_for_education", amount: "3561.50" }
+                    - { type: "deduction_for_health", amount: "438.50" }
+                  applied_rule: "Faixa: 3751.06 a 4664.68 | Alíquota: 22.5% | Parcela a Deduzir: 662.77"
+                  used_configs:
+                    dependent_deduction_annual: "2275.08"
+                    education_limit_annual: "3561.50"
+                    pgbl_limit_percentage: "12.00"
+                  is_recommended: false
+        '400':
+          description: Corpo da requisição inválido (JSON malformado ou campos ausentes)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "corpo da requisição inválido"
+        '500':
+          description: Erro interno (falha ao carregar configurações fiscais ou regra não encontrada)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "failed to load tax configurations: connection refused"
+
+components:
+  schemas:
+    LivenessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ["alive"]
+          description: Sempre "alive"
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp UTC da verificação
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ["healthy", "unhealthy"]
+          description: Status agregado de todos os componentes
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp UTC da verificação
+        components:
+          type: object
+          properties:
+            postgresql:
+              $ref: '#/components/schemas/ComponentStatus'
+            redis:
+              $ref: '#/components/schemas/ComponentStatus'
+          description: Status individual por componente (Redis ausente se não configurado)
+
+    ComponentStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ["healthy", "unhealthy"]
+          description: Status do componente
+        latency_ms:
+          type: integer
+          description: Latência do ping em milissegundos
+        error:
+          type: string
+          description: Mensagem de erro (presente apenas quando unhealthy)
+
+    UniversalTaxRequest:
+      type: object
+      required:
+        - tax_code
+        - calculation_type
+        - gross_income
+        - inputs
+      properties:
+        tax_code:
+          type: string
+          description: Código do tributo (ex: "IRPF")
+          example: "IRPF"
+        reference_date:
+          type: string
+          format: date-time
+          description: Data de referência para vigência das regras fiscais. Default: data/hora atual.
+          example: "2025-12-31T23:59:59Z"
+        calculation_type:
+          type: string
+          enum: ["monthly", "annual"]
+          description: Tipo de cálculo
+          example: "monthly"
+        gross_income:
+          type: string
+          description: Renda bruta total (decimal de alta precisão)
+          example: "36000.00"
+        inputs:
+          type: array
+          description: Parâmetros de dedução e entrada do cálculo
+          items:
+            $ref: '#/components/schemas/TaxInput'
+
+    TaxInput:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          description: Chave do parâmetro
+          enum:
+            - pension_amount
+            - pension_percentage
+            - dependents_qty
+            - education_expenses
+            - health_expenses
+            - pgbl_contribution
+          example: "dependents_qty"
+        value:
+          type: string
+          description: Valor do parâmetro (decimal de alta precisão)
+          example: "2"
+        unit:
+          type: string
+          enum: ["amount", "percentage", "count"]
+          description: Unidade do valor. Default inferido por contexto.
+          example: "count"
+
+    TaxResponse:
+      type: object
+      properties:
+        reference_date:
+          type: string
+          format: date
+          description: Data de referência usada no cálculo
+          example: "2025-12-31"
+        gross_income:
+          type: string
+          description: Renda bruta (arredondada para 2 casas)
+          example: "36000.00"
+        total_deduction_amount:
+          type: string
+          description: Total de deduções aplicadas
+          example: "4800.00"
+        base_value:
+          type: string
+          description: Base de cálculo (renda − deduções, mínimo 0)
+          example: "31200.00"
+        tax_amount:
+          type: string
+          description: Imposto devido (mínimo 0)
+          example: "1250.50"
+        effective_rate:
+          type: string
+          description: Alíquota efetiva em percentual
+          example: "3.47"
+        deduction_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeductionDetail'
+        applied_rule:
+          type: string
+          description: Descrição textual da faixa/alíquota/parcela aplicada
+          example: "Faixa: 2826.66 a 3751.05 | Alíquota: 15% | Parcela a Deduzir: 381.44"
+        used_configs:
+          type: object
+          additionalProperties:
+            type: string
+          description: Mapa de chaves de configuração utilizadas e seus valores
+          example:
+            dependent_deduction_monthly: "189.59"
+            education_limit_monthly: "296.79"
+        is_recommended:
+          type: boolean
+          description: Indica se este modelo é o mais vantajoso para o contribuinte
+
+    DeductionDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Tipo da dedução
+          enum:
+            - deduction_social_security
+            - pension_official
+            - deduction_for_dependents
+            - deduction_for_education
+            - deduction_for_health
+            - deduction_for_pgbl
+            - simplified_discount
+            - reforma_2026_isencao_total
+            - reforma_2026_reducao_adicional
+          example: "deduction_for_education"
+        amount:
+          type: string
+          description: Valor da dedução (negativo para reduções da Reforma 2026)
+          example: "3561.50"
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Mensagem descritiva do erro
+          example: "corpo da requisição inválido"

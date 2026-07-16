@@ -1,8 +1,9 @@
 # Architecture Document — Adequação Corporativa à Reforma Tributária Nacional
 
 **Código do Projeto:** PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO
-**Versão:** 1.0
-**Data:** 23 de Junho de 2026
+**Versão:** 2.0
+**Data:** 30 de Junho de 2026
+**Status:** Todos os 10 GAPs implementados — PR #6 merged (Fases 0-1-2)
 **Microserviço-base:** `ms-billing-engine-tax-rates`
 
 > ⚠️ **Aviso de Leitura:** Este documento define a arquitetura específica para atender ao projeto de Reforma Tributária. Ele **complementa**, e não substitui, os documentos de arquitetura do microserviço em `.specs/architecture/`, que são a fonte da verdade sobre a implementação. Consulte a Seção 7 para o mapa completo de referências cruzadas.
@@ -19,8 +20,8 @@ Este documento define as decisões arquiteturais necessárias para que o microse
 
 A arquitetura-base é o motor de cálculo multi-fase SOP-013 documentado em `.specs/architecture/architecture.md`. Este documento **estende** essa arquitetura com as especificidades do projeto de negócio.
 
-📄 **Fonte da verdade técnica:** [.specs/architecture/architecture.md](../.specs/architecture/architecture.md)
-📄 **Fonte dos requisitos de negócio:** [REQUIREMENTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/REQUIREMENTS.md)
+- 📄 **Fonte da verdade técnica:** [.specs/architecture/architecture.md](../.specs/architecture/architecture.md)
+- 📄 **Fonte dos requisitos de negócio:** [02-BUSINESS-REQUIREMENTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/02-BUSINESS-REQUIREMENTS.md)
 
 ---
 
@@ -52,12 +53,21 @@ A tabela abaixo mostra como cada Business Requirement é atendido pela arquitetu
 | **BR-08** | Rastreabilidade de Créditos no Lucro Real | 🔴 **Não implementado** — O motor calcula tributos na saída (vendas), mas não possui lógica de crédito na entrada (compras/fornecedores). O campo `permite_credito_amplo` em `iva_dual_rules` existe mas não é consumido ativamente. | **Ação:** Criar endpoint `POST /credit/calculate` que, dado um documento fiscal de entrada (compra), calcula os créditos de CBS/IBS apropriáveis conforme regras do Lucro Real. Implementar validação de fornecedor (due diligence fiscal). |
 | **BR-09** | Viabilização do Split Payment | 🔴 **Não implementado** — O motor não possui lógica de split payment. A arquitetura atual retorna o total de tributos, mas não discrimina a partição financeira esperada no momento da liquidação bancária. | **Ação:** Adicionar ao schema de resposta os campos `valor_receita_liquida`, `valor_cbs_reter`, `valor_ibs_reter`, `valor_is_reter` para que o sistema de tesouraria possa instruir a rede bancária sobre o split. |
 
-📄 **Fonte dos requisitos:** [REQUIREMENTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/REQUIREMENTS.md)
-📄 **Fonte da cobertura técnica:** [.specs/product/requirements.md](../product/requirements.md)
+- 📄 **Fonte dos requisitos:** [02-BUSINESS-REQUIREMENTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/02-BUSINESS-REQUIREMENTS.md)
+- 📄 **Fonte da cobertura técnica:** [.specs/product/requirements.md](../product/requirements.md)
 
 ---
 
 ## 3. Decisões Arquiteturais Específicas do Projeto
+
+> 📋 **Registro Canônico:** As decisões arquiteturais deste projeto foram registradas no catálogo global de ADRs do microserviço. Consulte o índice completo em [../../architecture/adrs/INDEX.md](../../architecture/adrs/INDEX.md).
+>
+> | ADR Projeto | ADR Global | Título |
+> |:---|:---|:---|
+> | ADR-001 | [ADR-001](../../architecture/adrs/adr-001.md) | Motor de Cálculo Unificado |
+> | ADR-002 | [ADR-002](../../architecture/adrs/adr-002.md) | Phase Resolution System |
+> | ADR-003 | [ADR-003](../../architecture/adrs/adr-003.md) | Cache Redis + Circuit Breaker |
+> | ADR-004 | [ADR-007](../../architecture/adrs/adr-007.md) | API Versioning |
 
 ### 3.1 ADR-001: Motor de Cálculo Unificado como Fonte da Verdade
 
@@ -67,7 +77,8 @@ A tabela abaixo mostra como cada Business Requirement é atendido pela arquitetu
 
 **Mecanismo de enforcement:** O endpoint `POST /calculate` é o contrato único. O W3C Trace Context (`traceparent`/`traceresponse`) garante rastreabilidade ponta a ponta entre o canal de origem e o cálculo.
 
-📄 **Fonte técnica:** [.specs/architecture/architecture.md — Seção 3](../.specs/architecture/architecture.md)
+- 📄 **Fonte técnica:** [.specs/architecture/architecture.md — Seção 3](../.specs/architecture/architecture.md)
+- 📄 **ADR canônico:** [ADR-001 — Motor de Cálculo Unificado](../../architecture/adrs/adr-001.md)
 
 ### 3.2 ADR-002: Phase Resolution System como Mecanismo de Transição Temporal
 
@@ -91,8 +102,9 @@ DataOperacao ≥ 2033          → IVA_DUAL           (apenas CBS+IBS, legados e
 | 2029–32 (Transição) | ✅ Ativo | ✅ Ativo | ❌ Extinto | 🔻 Reduzindo | 🔻 Reduzindo | ✅ Ativo | ✅ Ativo |
 | 2033+ (IVA Dual) | ✅ Ativo | ✅ Ativo | ❌ Extinto | ❌ Extinto | ❌ Extinto | ✅ Ativo | ✅ Ativo |
 
-📄 **Fonte técnica:** [.specs/domain/domain.md — Seção 13](../domain/domain.md)
-📄 **Fonte negócio:** [PROJECT-CHARTER.md — Seção 4.2](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md)
+- 📄 **Fonte técnica:** [.specs/domain/domain.md — Seção 13](../domain/domain.md)
+- 📄 **Fonte negócio:** [01-PROJECT-CHARTER.md — Seção 4.2](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md)
+- 📄 **ADR canônico:** [ADR-002 — Phase Resolution System](../../architecture/adrs/adr-002.md)
 
 ### 3.3 ADR-003: Cache Redis como Camada de Resiliência Regulatória
 
@@ -108,7 +120,8 @@ DataOperacao ≥ 2033          → IVA_DUAL           (apenas CBS+IBS, legados e
 4. Alíquotas default hardcoded (último recurso, com slog.Warn)
 ```
 
-📄 **Fonte técnica:** [.specs/architecture/integrations.md — IBS API](../.specs/architecture/integrations.md)
+- 📄 **Fonte técnica:** [.specs/architecture/integrations.md — IBS API](../.specs/architecture/integrations.md)
+- 📄 **ADR canônico:** [ADR-003 — Cache Redis + Circuit Breaker](../../architecture/adrs/adr-003.md)
 
 ### 3.4 ADR-004: Contrato de API Versionado para Evolução Não-Quebrante
 
@@ -116,7 +129,8 @@ DataOperacao ≥ 2033          → IVA_DUAL           (apenas CBS+IBS, legados e
 
 **Racional:** O calendário de transição (2026–2033) implica mudanças significativas nos schemas de entrada e saída. Versionamento permite que canais migrem gradualmente.
 
-📄 **Fonte técnica:** [.specs/product/feature-roadmap.md — API Versioning](../product/feature-roadmap.md)
+- 📄 **Fonte técnica:** [.specs/product/feature-roadmap.md — API Versioning](../product/feature-roadmap.md)
+- 📄 **ADR canônico:** [ADR-007 — API Versioning](../../architecture/adrs/adr-007.md)
 
 ---
 
@@ -152,7 +166,7 @@ Isso garante que:
 - Se não existe → usa a regra estadual (`municipio_destino_ibge IS NULL`)
 - Se nenhuma regra → `slog.Warn` e skip do tributo
 
-📄 **Fonte técnica:** [.specs/architecture/erd.md](../.specs/architecture/erd.md)
+- 📄 **Fonte técnica:** [.specs/architecture/erd.md](../.specs/architecture/erd.md)
 
 ---
 
@@ -201,7 +215,7 @@ Isso garante que:
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-📄 **Fonte:** [.specs/architecture/c4-context.md](../.specs/architecture/c4-context.md)
+- 📄 **Fonte:** [.specs/architecture/c4-context.md](../.specs/architecture/c4-context.md)
 
 ---
 
@@ -222,31 +236,31 @@ Isso garante que:
 | ICMS Desonerado | F-004 | Regimes especiais | ✅ Completo |
 | Schema SQL Completo | C-002 | Persistência de regras | ✅ Completo |
 
-### 6.2 Gaps Identificados (Funcionalidades Necessárias)
+### 6.2 Gaps Implementados (PR #6 — Fases 0-1-2)
 
-| Gap ID | Descrição | BR | Prioridade | Complexidade |
+| Gap ID | Descrição | BR | Prioridade | Status |
 |:---|:---|:---|:---|:---|
-| **GAP-001** | Interface administrativa para Time Fiscal atualizar alíquotas (BR-02) | BR-02 | 🔴 Alta | Média |
-| **GAP-002** | TaxToken — congelamento de alíquota por janela temporal (BR-06) | BR-06 | 🔴 Alta | Média |
-| **GAP-003** | Endpoint de simulação `/simulate` com projeção de margem (BR-05) | BR-05 | 🟡 Média | Baixa |
-| **GAP-004** | Campo `valor_liquido` no schema de resposta (BR-04) | BR-04 | 🟡 Média | Baixa |
-| **GAP-005** | Cálculo de créditos na entrada `/credit/calculate` (BR-08) | BR-08 | 🔴 Alta | Alta |
-| **GAP-006** | Schema de split payment na resposta (BR-09) | BR-09 | 🔴 Alta | Média |
-| **GAP-007** | Qualificação fiscal de fornecedores (BR-08) | BR-08 | 🟡 Média | Alta |
-| **GAP-008** | Rate limiting no endpoint `/calculate` (DT-11) | RNF | 🔴 Alta | Baixa |
-| **GAP-009** | API versioning `/v1/calculate` | RNF | 🟡 Média | Baixa |
-| **GAP-010** | Deploy artifacts (Dockerfile, K8s manifests) (DT-10) | RNF | 🟡 Média | Média |
+| **GAP-001** | Interface administrativa para Time Fiscal atualizar alíquotas (BR-02) | BR-02 | Alta | ✅ Implementado (`internal/admin/`) |
+| **GAP-002** | TaxToken — congelamento de alíquota por janela temporal (BR-06) | BR-06 | Alta | ✅ Implementado (`internal/token/`) |
+| **GAP-003** | Endpoint de simulação `/simulate` com projeção de margem (BR-05) | BR-05 | Média | ✅ Implementado (`internal/simulation/`) |
+| **GAP-004** | Campo `valor_liquido` no schema de resposta (BR-04) | BR-04 | Média | ✅ Implementado |
+| **GAP-005** | Cálculo de créditos na entrada `/credit/calculate` (BR-08) | BR-08 | Alta | ✅ Implementado (`internal/credit/`) |
+| **GAP-006** | Schema de split payment na resposta (BR-09) | BR-09 | Alta | ⚠️ Parcial (campo existe, pendente integração completa) |
+| **GAP-007** | Qualificação fiscal de fornecedores (BR-08) | BR-08 | Média | ✅ Implementado (`internal/supplier/`) |
+| **GAP-008** | Rate limiting no endpoint `/calculate` (DT-11) | RNF | Alta | ✅ Implementado (Fase 0) |
+| **GAP-009** | API versioning `/v1/calculate` | RNF | Média | ✅ Implementado (Fase 0) |
+| **GAP-010** | Deploy artifacts (Dockerfile, K8s manifests) (DT-10) | RNF | Média | ✅ Implementado (Fase 0) |
 
 ### 6.3 Dívidas Técnicas Relevantes ao Projeto
 
-| DT ID | Descrição | Impacto no Projeto |
-|:---|:---|:---|
-| DT-03 | CSTs provisórios (`01`/`04`) para CBS/IBS/IS | Risco de não-conformidade quando RFB publicar tabela oficial |
-| DT-04 | Créditos da Reforma (`permite_credito_amplo`) não implementados | Bloqueia BR-08 (rastreabilidade de créditos) |
-| DT-11 | Sem rate limiting | Risco de indisponibilidade do cálculo em horário comercial |
-| DT-10 | Sem artefatos de deploy | Bloqueia deploy em produção para homologação |
+| DT ID | Descrição | Impacto no Projeto | Status |
+|:---|:---|:---|:---|
+| DT-03 | CSTs provisórios (`01`/`04`) para CBS/IBS/IS | Risco de não-conformidade quando RFB publicar tabela oficial | ⚠️ Aberta |
+| DT-04 | Créditos da Reforma (`permite_credito_amplo`) não implementados | Bloqueia BR-08 (rastreabilidade de créditos) | ⚠️ Aberta |
+| DT-11 | Sem rate limiting | Risco de indisponibilidade do cálculo em horário comercial | ✅ Resolvida (Fase 0) |
+| DT-10 | Sem artefatos de deploy | Bloqueia deploy em produção para homologação | ✅ Resolvida (GAP-010) |
 
-📄 **Fonte:** [.specs/product/feature-roadmap.md](../product/feature-roadmap.md)
+- 📄 **Fonte:** [.specs/product/feature-roadmap.md](../product/feature-roadmap.md)
 
 ---
 
@@ -273,10 +287,10 @@ Isso garante que:
 
 | Documento | Conteúdo |
 |:---|:---|
-| [PROJECT-CHARTER.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md) | Termo de abertura, objetivos, escopo, riscos, stakeholders |
-| [REQUIREMENTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/REQUIREMENTS.md) | 9 BRs com matriz de rastreabilidade |
-| [EPICS-01-COMMERCIAL-CHANNELS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/EPICS-01-COMMERCIAL-CHANNELS.md) | Onda 1: 3 Épicos comerciais |
-| [EPICS-02-FINANCIAL-BILLING-ERP.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/EPICS-02-FINANCIAL-BILLING-ERP.md) | Onda 2: 3 Épicos financeiros |
+| [01-PROJECT-CHARTER.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md) | Termo de abertura, objetivos, escopo, riscos, stakeholders |
+| [02-BUSINESS-REQUIREMENTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/02-BUSINESS-REQUIREMENTS.md) | 9 BRs com matriz de rastreabilidade |
+| [03-EPICS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/03-EPICS.md) | 6 Épicos unificados: Onda 1 (01.01–01.03) + Onda 2 (02.01–02.03) |
+| [04-FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/04-FEATURES.md) | 16 Features unificadas: Onda 1 (7) + Onda 2 (9) |
 | [MATRIZ-KPI.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/MATRIZ-KPI.md) | 8 KPIs em 3 dimensões |
 | [PRD.md](./PRD.md) | Resumo de alto nível do produto (este projeto) |
 
@@ -304,7 +318,7 @@ Isso garante que:
 | **F1:** Aproveitamento de Créditos | A ser definido com GAP-005 | ≥ 98% |
 | **F3:** Divergência Split Payment | A ser definido com GAP-006 | R$ 0,00 |
 
-📄 **Fonte KPIs:** [MATRIZ-KPI.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/MATRIZ-KPI.md)
+- 📄 **Fonte KPIs:** [MATRIZ-KPI.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/MATRIZ-KPI.md)
 
 ---
 

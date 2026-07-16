@@ -2,8 +2,9 @@
 ## Programa de Adequação Corporativa à Reforma Tributária Nacional
 
 **Código:** PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO
-**Versão do PRD:** 1.0
-**Data:** 23 de Junho de 2026
+**Versão do PRD:** 2.0
+**Data:** 30 de Junho de 2026
+**Status:** ✅ Fases 0-1-2 implementadas (PR #6 merged)
 **Tipo:** Resumo de Alto Nível — porta de entrada para a documentação de negócio completa
 
 > ⚠️ **Aviso de Leitura:** Este documento é um sumário executivo. Todas as especificações detalhadas, regras de negócio, critérios de aceite BDD e user stories completas residem nos documentos-fonte referenciados na Seção 4.
@@ -22,7 +23,7 @@ A empresa opera sob o regime de **Lucro Real**, com sede em **Santana de Parnaí
 | **Financeira (Onda 2)** | Faturamento, split payment, escrituração contábil, apropriação de créditos no Lucro Real |
 | **Estratégica** | Gestão do período híbrido, monitoramento regulatório, descontinuação de obrigações acessórias legadas |
 
-📄 **Documento-fonte:** [PROJECT-CHARTER.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md)
+📄 **Documento-fonte:** [01-PROJECT-CHARTER.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md)
 
 ---
 
@@ -37,7 +38,7 @@ Os 6 objetivos que direcionam todas as iniciativas do programa:
 5. **Conformidade com o Imposto Seletivo** — classificação correta de produtos sujeitos ao IS e repasse adequado ao preço
 6. **Integridade Ponta a Ponta** — unicidade das regras de preço e tributação em toda a jornada da operação nacional
 
-📄 **Documento-fonte:** [PROJECT-CHARTER.md — Seção 2](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md)
+📄 **Documento-fonte:** [01-PROJECT-CHARTER.md — Seção 2](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md)
 
 ---
 
@@ -69,47 +70,53 @@ Os 9 Requisitos de Negócio (BR-01 a BR-09) estão organizados em 3 blocos:
 | BR-08 | Rastreabilidade de Créditos no Lucro Real | Mapeamento do potencial de crédito de CBS/IBS por operação |
 | BR-09 | Viabilização do Split Payment | Discriminação exata entre receita líquida da empresa e parcelas CBS/IBS retidas |
 
-📄 **Documento-fonte:** [REQUIREMENTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/REQUIREMENTS.md)
+📄 **Documento-fonte:** [02-BUSINESS-REQUIREMENTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/02-BUSINESS-REQUIREMENTS.md)
 
 ---
 
 ## 4. Hierarquia da Documentação e Rastreabilidade
 
 ```
-[Estratégico]  PROJECT-CHARTER.md
+[Estratégico]  01-PROJECT-CHARTER.md
        │
        ▼
-[Escopo]       REQUIREMENTS.md  (BR-01 a BR-09)
+[Escopo]       02-BUSINESS-REQUIREMENTS.md  (BR-01 a BR-09)
+       │
+       ▼
+[Macro]  03-EPICS.md (6 Épicos unificados)
        │
        ├──────────────────────┐
        ▼                      ▼
-[Macro]  EPICS-01              EPICS-02
-         COMERCIAL             FINANCEIRO
-         (3 Épicos)            (3 Épicos)
+      Onda 1                  Onda 2
+   (Épicos 01.01-01.03)   (Épicos 02.01-02.03)
        │                      │
        ▼                      ▼
-[Func]  FEATURES-01            FEATURES-02
-         (7 Features)           (9 Features)
+[Func]  04-FEATURES.md (16 Features unificadas)
+       │
+       ├──────────────────────┐
+       ▼                      ▼
+   Onda 1 (7 Features)    Onda 2 (9 Features)
        │                      │
        ▼                      ▼
 [Exec]  21 User Stories        20 User Stories
+      (05-USER-STORYS-01-*)  (05-USER-STORYS-02-*)
 ```
 
 ### 4.1 Documentos da Onda 1 — Canais Comerciais
 
 | Nível | Documento | Conteúdo |
 |:---|:---|:---|
-| Épicos | [EPICS-01-COMMERCIAL-CHANNELS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/EPICS-01-COMMERCIAL-CHANNELS.md) | Épicos 01 (CRM), 02 (Integração), 03 (Precificação) |
-| Features | [FEATURES-01-01-COMMERCIAL-CHANNELS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/FEATURES-01-01-COMMERCIAL-CHANNELS.md) | 7 Features detalhadas da Onda 1 |
-| User Stories | 21 arquivos `USER-STORYS-01-*.md` | Critérios de aceite BDD completos |
+| Épicos | [03-EPICS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/03-EPICS.md) | Épicos 01.01 (CRM), 01.02 (Integração), 01.03 (Precificação) |
+| Features | [04-FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/04-FEATURES.md) | 7 Features detalhadas da Onda 1 |
+| User Stories | 21 USs em `05-USER-STORYS-01-*.md` (7 arquivos) | Critérios de aceite BDD completos |
 
 ### 4.2 Documentos da Onda 2 — Finanças, Faturamento e ERP
 
 | Nível | Documento | Conteúdo |
 |:---|:---|:---|
-| Épicos | [EPICS-02-FINANCIAL-BILLING-ERP.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/EPICS-02-FINANCIAL-BILLING-ERP.md) | Épicos 01 (Faturamento), 02 (Split), 03 (Créditos) |
-| Features | [FEATURES-02-01-FINANCIAL-BILLING-ERP.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/FEATURES-02-01-FINANCIAL-BILLING-ERP.md) | 9 Features detalhadas da Onda 2 |
-| User Stories | 20 arquivos `USER-STORYS-02-*.md` | Critérios de aceite BDD completos |
+| Épicos | [03-EPICS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/03-EPICS.md) | Épicos 02.01 (Faturamento), 02.02 (Split), 02.03 (Créditos) |
+| Features | [04-FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/04-FEATURES.md) | 9 Features detalhadas da Onda 2 |
+| User Stories | 20 USs em `05-USER-STORYS-02-*.md` (9 arquivos) | Critérios de aceite BDD completos |
 
 ### 4.3 Governança e Métricas
 
@@ -142,7 +149,7 @@ Documentos em `docs-suporte/` fornecem a fundamentação técnica:
 | **2029–2032** | Período Híbrido | Convivência ICMS/ISS + CBS/IBS, dupla apuração |
 | **2033** | Full IVA Dual | Operação estabilizada, descontinuação de processos legados |
 
-📄 **Documento-fonte:** [PROJECT-CHARTER.md — Seção 4](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md)
+📄 **Documento-fonte:** [01-PROJECT-CHARTER.md — Seção 4](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md)
 
 ---
 
@@ -175,7 +182,7 @@ Documentos em `docs-suporte/` fornecem a fundamentação técnica:
 - Satisfação do cliente > 80% quanto à clareza da carga tributária
 - Processos de dupla apuração operacionais até dezembro/2028
 
-📄 **Documento-fonte:** [MATRIZ-KPI.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/MATRIZ-KPI.md) e [PROJECT-CHARTER.md — Seção 8](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md)
+📄 **Documento-fonte:** [MATRIZ-KPI.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/MATRIZ-KPI.md) e [01-PROJECT-CHARTER.md — Seção 8](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md)
 
 ---
 
@@ -189,7 +196,7 @@ Documentos em `docs-suporte/` fornecem a fundamentação técnica:
 | Complexidade do período híbrido (2029–2032) | Crítico | Planejamento antecipado da dupla apuração desde 2026 |
 | Indisponibilidade de alíquotas IBS por município | Alto | Réplica local da matriz com atualização periódica |
 
-📄 **Documento-fonte:** [PROJECT-CHARTER.md — Seção 7](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md)
+📄 **Documento-fonte:** [01-PROJECT-CHARTER.md — Seção 7](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md)
 
 ---
 
@@ -224,14 +231,14 @@ Documentos em `docs-suporte/` fornecem a fundamentação técnica:
 
 | Este PRD referencia | Documento-fonte |
 |:---|:---|
-| Seção 1 — Visão Geral | [PROJECT-CHARTER.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md) |
-| Seção 2 — Objetivos | [PROJECT-CHARTER.md — Seção 2](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md) |
-| Seção 3 — Requisitos | [REQUIREMENTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/REQUIREMENTS.md) |
+| Seção 1 — Visão Geral | [01-PROJECT-CHARTER.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md) |
+| Seção 2 — Objetivos | [01-PROJECT-CHARTER.md — Seção 2](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md) |
+| Seção 3 — Requisitos | [02-BUSINESS-REQUIREMENTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/02-BUSINESS-REQUIREMENTS.md) |
 | Seção 4 — Hierarquia | [README.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/README.md) (índice completo) |
-| Seção 5 — Cronograma | [PROJECT-CHARTER.md — Seção 4](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md) |
+| Seção 5 — Cronograma | [01-PROJECT-CHARTER.md — Seção 4](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md) |
 | Seção 6 — KPIs | [MATRIZ-KPI.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/MATRIZ-KPI.md) |
-| Seção 7 — Riscos | [PROJECT-CHARTER.md — Seção 7](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md) |
-| Seção 9 — Stakeholders | [PROJECT-CHARTER.md — Seção 5](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md) |
+| Seção 7 — Riscos | [01-PROJECT-CHARTER.md — Seção 7](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md) |
+| Seção 9 — Stakeholders | [01-PROJECT-CHARTER.md — Seção 5](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md) |
 
 ---
 

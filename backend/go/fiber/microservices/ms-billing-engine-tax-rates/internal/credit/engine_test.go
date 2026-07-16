@@ -36,6 +36,7 @@ func (r *mockRepo) GetSimplesFaixa(ctx context.Context, a string, rbt12 decimal.
 func (r *mockRepo) GetProductException(ctx context.Context, nf, ng, ud, rtd string) (*repository.ProductException, error) { return nil, nil }
 func (r *mockRepo) GetIPIRegra(ctx context.Context, n, e, c, t, p, u string, z bool, d string) (*repository.IPIRegra, error) { return nil, nil }
 func (r *mockRepo) GetNCMSeletivo(ctx context.Context, ncm string) (*repository.NCMSeletivoRule, error) { return nil, nil }
+func (r *mockRepo) GetCSTReforma(ctx context.Context, flags repository.CSTFlags) (*repository.CSTReforma, error) { return nil, nil }
 
 func input(ncm string, valor float64) models.DocumentoFiscalEntrada {
 	return models.DocumentoFiscalEntrada{

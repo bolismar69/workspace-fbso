@@ -156,6 +156,12 @@ func (r *cachedTaxRepository) GetIvaDualRule(ctx context.Context, ncm, ufDestino
 	return rule, nil
 }
 
+// GetCSTReforma delega ao repositório real. O cache será implementado
+// como parte da T-04 (Cache Redis para cst_reforma).
+func (r *cachedTaxRepository) GetCSTReforma(ctx context.Context, flags CSTFlags) (*CSTReforma, error) {
+	return r.realRepo.GetCSTReforma(ctx, flags)
+}
+
 // GetNCMSeletivo com cache Redis.
 // A tabela ncm_seletivo muda raramente — cache de 24h reduz latencia
 // significativamente no pre-filtro do IS.

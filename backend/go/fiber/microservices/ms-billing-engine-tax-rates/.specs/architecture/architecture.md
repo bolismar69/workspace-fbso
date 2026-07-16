@@ -1,6 +1,6 @@
 # Visão Geral Arquitetural — ms-billing-engine-tax-rates
 
-Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-22 com pipeline SOP-013 7-fases (C-001).
+Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-30 (PR #6 merge — Fases 0-1-2: Admin Fiscal, Créditos, TaxToken, Simulação, Fornecedores; Deploy Docker/K8s).
 
 ## Regras de Arquitetura da Solução
 
@@ -13,7 +13,7 @@ O sistema utiliza injeção de dependência manual no `main.go`, sem frameworks 
 3. Repository PostgreSQL (`repository.NewPostgresTaxRepository(pgPool)`)
 4. Repository com cache (`repository.NewCachedTaxRepository(taxRepo, rdb)`)
 5. Calculadoras individuais: `IPICalculator`, `ICMSCalculator`, `PISCofinsCalculator`, `ReformaCalculator`
-6. Motor de cálculo (`BillingEngineOrdered`) com fases sequencial e paralela
+6. Motor de cálculo (`BillingEnginePhased`) com pipeline SOP-013 de 7 fases (Sequential/Parallel)
 
 **Fonte:** `cmd/api/main.go:35-65`
 
@@ -213,9 +213,11 @@ internal/ibsclient/      ← IBS Client com cache Redis (F-007)
     ↓
 repository (core-lib)    ← Acesso a dados + cache Redis (via taxnexus-billing-core-lib)
     ↓
-[PostgreSQL]             ← Persistência de regras fiscais (icms_rules, federal_tax_rules, iva_dual_rules, ncm_seletivo, cbs_rates, iss_rates)
+[PostgreSQL]             ← Persistência de regras fiscais (15 tabelas — ver [data-dictionary.md](data-dictionary.md))
 [Redis]                  ← Cache de regras fiscais + cache IBS (TTL 24h)
 ```
+
+> 📋 **Dicionário de Dados:** A descrição funcional completa de cada tabela (propósito, padrões de lookup, calculadoras associadas, regras de negócio) está em [data-dictionary.md](data-dictionary.md).
 
 ### 12. Health Check Endpoints
 

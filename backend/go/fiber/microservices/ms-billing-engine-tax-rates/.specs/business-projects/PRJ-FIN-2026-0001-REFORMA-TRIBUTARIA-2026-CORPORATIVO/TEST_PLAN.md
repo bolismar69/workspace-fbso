@@ -2,10 +2,11 @@
 
 **Projeto:** PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO
 **Microserviço:** `ms-billing-engine-tax-rates`
-**Versão:** 1.0
-**Data:** 24 de Junho de 2026
+**Versão:** 2.0
+**Data:** 30 de Junho de 2026
+**Status:** ✅ **Todos os cenários de teste executados** — PR #6 merged
 
-> 📋 **Propósito:** Este documento define a estratégia de testes para os 10 GAPs de implementação do projeto. Ele complementa — e não substitui — os 150+ testes unitários já existentes no microserviço. Foca exclusivamente no novo escopo definido no [SPECS.md](./SPECS.md#22-o-que-será-construído-escopo-de-implementação).
+> 📋 **Propósito:** Este documento foi o plano de testes para os 10 GAPs. Todos os cenários foram implementados e executados. Baseline atual: **211+ testes em 25 arquivos** (vs. 150+ em 12 arquivos no plano original). As seções abaixo refletem o plano original; os testes reais estão em `internal/*/`.
 
 📄 **Referências:** [SPECS.md](./SPECS.md) (escopo dos GAPs), [TASKS.md](./TASKS.md) (tarefas de implementação), [ARCHITECTURE.md](./ARCHITECTURE.md) (decisões técnicas)
 
@@ -41,9 +42,9 @@ Antes de adicionar novos testes, a linha de base deve permanecer verde:
 | ICMS Desonerado | `icms_desoneracao_test.go` | 11 | `go test ./internal/legacy/... -run Desoneracao` |
 | Circuit Breaker + IBS Client | `circuitbreaker/`, `ibsclient/` | 12 | `go test ./internal/circuitbreaker/... ./internal/ibsclient/...` |
 | Middleware (requestid, auth) | `requestid_test.go`, `auth_test.go` | 21 | `go test ./internal/middleware/...` |
-| **Total Baseline** | **12+ arquivos** | **150+** | `go test ./...` |
+| **Total Baseline** | **25 arquivos** | **211+** | `go test ./...` |
 
-> ⚠️ **Regra:** Nenhum GAP pode ser considerado concluído se a linha de base regredir. Todo PR deve rodar `go test ./...` e manter 100% de passes.
+> ⚠️ **Atualização pós-implementação (2026-06-30):** Baseline executada com sucesso — 211+ testes passando em 25 arquivos. Nenhuma regressão.
 
 ---
 

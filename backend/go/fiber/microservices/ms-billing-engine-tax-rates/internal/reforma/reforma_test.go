@@ -12,8 +12,10 @@ import (
 )
 
 type mockRepo struct {
-	ivaDualRule    *repository.IvaDualRule
-	ivaDualRuleErr error
+	ivaDualRule      *repository.IvaDualRule
+	ivaDualRuleErr   error
+	cstReformaRule   *repository.CSTReforma
+	cstReformaRuleErr error
 }
 
 func (m *mockRepo) GetRateByNCM(ctx context.Context, ncm string, uf string) (float64, error) { return 0, nil }
@@ -41,6 +43,12 @@ func (m *mockRepo) GetIvaDualRule(ctx context.Context, ncm, ufDestino, municipio
 }
 func (m *mockRepo) GetNCMSeletivo(ctx context.Context, ncm string) (*repository.NCMSeletivoRule, error) {
 	return nil, nil
+}
+func (m *mockRepo) GetCSTReforma(ctx context.Context, flags repository.CSTFlags) (*repository.CSTReforma, error) {
+	if m.cstReformaRuleErr != nil {
+		return nil, m.cstReformaRuleErr
+	}
+	return m.cstReformaRule, nil
 }
 
 func inputPadrao(ncm, ufDestino, municipio string) models.DocumentoFiscalEntrada {

@@ -72,6 +72,10 @@ func (m *mockTaxRepository) GetNCMSeletivo(ctx context.Context, ncm string) (*re
 	return m.ncmSeletivoRule, m.ncmSeletivoRuleErr
 }
 
+func (m *mockTaxRepository) GetCSTReforma(ctx context.Context, flags repository.CSTFlags) (*repository.CSTReforma, error) {
+	return nil, nil
+}
+
 func newMockWithFederalRule(rule *repository.FederalTaxRule) *mockTaxRepository {
 	return &mockTaxRepository{federalRule: rule}
 }

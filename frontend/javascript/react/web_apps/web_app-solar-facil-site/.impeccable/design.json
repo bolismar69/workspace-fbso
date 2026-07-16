@@ -1,0 +1,355 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-05T03:30:00Z",
+  "title": "Design System: Solar Fácil",
+  "extensions": {
+    "colorMeta": {
+      "verde-terra": {
+        "role": "primary",
+        "displayName": "Verde Terra",
+        "canonical": "oklch(36% 0.08 155)",
+        "tonalRamp": [
+          "#0a1f10",
+          "#0e2e18",
+          "#153d23",
+          "#1E5631",
+          "#2a7040",
+          "#3a8a52",
+          "#4fa865",
+          "#6dc47d",
+          "#8fd99a",
+          "#b8e8bd",
+          "#dcfce7"
+        ]
+      },
+      "verde-terra-profundo": {
+        "role": "primary",
+        "displayName": "Verde Terra Profundo",
+        "canonical": "oklch(28% 0.08 155)",
+        "tonalRamp": [
+          "#0a1f10",
+          "#0e2e18",
+          "#153d23",
+          "#1c4a2e",
+          "#245c39",
+          "#2e7045",
+          "#3a8a52"
+        ]
+      },
+      "verde-orvalho": {
+        "role": "primary",
+        "displayName": "Verde Orvalho",
+        "canonical": "oklch(96% 0.03 155)",
+        "tonalRamp": [
+          "#8fd99a",
+          "#b8e8bd",
+          "#dcfce7",
+          "#e8f8eb",
+          "#f0faf3",
+          "#f6fdf8"
+        ]
+      },
+      "teal-serena": {
+        "role": "secondary",
+        "displayName": "Teal Serena",
+        "canonical": "oklch(78% 0.05 200)",
+        "tonalRamp": [
+          "#5a9a9a",
+          "#6eabab",
+          "#7ab5b5",
+          "#8abfbf",
+          "#A5C9CA",
+          "#b8d5d5",
+          "#cce0e0",
+          "#d9e8e8",
+          "#e6f4f4"
+        ]
+      },
+      "teal-profundo": {
+        "role": "secondary",
+        "displayName": "Teal Profundo",
+        "canonical": "oklch(68% 0.05 200)",
+        "tonalRamp": [
+          "#5a9a9a",
+          "#6eabab",
+          "#7ab5b5",
+          "#8abfbf"
+        ]
+      },
+      "nevoa-teal": {
+        "role": "secondary",
+        "displayName": "Névoa Teal",
+        "canonical": "oklch(95% 0.01 200)",
+        "tonalRamp": [
+          "#d9e8e8",
+          "#e6f4f4",
+          "#edf7f7",
+          "#f4fafa"
+        ]
+      },
+      "branco-solar": {
+        "role": "neutral",
+        "displayName": "Branco Solar",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "#666666",
+          "#999999",
+          "#cccccc",
+          "#e5e5e5",
+          "#f2f2f2",
+          "#f8f8f8",
+          "#fcfcfc",
+          "#ffffff"
+        ]
+      },
+      "luz-do-sol": {
+        "role": "neutral",
+        "displayName": "Luz do Sol",
+        "canonical": "oklch(97% 0.06 100)",
+        "tonalRamp": [
+          "#cccc99",
+          "#e6e6b3",
+          "#f2f2cc",
+          "#ffffbf",
+          "#ffffd9",
+          "#ffffec"
+        ]
+      },
+      "terra-escura": {
+        "role": "neutral",
+        "displayName": "Terra Escura",
+        "canonical": "oklch(20% 0.01 260)",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af"
+        ]
+      },
+      "sombra-suave": {
+        "role": "neutral",
+        "displayName": "Sombra Suave",
+        "canonical": "oklch(40% 0.01 260)",
+        "tonalRamp": [
+          "#2d3748",
+          "#374151",
+          "#444444",
+          "#4b5563",
+          "#6b7280"
+        ]
+      },
+      "linha-do-horizonte": {
+        "role": "neutral",
+        "displayName": "Linha do Horizonte",
+        "canonical": "oklch(85% 0.005 260)",
+        "tonalRamp": [
+          "#999999",
+          "#b3b3b3",
+          "#cccccc",
+          "#d9d9d9",
+          "#e5e5e5"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero principal. Máximo 2 linhas. Tracking -0.02em."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Títulos de seção. text-wrap: balance."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Títulos de cards, planos, formulários."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texto corrido. Linha máxima 65-75ch. text-wrap: pretty."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Labels de formulário, navegação, chips. Sem tracking extra."
+      }
+    },
+    "shadows": [
+      {
+        "name": "hover-card",
+        "value": "0 4px 12px rgba(0,0,0,0.08)",
+        "purpose": "Elevação sutil ao passar o mouse em cards."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 2px var(--color-solar-primary)",
+        "purpose": "Anel de foco visível em todos os elementos interativos."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Transições de estado padrão: hover, focus, seleção."
+      },
+      {
+        "name": "ease-out-quart",
+        "value": "cubic-bezier(0.25, 1, 0.5, 1)",
+        "purpose": "Entradas e revelações. Suave, sem bounce."
+      },
+      {
+        "name": "duration-fast",
+        "value": "150ms",
+        "purpose": "Hover em links de navegação, transições de ícones."
+      },
+      {
+        "name": "duration-standard",
+        "value": "200ms",
+        "purpose": "Hover em botões e cards, transições de cor de fundo."
+      },
+      {
+        "name": "duration-slow",
+        "value": "400ms",
+        "purpose": "Entradas de seção (fade-in), revelações scroll-driven."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação principal. Verde Terra, texto branco, bold. Máximo 1 por seção.",
+      "html": "<button class=\"ds-btn-primary\">Quero Economizar</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; background: #1E5631; color: #ffffff; padding: 10px 24px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 1rem; font-weight: 700; line-height: 1.4; border: none; border-radius: 8px; cursor: pointer; transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-primary:hover { background: #153d23; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #1E5631; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ação secundária ou alternativa. Teal Serena, texto escuro.",
+      "html": "<button class=\"ds-btn-secondary\">Quero Compartilhar</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; background: #A5C9CA; color: #111827; padding: 10px 24px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 1rem; font-weight: 700; line-height: 1.4; border: none; border-radius: 8px; cursor: pointer; transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-secondary:hover { background: #7ab5b5; } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #A5C9CA; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Ação terciária. Borda verde, fundo transparente. Usado em cards de plano não-destacado.",
+      "html": "<button class=\"ds-btn-outline\">Escolher Basic</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; background: transparent; color: #1E5631; padding: 10px 24px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 1rem; font-weight: 700; line-height: 1.4; border: 2px solid #1E5631; border-radius: 8px; cursor: pointer; transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-outline:hover { background: #dcfce7; } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #1E5631; }"
+    },
+    {
+      "name": "Plan Card",
+      "kind": "card",
+      "refersTo": "card-default",
+      "description": "Card de plano de energia. Badge \"Mais Popular\" no plano destacado com anel verde.",
+      "html": "<div class=\"ds-card\"><span class=\"ds-card-badge\">⭐ Mais Popular</span><h3 class=\"ds-card-title\">Special</h3><div class=\"ds-card-price\">R$ 250<span>/mês</span></div><p class=\"ds-card-capacity\">Capacidade: 200 a 350 kWh</p><ul class=\"ds-card-features\"><li>✓ Monitoramento em tempo real</li><li>✓ Suporte técnico prioritário</li></ul><button class=\"ds-btn-primary ds-card-cta\">Escolher Special</button></div>",
+      "css": ".ds-card { position: relative; display: flex; flex-direction: column; background: #ffffff; border: 1px solid #cccccc; border-radius: 8px; padding: 16px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; transition: box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1); } .ds-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); } .ds-card-highlight { border-color: #1E5631; box-shadow: 0 0 0 2px rgba(30,86,49,0.3); transform: scale(1.02); } .ds-card-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #1E5631; color: #ffffff; padding: 4px 16px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; white-space: nowrap; } .ds-card-title { font-size: 1.25rem; font-weight: 700; color: #111827; line-height: 1.3; margin: 0; } .ds-card-price { margin-top: 12px; font-size: 1.875rem; font-weight: 800; color: #111827; } .ds-card-price span { font-size: 0.875rem; font-weight: 400; color: #444444; } .ds-card-capacity { margin-top: 4px; font-size: 0.875rem; color: #444444; } .ds-card-features { margin-top: 16px; flex: 1; list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; } .ds-card-features li { display: flex; align-items: flex-start; gap: 8px; font-size: 0.875rem; color: #111827; } .ds-card-cta { margin-top: 24px; width: 100%; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-default",
+      "description": "Campo de formulário com label, borda, e estados de foco/erro.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"demo-name\">Nome completo <span>*</span></label><input class=\"ds-field-input\" id=\"demo-name\" type=\"text\" placeholder=\"Seu nome\" value=\"\" /></div>",
+      "css": ".ds-field { margin-bottom: 16px; } .ds-field-label { display: block; margin-bottom: 8px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; color: #111827; line-height: 1.4; } .ds-field-label span { color: #ef4444; } .ds-field-input { width: 100%; padding: 10px 16px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 1rem; color: #111827; background: #ffffff; border: 1px solid #cccccc; border-radius: 8px; transition: border-color 200ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; } .ds-field-input:focus { outline: none; border-color: #1E5631; box-shadow: 0 0 0 2px rgba(30,86,49,0.3); } .ds-field-input::placeholder { color: #6b7280; } .ds-field-error .ds-field-input { border-color: #ef4444; } .ds-field-error .ds-field-input:focus { box-shadow: 0 0 0 2px rgba(239,68,68,0.3); }"
+    },
+    {
+      "name": "Profile Chip Group",
+      "kind": "chip",
+      "refersTo": "input-default",
+      "description": "Grupo de radio buttons estilizados como chips para seleção de perfil (consumidor/fornecedor/cooperativa).",
+      "html": "<div class=\"ds-chip-group\"><label class=\"ds-chip selected\">🏠 Consumidor (quero economizar)</label><label class=\"ds-chip\">⚡ Fornecedor (quero compartilhar)</label><label class=\"ds-chip\">🤝 Cooperativa (quero parceria)</label></div>",
+      "css": ".ds-chip-group { display: flex; flex-wrap: wrap; gap: 12px; } .ds-chip { display: inline-flex; align-items: center; padding: 8px 16px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; color: #444444; background: #ffffff; border: 1px solid #cccccc; border-radius: 8px; cursor: pointer; transition: border-color 200ms cubic-bezier(0.4, 0, 0.2, 1), background 200ms cubic-bezier(0.4, 0, 0.2, 1), color 200ms cubic-bezier(0.4, 0, 0.2, 1); user-select: none; } .ds-chip:hover { border-color: rgba(30,86,49,0.5); } .ds-chip.selected { background: #dcfce7; border-color: #1E5631; color: #153d23; }"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "button-primary",
+      "description": "Header fixo com logo, links de navegação e CTA. Backdrop-blur para profundidade.",
+      "html": "<header class=\"ds-header\"><div class=\"ds-header-inner\"><a href=\"/\" class=\"ds-header-logo\"><svg width=\"120\" height=\"24\" viewBox=\"0 0 120 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"24\" height=\"24\" rx=\"4\" fill=\"#1E5631\"/><text x=\"32\" y=\"17\" font-family=\"Inter, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#111827\">Solar Fácil</text></svg></a><nav class=\"ds-header-nav\"><a href=\"/planos\">Planos</a><a href=\"/contato\">Contato</a><button class=\"ds-btn-primary ds-btn-sm\">Baixar App</button></nav></div></header>",
+      "css": ".ds-header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; height: 64px; background: rgba(255,255,255,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid #cccccc; } .ds-header-inner { max-width: 1280px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; } .ds-header-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; } .ds-header-nav { display: flex; align-items: center; gap: 24px; } .ds-header-nav a { font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; color: #444444; text-decoration: none; transition: color 150ms; } .ds-header-nav a:hover { color: #111827; } .ds-btn-sm { padding: 8px 16px; font-size: 0.875rem; }"
+    },
+    {
+      "name": "Metric Card",
+      "kind": "card",
+      "refersTo": "card-default",
+      "description": "Card de métrica para seção de prova social. Número grande, label pequena.",
+      "html": "<div class=\"ds-metric\"><span class=\"ds-metric-value\">500+</span><span class=\"ds-metric-label\">usuários beta</span></div>",
+      "css": ".ds-metric { display: flex; flex-direction: column; align-items: center; padding: 24px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; } .ds-metric-value { font-size: 2.25rem; font-weight: 800; color: #1E5631; line-height: 1.1; } .ds-metric-label { margin-top: 8px; font-size: 0.875rem; font-weight: 500; color: #444444; text-align: center; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "A Casa Conectada",
+    "overview": "A Solar Fácil é o encontro entre o conforto do lar brasileiro e a inteligência de uma rede de energia moderna. Como uma casa bem projetada, cada seção do site é um \"cômodo\" com sua própria atmosfera — a sala de estar convida à descoberta, o escritório oferece números precisos, a varanda acolhe o contato. A energia flui naturalmente entre esses espaços, assim como a luz solar percorre uma casa bem iluminada. A estética é acolhedora mas precisa, com componentes que respondem ao toque com elevação sutil e transições imediatas. O sistema rejeita a frieza de startups tech, a burocracia de sites governamentais, e os clichês genéricos de energia.",
+    "keyCharacteristics": [
+      "Paleta verde-terra ancorada em confiança, não em 'ecologia de marketing'",
+      "Tipografia única (Inter) com variação expressiva de pesos para hierarquia",
+      "Componentes que respondem ao toque — hover com elevação, foco visível, transições rápidas",
+      "Ritmo visual variado entre seções — cada 'cômodo' tem sua própria atmosfera",
+      "Transparência como linguagem visual: números grandes, claros, verificáveis"
+    ],
+    "rules": [
+      {
+        "name": "The Uma Voz Rule",
+        "body": "O Verde Terra carrega ≤15% de qualquer tela. Sua raridade é o que lhe dá peso. Botões primários, um headline, um destaque — nunca mais que isso.",
+        "section": "colors"
+      },
+      {
+        "name": "The Luz Natural Rule",
+        "body": "Luz do Sol (#ffffbf) aparece em no máximo 30% das seções. Usado como fundo alternado para criar ritmo, não como cor dominante.",
+        "section": "colors"
+      },
+      {
+        "name": "The Confiança Visível Rule",
+        "body": "Todo número exibido na interface (economia, desconto, kWh) usa Terra Escura (#111827) com peso bold ou extrabold. Números não se escondem em Sombra Suave.",
+        "section": "colors"
+      },
+      {
+        "name": "The Peso Único Rule",
+        "body": "Inter é a única família do sistema. A hierarquia vem de peso (400→500→700→800), tamanho, e cor — não de troca de fonte.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Superfícies nascem planas. Sombra é sempre uma resposta a estado (hover, foco), nunca decoração. Cards em repouso não têm sombra — apenas borda.",
+        "section": "elevation"
+      },
+      {
+        "name": "The No Ghost Card Rule",
+        "body": "Nunca combinar border: 1px solid com box-shadow de blur ≥16px no mesmo elemento. Borda OU sombra — nunca os dois como decoração.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do usar Inter em toda a interface — uma família, hierarquia por peso e tamanho",
+      "Do usar Verde Terra (#1E5631) como acento primário em ≤15% de qualquer tela",
+      "Do alternar fundos de seção (Branco Solar → Luz do Sol → Névoa Teal) para ritmo visual",
+      "Do usar text-wrap: balance em headlines e text-wrap: pretty em parágrafos longos",
+      "Do mostrar números de economia em peso extrabold com Terra Escura",
+      "Do incluir anel de foco visível (2px) em todo elemento interativo",
+      "Do usar fotografia real de casas e pessoas brasileiras — nada de stock photos genéricas",
+      "Do escrever alt text descritivo e em português natural"
+    ],
+    "donts": [
+      "Don't usar verde-limão, gradientes ecológicos, ou ícones de folha/gota",
+      "Don't aplicar dark mode, neon, glassmorphism ou estética 'startup tech fria'",
+      "Don't usar azul marinho, brasões, bandeiras do Brasil ou estética de site governamental",
+      "Don't combinar border: 1px solid com box-shadow de blur ≥16px no mesmo elemento",
+      "Don't usar border-radius acima de 16px em cards ou seções",
+      "Don't colocar eyebrow acima de toda seção",
+      "Don't usar border-left ou border-right > 1px como faixa colorida decorativa",
+      "Don't esconder números importantes em Sombra Suave (#444444)",
+      "Don't usar imagens genéricas de bancos de fotos internacionais",
+      "Don't escrever em inglês ou 'portunhol'"
+    ]
+  }
+}

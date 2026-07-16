@@ -1,12 +1,13 @@
 # SPECS — Especificações do Projeto
 
-**Projeto:** PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO
-**Programa:** Adequação Corporativa à Reforma Tributária Nacional
-**Microserviço-base:** `ms-billing-engine-tax-rates`
-**Versão do Documento:** 1.0
-**Data:** 23 de Junho de 2026
+- **Projeto:** PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO
+- **Programa:** Adequação Corporativa à Reforma Tributária Nacional
+- **Microserviço-base:** `ms-billing-engine-tax-rates`
+- **Versão do Documento:** 2.0
+- **Data:** 30 de Junho de 2026
+- **Status:** ✅ 10 GAPs implementados — PR #6 merged (Fases 0-1-2)
 
-> 📋 **Propósito:** Este documento é o **índice-mestre de especificações** do projeto. Ele referencia e conecta três fontes de documentação: (1) os artefatos de produto deste projeto, (2) os documentos de definição de negócio, e (3) as especificações técnicas do microserviço em `.specs/`. Use-o como ponto de partida para navegar entre qualquer artefato do projeto.
+- 📋 **Propósito:** Este documento é o **índice-mestre de especificações** do projeto. Ele referencia e conecta três fontes de documentação: (1) os artefatos de produto deste projeto, (2) os documentos de definição de negócio, e (3) as especificações técnicas do microserviço em `.specs/`. Use-o como ponto de partida para navegar entre qualquer artefato do projeto.
 
 ---
 
@@ -23,12 +24,15 @@ PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/
 │
 ├── 🔗 business-inputs/    Documentos de definição de negócio (fonte primária)
 │   └── PRJ-FIN-2026-0001/
-│       ├── PROJECT-CHARTER.md
-│       ├── REQUIREMENTS.md
-│       ├── EPICS-*.md (2 arquivos)
-│       ├── FEATURES-*.md (2 arquivos)
-│       ├── USER-STORYS-*.md (18 arquivos)
+│       ├── 01-PROJECT-CHARTER.md
+│       ├── 02-BUSINESS-REQUIREMENTS.md
+│       ├── 03-EPICS.md (1 arquivo unificado — 6 épicos)
+│       ├── 04-FEATURES.md (1 arquivo unificado — 16 features)
+│       ├── 05-USER-STORYS-*.md (16 arquivos)
 │       ├── MATRIZ-KPI.md
+│       ├── DEFINITION_OF_DONE.md
+│       ├── GLOSSARY.md
+│       ├── STAKEHOLDER-MAP.md
 │       └── docs-suporte/ (16 arquivos técnico-tributários)
 │
 └── 🔗 .specs/             Especificações técnicas do microserviço (fonte da verdade)
@@ -140,7 +144,7 @@ Documentos criados especificamente para este projeto de negócio:
 | # | Documento | Descrição | Público-Alvo |
 |:---|:---|:---|:---|
 | 1 | [PRD.md](./PRD.md) | Product Requirements Document — resumo de alto nível do produto: visão geral, 9 BRs, hierarquia da documentação, cronograma, KPIs, riscos, stakeholders | Product Managers, Tech Leads, Stakeholders |
-| 2 | [ARCHITECTURE.md](./ARCHITECTURE.md) | Decisões arquiteturais específicas do projeto: mapeamento BR→capacidades técnicas, 4 ADRs, gaps técnicos, diagrama C4, variáveis de ambiente, SLAs | Arquitetos, Tech Leads, DevOps |
+| 2 | [ARCHITECTURE.md](./ARCHITECTURE.md) | Decisões arquiteturais específicas do projeto: mapeamento BR→capacidades técnicas, 4 ADRs (registro canônico em [../../architecture/adrs/INDEX.md](../../architecture/adrs/INDEX.md)), gaps técnicos, diagrama C4, variáveis de ambiente, SLAs | Arquitetos, Tech Leads, DevOps |
 | 3 | **[SPECS.md](./SPECS.md)** | **Este documento** — índice-mestre de todas as especificações, matriz de rastreabilidade completa, escopo de implementação, convenções do projeto | Todos os papéis |
 | 4 | [TASKS.md](./TASKS.md) | Plano de implementação tático: 65 tarefas granulares em 3 fases, Definition of Done, grafo de dependências, runbook de deploy/operação, variáveis por ambiente, alertas | Tech Leads, Desenvolvedores, DevOps |
 | 5 | [TEST_PLAN.md](./TEST_PLAN.md) | Estratégia de testes para os 10 GAPs: ~68 cenários em 4 níveis (L1–L4), mapeamento BDD→teste técnico, testes de performance (KPI O2 <100ms), suíte de regressão CI/CD | QA, Desenvolvedores, Tech Leads |
@@ -155,28 +159,28 @@ Localização: `business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIB
 
 | # | Documento | Descrição | Status |
 |:---|:---|:---|:---|
-| 3.1.1 | [PROJECT-CHARTER.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER.md) | Termo de Abertura do Programa v2.0 — Justificativa estratégica, 6 objetivos, escopo, macro-cronograma (2026–2033), stakeholders, riscos, critérios de sucesso | ✅ Aprovado |
+| 3.1.1 | [01-PROJECT-CHARTER.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/01-PROJECT-CHARTER.md) | Termo de Abertura do Programa v2.0 — Justificativa estratégica, 6 objetivos, escopo, macro-cronograma (2026–2033), stakeholders, riscos, critérios de sucesso | ✅ Aprovado |
 | 3.1.2 | [PROJECT-CHARTER-001.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PROJECT-CHARTER-001.md) | Versão 1.0 arquivada (histórico) | 📋 Arquivado |
 
 ### 4.2 Nível de Escopo — Requisitos de Negócio
 
 | # | Documento | Descrição | Status |
 |:---|:---|:---|:---|
-| 3.2.1 | [REQUIREMENTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/REQUIREMENTS.md) | 9 Requisitos de Negócio (BR-01 a BR-09) em 3 blocos: Fundação, Onda 1 (Comercial), Onda 2 (Financeira). Inclui matriz de rastreabilidade e critérios de homologação (UAT) | ✅ Aprovado |
+| 3.2.1 | [02-BUSINESS-REQUIREMENTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/02-BUSINESS-REQUIREMENTS.md) | 9 Requisitos de Negócio (BR-01 a BR-09) em 3 blocos: Fundação, Onda 1 (Comercial), Onda 2 (Financeira). Inclui matriz de rastreabilidade e critérios de homologação (UAT) | ✅ Aprovado |
 
 ### 4.3 Nível Macro-Escopo — Épicos
 
 | # | Documento | Onda | Épicos | Status |
 |:---|:---|:---|:---|:---|
-| 3.3.1 | [EPICS-01-COMMERCIAL-CHANNELS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/EPICS-01-COMMERCIAL-CHANNELS.md) | Onda 1 | Épico 01 (CRM), Épico 02 (Integração), Épico 03 (Precificação) | ✅ Pronto |
-| 3.3.2 | [EPICS-02-FINANCIAL-BILLING-ERP.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/EPICS-02-FINANCIAL-BILLING-ERP.md) | Onda 2 | Épico 01 (Faturamento), Épico 02 (Split), Épico 03 (Créditos) | ✅ Pronto |
+| 3.3.1 | [03-EPICS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/03-EPICS.md) | Onda 1 | Épico 01 (CRM), Épico 02 (Integração), Épico 03 (Precificação) | ✅ Pronto |
+| 3.3.2 | [03-EPICS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/03-EPICS.md) | Onda 2 | Épico 01 (Faturamento), Épico 02 (Split), Épico 03 (Créditos) | ✅ Pronto |
 
 ### 4.4 Nível Funcional — Features
 
 | # | Documento | Onda | Features | Status |
 |:---|:---|:---|:---|:---|
-| 3.4.1 | [FEATURES-01-01-COMMERCIAL-CHANNELS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/FEATURES-01-01-COMMERCIAL-CHANNELS.md) | Onda 1 | 7 Features: Validação Cadastral, Trava Comercial, Simulador Omnicanal, Resiliência, Decomposição IVA, Painel B2B, Token Fiscal | ✅ Pronto |
-| 3.4.2 | [FEATURES-02-01-FINANCIAL-BILLING-ERP.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/FEATURES-02-01-FINANCIAL-BILLING-ERP.md) | Onda 2 | 9 Features: Validação Pré-Emissão, Conversão ISS→IBS, Benefícios Fiscais, Split, Ajuste Split, Painel Auditoria, Bloqueio Créditos, Segregação Contábil, Reserva Incentivos | ✅ Pronto |
+| 3.4.1 | [04-FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/04-FEATURES.md) | Onda 1 | 7 Features: Validação Cadastral, Trava Comercial, Simulador Omnicanal, Resiliência, Decomposição IVA, Painel B2B, Token Fiscal | ✅ Pronto |
+| 3.4.2 | [04-FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/04-FEATURES.md) | Onda 2 | 9 Features: Validação Pré-Emissão, Conversão ISS→IBS, Benefícios Fiscais, Split, Ajuste Split, Painel Auditoria, Bloqueio Créditos, Segregação Contábil, Reserva Incentivos | ✅ Pronto |
 
 ### 4.5 Nível de Execução — User Stories (18 arquivos)
 
@@ -184,29 +188,29 @@ Localização: `business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIB
 
 | # | Documento | Feature |
 |:---|:---|:---|
-| 3.5.1 | [USER-STORYS-01-01-1-VALIDACAO-CADASTRAL-GEOGRAFICA-TEMPO-REAL.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-01-01-1-VALIDACAO-CADASTRAL-GEOGRAFICA-TEMPO-REAL.md) | 01.01 — Validação Cadastral |
-| 3.5.2 | [USER-STORYS-01-01-2-TRAVA-COMERCIAL-NO-CRM-POR-FALTA-DE-HIGIENIZACAO-CADASTRAL.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-01-01-2-TRAVA-COMERCIAL-NO-CRM-POR-FALTA-DE-HIGIENIZACAO-CADASTRAL.md) | 01.02 — Trava Comercial |
-| 3.5.3 | [USER-STORYS-01-02-1-SIMULADOR-UNIFICADO-OMNICANAL.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-01-02-1-SIMULADOR-UNIFICADO-OMNICANAL.md) | 02.01 — Simulador Omnicanal |
-| 3.5.4 | [USER-STORYS-01-02-2-RESILIENCIA-VENDAS-CONTINGENCIA-LOCAL.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-01-02-2-RESILIENCIA-VENDAS-CONTINGENCIA-LOCAL.md) | 02.02 — Resiliência |
-| 3.5.5 | [USER-STORYS-01-03-1-INTERFACE-VISUAL-CHECKOUT-DECOMPOSICAO-IVA.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-01-03-1-INTERFACE-VISUAL-CHECKOUT-DECOMPOSICAO-IVA.md) | 03.01 — Decomposição IVA |
-| 3.5.6 | [USER-STORYS-01-03-2-PAINEL-ATRATIVIDADE-B2B-CALCULADORA-CREDITO.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-01-03-2-PAINEL-ATRATIVIDADE-B2B-CALCULADORA-CREDITO.md) | 03.02 — Painel B2B |
-| 3.5.7 | [USER-STORYS-01-03-3-CHAVE-DE-GARANTIA-TOKEN-DE-VALIDADE-FISCAL.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-01-03-3-CHAVE-DE-GARANTIA-TOKEN-DE-VALIDADE-FISCAL.md) | 03.03 — Token Fiscal |
+| 3.5.1 | [USER-STORYS-01-01-1-VALIDACAO-CADASTRAL-GEOGRAFICA-TEMPO-REAL.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-01-01-1-VALIDACAO-CADASTRAL-GEOGRAFICA-TEMPO-REAL.md) | 01.01 — Validação Cadastral |
+| 3.5.2 | [USER-STORYS-01-01-2-TRAVA-COMERCIAL-NO-CRM-POR-FALTA-DE-HIGIENIZACAO-CADASTRAL.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-01-01-2-TRAVA-COMERCIAL-NO-CRM-POR-FALTA-DE-HIGIENIZACAO-CADASTRAL.md) | 01.02 — Trava Comercial |
+| 3.5.3 | [USER-STORYS-01-02-1-SIMULADOR-UNIFICADO-OMNICANAL.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-01-02-1-SIMULADOR-UNIFICADO-OMNICANAL.md) | 02.01 — Simulador Omnicanal |
+| 3.5.4 | [USER-STORYS-01-02-2-RESILIENCIA-VENDAS-CONTINGENCIA-LOCAL.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-01-02-2-RESILIENCIA-VENDAS-CONTINGENCIA-LOCAL.md) | 02.02 — Resiliência |
+| 3.5.5 | [USER-STORYS-01-03-1-INTERFACE-VISUAL-CHECKOUT-DECOMPOSICAO-IVA.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-01-03-1-INTERFACE-VISUAL-CHECKOUT-DECOMPOSICAO-IVA.md) | 03.01 — Decomposição IVA |
+| 3.5.6 | [USER-STORYS-01-03-2-PAINEL-ATRATIVIDADE-B2B-CALCULADORA-CREDITO.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-01-03-2-PAINEL-ATRATIVIDADE-B2B-CALCULADORA-CREDITO.md) | 03.02 — Painel B2B |
+| 3.5.7 | [USER-STORYS-01-03-3-CHAVE-DE-GARANTIA-TOKEN-DE-VALIDADE-FISCAL.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-01-03-3-CHAVE-DE-GARANTIA-TOKEN-DE-VALIDADE-FISCAL.md) | 03.03 — Token Fiscal |
 
 **Onda 2 — Finanças, Faturamento e ERP (9 US):**
 
 | # | Documento | Feature |
 |:---|:---|:---|
-| 3.5.8 | [USER-STORYS-02-01-1-VALIDACAO-FATURAMENTO-PRE-EMISSAO-TRAVA-CONTABIL.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-02-01-1-VALIDACAO-FATURAMENTO-PRE-EMISSAO-TRAVA-CONTABIL.md) | 01.01 — Validação Pré-Emissão |
-| 3.5.9 | [USER-STORYS-02-01-2-MOTOR-CONVERSAO-ISS-IBS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-02-01-2-MOTOR-CONVERSAO-ISS-IBS.md) | 01.02 — Conversão ISS→IBS |
-| 3.5.10 | [USER-STORYS-02-01-3-AUTOMACAO-BENEFICIOS-REGIMES-ESPECIAIS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-02-01-3-AUTOMACAO-BENEFICIOS-REGIMES-ESPECIAIS.md) | 01.03 — Benefícios |
-| 3.5.11 | [USER-STORYS-02-02-1-LIQUIDACAO-CONCILIACAO-SEGREGADA-SPLIT.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-02-02-1-LIQUIDACAO-CONCILIACAO-SEGREGADA-SPLIT.md) | 02.01 — Conciliação Split |
-| 3.5.12 | [USER-STORYS-02-02-2-AJUSTE-SPLIT-OPERACOES-INCENTIVADAS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-02-02-2-AJUSTE-SPLIT-OPERACOES-INCENTIVADAS.md) | 02.02 — Ajuste Split |
-| 3.5.13 | [USER-STORYS-02-02-3-PAINEL-AUDITORIA-RECONCILIACAO-SPLIT.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-02-02-3-PAINEL-AUDITORIA-RECONCILIACAO-SPLIT.md) | 02.03 — Auditoria Split |
-| 3.5.14 | [USER-STORYS-02-03-1-AUDITORIA-FISCAL-ENTRADA-BLOQUEIO-CREDITOS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-02-03-1-AUDITORIA-FISCAL-ENTRADA-BLOQUEIO-CREDITOS.md) | 03.01 — Bloqueio Créditos |
-| 3.5.15 | [USER-STORYS-02-03-2-SEGREGACAO-CONTABIL-CUSTOS-ESTOQUE-ATIVOS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-02-03-2-SEGREGACAO-CONTABIL-CUSTOS-ESTOQUE-ATIVOS.md) | 03.02 — Segregação Contábil |
-| 3.5.16 | [USER-STORYS-02-03-3-ESCRITURACAO-RESERVA-INCENTIVOS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/USER-STORYS-02-03-3-ESCRITURACAO-RESERVA-INCENTIVOS.md) | 03.03 — Reserva Incentivos |
+| 3.5.8 | [USER-STORYS-02-01-1-VALIDACAO-FATURAMENTO-PRE-EMISSAO-TRAVA-CONTABIL.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-02-01-1-VALIDACAO-FATURAMENTO-PRE-EMISSAO-TRAVA-CONTABIL.md) | 01.01 — Validação Pré-Emissão |
+| 3.5.9 | [USER-STORYS-02-01-2-MOTOR-CONVERSAO-ISS-IBS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-02-01-2-MOTOR-CONVERSAO-ISS-IBS.md) | 01.02 — Conversão ISS→IBS |
+| 3.5.10 | [USER-STORYS-02-01-3-AUTOMACAO-BENEFICIOS-REGIMES-ESPECIAIS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-02-01-3-AUTOMACAO-BENEFICIOS-REGIMES-ESPECIAIS.md) | 01.03 — Benefícios |
+| 3.5.11 | [USER-STORYS-02-02-1-LIQUIDACAO-CONCILIACAO-SEGREGADA-SPLIT.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-02-02-1-LIQUIDACAO-CONCILIACAO-SEGREGADA-SPLIT.md) | 02.01 — Conciliação Split |
+| 3.5.12 | [USER-STORYS-02-02-2-AJUSTE-SPLIT-OPERACOES-INCENTIVADAS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-02-02-2-AJUSTE-SPLIT-OPERACOES-INCENTIVADAS.md) | 02.02 — Ajuste Split |
+| 3.5.13 | [USER-STORYS-02-02-3-PAINEL-AUDITORIA-RECONCILIACAO-SPLIT.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-02-02-3-PAINEL-AUDITORIA-RECONCILIACAO-SPLIT.md) | 02.03 — Auditoria Split |
+| 3.5.14 | [USER-STORYS-02-03-1-AUDITORIA-FISCAL-ENTRADA-BLOQUEIO-CREDITOS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-02-03-1-AUDITORIA-FISCAL-ENTRADA-BLOQUEIO-CREDITOS.md) | 03.01 — Bloqueio Créditos |
+| 3.5.15 | [USER-STORYS-02-03-2-SEGREGACAO-CONTABIL-CUSTOS-ESTOQUE-ATIVOS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-02-03-2-SEGREGACAO-CONTABIL-CUSTOS-ESTOQUE-ATIVOS.md) | 03.02 — Segregação Contábil |
+| 3.5.16 | [USER-STORYS-02-03-3-ESCRITURACAO-RESERVA-INCENTIVOS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/05-USER-STORYS-02-03-3-ESCRITURACAO-RESERVA-INCENTIVOS.md) | 03.03 — Reserva Incentivos |
 
-> 💡 As User Stories acima são as 16 que foram detalhadas com critérios de aceite BDD. O total de 41 US do projeto inclui variações e cenários adicionais documentados nos arquivos de Features. Consulte o [README.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/README.md) do projeto para a lista completa.
+- 💡 As User Stories acima são as 16 que foram detalhadas com critérios de aceite BDD. O total de 41 US do projeto inclui variações e cenários adicionais documentados nos arquivos de Features. Consulte o [README.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/README.md) do projeto para a lista completa.
 
 ### 4.6 Governança e Métricas
 
@@ -331,21 +335,21 @@ Localização: `.specs/` (raiz do projeto `ms-billing-engine-tax-rates`)
 | BR-03 — Qualificação Geográfica | — (Campo `municipioIBGE` no input) | C-001 | `internal/reforma/ibs_calculator.go:1-65` |
 | BR-04 — Transparência "Por Fora" | RF-08 (CBS/IBS/IS) | C-001, F-006 | `internal/reforma/cbs_calculator.go`, `is_filter.go` |
 | BR-05 — Proteção de Margem | RF-08 (CBS/IBS/IS) + Phase Resolver | F-005 | `internal/phase/phase.go`, `internal/phase/tax_selector.go` |
-| BR-06 — Token de Validade | 🔴 GAP-002 | — | A implementar |
+| BR-06 — Token de Validade | ✅ GAP-002 | `internal/token/` | Implementado |
 | BR-07 — Unicidade Pedido↔NF | RF-04 (Motor), RNF-08 (Trace Context) | C-001 | `internal/calculator/engine.go`, `internal/middleware/requestid.go` |
-| BR-08 — Créditos Lucro Real | 🔴 GAP-005 | — | A implementar |
-| BR-09 — Split Payment | 🔴 GAP-006 | — | A implementar |
+| BR-08 — Créditos Lucro Real | ✅ GAP-005 | `internal/credit/` | Implementado |
+| BR-09 — Split Payment | ⚠️ GAP-006 | `internal/calculator/engine.go` | Parcial |
 
 ### 6.2 Épicos de Negócio → Capacidades Técnicas
 
 | Épico (Negócio) | Capacidade Técnica | Feature ID | Status |
 |:---|:---|:---|:---|
-| Épico 01 (CRM/Saneamento) | Consumo do campo `municipioIBGE` no input | C-001 | ✅ |
-| Épico 02 (Integração Comercial) | `POST /calculate` como endpoint único | RF-01 | ✅ |
-| Épico 03 (Precificação Dinâmica) | Motor 7-fases + Phase Resolver | C-001, F-005 | ✅ |
-| Épico 01 (Faturamento SAP) | Unicidade via UUID + Trace Context | RF-04, RNF-08 | ✅ |
-| Épico 02 (Split Payment) | 🔴 GAP-006 — Schema de split na resposta | — | ❌ |
-| Épico 03 (Créditos) | 🔴 GAP-005 — `/credit/calculate` | — | ❌ |
+| Épico 01.01 (CRM/Saneamento) | Consumo do campo `municipioIBGE` no input | C-001 | ✅ |
+| Épico 01.02 (Integração Comercial) | `POST /calculate` como endpoint único | RF-01 | ✅ |
+| Épico 01.03 (Precificação Dinâmica) | Motor 7-fases + Phase Resolver | C-001, F-005 | ✅ |
+| Épico 02.01 (Faturamento SAP) | Unicidade via UUID + Trace Context | RF-04, RNF-08 | ✅ |
+| Épico 02.02 (Split Payment) | ⚠️ GAP-006 — Schema de split na resposta | `internal/calculator/engine.go` | Parcial |
+| Épico 02.03 (Créditos) | ✅ GAP-005 — `/credit/calculate` | `internal/credit/` | ✅ |
 
 ### 6.3 KPIs de Negócio → Métricas Técnicas
 
@@ -377,7 +381,7 @@ Localização: `.specs/` (raiz do projeto `ms-billing-engine-tax-rates`)
 | **KPIs** | 8 |
 | **Dívidas Técnicas** | 17 (7 resolvidas, 10 ativas) |
 | **Gaps do Projeto** | 10 (GAP-001 a GAP-010) |
-| **Testes Automatizados** | 150+ passando (12+ arquivos de teste) |
+| **Testes Automatizados** | 211+ passando (25 arquivos de teste) |
 | **Tabelas no Schema** | 10 |
 | **Tributos Implementados** | 10 |
 | **Confiança da Documentação** | VERDE (99%) |
@@ -391,8 +395,8 @@ Localização: `.specs/` (raiz do projeto `ms-billing-engine-tax-rates`)
 | Tipo | Padrão | Exemplo |
 |:---|:---|:---|
 | Artefatos do Projeto | `NOME.md` (MAIÚSCULO) | `PRD.md`, `ARCHITECTURE.md`, `SPECS.md` |
-| Documentos de Negócio | `TIPO-DESCRIÇÃO.md` | `PROJECT-CHARTER.md`, `EPICS-01-COMMERCIAL-CHANNELS.md` |
-| User Stories | `USER-STORYS-{onda}-{epico}-{feature}-{descricao}.md` | `USER-STORYS-01-01-1-VALIDACAO-CADASTRAL.md` |
+| Documentos de Negócio | `TIPO-DESCRIÇÃO.md` | `01-PROJECT-CHARTER.md`, `03-EPICS.md` |
+| User Stories | `05-USER-STORYS-{onda}-{epico}-{feature}-{descricao}.md` | `05-USER-STORYS-01-01-1-VALIDACAO-CADASTRAL.md` |
 | Especificações Técnicas | `kebab-case.md` ou `kebab-case.yaml` | `architecture.md`, `tax-rates-api.yaml` |
 | Registros de Implementação | `YYYY-MM-DD-HHMMSS_descricao.md` | `2026-06-21-151743_reforma-tributaria.md` |
 
@@ -431,7 +435,7 @@ Localização: `.specs/` (raiz do projeto `ms-billing-engine-tax-rates`)
 → Vá para [ARCHITECTURE.md](./ARCHITECTURE.md) (Seção 2: Mapeamento BR→Técnico, Seção 6: Gaps)
 
 ### "Preciso das tarefas detalhadas e do runbook de deploy..."
-→ Vá para [TASKS.md](./TASKS.md) — 65 tarefas, DoD, dependências, runbook, alertas
+→ Vá para [TASKS.md](./TASKS.md) — 65 tarefas (✅ todas concluídas), DoD, dependências, runbook, alertas
 
 ### "Preciso saber o que testar e como..."
 → Vá para [TEST_PLAN.md](./TEST_PLAN.md) — ~68 cenários, níveis L1–L4, performance, BDD mapeado
@@ -459,4 +463,4 @@ Localização: `.specs/` (raiz do projeto `ms-billing-engine-tax-rates`)
 
 ---
 
-> 📋 **Manutenção deste documento:** Atualize o SPECS.md sempre que um novo artefato for criado, um gap for resolvido, ou uma nova feature for implementada. Este é o documento de referência para onboarding de novos membros do time e para auditoria de conformidade do projeto.
+- 📋 **Manutenção deste documento:** Atualize o SPECS.md sempre que um novo artefato for criado, um gap for resolvido, ou uma nova feature for implementada. Este é o documento de referência para onboarding de novos membros do time e para auditoria de conformidade do projeto.

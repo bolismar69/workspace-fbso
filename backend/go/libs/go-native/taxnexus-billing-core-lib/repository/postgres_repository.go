@@ -439,3 +439,56 @@ func (r *postgresTaxRepository) GetIvaDualRule(ctx context.Context, ncm, ufDesti
 
 	return &rule, nil
 }
+
+// GetCSTReforma seleciona o CST oficial para CBS/IBS com base nos flags de contexto da operacao.
+// A logica de prioridade segue a LC 214/2025:
+//   - EfetivamenteIsento -> CST "800" (Sem tributacao)
+//   - Monofasica -> CST "400" (Monofasica normal)
+//   - Diferimento -> CST "510" (Diferimento)
+//   - PercentualReducao > 0 -> CST "200" (Reducao de base de calculo)
+//   - Default -> CST "000" (Tributacao integral)
+func (r *postgresTaxRepository) GetCSTReforma(ctx context.Context, flags CSTFlags) (*CSTReforma, error) {
+	var cst string
+	switch {
+	case flags.EfetivamenteIsento:
+		cst = "800"
+	case flags.IsMonofasico:
+		cst = "400"
+	case flags.IsDiferimento:
+		cst = "510"
+	case flags.PercentualReducao.GreaterThan(decimal.Zero):
+		cst = "200"
+	default:
+		cst = "000"
+	}
+
+	query := `
+		SELECT id, cst, cct, descricao_cst, descricao_cct,
+		       exige_tributacao, reducao_bc, reducao_aliquota,
+		       transferencia_credito, diferimento, monofasica,
+		       credito_presumido, ajuste_competencia,
+		       percentual_reducao_ibs, percentual_reducao_cbs,
+		       tipo_aliquota, url_legislacao, simples_nacional
+		FROM billing_tax_rates.cst_reforma
+		WHERE cst = $1
+		LIMIT 1`
+
+	var rule CSTReforma
+	err := r.db.QueryRow(ctx, query, cst).Scan(
+		&rule.ID, &rule.CST, &rule.CCT,
+		&rule.DescricaoCST, &rule.DescricaoCCT,
+		&rule.ExigeTributacao, &rule.ReducaoBC, &rule.ReducaoAliquota,
+		&rule.TransferenciaCredito, &rule.Diferimento,
+		&rule.Monofasica, &rule.CreditoPresumido, &rule.AjusteCompetencia,
+		&rule.PercentualReducaoIBS, &rule.PercentualReducaoCBS,
+		&rule.TipoAliquota, &rule.UrlLegislacao, &rule.SimplesNacional,
+	)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	return &rule, nil
+}

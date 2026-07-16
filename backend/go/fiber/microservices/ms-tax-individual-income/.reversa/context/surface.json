@@ -1,0 +1,27 @@
+{
+  "project": "ms-tax-individual-income",
+  "scanned_at": "2026-06-08T15:00:00Z",
+  "structure": {
+    "root_files": ["main.go", "go.mod", "go.sum", "test_conn.go"],
+    "modules": ["handlers", "services", "data"]
+  },
+  "stack": {
+    "language": "Go",
+    "version": "1.25.6",
+    "frameworks": ["Fiber v2"],
+    "databases": ["PostgreSQL", "Redis"]
+  },
+  "entry_points": {
+    "app": "main.go"
+  },
+  "organization_suggestion": {
+    "granularity": "endpoint",
+    "rationale": "Roteamento centralizado identificado no main.go com uso do framework Fiber.",
+    "signals": [
+      {
+        "type": "centralized_routing",
+        "evidence": ["main.go"]
+      }
+    ]
+  }
+}

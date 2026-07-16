@@ -1,6 +1,6 @@
 # Glossário e Regras de Domínio — ms-billing-engine-tax-rates
 
-Gerado pelo agente **Spec Miner** em 2026-06-20 com evidência de código. Atualizado em 2026-06-22 após pipeline SOP-013 7-fases (C-001) e separação CBS/IBS.
+Gerado pelo agente **Spec Miner** em 2026-06-20 com evidência de código. Atualizado em 2026-06-30 (PR #6 merge — Fases 0-1-2: Admin Fiscal, Créditos, TaxToken, Simulação, Fornecedores).
 
 ## Tributos Implementados
 
@@ -15,7 +15,11 @@ Gerado pelo agente **Spec Miner** em 2026-06-20 com evidência de código. Atual
 | ISS | Imposto Sobre Serviços de Qualquer Natureza |   Implementado (2026-06-21) | `internal/legacy/iss.go` |
 | FUST | Fundo de Universalização dos Serviços de Telecom |   Implementado (2026-06-21) | `internal/legacy/fust.go` |
 | FUNTTEL | Fundo para o Desenvolvimento Tecnológico das Telecom |   Implementado (2026-06-21) | `internal/legacy/funttel.go` |
-| CBS/IBS/IS | Reforma Tributária (IBS/CBS/IS) |   Implementado (2026-06-21) | `internal/reforma/reforma.go`, `data/init.sql:358-371` (schema) |
+| CBS | Contribuição sobre Bens e Serviços (Reforma) |   Implementado (2026-07-01) | `internal/reforma/cbs_calculator.go` — Fase 2 sequencial |
+| IBS | Imposto sobre Bens e Serviços (Reforma, subnacional) |   Implementado (2026-07-01) | `internal/reforma/ibs_calculator.go` — Fase 4 paralela |
+| IS | Imposto Seletivo (Reforma) |   Implementado (2026-07-01) | `internal/legacy/is_filter.go` — Fase 0 pré-filtro |
+
+**CST para CBS/IBS:** A tabela `cst_reforma` (164 CCTs oficiais — LC 214/2025) é a fonte canônica de CST para CBS/IBS, substituindo os valores provisórios `01`/`04`. O CST é calculado pelo motor via `GetCSTReforma()` no `TaxRepository`. Ver [ADR-010](../architecture/adrs/adr-010.md), [ADR-011](../architecture/adrs/adr-011.md).
 
 ## Regras de Negócio Principais
 
@@ -200,7 +204,7 @@ IBS = valor_item × ((aliquotaIBSEstadual + aliquotaIBSMunicipal) × fatorReduca
 IS  = valor_item × (aliquotaIS / 100)  [ISFilter, Fase 0 — não sofre redução]
 ```
 
-**CSTs:** Valores provisórios `01` (normal) e `04` (com redução) — aguardando tabela oficial da RFB.
+**CSTs:** Tabela oficial `cst_reforma` com 164 CCTs (18 CSTs) da RFB (LC 214/2025). CST de 3 dígitos calculado via `GetCSTReforma()` no `TaxRepository`. Fallback `"000"` (tributação integral) em caso de erro ou CST não encontrado.
 
 **Cache:** Redis com chave `tax:iva:<ncm>:<uf>:<municipio>` (TTL 24h).
 
@@ -333,6 +337,8 @@ DataOperacao.Year() ≥ 2033              → IVA_DUAL
 **TaxSelector:** Consulta `ShouldIncludeInTotal(dataOperacao, tributo)` para determinar se um tributo compõe o total a pagar. Aplica matriz DT-001 completa.
 
 **Fonte:** `internal/phase/phase.go:1-198`, `internal/phase/tax_selector.go:1-160`, `internal/calculator/engine.go:79-205` (ProcessWithPhase), `cmd/api/main.go:48-51` (wiring)
+
+> 📋 **Dicionário de Dados:** Para a função de negócio e padrões de uso de cada tabela do schema `billing_tax_rates`, consulte [architecture/data-dictionary.md](../architecture/data-dictionary.md). As regras neste documento estão organizadas por tributo; o dicionário de dados as organiza por tabela.
 
 ## Glossário de Domínio
 

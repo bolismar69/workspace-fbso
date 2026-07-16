@@ -22,8 +22,12 @@
 | `REDIS_ADDR` | Sim | — | Endereço do Redis |
 | `PORT` | Não | `:3000` | Porta de escuta HTTP (aceita com ou sem prefixo `:`) |
 | `IBS_API_BASE_URL` | Não | `https://api.comitegestoribs.gov.br` | URL base da API do Comitê Gestor IBS (Gap G2 — não publicada) |
+| `RATE_LIMIT_MAX` | Não | `100` | Máximo de requisições por janela |
+| `RATE_LIMIT_WINDOW` | Não | `60` | Janela de rate limiting em segundos |
+| `TAX_TOKEN_TTL_MINUTES` | Não | — | TTL do token fiscal em minutos |
+| `METRICS_REQUIRE_AUTH` | Não | `false` | Exige autenticação para `/v1/metrics` |
 
-**Fonte:** `cmd/api/main.go:35-36, 66-69, 169-175`
+**Fonte:** `cmd/api/main.go`
 
 ## Tabela de Dependências do Projeto (go.mod)
 
@@ -68,4 +72,12 @@ A biblioteca `taxnexus-billing-core-lib` fornece:
 
 ### Integração Interna
 
-O endpoint `POST /calculate` é o ponto de integração principal. A autenticação é delegada ao API Gateway (Kong/Keycloak) — o middleware de auth apenas decodifica o JWT e injeta metadados do usuário nos headers.
+O endpoint `POST /v1/calculate` é o ponto de integração principal. A autenticação é delegada ao API Gateway (Kong/Keycloak) — o middleware de auth apenas decodifica o JWT e injeta metadados do usuário nos headers.
+
+**Novos endpoints (PR #6):** `POST /v1/simulate`, `POST /v1/token/generate`, `POST /v1/credit/calculate`, `POST /v1/supplier/validate`, `GET /v1/supplier/:cnpj`, `GET /v1/admin/tax-rates/iva-dual`.
+
+**Rate Limiting:** Middleware com headers `X-RateLimit-Limit`, `X-RateLimit-Remaining` e resposta `429 Too Many Requests` com `Retry-After`. Configurável via `RATE_LIMIT_MAX` e `RATE_LIMIT_WINDOW`.
+
+**API Versioning:** Prefixo `/v1/` em todas as rotas. Rotas legacy (`/calculate`, `/healthz`, `/metrics`) com deprecation warning.
+
+**Deploy:** Docker multi-stage (`Dockerfile`), `docker-compose.yaml` (app+PG+Redis), Kubernetes (`deploy/k8s/` — configmap, deployment, service, hpa).
