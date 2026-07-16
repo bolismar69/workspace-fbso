@@ -19,6 +19,7 @@ O agente validador atua como um **revisor técnico** — verificando se as espec
 | `{PROJECT_NAME}` | Nome/código do projeto | `PRJ-FIN-2026-0003-SAAS-FBSO-ORG` |
 | `{SOLUTION_NAME}` | Nome da solução/microsserviço | `ms-fbso-platform-admin` |
 | `{SOLUTION_TYPE}` | Tipo da solução | `backend`, `frontend`, `batch`, `mobile` |
+| `{BRANCH_NAME}` | Nome da branch onde deve ser realizado o desenvolvimento. Negar realizar desenvolvimento direto na branch `main` ou `master` |
 
 ---
 
@@ -26,7 +27,7 @@ O agente validador atua como um **revisor técnico** — verificando se as espec
 
 ### Passo 0 — Validação de Parâmetros
 
-Verificar se TODOS os 5 parâmetros foram informados.
+Verificar se TODOS os 6 parâmetros foram informados.
 
 ### Passo 1 — Carregar Documentos Base
 

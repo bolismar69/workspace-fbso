@@ -25,6 +25,7 @@ Este prompt orquestra a **execução das tarefas de uma sprint** no contexto do 
 | `{SPRINT_NAME}` | Nome curto da sprint (kebab-case) | `sprint-01-setup` |
 | `{STACK}` | Stack tecnológica principal (opcional — se omitido, será auto-detectada dos documentos do projeto) | `Java 25 + Spring Boot + PostgreSQL` ou vazio para auto-detecção |
 | `{TASK_IDS}` | IDs das tarefas a executar (opcional — se omitido, executa TODAS as tarefas pendentes da sprint) | `T-001,T-002,T-003` ou vazio para todas |
+| `{BRANCH_NAME}` | Nome da branch onde deve ser realizado o desenvolvimento. Negar realizar desenvolvimento direto na branch `main` ou `master` |
 
 ---
 
@@ -74,6 +75,7 @@ Implemente as tarefas da **Sprint {SPRINT_NUMBER} — {SPRINT_NAME}** seguindo o
 
 ### Fase 0 — Pré-implementação
 
+0. **Garantir o branch correto** — garantir que a branch foi informada. Caso esteja na branch `main` ou `master` não seguir com o desenvolvimento
 1. **Carregar artefatos da sprint** — ler SPRINT-CARD.md, SPRINT-TEST-SUITE.md, SPRINT-REVIEW.md
 2. **Carregar documentos-mestre** — ler PRD.md (se existir), SPECS.md, TASKS.md, TEST_PLAN.md, ARCHITECTURE.md
 3. **Carregar documentos transversais** — SECURITY.md, README.md
