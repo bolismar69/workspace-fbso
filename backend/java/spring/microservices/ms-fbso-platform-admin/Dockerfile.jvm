@@ -1,0 +1,26 @@
+# =============================================================================
+# Dockerfile.jvm — JVM fallback (desenvolvimento / CI)
+# =============================================================================
+# Build: docker build -f Dockerfile.jvm -t fbso-platform-admin:jvm .
+# Run:   docker run -p 8080:8080 fbso-platform-admin:jvm
+# =============================================================================
+
+FROM eclipse-temurin:25-jre-alpine AS builder
+
+WORKDIR /app
+COPY pom.xml ./
+COPY src ./src
+
+# Build JAR
+RUN ./mvnw package -DskipTests
+
+# Imagem final
+FROM eclipse-temurin:25-jre-alpine
+
+WORKDIR /app
+COPY --from=builder /app/target/*.jar /app/app.jar
+
+EXPOSE 8080
+
+USER 1001
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
