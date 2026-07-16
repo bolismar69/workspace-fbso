@@ -1,0 +1,1274 @@
+openapi: 3.0.3
+
+info:
+  title: TaxNexus Billing Engine — Tax Rates API
+  description: >
+    API para cálculo de tributos sobre faturamento (IPI, ICMS, PIS, COFINS, CBS, IBS, IS).
+    Processa documentos fiscais e retorna os tributos calculados para cada item,
+    utilizando motor bifásico (IPI sequencial → ICMS, PIS/COFINS e Reforma em paralelo).
+
+    **Autenticação:** JWT validado pelo API Gateway (Kong/Keycloak). O middleware
+    interno decodifica o payload (sem validação de assinatura) e injeta
+    `X-User-Id`, `X-User-Name` e `X-User-Roles` no contexto da requisição.
+    Middleware não-bloqueante: tokens ausentes ou inválidos não rejeitam a requisição.
+
+    **Observabilidade:** W3C Trace Context (`traceparent`/`traceresponse`),
+    métricas Prometheus (`GET /metrics`), health checks (`/healthz`, `/health`),
+    logging estruturado JSON (`slog`).
+
+    **Rate Limiting:** Sliding window por IP + token JWT. Configurável via env vars
+    `RATE_LIMIT_MAX` (default 100) e `RATE_LIMIT_WINDOW` (default 60s).
+    Respostas incluem headers `X-RateLimit-Limit`, `X-RateLimit-Remaining` e,
+    em caso de bloqueio (429), `Retry-After`.
+
+    **Versão da documentação:** 1.1.0 — adicionado rate limiting (GAP-008).
+  version: 1.1.0
+
+servers:
+  - url: http://localhost:3000
+    description: Ambiente de desenvolvimento local
+
+paths:
+  /v1/calculate:
+    post:
+      summary: Calcula tributos sobre documento fiscal
+      description: >
+        Processa um documento fiscal com itens (NCM, CFOP, valores, UFs) e
+        retorna os tributos calculados (IPI, ICMS, PIS, COFINS, CBS, IBS, IS)
+        para cada item.
+
+        **Motor bifásico:**
+        - Fase 1 (sequencial): IPI — seu valor compõe a base do ICMS
+        - Fase 2 (paralela): ICMS, PIS/COFINS e Reforma (CBS/IBS/IS)
+
+        **Regimes suportados:** Normal (CRT=3), Simples Nacional (CRT=1).
+        **Operações:** Interna, Interestadual, com DIFAL (EC 87/2015), ST.
+      operationId: calculateTaxes
+      tags: [Cálculo]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentoFiscalEntrada'
+            examples:
+              interestadual:
+                summary: Operação interestadual SP→RJ com IPI e DIFAL
+                value:
+                  documento_id: "NFE-001"
+                  data_operacao: "2026-06-21"
+                  tipo_operacao_fiscal: "SAIDA"
+                  localizacao_origem:
+                    uf: "SP"
+                  localizacao_destino:
+                    uf: "RJ"
+                  crt_emitente: "3"
+                  is_destino_final: true
+                  itens:
+                    - sku: "NOTEBOOK-I7"
+                      ncm: "84713012"
+                      valor_unitario: "5000.00"
+                      quantidade: "2"
+                      detalhes:
+                        - key: "ITEM_CST_ICMS"
+                          value: "000"
+                        - key: "ITEM_CST_PIS"
+                          value: "01"
+                        - key: "ITEM_CST_COFINS"
+                          value: "01"
+                        - key: "ITEM_IPI_ALIQUOTA"
+                          value: "5.00"
+                        - key: "ITEM_IPI_CST"
+                          value: "50"
+                        - key: "ITEM_IPI_CENQ"
+                          value: "999"
+              simples_nacional:
+                summary: Operação Simples Nacional MG→SP
+                value:
+                  documento_id: "NFE-002"
+                  data_operacao: "2026-06-21"
+                  tipo_operacao_fiscal: "SAIDA"
+                  localizacao_origem:
+                    uf: "MG"
+                  localizacao_destino:
+                    uf: "SP"
+                  crt_emitente: "1"
+                  itens:
+                    - sku: "MOVEL-001"
+                      ncm: "94032000"
+                      valor_unitario: "5000.00"
+                      quantidade: "1"
+                      detalhes:
+                        - key: "ITEM_CSOSN"
+                          value: "101"
+                        - key: "ITEM_ANEXO_SIMPLES"
+                          value: "ANEXO_I"
+                        - key: "ITEM_RBT12"
+                          value: "1800000.00"
+                        - key: "ITEM_CST_PIS"
+                          value: "01"
+                        - key: "ITEM_CST_COFINS"
+                          value: "01"
+      responses:
+        '200':
+          description: Cálculo realizado com sucesso
+          headers:
+            X-RateLimit-Limit:
+              description: Limite máximo de requisições por janela
+              schema:
+                type: integer
+              example: 100
+            X-RateLimit-Remaining:
+              description: Requisições restantes na janela atual
+              schema:
+                type: integer
+              example: 99
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentoFiscalSaida'
+              example:
+                id_transaction: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                total_impostos: "243.60"
+                total_nota: "10000.00"
+                itens:
+                  - sku: "NOTEBOOK-I7"
+                    total: "10000.00"
+                    valor_liquido: "9756.40"
+                    tributos:
+                      - tributo: "IPI"
+                        cst: "50"
+                        base_calculo: "10500.00"
+                        aliquota: "5.00"
+                        valor: "525.00"
+                      - tributo: "ICMS"
+                        cst: "000"
+                        base_calculo: "11025.00"
+                        aliquota: "12.00"
+                        valor: "1323.00"
+                      - tributo: "ICMS_DIFAL"
+                        base_calculo: "10500.00"
+                        aliquota: "6.00"
+                        valor: "630.00"
+                      - tributo: "PIS"
+                        cst: "01"
+                        base_calculo: "8677.00"
+                        aliquota: "1.65"
+                        valor: "143.17"
+                      - tributo: "COFINS"
+                        cst: "01"
+                        base_calculo: "8677.00"
+                        aliquota: "7.60"
+                        valor: "659.45"
+        '400':
+          description: Corpo da requisição inválido (JSON malformado ou validação falhou)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Payload inválido"
+                details: "invalid character '}' looking for beginning of object key string"
+        '429':
+          description: >
+            Limite de requisições excedido (Rate Limiting).
+            O cliente excedeu o número máximo de requisições por janela de tempo
+            (`RATE_LIMIT_MAX`, default 100, em `RATE_LIMIT_WINDOW` segundos, default 60).
+          headers:
+            X-RateLimit-Limit:
+              description: Limite máximo de requisições por janela
+              schema:
+                type: integer
+              example: 100
+            X-RateLimit-Remaining:
+              description: Requisições restantes na janela atual
+              schema:
+                type: integer
+              example: 0
+            Retry-After:
+              description: Segundos até poder tentar novamente
+              schema:
+                type: integer
+              example: 42
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitErrorResponse'
+              example:
+                error: "too_many_requests"
+                message: "Limite de requisições excedido. Tente novamente mais tarde."
+                retry_after: 42
+        '500':
+          description: Erro interno no cálculo de tributos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Falha interna no processamento dos impostos"
+
+  /v1/healthz:
+    get:
+      summary: Liveness probe
+      description: >
+        Verifica se o processo está vivo. Retorna sempre 200 se o servidor
+        está respondendo. Uso: Kubernetes liveness probe.
+      operationId: healthz
+      tags: [Health]
+      responses:
+        '200':
+          description: Serviço está vivo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthzResponse'
+              example:
+                status: "ok"
+
+  /v1/health:
+    get:
+      summary: Readiness probe
+      description: >
+        Verifica se o serviço está pronto para receber tráfego.
+        Testa conectividade com PostgreSQL (`pgPool.Ping()`) e Redis (`rdb.Ping()`).
+        Retorna 200 se todas as dependências saudáveis, 503 se alguma falhou.
+        Uso: Kubernetes readiness probe.
+      operationId: health
+      tags: [Health]
+      responses:
+        '200':
+          description: Todas as dependências saudáveis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "ok"
+                checks:
+                  postgres: "healthy"
+                  redis: "healthy"
+        '503':
+          description: Uma ou mais dependências não saudáveis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "degraded"
+                checks:
+                  postgres: "unhealthy: connection refused"
+                  redis: "healthy"
+
+  /v1/metrics:
+    get:
+      summary: Métricas Prometheus
+      description: >
+        Expõe métricas em formato Prometheus text exposition.
+        Métricas: `http_requests_total` (counter), `http_request_duration_seconds`
+        (histogram), `cache_requests_total` (counter), `errors_total` (counter).
+      operationId: metrics
+      tags: [Observabilidade]
+      responses:
+        '200':
+          description: Métricas em formato texto Prometheus
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  # ─── Rotas Legadas (Deprecadas) — GAP-009 ───────────────────────────────
+  # Estas rotas são aliases das rotas /v1/* e serão removidas em Jan/2028.
+  # Todas as respostas incluem headers: Deprecation: true, Sunset, Link.
+
+  /calculate:
+    post:
+      summary: "[DEPRECATED] Calcula tributos sobre documento fiscal"
+      description: >
+        **Deprecada.** Use `POST /v1/calculate` em seu lugar.
+
+        Esta rota é um alias para `/v1/calculate` e será removida em 01/01/2028.
+        As respostas incluem os headers `Deprecation: true`, `Sunset` e `Link`.
+      operationId: calculateTaxesLegacy
+      deprecated: true
+      tags: [Cálculo]
+      responses:
+        '200':
+          description: Redireciona para /v1/calculate
+          headers:
+            Deprecation:
+              description: Indica que a rota está deprecada
+              schema:
+                type: string
+              example: "true"
+            Sunset:
+              description: Data limite para migração
+              schema:
+                type: string
+              example: "Sat, 01 Jan 2028 00:00:00 GMT"
+            Link:
+              description: URL da rota sucessora
+              schema:
+                type: string
+              example: '</v1/calculate>; rel="successor-version"'
+
+  /healthz:
+    get:
+      summary: "[DEPRECATED] Liveness probe"
+      description: >
+        **Deprecada.** Use `GET /v1/healthz` em seu lugar. Removida em 01/01/2028.
+      operationId: healthzLegacy
+      deprecated: true
+      tags: [Health]
+      responses:
+        '200':
+          description: Serviço está vivo
+          headers:
+            Deprecation:
+              schema:
+                type: string
+              example: "true"
+
+  /health:
+    get:
+      summary: "[DEPRECATED] Readiness probe"
+      description: >
+        **Deprecada.** Use `GET /v1/health` em seu lugar. Removida em 01/01/2028.
+      operationId: healthLegacy
+      deprecated: true
+      tags: [Health]
+      responses:
+        '200':
+          description: Dependências saudáveis
+          headers:
+            Deprecation:
+              schema:
+                type: string
+              example: "true"
+
+  # ─── Fornecedores (GAP-007 — BR-08) ──────────────────────────────────────
+
+  /v1/supplier/validate:
+    post:
+      summary: Cadastra ou valida qualificação fiscal de fornecedor
+      description: >
+        Cadastra um fornecedor com regime tributário e situação de certidão.
+        Regras: Lucro Real/Presumido + certidão válida → qualificado;
+        Simples Nacional → qualificado_restrito; certidão vencida → bloqueado.
+      operationId: validateSupplier
+      tags: [Fornecedores]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierValidateRequest'
+      responses:
+        '201':
+          description: Fornecedor cadastrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierFiscal'
+
+  /v1/supplier/{cnpj}:
+    get:
+      summary: Consulta qualificação fiscal do fornecedor
+      operationId: getSupplier
+      tags: [Fornecedores]
+      parameters:
+        - name: cnpj
+          in: path
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: Dados do fornecedor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierFiscal'
+        '404':
+          description: Fornecedor não encontrado
+
+    put:
+      summary: Atualiza qualificação fiscal do fornecedor
+      operationId: updateSupplier
+      tags: [Fornecedores]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: cnpj
+          in: path
+          required: true
+          schema: {type: string}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierValidateRequest'
+      responses:
+        '200':
+          description: Fornecedor atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierFiscal'
+
+  # ─── Créditos na Entrada (GAP-005 — BR-08) ───────────────────────────────
+
+  /v1/credit/calculate:
+    post:
+      summary: Calcula créditos CBS/IBS de NF-e de entrada
+      description: >
+        Dado um documento fiscal de compra (fornecedor), calcula os créditos
+        de CBS e IBS apropriáveis conforme regras do Lucro Real (BR-08).
+        Crédito bloqueado se fornecedor não qualificado ou produto com
+        permite_credito_amplo = false. IS não gera crédito (não recuperável).
+      operationId: calculateCredit
+      tags: [Créditos]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditCalculationRequest'
+      responses:
+        '200':
+          description: Créditos calculados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditCalculationResponse'
+
+  /v1/credit/summary:
+    get:
+      summary: Resumo de créditos no período
+      description: Total de créditos disponíveis vs apropriados no mês.
+      operationId: creditSummary
+      tags: [Créditos]
+      parameters:
+        - name: periodo
+          in: query
+          schema: {type: string}
+          description: Período YYYY-MM
+      responses:
+        '200':
+          description: Resumo do período
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditSummaryResponse'
+
+  # ─── Admin Fiscal (GAP-001 — BR-02) ──────────────────────────────────────
+
+  /v1/admin/tax-rates/iva-dual:
+    put:
+      summary: Cria ou atualiza regra IVA Dual
+      description: >
+        Insere uma nova regra de alíquota CBS/IBS/IS. Se já existir regra
+        ativa para a mesma tupla (NCM+UF+IBGE), fecha a anterior e insere
+        a nova. Invalida cache Redis e gera registro de auditoria.
+      operationId: upsertIvaDualRule
+      tags: [Admin Fiscal]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IvaDualRuleInput'
+      responses:
+        '201':
+          description: Regra criada/atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IvaDualRuleOutput'
+        '400':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      summary: Lista regras IVA Dual
+      description: Lista regras com filtros opcionais por NCM, UF e vigência.
+      operationId: listIvaDualRules
+      tags: [Admin Fiscal]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: ncm
+          in: query
+          schema: {type: string}
+        - name: uf
+          in: query
+          schema: {type: string}
+        - name: ativas_apenas
+          in: query
+          schema: {type: string, default: "true"}
+      responses:
+        '200':
+          description: Lista de regras
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IvaDualRuleOutput'
+
+  # ─── Simulação de Margem (GAP-003 — BR-05) ───────────────────────────────
+
+  /v1/simulate:
+    post:
+      summary: Simula impacto dos tributos e margem líquida
+      description: >
+        Executa o motor de cálculo para um ou mais destinos (UFs/municípios)
+        e retorna a margem líquida projetada e o impacto dos tributos por UF.
+        Útil para o time comercial comparar cenários antes do fechamento.
+
+        Não persiste transação — apenas projeta os valores.
+        Aceita múltiplos destinos em uma única chamada para comparação.
+      operationId: simulateTaxes
+      tags: [Simulação]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimulationRequest'
+      responses:
+        '200':
+          description: Simulação concluída
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulationResponse'
+        '400':
+          description: Payload inválido (sem itens ou sem destinos)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ─── Token Fiscal (GAP-002 — BR-06) ──────────────────────────────────────
+
+  /v1/token/generate:
+    post:
+      summary: Gera token fiscal com alíquotas congeladas
+      description: >
+        Consulta as alíquotas vigentes (CBS, IBS estadual, IBS municipal, IS)
+        para uma tupla (NCM, UF destino, município IBGE) e gera um token com
+        TTL configurável (`TAX_TOKEN_TTL_MINUTES`, default 60 min).
+
+        O token pode ser usado no `POST /v1/calculate` via campo `token_id`
+        para garantir que o cálculo use as mesmas alíquotas da simulação
+        (BR-06 — Garantia de Preço Ofertado).
+      operationId: generateToken
+      tags: [Token Fiscal]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenGenerateRequest'
+      responses:
+        '201':
+          description: Token gerado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxToken'
+        '400':
+          description: Payload inválido (ncm ou uf_destino ausentes)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /v1/token/{id}:
+    get:
+      summary: Consulta status de token fiscal
+      description: >
+        Retorna o status do token (valido ou expirado) com as alíquotas
+        congeladas. Diferente da validação no `/calculate`, este endpoint
+        NÃO retorna erro para token expirado — apenas informa o status.
+      operationId: getTokenStatus
+      tags: [Token Fiscal]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do token fiscal
+      responses:
+        '200':
+          description: Status do token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenStatusResponse'
+        '404':
+          description: Token não encontrado
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >
+        JWT validado pelo API Gateway (Kong/Keycloak). O middleware interno
+        decodifica o payload sem verificar assinatura e injeta claims nos headers.
+
+  schemas:
+    DocumentoFiscalEntrada:
+      type: object
+      required:
+        - itens
+      properties:
+        documento_id:
+          type: string
+          description: Identificador do documento fiscal (NF-e, NFC-e, etc.)
+        data_operacao:
+          type: string
+          format: date
+          description: Data da operação fiscal (YYYY-MM-DD)
+        tipo_operacao_fiscal:
+          type: string
+          description: Tipo de operação (SAIDA, ENTRADA, etc.)
+          default: "SAIDA"
+        localizacao_origem:
+          $ref: '#/components/schemas/Localizacao'
+        localizacao_destino:
+          $ref: '#/components/schemas/Localizacao'
+        crt_emitente:
+          type: string
+          description: CRT do emitente (1=Simples Nacional, 3=Normal)
+          default: "3"
+        is_destino_final:
+          type: boolean
+          description: Indica se o destinatário é consumidor final (não contribuinte)
+          default: false
+        itens:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/ItemDocumentoFiscalEntrada'
+
+    Localizacao:
+      type: object
+      properties:
+        uf:
+          type: string
+          description: Unidade Federativa (SP, RJ, MG, etc.)
+          minLength: 2
+          maxLength: 2
+        municipio:
+          type: string
+          description: Código IBGE do município (7 dígitos) — opcional, usado na Reforma Tributária
+          minLength: 7
+          maxLength: 7
+
+    ItemDocumentoFiscalEntrada:
+      type: object
+      required:
+        - sku
+        - ncm
+        - valor_unitario
+        - quantidade
+      properties:
+        sku:
+          type: string
+          description: Código SKU do produto
+        ncm:
+          type: string
+          description: NCM do produto (8 dígitos)
+          minLength: 8
+          maxLength: 8
+        valor_unitario:
+          type: string
+          description: Valor unitário do item (decimal de precisão arbitrária)
+        quantidade:
+          type: string
+          description: Quantidade do item (decimal)
+        detalhes:
+          type: array
+          description: >
+            Detalhes flexíveis do item (chave-valor) para sobrescrever regras fiscais.
+            Chaves suportadas: `ITEM_CST_ICMS`, `ITEM_CST_PIS`, `ITEM_CST_COFINS`,
+            `ITEM_CSOSN`, `ITEM_IPI_ALIQUOTA`, `ITEM_IPI_VALOR_PAUTA`, `ITEM_IPI_CST`,
+            `ITEM_IPI_CENQ`, `ITEM_ANEXO_SIMPLES`, `ITEM_RBT12`, `ITEM_EX_IPI`,
+            `ITEM_SUBSTITUIR_CST_ICMS`, `ITEM_SUBSTITUIR_MVA_PERCENTUAL`,
+            `ITEM_SUBSTITUIR_TIPO_OPERACAO_FISCAL`, `VALOR_EXCLUSAO_ICMS`,
+            `VALOR_FRETE`, `VALOR_SEGURO`, `VALOR_OUTRAS_DESPESAS`, `VALOR_DESCONTO`.
+          items:
+            $ref: '#/components/schemas/Detalhe'
+
+    Detalhe:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Chave do detalhe
+        value:
+          type: string
+          description: Valor do detalhe
+
+    DocumentoFiscalSaida:
+      type: object
+      properties:
+        id_transaction:
+          type: string
+          format: uuid
+          description: UUID v4 único da transação de cálculo
+        total_impostos:
+          type: string
+          description: Soma de todos os impostos calculados (2 casas decimais)
+        total_nota:
+          type: string
+          description: Soma dos valores totais dos itens
+        split_payment:
+          $ref: '#/components/schemas/SplitPayment'
+          description: Partição financeira para liquidação bancária (BR-09)
+        itens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemDocumentoFiscalSaida'
+
+    SplitPayment:
+      type: object
+      description: >
+        Partição financeira esperada no momento da liquidação bancária
+        (split payment da Reforma Tributária — BR-09). A rede bancária
+        usa estes valores para segregar o pagamento entre receita livre
+        da empresa e valores retidos para CBS, IBS e IS.
+      properties:
+        valor_receita_liquida:
+          type: string
+          description: Valor líquido que fica com a empresa
+        valor_cbs_reter:
+          type: string
+          description: CBS a ser retida pelo banco (União)
+        valor_ibs_reter:
+          type: string
+          description: IBS a ser retido pelo banco (Comitê Gestor)
+        valor_is_reter:
+          type: string
+          description: IS a ser retido pelo banco (União)
+        codigo_barras_split:
+          type: string
+          description: SHA-256 determinístico para conciliação bancária
+
+    ItemDocumentoFiscalSaida:
+      type: object
+      properties:
+        sku:
+          type: string
+          description: Código SKU do produto
+        total:
+          type: string
+          description: Valor total do item (unitário × quantidade)
+        valor_liquido:
+          type: string
+          description: >
+            Preço líquido do item (total − soma de todos os tributos).
+            Representa o valor recebido pela empresa após dedução dos impostos
+            "por fora" (CBS, IBS, IS, ICMS, etc.). Nunca é negativo (piso = 0).
+            Implementado em GAP-004 — BR-04 (Transparência Fiscal).
+          example: "753.50"
+        tributos:
+          type: array
+          items:
+            $ref: '#/components/schemas/TributoItem'
+
+    TributoItem:
+      type: object
+      properties:
+        tributo:
+          type: string
+          description: Nome do tributo
+          enum:
+            - IPI
+            - ICMS
+            - ICMS_PROPRIO
+            - ICMS_ST
+            - ICMS_DIFAL
+            - ICMS_SIMPLES
+            - PIS
+            - COFINS
+            - CBS
+            - IBS
+            - IS
+        cst:
+          type: string
+          description: Código de Situação Tributária (CST/CSOSN)
+        base_calculo:
+          type: string
+          description: Base de cálculo utilizada (2 casas decimais)
+        aliquota:
+          type: string
+          description: Alíquota aplicada (%)
+        valor:
+          type: string
+          description: Valor calculado do tributo (2 casas decimais)
+        more_numeric_details:
+          type: array
+          description: Detalhes numéricos adicionais (memória de cálculo)
+          items:
+            $ref: '#/components/schemas/Detalhe'
+        more_text_details:
+          type: array
+          description: Detalhes textuais adicionais (fonte da regra, UF, NCM, etc.)
+          items:
+            $ref: '#/components/schemas/Detalhe'
+
+    HealthzResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+          description: Status do serviço
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded]
+          description: Status agregado das dependências
+        checks:
+          type: object
+          properties:
+            postgres:
+              type: string
+              description: Status da conexão PostgreSQL
+            redis:
+              type: string
+              description: Status da conexão Redis
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Mensagem descritiva do erro
+        details:
+          type: string
+          description: Detalhes adicionais do erro (apenas em 400)
+
+    RateLimitErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Código do erro
+          example: "too_many_requests"
+        message:
+          type: string
+          description: Mensagem descritiva
+          example: "Limite de requisições excedido. Tente novamente mais tarde."
+        retry_after:
+          type: integer
+          description: Segundos até poder tentar novamente
+          example: 42
+
+    # ─── TaxToken Schemas (GAP-002 — BR-06) ─────────────────────────────────
+
+    TokenGenerateRequest:
+      type: object
+      required:
+        - ncm
+        - uf_destino
+      properties:
+        ncm:
+          type: string
+          description: NCM do produto (8 dígitos)
+          example: "84713012"
+        uf_origem:
+          type: string
+          description: UF de origem
+          example: "SP"
+        uf_destino:
+          type: string
+          description: UF de destino (obrigatório)
+          example: "RJ"
+        municipio_ibge:
+          type: string
+          description: Código IBGE do município de destino (7 dígitos, opcional)
+          example: "3304557"
+
+    TaxToken:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID único do token
+        ncm:
+          type: string
+        uf_origem:
+          type: string
+        uf_destino:
+          type: string
+        municipio_ibge:
+          type: string
+        aliquota_cbs:
+          type: string
+          description: Alíquota CBS congelada (percentual)
+        aliquota_ibs_estadual:
+          type: string
+          description: Alíquota IBS estadual congelada (percentual)
+        aliquota_ibs_municipal:
+          type: string
+          description: Alíquota IBS municipal congelada (percentual)
+        aliquota_is:
+          type: string
+          description: Alíquota IS congelada (percentual)
+        expires_at:
+          type: string
+          format: date-time
+          description: Data/hora de expiração do token
+        created_at:
+          type: string
+          format: date-time
+          description: Data/hora de criação do token
+
+    TokenStatusResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: ["valido", "expirado"]
+        ncm:
+          type: string
+        uf_destino:
+          type: string
+        municipio_ibge:
+          type: string
+        aliquota_cbs:
+          type: string
+        aliquota_ibs:
+          type: string
+          description: Alíquota IBS total (estadual + municipal)
+        aliquota_is:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+
+    # ─── Simulation Schemas (GAP-003 — BR-05) ───────────────────────────────
+
+    SimulationRequest:
+      type: object
+      required:
+        - itens
+        - destinos
+      properties:
+        itens:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/SimulationItem'
+        uf_origem:
+          type: string
+          description: UF de origem (default SP)
+          example: "SP"
+        destinos:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/SimulationDestino'
+
+    SimulationItem:
+      type: object
+      required:
+        - sku
+        - ncm
+        - quantidade
+        - valor_unitario
+      properties:
+        sku:
+          type: string
+        ncm:
+          type: string
+          description: NCM do produto (8 dígitos)
+        quantidade:
+          type: string
+          description: Quantidade do item
+        valor_unitario:
+          type: string
+          description: Valor unitário
+        custo:
+          type: string
+          description: Custo de aquisição/produção para cálculo de margem
+          example: "300.00"
+
+    SimulationDestino:
+      type: object
+      required:
+        - uf
+      properties:
+        uf:
+          type: string
+          description: UF de destino
+          example: "RJ"
+        municipio_ibge:
+          type: string
+          description: Código IBGE do município (7 dígitos, opcional)
+
+    SimulationResponse:
+      type: object
+      properties:
+        margem_liquida:
+          type: string
+          description: Margem líquida consolidada em percentual
+          example: "26.83"
+        alerta_margem:
+          type: boolean
+          description: true se a margem for negativa
+        impacto_por_uf:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImpactoUF'
+
+    ImpactoUF:
+      type: object
+      properties:
+        uf:
+          type: string
+        municipio_ibge:
+          type: string
+        valor_total:
+          type: string
+          description: Valor total dos itens
+        valor_liquido:
+          type: string
+          description: Valor líquido (total − impostos)
+        total_impostos:
+          type: string
+          description: Total de impostos incidentes
+        margem_liquida:
+          type: string
+          description: Margem líquida em percentual
+        alerta_margem:
+          type: boolean
+        warning:
+          type: string
+          description: Aviso (ex: aliquotas IBS não encontradas)
+
+    # ─── Admin Schemas (GAP-001 — BR-02) ────────────────────────────────────
+
+    IvaDualRuleInput:
+      type: object
+      required:
+        - ncm
+        - uf_destino
+        - aliquota_cbs
+        - aliquota_ibs_estadual
+        - aliquota_ibs_municipal
+      properties:
+        ncm:
+          type: string
+          description: NCM do produto (8 dígitos)
+          example: "84713012"
+        uf_destino:
+          type: string
+          description: UF de destino
+          example: "RJ"
+        municipio_destino_ibge:
+          type: string
+          description: Código IBGE do município (7 dígitos, opcional)
+        aliquota_cbs:
+          type: string
+          description: Alíquota CBS [0,100]
+          example: "9.00"
+        aliquota_ibs_estadual:
+          type: string
+          description: Alíquota IBS Estadual [0,100]
+          example: "5.00"
+        aliquota_ibs_municipal:
+          type: string
+          description: Alíquota IBS Municipal [0,100]
+          example: "2.50"
+        percentual_reducao:
+          type: string
+          description: Percentual de redução [0,100]
+          example: "0.00"
+        is_imposto_seletivo:
+          type: boolean
+          description: Se o NCM está sujeito ao Imposto Seletivo
+        aliquota_is:
+          type: string
+          description: Alíquota do Imposto Seletivo [0,100]
+          example: "1.50"
+        inicio_validade:
+          type: string
+          format: date
+          description: Data de início da vigência (default: hoje)
+
+    IvaDualRuleOutput:
+      type: object
+      properties:
+        id:
+          type: integer
+        ncm:
+          type: string
+        uf_destino:
+          type: string
+        municipio_destino_ibge:
+          type: string
+        aliquota_cbs:
+          type: string
+        aliquota_ibs_estadual:
+          type: string
+        aliquota_ibs_municipal:
+          type: string
+        percentual_reducao:
+          type: string
+        is_imposto_seletivo:
+          type: boolean
+        aliquota_is:
+          type: string
+        inicio_validade:
+          type: string
+          format: date
+        final_validade:
+          type: string
+          format: date
+
+    # ─── Credit Schemas (GAP-005 — BR-08) ──────────────────────────────────
+
+    CreditCalculationRequest:
+      type: object
+      required:
+        - cnpj_fornecedor
+        - itens
+      properties:
+        cnpj_fornecedor:
+          type: string
+          description: CNPJ do fornecedor
+        documento_id:
+          type: string
+        data_operacao:
+          type: string
+          format: date
+        itens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemDocumentoFiscalEntrada'
+
+    CreditCalculationResponse:
+      type: object
+      properties:
+        id_transaction:
+          type: string
+        cnpj_fornecedor:
+          type: string
+        credito_cbs:
+          type: string
+          description: Total de CBS creditável
+        credito_ibs:
+          type: string
+          description: Total de IBS creditável
+        credito_total:
+          type: string
+          description: CBS + IBS creditável
+        motivo_bloqueio:
+          type: string
+          description: Razão do bloqueio (vazio se crédito liberado)
+        itens:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditItem'
+
+    CreditItem:
+      type: object
+      properties:
+        sku:
+          type: string
+        cbs_destacado:
+          type: string
+        ibs_destacado:
+          type: string
+        creditavel:
+          type: boolean
+
+    CreditSummaryResponse:
+      type: object
+      properties:
+        periodo:
+          type: string
+        credito_disponivel:
+          type: string
+        credito_apropriado:
+          type: string
+        total_operacoes:
+          type: integer
+        operacoes_bloqueadas:
+          type: integer
+        gerado_em:
+          type: string
+          format: date-time
+
+    # ─── Supplier Schemas (GAP-007 — BR-08) ─────────────────────────────────
+
+    SupplierValidateRequest:
+      type: object
+      required:
+        - cnpj
+        - regime_tributario
+        - certificado_regularidade
+      properties:
+        cnpj:
+          type: string
+          description: CNPJ do fornecedor (14 dígitos)
+        regime_tributario:
+          type: string
+          enum: [LUCRO_REAL, LUCRO_PRESUMIDO, SIMPLES_NACIONAL]
+        certificado_regularidade:
+          type: boolean
+
+    SupplierFiscal:
+      type: object
+      properties:
+        cnpj:
+          type: string
+        regime_tributario:
+          type: string
+        certificado_regularidade:
+          type: boolean
+        permite_credito:
+          type: boolean
+          description: Se o fornecedor permite crédito de CBS/IBS
+        data_qualificacao:
+          type: string
+          format: date-time
+        data_validade:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [qualificado, qualificado_restrito, bloqueado]
