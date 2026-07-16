@@ -1,0 +1,1 @@
+# 🗃️ Workspace Central FBSO - definitions
