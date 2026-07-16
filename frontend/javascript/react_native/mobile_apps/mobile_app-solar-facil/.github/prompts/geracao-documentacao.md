@@ -1,0 +1,25 @@
+# Geração de Documentação Solar Facil
+
+## Descrição
+
+Orientações para criação e manutenção da documentação técnica do Solar Facil.
+
+## Prompt
+
+- Você está criando ou atualizando a documentação do app Solar Facil.
+
+### Recomendações:
+
+- Toda nova funcionalidade deve ter documentação correspondente.
+- Utilize o padrão Markdown (.md) para os arquivos.
+- A documentação deve estar na pasta `./docs/`.
+- Atualize também o `README.md` se for relevante.
+- Para APIs, documente endpoints, parâmetros e exemplos de resposta.
+- Para componentes, inclua exemplos de uso e props obrigatórias.
+- Inclua fluxogramas ou diagramas se necessário.
+
+## Tags
+
+- documentation
+- markdown
+- api-docs

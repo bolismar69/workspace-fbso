@@ -1,0 +1,425 @@
+
+=== DIRECTORY TREE (max depth 3, source files only) ===
+.claude
+.claude/settings.local.json
+.env.example
+.github
+.github/workflows
+.github/workflows/deploy.yml
+.gitignore
+.impeccable
+.impeccable/design.json
+.impeccable/live
+.impeccable/live/config.json
+.remember
+.remember/.gitignore
+.remember/archive.md
+.remember/logs
+.remember/logs/autonomous
+.remember/logs/autonomous/save-083155.log
+.remember/logs/autonomous/save-083156.log
+.remember/logs/autonomous/save-083157.log
+.remember/logs/autonomous/save-083158.log
+.remember/logs/autonomous/save-083213.log
+.remember/logs/autonomous/save-083220.log
+.remember/logs/autonomous/save-083222.log
+.remember/logs/autonomous/save-083223.log
+.remember/logs/autonomous/save-083224.log
+.remember/logs/autonomous/save-083225.log
+.remember/logs/autonomous/save-083231.log
+.remember/logs/autonomous/save-083339.log
+.remember/logs/autonomous/save-083345.log
+.remember/logs/autonomous/save-083448.log
+.remember/logs/autonomous/save-083455.log
+.remember/logs/autonomous/save-083545.log
+.remember/logs/autonomous/save-083652.log
+.remember/logs/autonomous/save-083658.log
+.remember/logs/autonomous/save-083659.log
+.remember/logs/autonomous/save-083735.log
+.remember/logs/autonomous/save-083755.log
+.remember/logs/autonomous/save-083805.log
+.remember/logs/autonomous/save-083806.log
+.remember/logs/autonomous/save-083838.log
+.remember/logs/autonomous/save-083843.log
+.remember/logs/autonomous/save-083844.log
+.remember/logs/autonomous/save-193034.log
+.remember/logs/autonomous/save-193039.log
+.remember/logs/autonomous/save-193040.log
+.remember/logs/autonomous/save-193041.log
+.remember/logs/autonomous/save-193048.log
+.remember/logs/autonomous/save-193049.log
+.remember/logs/autonomous/save-193050.log
+.remember/logs/autonomous/save-193051.log
+.remember/logs/autonomous/save-193056.log
+.remember/logs/autonomous/save-193057.log
+.remember/logs/autonomous/save-193058.log
+.remember/logs/autonomous/save-193059.log
+.remember/logs/autonomous/save-193106.log
+.remember/logs/autonomous/save-193107.log
+.remember/logs/autonomous/save-193108.log
+.remember/logs/autonomous/save-193113.log
+.remember/logs/autonomous/save-193114.log
+.remember/logs/autonomous/save-193115.log
+.remember/logs/autonomous/save-193116.log
+.remember/logs/autonomous/save-193122.log
+.remember/logs/autonomous/save-193123.log
+.remember/logs/autonomous/save-193124.log
+.remember/logs/autonomous/save-193131.log
+.remember/logs/autonomous/save-193132.log
+.remember/logs/autonomous/save-193133.log
+.remember/logs/autonomous/save-193139.log
+.remember/logs/autonomous/save-193140.log
+.remember/logs/autonomous/save-193141.log
+.remember/logs/autonomous/save-193142.log
+.remember/logs/autonomous/save-193147.log
+.remember/logs/autonomous/save-193148.log
+.remember/logs/autonomous/save-193149.log
+.remember/logs/autonomous/save-193150.log
+.remember/logs/autonomous/save-193158.log
+.remember/logs/autonomous/save-193203.log
+.remember/logs/autonomous/save-193204.log
+.remember/logs/autonomous/save-193205.log
+.remember/logs/autonomous/save-193206.log
+.remember/logs/autonomous/save-193207.log
+.remember/logs/autonomous/save-193213.log
+.remember/logs/autonomous/save-202751.log
+.remember/logs/autonomous/save-202756.log
+.remember/logs/autonomous/save-202757.log
+.remember/logs/autonomous/save-202803.log
+.remember/logs/autonomous/save-202804.log
+.remember/logs/autonomous/save-203025.log
+.remember/logs/autonomous/save-203037.log
+.remember/logs/autonomous/save-203042.log
+.remember/logs/autonomous/save-203043.log
+.remember/logs/autonomous/save-203044.log
+.remember/logs/autonomous/save-203045.log
+.remember/logs/autonomous/save-203046.log
+.remember/logs/autonomous/save-203047.log
+.remember/logs/autonomous/save-203048.log
+.remember/logs/autonomous/save-203049.log
+.remember/logs/autonomous/save-203337.log
+.remember/logs/autonomous/save-203339.log
+.remember/logs/autonomous/save-205055.log
+.remember/logs/autonomous/save-205100.log
+.remember/logs/autonomous/save-205131.log
+.remember/logs/autonomous/save-205136.log
+.remember/logs/autonomous/save-205235.log
+.remember/logs/autonomous/save-205240.log
+.remember/logs/autonomous/save-205326.log
+.remember/logs/autonomous/save-205332.log
+.remember/logs/autonomous/save-205418.log
+.remember/logs/autonomous/save-205423.log
+.remember/logs/autonomous/save-205424.log
+.remember/logs/autonomous/save-205448.log
+.remember/logs/autonomous/save-205453.log
+.remember/logs/autonomous/save-205519.log
+.remember/logs/autonomous/save-205523.log
+.remember/logs/autonomous/save-205529.log
+.remember/logs/hook-errors.log
+.remember/logs/memory-2026-07-05.log
+.remember/logs/memory-2026-07-06.log
+.remember/logs/memory-2026-07-08.log
+.remember/now.md
+.remember/recent.md
+.remember/tmp
+.remember/tmp/last-ndc.ts
+.remember/tmp/last-save-ts
+.remember/tmp/last-save.json
+.remember/tmp/save-session.pid
+.remember/today-2026-07-05.done.md
+.specs
+.specs/ARCHITECTURE.md
+.specs/COMPONENTS.md
+.specs/DATA-MODEL.md
+.specs/DESIGN-SYSTEM.md
+.specs/DESIGN.md
+.specs/INDEX.md
+.specs/PRODUCT.md
+.specs/REQUIREMENTS.md
+.specs/SECURITY.md
+AGENTS.md
+CLAUDE.md
+README.md
+docs
+docs/codebase
+docs/codebase/.codebase-scan.txt
+eslint.config.mjs
+next-env.d.ts
+next.config.ts
+package-lock.json
+package.json
+postcss.config.mjs
+public
+public/file.svg
+public/globe.svg
+public/logo.svg
+public/next.svg
+public/vercel.svg
+public/window.svg
+src
+src/app
+src/app/contato
+src/app/contato/page.tsx
+src/app/favicon.ico
+src/app/globals.css
+src/app/layout.tsx
+src/app/page.tsx
+src/app/planos
+src/app/planos/page.tsx
+src/app/robots.ts
+src/app/sitemap.ts
+src/components
+src/components/contact
+src/components/contact/ContactForm.tsx
+src/components/contact/DirectChannels.tsx
+src/components/contact/FormField.tsx
+src/components/contact/JourneySummary.tsx
+src/components/contact/SuccessScreen.tsx
+src/components/home
+src/components/home/CalculatorSection.tsx
+src/components/home/ConsumerCalculator.tsx
+src/components/home/DifferentiatorsSection.tsx
+src/components/home/FinalCtaSection.tsx
+src/components/home/HeroSection.tsx
+src/components/home/HowItWorksSection.tsx
+src/components/home/PlansSection.tsx
+src/components/home/ProofSection.tsx
+src/components/home/ProviderCalculator.tsx
+src/components/layout
+src/components/layout/Footer.tsx
+src/components/layout/Header.tsx
+src/components/layout/MobileMenu.tsx
+src/components/plans
+src/components/plans/FaqAccordion.tsx
+src/components/plans/PlanCard.tsx
+src/components/plans/PlansComparisonTable.tsx
+src/components/plans/ProviderHighlight.tsx
+src/components/shared
+src/components/shared/AnalyticsProvider.tsx
+src/components/shared/Breadcrumb.tsx
+src/components/shared/Button.tsx
+src/components/shared/JsonLd.tsx
+src/components/shared/MetricCard.tsx
+
+=== STACK DETECTION (manifest files) ===
+
+--- package-lock.json ---
+{
+  "name": "solar-facil-site",
+  "version": "0.1.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "solar-facil-site",
+      "version": "0.1.0",
+      "dependencies": {
+        "lucide-react": "^1.23.0",
+        "next": "16.2.10",
+        "react": "19.2.4",
+        "react-dom": "19.2.4"
+      },
+      "devDependencies": {
+        "@tailwindcss/postcss": "^4",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "eslint": "^9",
+        "eslint-config-next": "16.2.10",
+        "prettier": "^3.9.4",
+        "prettier-plugin-tailwindcss": "^0.8.0",
+        "tailwindcss": "^4",
+        "typescript": "^5"
+      }
+    },
+    "node_modules/@alloc/quick-lru": {
+      "version": "5.2.0",
+      "resolved": "https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz",
+      "integrity": "sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=10"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/@babel/code-frame": {
+      "version": "7.29.7",
+      "resolved": "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.29.7.tgz",
+      "integrity": "sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@babel/helper-validator-identifier": "^7.29.7",
+        "js-tokens": "^4.0.0",
+        "picocolors": "^1.1.1"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      }
+    },
+    "node_modules/@babel/compat-data": {
+      "version": "7.29.7",
+      "resolved": "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.29.7.tgz",
+      "integrity": "sha512-locTkQyKvwIEgBzVrn8693ebc97F2U8ZHjbXwDXJ5Fn2TCpNwTlKcaKLkdHop5c/icOFE7qt7Q9JC5hnKNa6Gg==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=6.9.0"
+      }
+    },
+    "node_modules/@babel/core": {
+      "version": "7.29.7",
+      "resolved": "https://registry.npmjs.org/@babel/core/-/core-7.29.7.tgz",
+      "integrity": "sha512-RgHBCvtjbOK2gXSNBNIkNoEc9qoVEtau3hj8gEqKQuL3HZAibKarWFEI3Lfm6EYKkLalOh8eSrj9b+ch9H/VBA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@babel/code-frame": "^7.29.7",
+        "@babel/generator": "^7.29.7",
+        "@babel/helper-compilation-targets": "^7.29.7",
+        "@babel/helper-module-transforms": "^7.29.7",
+        "@babel/helpers": "^7.29.7",
+        "@babel/parser": "^7.29.7",
+        "@babel/template": "^7.29.7",
+
+[TRUNCATED] Showing first 80 of 6811 lines.
+--- package.json ---
+{
+  "name": "solar-facil-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "lucide-react": "^1.23.0",
+    "next": "16.2.10",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.10",
+    "prettier": "^3.9.4",
+    "prettier-plugin-tailwindcss": "^0.8.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
+
+
+=== ENTRY POINTS ===
+No common entry points found. Check 'main' or 'scripts.start' in manifest files above.
+
+=== LINTING AND FORMATTING CONFIG ===
+Found: eslint.config.mjs
+Found: tsconfig.json
+
+=== ENVIRONMENT VARIABLE TEMPLATES ===
+--- .env.example ---
+# Solar Fácil — Environment Variables
+
+# Google Analytics 4 Measurement ID
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+
+# Form service endpoint (Formspree, Resend, etc.)
+NEXT_PUBLIC_FORM_ENDPOINT=https://formspree.io/f/your-form-id
+
+# Site URL (used for sitemap, JSON-LD, canonical URLs)
+NEXT_PUBLIC_SITE_URL=https://www.solarfacil.com.br
+
+
+=== TODO / FIXME / HACK (production code only, test dirs excluded) ===
+None found.
+
+=== GIT RECENT COMMITS (last 20) ===
+83f6905 feat(PRJ-FIN-2026-0001): Reforma Tributária 2026 — Fases 0, 1, 2
+10c6935 [WIP] iniciando construcao de conjunto de microservicos para calculos de impostos de pessoas fisicas [20260326-230024]
+4253b47 [WIP] Padronizando classes do projeto backend/java/spring/microservices/ms-geolocalidade [20260323-081521]
+10d5f53 [WIP] Atualizando documentacao dos projetos backend/java/spring/microservices/ms-geolocalidade e backend/java/spring/batch_services/batch-geolocalidade [20260321-163712]
+e2cd212 [WIP]  trabalhando no projeto backend/java/spring/batch_services/batch-geolocalidade [20260320-034650]
+e7ca552 [WIP] Padronizando classes do projeto backend/java/spring/microservices/ms-geolocalidade [20260320-002048]
+5f630cb WIP - Atualizando arquivos [20260318-005457]
+431cd88 WIP - Atualizando arquivos [20260318-002827]
+8a769ad UPD: Ajustando os workflows de CI de Java para tratar corretamente o cache da base NVD [20260312-081451]
+db3e40f UPD: Ajustando os workflows de CI de Java para tratar corretamente o cache da base NVD [20260311-034921]
+c11a907 UPD: Ajustando os workflows de CI de Java para tratar corretamente o cache da base NVD [20260311-030741]
+e00403d UPD: Ajustando a estrutra do microservice ms-cnpj-validacao [20260310-003934]
+8ddf0b8 UPD: Ajustando a estrutra do microservice ms-cnpj-validacao [20260310-002943]
+53887db UPD: Ajustando a estrutra do microservice ms-cnpj-validacao [20260310-000003]
+8d2f4dd UPD: Criando projetos de testes CNPJ. E criando pasta de banco de dados [20260308-031738]
+5a351ad AJUSTADO [WIP] Adicionando steps de obter relatorios de CI [20260206-042813]
+2ee69a0 Feature/melhorias ci java (#5)
+3945cd4 Feature/melhorias ci java (#4)
+18de5d8 [WIP] Ajustando -env [20260206-003706] (#3)
+4ab4885 Feature/ajuste codeowners 2 (#2)
+
+=== HIGH-CHURN FILES (last 90 days, top 20) ===
+   1 .specs/README.md
+   1 .specs/ci-cd/DEPLOY.md
+   1 .specs/ci-cd/README.md
+   1 .specs/product/feature-roadmap.md
+   1 .specs/prompts/PROMPT-GENERATE-IMPLEMENTATION-REPORT.md
+   1 .specs/prompts/PROMT-EXECUTE-TASK.md
+   1 .specs/security/README.md
+   1 .specs/security/SECURITY.md
+   1 backend/go/fiber/microservices/ms-billing-engine-tax-rates/.dockerignore
+   1 backend/go/fiber/microservices/ms-billing-engine-tax-rates/.specs/INDEX.md
+   1 backend/go/fiber/microservices/ms-billing-engine-tax-rates/.specs/api/tax-rates-api.yaml
+   1 backend/go/fiber/microservices/ms-billing-engine-tax-rates/.specs/architecture/architecture.md
+   1 backend/go/fiber/microservices/ms-billing-engine-tax-rates/.specs/architecture/c4-context.md
+   1 backend/go/fiber/microservices/ms-billing-engine-tax-rates/.specs/architecture/erd.md
+   1 backend/go/fiber/microservices/ms-billing-engine-tax-rates/.specs/architecture/integrations.md
+   1 backend/go/fiber/microservices/ms-billing-engine-tax-rates/.specs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/ARCHITECTURE.md
+   1 backend/go/fiber/microservices/ms-billing-engine-tax-rates/.specs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/PRD.md
+   1 backend/go/fiber/microservices/ms-billing-engine-tax-rates/.specs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/SPECS.md
+   1 backend/go/fiber/microservices/ms-billing-engine-tax-rates/.specs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/TASKS.md
+   1 backend/go/fiber/microservices/ms-billing-engine-tax-rates/.specs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO/TEST_PLAN.md
+
+=== MONOREPO SIGNALS ===
+No monorepo signals detected.
+
+=== CODE METRICS ===
+Total files scanned: 201
+Total lines of code: 10361
+
+Files by language:
+  Other: 145
+  TypeScript/React: 32
+  TypeScript: 24
+
+Top 10 largest files:
+.remember/logs/memory-2026-07-05.log: 240.5KB
+package-lock.json: 230.6KB
+tsconfig.tsbuildinfo: 109.5KB
+src/app/favicon.ico: 25.3KB
+.remember/logs/memory-2026-07-06.log: 20.6KB
+.specs/ARCHITECTURE.md: 20.3KB
+.impeccable/design.json: 18.8KB
+.specs/REQUIREMENTS.md: 18.1KB
+.remember/logs/memory-2026-07-08.log: 18.0KB
+.specs/DESIGN-SYSTEM.md: 18.0KB
+
+=== CI/CD PIPELINES ===
+CI/CD: GitHub Actions
+
+=== CONTAINERS & ORCHESTRATION ===
+No containerization configs detected.
+
+=== SECURITY & COMPLIANCE ===
+No security configs detected.
+
+=== PERFORMANCE & TESTING ===
+No performance testing configs detected.
+
+=== SCAN COMPLETE ===

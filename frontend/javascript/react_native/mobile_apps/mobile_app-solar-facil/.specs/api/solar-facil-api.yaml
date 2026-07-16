@@ -1,0 +1,417 @@
+openapi: "3.1.0"
+info:
+  title: "Solar Fácil — API de Dados Local"
+  version: "1.0.0"
+  description: |
+    Contrato de dados do aplicativo Solar Fácil. Como a aplicação opera em modo **offline-first**
+    com SQLite local, esta especificação documenta:
+    1. O schema das tabelas SQLite (equivalente a recursos REST)
+    2. Os tipos TypeScript usados como DTOs
+    3. As operações CRUD disponíveis via hooks React Query
+    4. O contrato de dados esperado para futura integração com backend remoto
+
+    **Nota:** Não existem endpoints HTTP ativos. Os "paths" abaixo representam
+    operações de acesso a dados locais, documentadas para referência e planejamento
+    de migração futura para API remota.
+
+    ## Padrões de Acesso Mobile
+    - **Offline-first**: todas as operações são locais (SQLite)
+    - **Cache**: React Query com `staleTime` configurável
+    - **Retry**: 3 tentativas com exponential backoff (quando houver backend)
+    - **Timeout**: 10s (quando houver backend)
+
+servers: []
+
+tags:
+  - name: Associados
+    description: Cadastro e gestão de associados (fornecedores e beneficiados)
+  - name: Movimentações
+    description: Registros mensais de consumo, geração e economia de energia
+  - name: Planos
+    description: Planos comerciais de energia solar
+  - name: Concessionárias
+    description: Empresas distribuidoras de energia elétrica
+  - name: FAQs
+    description: Perguntas frequentes
+
+paths:
+  /associados:
+    get:
+      summary: Listar todos os associados
+      tags: [Associados]
+      operationId: searchAllAssociados
+      description: Retorna todos os associados cadastrados no SQLite local.
+      responses:
+        "200":
+          description: Lista de associados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Associado"
+        "500":
+          $ref: "#/components/responses/DatabaseError"
+
+  /associados/{id}:
+    get:
+      summary: Buscar associado por ID
+      tags: [Associados]
+      operationId: searchAssociadoById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Associado encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Associado"
+        "404":
+          description: Associado não encontrado
+
+  /associados/search:
+    get:
+      summary: Buscar associado por CPF/CNPJ e senha (login)
+      tags: [Associados]
+      operationId: searchAssociadoByCpfCnpjSenha
+      parameters:
+        - name: cpf_cnpj
+          in: query
+          required: true
+          schema:
+            type: string
+          description: CPF ou CNPJ do associado
+        - name: senha
+          in: query
+          required: true
+          schema:
+            type: string
+            format: password
+      responses:
+        "200":
+          description: Associado autenticado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Associado"
+        "401":
+          description: Credenciais inválidas
+
+  /movimentacoes:
+    get:
+      summary: Listar todas as movimentações
+      tags: [Movimentações]
+      operationId: searchAllMovimentacoes
+      responses:
+        "200":
+          description: Lista de movimentações
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MovimentacaoMensal"
+
+  /movimentacoes/associado/{associadoId}:
+    get:
+      summary: Listar movimentações por associado
+      tags: [Movimentações]
+      operationId: searchMovimentacoesByAssociadoId
+      parameters:
+        - name: associadoId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Lista de movimentações do associado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MovimentacaoMensal"
+
+components:
+  schemas:
+    Associado:
+      type: object
+      description: Representa um associado (fornecedor, beneficiado ou híbrido) da plataforma Solar Fácil.
+      required:
+        - nome
+        - email
+        - cpf_cnpj
+        - senha
+        - tipoAssociado
+        - tipoPessoa
+        - status
+      properties:
+        id:
+          type: integer
+          description: Identificador único (auto-incremento)
+          example: 1
+        dataCadastro:
+          type: string
+          format: date-time
+          description: Data de cadastro no formato ISO 8601
+          example: "2026-01-15T10:30:00Z"
+        dataAtualizacao:
+          type: string
+          format: date-time
+          description: Data da última atualização
+          example: "2026-07-08T14:00:00Z"
+        senha:
+          type: string
+          format: password
+          description: Senha de acesso (⚠️ atualmente armazenada em plain text)
+        status:
+          type: string
+          enum:
+            - "Em cadastro"
+            - "Ativo"
+            - "Inativo"
+            - "Bloqueado"
+            - "Encerrado"
+          description: Estado atual do cadastro do associado
+        tipoAssociado:
+          type: string
+          enum:
+            - "Fornecedor"
+            - "Beneficiado"
+            - "Hibrido"
+          description: Papel do associado na plataforma
+        tipoPessoa:
+          type: string
+          enum:
+            - "Pessoa Física"
+            - "Pessoa Jurídica"
+          description: Classificação fiscal
+        nome:
+          type: string
+          description: Nome completo (PF) ou Nome Fantasia/Razão Social (PJ)
+          example: "João da Silva"
+        email:
+          type: string
+          format: email
+          example: "joao@email.com"
+        telefone:
+          type: string
+          example: "(11) 99999-9999"
+        cpf_cnpj:
+          type: string
+          description: CPF (11 dígitos) ou CNPJ (14 dígitos) — único no sistema
+          example: "123.456.789-00"
+        cep:
+          type: string
+          example: "01310-100"
+        endereco:
+          type: string
+          example: "Rua Augusta"
+        numero:
+          type: string
+          example: "123"
+        bairro:
+          type: string
+          example: "Consolação"
+        cidade:
+          type: string
+          example: "São Paulo"
+        estado:
+          type: string
+          description: Sigla da UF (2 caracteres)
+          example: "SP"
+        complemento:
+          type: string
+          example: "Apto 45"
+        aceitaTermos:
+          type: string
+          enum: ["Sim", "Não"]
+          description: Consentimento com termos de uso
+        observacoes:
+          type: string
+          description: Observações gerais sobre o associado
+
+        # Campos Pessoa Física
+        dataNascimento:
+          type: string
+          format: date
+          description: Data de nascimento (apenas PF)
+          example: "1985-03-22"
+        nomeSocial:
+          type: string
+          description: Nome social (apenas PF)
+
+        # Campos Pessoa Jurídica
+        dataAbertura:
+          type: string
+          format: date
+          description: Data de abertura da empresa (apenas PJ)
+        razaoSocial:
+          type: string
+          description: Razão social (apenas PJ)
+        nomeFantasia:
+          type: string
+          description: Nome fantasia (apenas PJ)
+
+        # Campos de Beneficiado
+        nomeConcessionaria:
+          type: string
+          description: Nome da concessionária de energia (apenas Beneficiado/Hibrido)
+        consumoMedio:
+          type: string
+          description: Consumo médio mensal em kWh (apenas Beneficiado/Hibrido)
+        planoDesejado:
+          type: string
+          description: Plano comercial desejado (apenas Beneficiado/Hibrido)
+
+        # Campos de Fornecedor
+        potenciaInstalada:
+          type: string
+          description: Potência instalada do sistema solar em kWp (apenas Fornecedor/Hibrido)
+        disponibilidade:
+          type: string
+          description: Disponibilidade de energia excedente (apenas Fornecedor/Hibrido)
+        tipoConexao:
+          type: string
+          description: Tipo de conexão à rede elétrica (apenas Fornecedor/Hibrido)
+
+    MovimentacaoMensal:
+      type: object
+      description: Registro mensal de energia e valores para um associado.
+      required:
+        - associadoId
+        - mes
+        - ano
+      properties:
+        id:
+          type: integer
+          description: ID único
+        dataCadastro:
+          type: string
+          format: date-time
+        dataAtualizacao:
+          type: string
+          format: date-time
+        associadoId:
+          type: integer
+          description: FK para Associado
+        mes:
+          type: integer
+          minimum: 1
+          maximum: 12
+          description: Mês de referência
+        ano:
+          type: integer
+          description: Ano de referência
+        valorTotal:
+          type: number
+          format: float
+          description: Valor total da movimentação (R$)
+        dataVencimento:
+          type: string
+          format: date
+        dataPagamento:
+          type: string
+          format: date
+          nullable: true
+          description: null se pendente
+        statusPagamento:
+          type: string
+          enum: ["Pago", "Pendente"]
+        observacoes:
+          type: string
+        energiaRecebidaKwh:
+          type: number
+          format: float
+          description: Energia recebida no mês (kWh)
+        valorEnergiaRecebida:
+          type: number
+          format: float
+          description: Valor monetário da energia recebida (R$)
+        tarifaUnitariaKwh:
+          type: number
+          format: float
+          description: Tarifa unitária (R$/kWh)
+        valorCobrado:
+          type: number
+          format: float
+          description: Valor cobrado do associado (R$)
+        valorEconomizado:
+          type: number
+          format: float
+          description: Valor economizado em relação à concessionária (R$)
+        percentualEconomizado:
+          type: number
+          format: float
+          description: Percentual de economia (%)
+
+    Plano:
+      type: object
+      description: Plano comercial de energia solar.
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        descricao:
+          type: string
+        economiaEstimada:
+          type: string
+          description: Percentual estimado de economia
+
+    Concessionaria:
+      type: object
+      description: Empresa distribuidora de energia elétrica.
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        regiao:
+          type: string
+        estado:
+          type: string
+
+    FAQ:
+      type: object
+      properties:
+        id:
+          type: integer
+        pergunta:
+          type: string
+        resposta:
+          type: string
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+
+  responses:
+    DatabaseError:
+      description: Erro de acesso ao banco de dados local
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+  securitySchemes:
+    localAuth:
+      type: http
+      scheme: basic
+      description: |
+        Autenticação local via CPF/CNPJ + senha. O estado de autenticação é mantido
+        em memória via AuthContext. Não há tokens JWT — a autenticação é verificada
+        a cada consulta ao SQLite.
+
+security:
+  - localAuth: []
