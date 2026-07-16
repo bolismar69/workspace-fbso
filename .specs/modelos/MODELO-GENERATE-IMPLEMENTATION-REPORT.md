@@ -1,18 +1,8 @@
-# Contexto:
-- Obter o historico de implementações, assim como o historico de logs e evidencias de testes, usando alguns skills para ajudar nessa atividade (skils: code-documenter, gap-analysis, spec-miner, code-reviewer, fullstack-guardian)
-
-# Missão:
-- Gerar um arquivo de documentação de saída na pasta correspondente da funcionalidade. O nome do arquivo deve seguir estritamente o padrão `{AAAA-MM-DD-HHMMSS}-TASK-EXECUTED-[nome-da-feature-em-kebab-case].md` (Substitua AAAA-MM-DD-HHMMSS pelo carimbo de data e hora exato do momento da criação).
-- Gerar o arquivo na pasta `@.specs/skill-output`
-- O modelo para geração desse arquivo esta abaixo:
-
-````markdown
-
 # 📑 Relatório de Execução de Tarefa (TASK-EXECUTED)
 
 * **Data e Hora da Conclusão:** [Preencher com AAAA-MM-DD HH:MM:SS]
-**Skills utilizados:** golang-pro + 
-* **Projeto/Incidente/Feature/Hot-Fix/POC/Incident/Other:** [ex:PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO]
+**Skill:** golang-pro + 
+* **Projeto:** PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO
 * **Fase/Escopo/Feature/Issue Concluído:** Fase 0: [Fundação]
 
 ---
@@ -62,5 +52,3 @@ O agente de IA executou a suíte de testes com sucesso.
 
 ---
 🤖 *Documentação gerada de forma automatizada pelo agente de desenvolvimento de IA.*
-
-````
