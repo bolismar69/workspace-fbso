@@ -1,0 +1,19 @@
+# path: backend/go/fiber/microservices/ms-billing-engine-tax-rates/deploy/k8s/service.yaml
+# Service para ms-billing-engine-tax-rates (GAP-010)
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-tax-rates
+  namespace: tax-engine
+  labels:
+    app: ms-tax-rates
+    component: billing-engine
+spec:
+  type: ClusterIP
+  selector:
+    app: ms-tax-rates
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP

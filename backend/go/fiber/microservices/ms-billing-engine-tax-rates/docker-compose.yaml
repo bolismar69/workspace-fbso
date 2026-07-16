@@ -1,0 +1,70 @@
+# path: backend/go/fiber/microservices/ms-billing-engine-tax-rates/docker-compose.yaml
+# Ambiente de desenvolvimento local — ms-billing-engine-tax-rates (GAP-010)
+#
+# Uso:
+#   docker compose up -d              # Iniciar todos os serviços
+#   docker compose ps                 # Verificar status
+#   docker compose logs -f app        # Seguir logs da aplicação
+#   docker compose down               # Parar e remover containers
+
+services:
+  app:
+    build:
+      context: ../../../../..
+      dockerfile: backend/go/fiber/microservices/ms-billing-engine-tax-rates/Dockerfile
+    container_name: ms-tax-rates
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgres://worker_user:worker_pass@db:5432/worker_db?sslmode=disable"
+      REDIS_ADDR: "redis:6379"
+      PORT: "3000"
+      RATE_LIMIT_MAX: "1000"
+      RATE_LIMIT_WINDOW: "60"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/v1/healthz"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  db:
+    image: postgres:16-alpine
+    container_name: ms-tax-rates-pg
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: worker_user
+      POSTGRES_PASSWORD: worker_pass
+      POSTGRES_DB: worker_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./data/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U worker_user -d worker_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: ms-tax-rates-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    volumes:
+      - redisdata:/data
+
+volumes:
+  pgdata:
+  redisdata:
