@@ -11,6 +11,8 @@ Este prompt orquestra a **execução das tarefas de uma sprint** no contexto do 
 ## Parâmetros de Entrada
 
 > **Instrução:** No momento de invocar este prompt, o agente deve solicitar ao humano os valores abaixo. Se algum não for informado, perguntar antes de prosseguir.
+>
+> **Nota:** `BRANCH_NAME` não é mais um parâmetro de entrada. Ele é lido do campo `**Branch:**` no header do `SPRINT-CARD.md` durante a Fase 0 — passo 0. Se o campo não existir no artefato, a execução é abortada.
 
 | Parâmetro | Descrição | Exemplo |
 |:---|:---|:---|
@@ -70,6 +72,27 @@ Implemente as tarefas da **Sprint {SPRINT_NUMBER} — {SPRINT_NAME}** seguindo o
 
 ### Fase 0 — Pré-implementação
 
+0. **Validar branch de desenvolvimento** — a branch NÃO é mais um parâmetro de entrada. Ela deve ser lida do `SPRINT-CARD.md`:
+
+   ```
+   SPRINT_CARD = {SPRINT_DIR}/SPRINT-CARD.md
+
+   a. LER o SPRINT-CARD.md e extrair o campo **Branch:** do header
+
+   b. Se **Branch:** NÃO existir no SPRINT-CARD.md → ERRO CRÍTICO. PARE IMEDIATAMENTE.
+      "SPRINT-CARD.md não contém **Branch:**. O artefato foi gerado sem a informação
+       da branch de desenvolvimento. Execute novamente PROMPT-GENERATE-SPRINT-ARTEFACTS
+       informando BRANCH_NAME. Não é seguro prosseguir sem esta informação."
+
+   c. Se **Branch:** = 'main' ou 'master' → ERRO CRÍTICO. PARE IMEDIATAMENTE.
+      "Branch '{branch}' não permitida. Desenvolvimento direto em main/master
+       viola políticas de GitOps/GitSecOps. Crie uma branch feature/ ou hotfix/."
+
+   d. Executar `git checkout {BRANCH_NAME}`. Se a branch não existir:
+      `git checkout -b {BRANCH_NAME}`
+
+   e. Confirmar: `git branch --show-current` deve retornar {BRANCH_NAME}
+   ```
 1. **Carregar artefatos da sprint** — ler SPRINT-CARD.md, SPRINT-TEST-SUITE.md, SPRINT-REVIEW.md
 2. **Carregar documentos-mestre** — ler SPECS.md, TASKS.md, TEST_PLAN.md, ARCHITECTURE.md, PRD.md (se existir)
 3. **Carregar documentos transversais** — SECURITY.md, README.md

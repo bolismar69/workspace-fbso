@@ -28,6 +28,7 @@ Os artefatos gerados são:
 | `{SPRINT_NUMBER}` | Número da sprint (1 a N) | `1` |
 | `{SPRINT_NAME}` | Nome curto da sprint (kebab-case) | `sprint-01-setup` |
 | `{STACK}` | Stack tecnológica principal | `Java 25 + Spring Boot + PostgreSQL` |
+| `{BRANCH_NAME}` | Nome da branch onde deve ser realizado o desenvolvimento. Negar realizar desenvolvimento direto na branch `main` ou `master` |
 
 ---
 
@@ -35,7 +36,7 @@ Os artefatos gerados são:
 
 ### Passo 0 — Validação de Parâmetros
 
-Antes de qualquer ação, verificar se TODOS os 6 parâmetros foram informados. Se algum estiver ausente, perguntar ao humano antes de prosseguir.
+Antes de qualquer ação, verificar se TODOS os 7 parâmetros foram informados. Se algum estiver ausente, perguntar ao humano antes de prosseguir.
 
 ### Passo 1 — Carregar Documentos-Mestre
 
@@ -88,7 +89,9 @@ Extrair do `SPECS.md`:
 ```markdown
 # SPRINT-CARD: Sprint {N} — {Nome Descritivo}
 
-[Header: sprint N de M, marco, datas, duração, responsável, docs-mestre com links]
+**Sprint:** {N} de {M} | **Marco:** {marco} | **Datas:** {início} a {fim} | **Duração:** {dias} dias
+**Responsável:** {responsável} | **Branch:** {BRANCH_NAME}
+**Docs-mestre:** [TASKS.md](../TASKS.md) | [TEST_PLAN.md](../TEST_PLAN.md) | [SPECS.md](../SPECS.md)
 
 ## 🎯 Sprint Goal
 [1-2 frases: o que esta sprint entrega de valor. Formato: "Verbo no imperativo. Métrica de sucesso."]
@@ -127,7 +130,8 @@ Extrair do `SPECS.md`:
 ```markdown
 # SPRINT-TEST-SUITE: Sprint {N} — {Nome Descritivo}
 
-[Header: sprint N de M, origem (TEST_PLAN.md), features cobertas, total de cenários]
+**Sprint:** {N} de {M} | **Origem:** [TEST_PLAN.md](../TEST_PLAN.md) | **Features cobertas:** {N} | **Total de cenários:** {N}
+**Branch:** {BRANCH_NAME}
 
 ## 1. {Feature ID}: {Nome da Feature} (N cenários)
 [Tabela: ID | Descrição | Nível (Unit/Integração/E2E/Segurança) | Ref. TEST_PLAN (seção)]
@@ -154,7 +158,8 @@ Extrair do `SPECS.md`:
 ```markdown
 # SPRINT-REVIEW: Sprint {N} — {Nome Descritivo}
 
-[Header: sprint N de M, data da review, participantes, features]
+**Sprint:** {N} de {M} | **Data da Review:** {data} | **Participantes:** {lista}
+**Features:** {lista} | **Branch:** {BRANCH_NAME}
 
 ## 🎯 O Que Demonstrar
 

@@ -21,6 +21,7 @@ O artefato gerado é a **porta de entrada para a documentação de negócio** �
 | `{PROJECT_NAME}` | Nome/código do projeto | `PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO` |
 | `{SOLUTION_NAME}` | Nome da solução/microsserviço | `ms-billing-engine-tax-rates` |
 | `{SCOPE}` | Escopo da geração | `full` (criar do zero), `delta` (atualizar existente), `review` (apenas revisar) |
+| `{BRANCH_NAME}` | Nome da branch onde deve ser realizado o desenvolvimento. Negar realizar desenvolvimento direto na branch `main` ou `master` |
 
 ---
 
@@ -28,7 +29,7 @@ O artefato gerado é a **porta de entrada para a documentação de negócio** �
 
 ### Passo 0 — Validação de Parâmetros
 
-Antes de qualquer ação, verificar se TODOS os 5 parâmetros foram informados. Se algum estiver ausente, perguntar ao humano antes de prosseguir.
+Antes de qualquer ação, verificar se TODOS os 6 parâmetros foram informados. Se algum estiver ausente, perguntar ao humano antes de prosseguir.
 
 ### Passo 1 — Verificar e Preparar a Estrutura de Pastas
 
@@ -92,6 +93,7 @@ Gerar o arquivo em:
 **Versão do PRD:** {X.0}
 **Data:** {data atual}
 **Status:** {status — ex: "Em Definição", "Aprovado", "Fase 1 implementada"}
+**Branch:** {BRANCH_NAME}
 **Tipo:** Resumo de Alto Nível — porta de entrada para a documentação de negócio completa
 
 > ⚠️ **Aviso de Leitura:** Este documento é um sumário executivo. Todas as especificações detalhadas,
@@ -199,7 +201,7 @@ Após gerar o arquivo, executar as seguintes verificações:
 | # | Verificação | Critério |
 |---|---|---|
 | 1 | Arquivo no path correto | `{SOLUTION_PATH}/.specs/business-projects/{PROJECT_NAME}/PRD.md` existe |
-| 2 | Header com metadados | Código, versão, data, status e tipo declarados no header |
+| 2 | Header com metadados | Código, versão, data, status, branch e tipo declarados no header |
 | 3 | Visão geral presente | §1 contextualiza o programa e suas dimensões |
 | 4 | Objetivos estratégicos | §2 lista 4-8 objetivos com verbo de ação, referenciando Project Charter |
 | 5 | BRs resumidos | §3 tabela cobre TODOS os BRs do 02-BUSINESS-REQUIREMENTS.md, organizados por bloco |
@@ -265,18 +267,20 @@ Após gerar o arquivo, executar as seguintes verificações:
 ```
 Humano: "Gerar PRD.md para o ms-billing-engine-tax-rates"
 
-Agente: "Vou precisar de 5 parâmetros:
+Agente: "Vou precisar de 6 parâmetros:
   - SOLUTION_PATH: caminho da pasta do microsserviço
   - PROJECT_PATH: caminho da pasta do projeto de negócio
   - PROJECT_NAME: código do projeto
   - SOLUTION_NAME: nome do microsserviço
+  - BRANCH_NAME: nome da branch para desenvolvimento
   - SCOPE: full, delta, ou review"
 
 Humano: "SOLUTION_PATH=/home/user/work/backend/go/fiber/microservices/ms-billing-engine-tax-rates
          PROJECT_PATH=/home/user/work/business-inputs/business-projects/PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO
          PROJECT_NAME=PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO
          SOLUTION_NAME=ms-billing-engine-tax-rates
-         SCOPE=full"
+         SCOPE=full
+         BRANCH_NAME=feature/reforma-tributaria"
 
 Agente: [Executa Passo 1 → Passo 2 → Passo 3 → Passo 4]
 ```

@@ -7,6 +7,8 @@
 
 ---
 
+> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
+
 ## 🎯 O Que Demonstrar
 
 ### 1. Gestão de Usuários (F03-01)

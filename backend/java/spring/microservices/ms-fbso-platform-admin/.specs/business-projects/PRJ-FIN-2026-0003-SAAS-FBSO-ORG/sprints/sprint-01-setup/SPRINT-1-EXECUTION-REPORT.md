@@ -10,6 +10,8 @@
 
 ---
 
+> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
+
 ## 1. Resumo da Execução
 
 - **Tasks executadas:** 8/8

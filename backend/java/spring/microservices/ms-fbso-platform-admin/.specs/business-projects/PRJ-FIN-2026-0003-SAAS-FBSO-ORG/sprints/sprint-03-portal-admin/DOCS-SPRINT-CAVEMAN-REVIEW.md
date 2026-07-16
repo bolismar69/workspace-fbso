@@ -8,6 +8,8 @@
 
 ---
 
+> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
+
 ## Resumo
 
 | Arquivo | 🔴 bug | 🟡 risk | 🔵 nit | Total |

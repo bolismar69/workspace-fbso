@@ -9,6 +9,8 @@
 
 ---
 
+> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
+
 ## 1. Regressão Completa (T-071)
 
 Executar a suite completa conforme [TEST_PLAN.md §6.2](../../TEST_PLAN.md):

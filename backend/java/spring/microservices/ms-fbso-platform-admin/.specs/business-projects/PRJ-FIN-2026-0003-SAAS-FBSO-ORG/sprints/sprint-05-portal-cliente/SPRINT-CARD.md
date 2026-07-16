@@ -9,6 +9,13 @@
 
 ---
 
+> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/java-fbso-platform-admin`. Antes de começar, execute:
+> ```bash
+> git checkout feature/java-fbso-platform-admin
+> git branch --show-current  # deve exibir: feature/java-fbso-platform-admin
+> ```
+> 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-branch-de-desenvolvimento)
+
 ## 🎯 Sprint Goal
 
 **"Login via Keycloak OIDC funcional com recuperação de senha e rate limiting. Onboarding guiado em 4 passos — primeira BU vira Matriz, tenant transita para ACTIVE ao concluir. Dashboard do cliente com cards de unidades, produtos e plano. Endpoint /auth/me retorna dados do usuário logado."**

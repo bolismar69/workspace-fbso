@@ -22,6 +22,7 @@ O gate é executado **após a geração** dos artefatos (via `PROMPT-GENERATE-SP
 | `{SPRINT_NUMBER}` | Número da sprint (1 a N) | `1` |
 | `{SPRINT_NAME}` | Nome curto da sprint (kebab-case) | `sprint-01-setup` |
 | `{STACK}` | Stack tecnológica principal | `Java 25 + Spring Boot + PostgreSQL` |
+| `{BRANCH_NAME}` | Nome da branch onde deve ser realizado o desenvolvimento. Negar realizar desenvolvimento direto na branch `main` ou `master` |
 
 ---
 
@@ -29,7 +30,7 @@ O gate é executado **após a geração** dos artefatos (via `PROMPT-GENERATE-SP
 
 ### Passo 0 — Validação de Parâmetros
 
-Verificar se TODOS os 6 parâmetros foram informados. Se algum estiver ausente, perguntar ao humano antes de prosseguir.
+Verificar se TODOS os 7 parâmetros foram informados. Se algum estiver ausente, perguntar ao humano antes de prosseguir.
 
 ### Passo 1 — Carregar Artefatos e Documentos-Mestre
 

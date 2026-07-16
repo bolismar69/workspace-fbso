@@ -9,6 +9,13 @@
 
 ---
 
+> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/java-fbso-platform-admin`. Antes de começar, execute:
+> ```bash
+> git checkout feature/java-fbso-platform-admin
+> git branch --show-current  # deve exibir: feature/java-fbso-platform-admin
+> ```
+> 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-branch-de-desenvolvimento)
+
 ## 🎯 Sprint Goal
 
 **"Scaffold Maven compila com `mvn clean install`. 11 tabelas criadas no PostgreSQL via Flyway. Estrutura de pacotes completa compila sem erros. BaseRepository funcional com Soft Delete + Tenant Filter."**

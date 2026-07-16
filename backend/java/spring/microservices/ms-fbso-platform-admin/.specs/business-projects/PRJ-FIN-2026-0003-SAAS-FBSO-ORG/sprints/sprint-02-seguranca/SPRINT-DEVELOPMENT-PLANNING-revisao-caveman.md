@@ -9,6 +9,8 @@
 
 ---
 
+> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
+
 ## 1. Visão Geral
 
 - **Sprint Goal:** JWT autentica via Keycloak RS256. TenantContext isola requisições por tenant_id. PostgreSQL RLS garante isolamento no nível do banco (defesa em profundidade). @RequiresPermission bloqueia acessos não autorizados (403). @Auditable grava auditoria de forma assíncrona. GlobalExceptionHandler retorna erros RFC 7807 em PT-BR.

@@ -9,6 +9,8 @@
 
 ---
 
+> 🚫 **BRANCH OBRIGATÓRIA:** `feature/java-fbso-platform-admin` — ver [PRD.md §8.4](../../PRD.md#84-branch-de-desenvolvimento)
+
 ## 1. Visão Geral
 
 - **Sprint Goal:** Scaffold Maven compila com `mvn clean install`. 11 tabelas criadas no PostgreSQL via Flyway. Estrutura de pacotes completa compila sem erros. BaseRepository funcional com Soft Delete + Tenant Filter.

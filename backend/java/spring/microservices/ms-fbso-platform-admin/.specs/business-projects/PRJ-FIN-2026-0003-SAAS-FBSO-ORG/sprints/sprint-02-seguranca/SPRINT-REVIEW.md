@@ -7,6 +7,8 @@
 
 ---
 
+> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
+
 ## 🎯 O Que Demonstrar
 
 ### 1. Autenticação JWT (T-009, T-010)

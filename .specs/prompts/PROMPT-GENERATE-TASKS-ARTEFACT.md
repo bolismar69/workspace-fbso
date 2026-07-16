@@ -17,6 +17,7 @@ O artefato gerado deve ser a **lista de tarefas acionável** para o time de dese
 | `{PROJECT_NAME}` | Nome/código do projeto | `PRJ-FIN-2026-0003-SAAS-FBSO-ORG` |
 | `{SOLUTION_NAME}` | Nome da solução/microsserviço | `ms-fbso-platform-admin` |
 | `{SCOPE}` | Escopo da geração | `full`, `delta`, `sprint` (apenas sprint atual) |
+| `{BRANCH_NAME}` | Nome da branch onde deve ser realizado o desenvolvimento. Negar realizar desenvolvimento direto na branch `main` ou `master` |
 
 ---
 
@@ -24,7 +25,7 @@ O artefato gerado deve ser a **lista de tarefas acionável** para o time de dese
 
 ### Passo 0 — Validação de Parâmetros
 
-Verificar se TODOS os 5 parâmetros foram informados. Se algum estiver ausente, perguntar antes de prosseguir.
+Verificar se TODOS os 6 parâmetros foram informados. Se algum estiver ausente, perguntar antes de prosseguir.
 
 ### Passo 1 — Verificar e Preparar a Estrutura
 
@@ -67,6 +68,13 @@ Gerar em: `{SOLUTION_PATH}/.specs/business-projects/{PROJECT_NAME}/TASKS.md`
 
 ```markdown
 # TASKS.md — Plano de Tarefas: {SOLUTION_NAME}
+
+**Projeto:** {PROJECT_NAME}
+**Solução:** {SOLUTION_NAME}
+**Versão do TASKS:** {X.0}
+**Data:** {data atual}
+**Status:** {status}
+**Branch:** {BRANCH_NAME}
 
 ## 1. Visão Geral
 - Total de tarefas, organizadas por marco (M2→M7)
