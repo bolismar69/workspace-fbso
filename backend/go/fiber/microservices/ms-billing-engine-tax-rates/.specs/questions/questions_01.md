@@ -1,6 +1,6 @@
 # Lacunas e Perguntas — ms-billing-engine-tax-rates
 
-Atualizado em 2026-06-21 23:09 após implementação de ISS, FUST, FUNTTEL (F-001 a F-003).
+Atualizado em 2026-06-30 (PR #6 merge — Fases 0-1-2 Reforma Tributária concluídas).
 
 ## Lacunas Resolvidas
 
@@ -34,6 +34,36 @@ Atualizado em 2026-06-21 23:09 após implementação de ISS, FUST, FUNTTEL (F-00
 ### 5. Módulo Reforma Tributária (CBS/IBS/IS) ✅
 
 **Resolução (2026-06-21 15:17):** Implementado `internal/reforma/reforma.go` com `ReformaCalculator` implementando `TaxCalculator`. Adicionado `GetIvaDualRule` ao `TaxRepository` (interface + PostgreSQL + cache Redis). CBS, IBS e IS calculados com suporte a redução de alíquotas (0%, 60%, 100%), imposto seletivo e lookup por município. 7 testes unitários. Wiring no motor bifásico como Fase 2 (paralela). Ver `.specs/skill-output/2026-06-21-151743_reforma-tributaria-cbs-ibs-is.md`.
+
+---
+
+### 6. ICMS Desonerado (F-004) ✅
+
+**Resolução (2026-06-21):** Implementado `internal/legacy/icms_desoneracao.go` com 2 modos: Redução de Base (BR-TAX-CALC-021) e Limitação de Alíquota (BR-TAX-CALC-022). CST validation, motDesICMS (1-12, 90), FCP integrado. 14 testes. Ver `.specs/skill-output/2026-06-21-235900_icms-desonerado-phase-resolver.md`.
+
+---
+
+### 7. Phase Resolution System (F-005) ✅
+
+**Resolução (2026-06-21):** `PhaseResolver` mapeia DataOperacao→Phase (SHADOW_RUN/2026, CBS_PLENA/2027-28, TRANSICAO_SUBNACIONAL/2029-32, IVA_DUAL/2033+). `TaxSelector` com matriz DT-001. 5 testes. Ver `.specs/skill-output/2026-06-21-235900_icms-desonerado-phase-resolver.md`.
+
+---
+
+### 8. IS Pré-Filtro + IBS Circuit Breaker (F-006, F-007) ✅
+
+**Resolução (2026-06-22):** IS extraído como Fase 0 pré-filtro independente (`is_filter.go`, 8 testes). IBS Circuit Breaker com 4 implementações de `IBSRateFetcher` (HTTP, Cached, CircuitBreaker, FallbackDB). Ver `.specs/skill-output/2026-06-22-004300_is-prefilter-ibs-circuitbreaker.md`.
+
+---
+
+### 9. Pipeline SOP-013 7-fases (C-001) + Schema Expandido (C-002) ✅
+
+**Resolução (2026-06-22):** Pipeline reordenado de 3 para 7 fases. `BillingEnginePhased` com `CalculationPhase` genérico. Schema expandido com `ncm_seletivo`, `cbs_rates`, `iss_rates`. 22 testes de pipeline. Ver `.specs/skill-output/2026-06-22-011000_c001-pipeline-sop013.md`.
+
+---
+
+### 10. Fases 0-1-2 Reforma Tributária (PR #6) ✅
+
+**Resolução (2026-06-24/30):** Fase 0 (Rate Limiting, API Versioning, Docker/K8s), Fase 1 Onda 1 (Admin Fiscal, TaxToken, Simulação), Fase 2 Onda 2 (Fornecedores, Créditos). 211+ testes, 25 arquivos de teste. Ver `pull-requests/PR_6-...md`.
 
 ---
 

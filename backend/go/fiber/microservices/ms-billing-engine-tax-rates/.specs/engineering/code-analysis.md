@@ -1,6 +1,6 @@
 # Análise Técnica Consolidada — ms-billing-engine-tax-rates
 
-Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-22 com pipeline SOP-013 7-fases (C-001) e separação CBS/IBS.
+Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-30 (PR #6 merge — Fases 0-1-2: Admin Fiscal, Créditos, TaxToken, Simulação, Fornecedores).
 
 ## Módulos e Componentes
 
@@ -17,7 +17,7 @@ Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-22 com pi
 4. Repository com camada de cache (`CachedTaxRepository` envolvendo `PostgresTaxRepository`)
 5. Instanciação das calculadoras: `IPICalculator`, `ICMSCalculator`, `PISCofinsCalculator`
 6. Adaptação via `LegacyAdapter` para interface unificada `TaxCalculator`
-7. Montagem do motor bifásico: `BillingEngineOrdered(ipi_calc, icms_calc, pis_cofins_calc, reforma_calc)`
+7. Montagem do motor multi-fase: `BillingEnginePhased` com 7 fases SOP-013
 8. Handlers e middlewares Fiber
 
 **Fonte:** `cmd/api/main.go:1-70`
@@ -303,3 +303,41 @@ func (c *TelecomClassifier) MustCalculateFUST(item) bool // SCM/STFC → true, S
 **Fonte:** `internal/legacy/fust.go:1-120`, `internal/legacy/funttel.go:1-100`, `internal/legacy/telecom.go:1-90`
 
 **Testes:** `iss_test.go` (7), `fust_test.go` (6), `funttel_test.go` (4) — 17 cenários
+
+### 7. Admin Fiscal (`internal/admin/`)
+
+**Estrutura:**
+- `models.go` — Modelos de regras fiscais (AdminFiscalRule)
+- `repository.go` — Repository PostgreSQL para CRUD
+- `service.go` — Service com validação de regras
+- `service_test.go` — Testes do Admin Service
+
+Implementado no GAP-004. Expõe `GET /v1/admin/tax-rates/iva-dual` para consulta e `POST /v1/admin/tax-rates/iva-dual` para upsert de alíquotas IVA Dual.
+
+### 8. Créditos da Reforma Tributária (`internal/credit/`)
+
+**Estrutura:**
+- `engine.go` — Engine de cálculo de créditos (cash forward)
+- `engine_test.go` — Testes do Credit Engine
+- `models.go` — Modelos de crédito
+- `supplier.go` — Fornecedor de créditos
+
+Implementado no GAP-005. Expõe `POST /v1/credit/calculate`.
+
+### 9. Simulação de Margem (`internal/simulation/`)
+
+Projeção "what-if" para cenários fiscais (GAP-003). Expõe `POST /v1/simulate`.
+
+### 10. Validação de Fornecedores (`internal/supplier/`)
+
+**Estrutura:**
+- `models.go` — Modelos de fornecedor
+- `service.go` — Service de validação
+- `service_test.go` — Testes do Supplier Service
+- `store.go` — Store de fornecedores
+
+Expõe `POST /v1/supplier/validate` e `GET /v1/supplier/:cnpj`.
+
+### 11. TaxToken Snapshot (`internal/token/`)
+
+Geração de token fiscal para snapshot de cálculos. Expõe `POST /v1/token/generate`.

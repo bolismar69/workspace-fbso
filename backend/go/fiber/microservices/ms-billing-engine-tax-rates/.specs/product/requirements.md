@@ -4,7 +4,7 @@
 
 ## 1. Resumo executivo
 
-O endpoint de cálculo de tributos processa um documento fiscal (`DocumentoFiscalEntrada`) contendo itens com NCM, CFOP, valores, e retorna os tributos calculados (IPI, ICMS, PIS, COFINS) para cada item. O motor executa os cálculos em duas fases: IPI sequencialmente, depois ICMS e PIS/COFINS em paralelo via goroutines.
+O endpoint de cálculo de tributos processa um documento fiscal (`DocumentoFiscalEntrada`) contendo itens com NCM, CFOP, valores, e retorna os tributos calculados (IPI, ICMS, PIS, COFINS, ISS, CBS, IBS, IS, FUST, FUNTTEL) para cada item. O motor executa os cálculos em 7 fases conforme SOP-013: IS(F0)→IPI(F1)→CBS(F2)→ICMS(F3)→(IBS+ISS+PISCOFINS)(F4)→FUST(F5)→FUNTTEL(F6).
 
 ## 2. Priority MoSCoW
 
@@ -13,11 +13,19 @@ O endpoint de cálculo de tributos processa um documento fiscal (`DocumentoFisca
 | RF-01 | Must | Receber e validar payload do documento fiscal | `cmd/api/main.go:121-168` |
 | RF-02 | Must | Calcular IPI (Ad Valorem e Ad Pauta) com rateio de despesas | `internal/legacy/ipi.go:1-217` |
 | RF-03 | Must | Calcular ICMS com DIFAL (EC 87/2015) | `internal/legacy/icms.go:323-354` |
-| RF-04 | Must | Executar motor bifásico (IPI → ICMS/PIS/COFINS) | `internal/calculator/engine.go:43-135` |
+| RF-04 | Must | Executar motor 7-fases SOP-013 (IS→IPI→CBS→ICMS→IBS+ISS+PISCOFINS→FUST→FUNTTEL) | `internal/calculator/engine.go:1-350` |
 | RF-05 | Should | Calcular ICMS-ST com MVA | `internal/legacy/icms.go:129-174, 287-320` |
 | RF-06 | Should | Calcular Simples Nacional via equivalência CSOSN | `internal/legacy/icms.go:72-127` |
 | RF-07 | Must | Calcular PIS/COFINS por CST (01-06, 49, 50-99, 99) | `internal/legacy/pis_cofins.go:1-200`, `pis_strategies.go:1-98`, `pis_cofins_calculate_test.go` |
-| RF-08 | Must | Implementar CBS/IBS/IS (Reforma Tributária) — ✅ Implementado | `internal/reforma/reforma.go` — `ReformaCalculator` com 7 testes, integrado ao motor na Fase 2 |
+| RF-08 | Must | Implementar CBS/IBS/IS (Reforma Tributária) — ✅ Implementado | `internal/reforma/cbs_calculator.go`, `ibs_calculator.go`, `internal/legacy/is_filter.go` — calculadoras separadas no pipeline SOP-013 |
+| RF-09 | Should | Calcular ISS (Imposto sobre Serviços, LC 116/2003) — ✅ Implementado | `internal/legacy/iss.go` — Fase 4 paralela |
+| RF-10 | Should | Calcular FUST/FUNTTEL (Contribuições de Telecom) — ✅ Implementado | `internal/legacy/fust.go`, `funttel.go`, `telecom.go` — Fases 5-6 sequenciais |
+| RF-11 | Should | Rate Limiting e API Versioning (Fase 0) — ✅ Implementado | `RATE_LIMIT_MAX`, `RATE_LIMIT_WINDOW`, prefixo `/v1/` |
+| RF-12 | Should | Admin Fiscal — CRUD de regras fiscais (GAP-004) — ✅ Implementado | `internal/admin/` |
+| RF-13 | Should | Créditos da Reforma Tributária (GAP-005) — ✅ Implementado | `internal/credit/` |
+| RF-14 | Could | Simulação de margem (GAP-003) — ✅ Implementado | `internal/simulation/` — `/v1/simulate` |
+| RF-15 | Could | Validação de fornecedores — ✅ Implementado | `internal/supplier/` |
+| RF-16 | Could | TaxToken — snapshot fiscal — ✅ Implementado | `internal/token/` — `/v1/token/generate` |
 | RF-09 | Must | Calcular ISS sobre serviços de telecom (LC 116/2003) — ✅ Implementado | `internal/legacy/iss.go` — `ISSCalculator`, 7 testes |
 | RF-10 | Must | Calcular FUST/FUNTTEL (contribuições setoriais de telecom) — ✅ Implementado | `internal/legacy/fust.go`, `funttel.go`, `telecom.go` — 10 testes |
 | RF-11 | Should | Motor trifásico com Fase 3 pós-paralela — ✅ Implementado | `BillingEngineFull()` em `engine.go` |

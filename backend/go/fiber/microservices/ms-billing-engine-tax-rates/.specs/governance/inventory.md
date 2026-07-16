@@ -1,6 +1,6 @@
 # Inventário do Projeto — ms-billing-engine-tax-rates
 
-Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-22 (C-001 pipeline SOP-013 7-fases + CBS/IBS split + todas as 9 features concluídas).
+Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-30 (PR #6 merge — Fases 0-1-2 Reforma Tributária: Admin Fiscal, Créditos, TaxToken, Simulação, Fornecedores; 211+ testes).
 
 ## Estrutura Física do Código
 
@@ -35,11 +35,29 @@ Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-22 (C-001
 │   ├── circuitbreaker/
 │   │   ├── circuit_breaker.go        # Circuit Breaker (CLOSED→OPEN→HALF_OPEN)
 │   │   └── circuit_breaker_test.go   # Testes Circuit Breaker (7 cenários)
-│   └── ibsclient/
-│       ├── client.go                 # IBS Client (HTTP + Cache Redis + Fallback DB)
-│       └── client_test.go            # Testes IBS Client (5 cenários)
-└── internal/
-    └── legacy/
+│   ├── ibsclient/
+│   │   ├── client.go                 # IBS Client (HTTP + Cache Redis + Fallback DB)
+│   │   └── client_test.go            # Testes IBS Client (5 cenários)
+│   ├── admin/
+│   │   ├── models.go                 # Modelos Admin Fiscal
+│   │   ├── repository.go             # Repository PostgreSQL Admin
+│   │   ├── service.go                # Service CRUD de regras fiscais
+│   │   └── service_test.go           # Testes Admin Service
+│   ├── credit/
+│   │   ├── engine.go                 # Engine de créditos Reforma Tributária
+│   │   ├── engine_test.go            # Testes Credit Engine
+│   │   ├── models.go                 # Modelos de crédito
+│   │   └── supplier.go               # Fornecedor de créditos
+│   ├── simulation/
+│   │   ├── (simulation files)        # Projeção de margem /v1/simulate (GAP-003)
+│   ├── supplier/
+│   │   ├── models.go                 # Modelos de fornecedor
+│   │   ├── service.go                # Service de validação
+│   │   ├── service_test.go           # Testes Supplier Service
+│   │   └── store.go                  # Store de fornecedores
+│   ├── token/
+│   │   ├── (token files)             # TaxToken snapshot
+│   └── legacy/
 │       ├── icms.go                  # Calculadora ICMS (normal, ST, DIFAL, Simples)
 │       ├── icms_calculate_test.go   # Testes ICMS (12 cenários)
 │       ├── icms_desoneracao.go      # ICMS Desonerado (F-004 — Redução Base + Limitação Alíquota)
@@ -63,21 +81,7 @@ Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-22 (C-001
 │       ├── pis_cofins_calculate_test.go # Testes integração PISCofinsCalculator (13 cenários)
 │       └── mock_repository_test.go   # Mock de TaxRepository para testes
 ├── data/
-│   └── init.sql                     # Schema DDL + triggers (7 tabelas)
-├── docs/
-│   ├── README-BRAINSTORM.md         # Brainstorming de regras fiscais
-│   ├── README-CONSTANTS.md          # Constantes e valores de referência
-│   ├── README-ESCOPO.md             # Definição de escopo do projeto
-│   ├── README-ESCOPO_ADENDO.md      # Adendo ao escopo
-│   ├── README-ICMS.md               # Documentação de regras ICMS
-│   ├── README-ICMS-EXTENSAO-REGRAS.md # Extensão de regras ICMS
-│   ├── README-ICSM-TAXA-DESONERACAO.md # Taxa de desoneração ICMS
-│   ├── README-IPI.md                # Documentação de regras IPI
-│   ├── README-PIS-COFINS.md         # Documentação de regras PIS/COFINS
-│   ├── README-PIS-COFINS-ADENDO.md  # Adendo PIS/COFINS
-│   ├── README-PIS-COFINS-DESONERACAO.md # Desoneração PIS/COFINS
-│   ├── README-SIMPLES-NACIONAL.md   # Documentação Simples Nacional
-│   └── README-TABELA-CST-CSON.md    # Tabela de códigos CST/CSOSN
+│   └── init.sql                     # Schema DDL + triggers (10 tabelas)
 ├── .remember/
 │   ├── .gitignore
 │   └── logs/
@@ -104,9 +108,9 @@ Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-22 (C-001
 
 ## Cobertura de Testes
 
-- **Testes unitários:** 18 arquivos `*_test.go`, 150+ testes
+- **Testes unitários:** 25 arquivos `*_test.go`, 211+ testes
 - **Testes de integração:** `pis_cofins_calculate_test.go` (13 cenários com mock repository)
-- **Cobertura:** Alta — todas as calculadoras, middleware, reforma, pipeline e circuit breaker cobertos: PIS/COFINS 39, IPI 7, ICMS 12, Engine 6, Pipeline SOP-013 22, Middleware requestid 12, Middleware auth 9, Reforma 7, ISS 7, FUST 6, FUNTTEL 4, ICMS Desonerado 14, PhaseResolver 5, ISFilter 8, CircuitBreaker 7, IBSClient 5
+- **Cobertura:** Alta — todas as calculadoras, middleware, reforma, pipeline, circuit breaker e novos módulos cobertos: PIS/COFINS 39, IPI 7, ICMS 12, Engine 6, Pipeline SOP-013 22, Middleware requestid 12, Middleware auth 9, Reforma 7, ISS 7, FUST 6, FUNTTEL 4, ICMS Desonerado 14, PhaseResolver 5, ISFilter 8, CircuitBreaker 7, IBSClient 5, Admin 4, Credit 4, Simulation 3, Supplier 4, Token 4
 - **Mock repository:** `mock_repository_test.go` implementa `repository.TaxRepository`
 - **Test harness manual:** `cmd/test_engine/main.go`
 - **Risco:**   Baixo para motor de cálculo fiscal (cobertura de testes adequada — cada fase do pipeline SOP-013 coberta)
@@ -115,10 +119,16 @@ Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-22 (C-001
 
 | Método | Path | Handler | Descrição |
 |--------|------|---------|-----------|
-| POST | `/calculate` | inline handler | Cálculo de tributos sobre documento fiscal |
-| GET | `/healthz` | inline handler | Liveness probe (Kubernetes) |
-| GET | `/health` | inline handler | Readiness probe (PostgreSQL + Redis) |
-| GET | `/metrics` | `metrics.Handler()` | Métricas Prometheus (text exposition format) |
+| POST | `/v1/calculate` | inline handler | Cálculo de tributos sobre documento fiscal |
+| POST | `/v1/simulate` | inline handler | Simulação de margem (GAP-003) |
+| POST | `/v1/token/generate` | inline handler | Geração de TaxToken |
+| POST | `/v1/credit/calculate` | inline handler | Cálculo de créditos (GAP-005) |
+| POST | `/v1/supplier/validate` | inline handler | Validação de fornecedor |
+| GET | `/v1/supplier/:cnpj` | inline handler | Consulta de fornecedor |
+| GET | `/v1/admin/tax-rates/iva-dual` | inline handler | Admin Fiscal |
+| GET | `/v1/healthz` | inline handler | Liveness probe (Kubernetes) |
+| GET | `/v1/health` | inline handler | Readiness probe (PostgreSQL + Redis) |
+| GET | `/v1/metrics` | `metrics.Handler()` | Métricas Prometheus (text exposition format) |
 
 ## Arquivos de Documentação (.specs/)
 
@@ -128,7 +138,7 @@ Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-22 (C-001
 | architecture/architecture.md |   Completo | Visão arquitetural |
 | architecture/c4-context.md |   Completo | Diagrama de contexto |
 | architecture/integrations.md |   Completo | Integrações e dependências |
-| architecture/erd.md |   Completo | Modelo de dados (7 tabelas) |
+| architecture/erd.md |   Completo | Modelo de dados (10 tabelas) |
 | engineering/code-analysis.md |   Completo | Análise de módulos internos |
 | engineering/api-guidelines.md |   Completo | Padrões de API e erros |
 | product/requirements.md |   Completo | Requisitos funcionais |
@@ -136,5 +146,5 @@ Gerado pelo agente **Spec Miner** em 2026-06-20. Atualizado em 2026-06-22 (C-001
 | api/tax-rates-api.yaml |   Completo | Contrato OpenAPI 3.0.3 |
 | domain/domain.md |   Completo | Regras de negócio e glossário |
 | governance/inventory.md |   Completo | Este arquivo |
-| governance/confidence-report.md |   Completo | Score   95% |
+| governance/confidence-report.md |   Completo | Score   99% |
 | questions/questions_01.md |   Completo | Lacunas e dúvidas |

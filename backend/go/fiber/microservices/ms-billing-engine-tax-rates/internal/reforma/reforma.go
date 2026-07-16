@@ -27,9 +27,11 @@ import (
 const (
 	tributoCBS = "CBS"
 	tributoIBS = "IBS"
-	cstPadrao  = "01"
-	cstIsento  = "04"
 )
+
+// cstFallback é o CST padrão usado quando GetCSTReforma() retorna nil ou erro.
+// Conforme LC 214/2025, "000" = Tributação integral.
+const cstFallback = "000"
 
 // ivaDualResult contem os valores computados a partir de uma regra IVA Dual.
 type ivaDualResult struct {
@@ -100,14 +102,28 @@ func computeIvaDual(ctx context.Context, repo repository.TaxRepository, item mod
 		SKU:               item.SKU,
 	}
 
-	if efetivamenteIsento {
-		result.CSTEfetivo = cstIsento
-		return result
+	// Resolver CST oficial via tabela cst_reforma (LC 214/2025)
+	cstFlags := repository.CSTFlags{
+		EfetivamenteIsento: efetivamenteIsento,
+		PercentualReducao:  rule.PercentualReducao,
+		UFDestino:          ufDestino,
+	}
+	cstRule, cstErr := repo.GetCSTReforma(ctx, cstFlags)
+	if cstErr != nil {
+		slog.Warn("Erro ao consultar CST oficial, usando fallback",
+			"sku", item.SKU,
+			"ncm", ncm,
+			"error", cstErr,
+		)
+	}
+	if cstRule != nil {
+		result.CSTEfetivo = cstRule.CST
+	} else {
+		result.CSTEfetivo = cstFallback
 	}
 
-	result.CSTEfetivo = cstPadrao
-	if rule.PercentualReducao.GreaterThan(decimal.Zero) {
-		result.CSTEfetivo = cstIsento
+	if efetivamenteIsento {
+		return result
 	}
 
 	result.AliquotaEfetivaCBS = rule.AliquotaCBS.Mul(fatorReducao)

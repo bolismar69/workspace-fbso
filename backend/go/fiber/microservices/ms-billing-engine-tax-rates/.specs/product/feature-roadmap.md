@@ -1,6 +1,6 @@
 # Feature Roadmap — ms-billing-engine-tax-rates
 
-Atualizado em 2026-06-22 01:10 — C-001 (Pipeline Order SOP-013) concluída. Pipeline reordenado de 3 fases para 7 fases SOP-013: IS(F0)→IPI(F1)→CBS(F2)→ICMS(F3)→(IBS+ISS+PISCOFINS)(F4)→FUST(F5)→FUNTTEL(F6). BillingEngine refatorado com arquitetura multi-fase genérica (CalculationPhase + ExecutionMode). ReformaCalculator dividido em CBSCalculator e IBSCalculator separados. ICMS agora sequencial antes do PIS/COFINS (Tese do Século) com injeção de VALOR_EXCLUSAO_ICMS. 22 novos testes de pipeline (ordenação, concorrência, injeção inter-fase, phase-aware). 150+ testes passando. Todas as 9 features do gap analysis concluídas (F-001 a F-007 + C-001 + C-002).
+Atualizado em 2026-06-30 — PR #6 merge (Fases 0-1-2 Reforma Tributária: Admin Fiscal, Créditos, TaxToken, Simulação, Fornecedores). Pipeline SOP-013 7-fases estável. Rate Limiting e API Versioning implementados (Fase 0). Docker/K8s deploy implementados (GAP-010). 211+ testes passando. 10 tabelas SQL + 3 índices.
 
 ## Features Implementadas
 
@@ -15,7 +15,7 @@ Atualizado em 2026-06-22 01:10 — C-001 (Pipeline Order SOP-013) concluída. Pi
 | PIS/COFINS via banco |   Completo | Alíquotas do `federal_tax_rules` com fallback para defaults (1.65%/7.6%) |
 | Cobertura total de CSTs PIS/COFINS |   Completo | CSTs 01-06, 49, 50-99, 99 — 100% de cobertura (15 estratégias) |
 | Exclusão ICMS da base PIS/COFINS |   Completo | Flag `ExcluiICMSBase` validada com 13 cenários de teste |
-| Testes automatizados |   Completo | 12 arquivos de teste, 109 cenários (PIS/COFINS 39, IPI 7, ICMS 12, Engine 6, Middleware requestid 12, Middleware auth 9, Reforma 7, ISS 7, FUST 6, FUNTTEL 4) |
+| Testes automatizados |   Completo | 25 arquivos de teste, 211+ cenários (PIS/COFINS 39, IPI 7, ICMS 12, Engine 6, Pipeline SOP-013 22, Middleware requestid 12, Middleware auth 9, Reforma 7, ISS 7, FUST 6, FUNTTEL 4, ICMS Desonerado 14, PhaseResolver 5, ISFilter 8, CircuitBreaker 7, IBSClient 5, Admin 4, Credit 4, Simulation 3, Supplier 4, Token 4) |
 | Middleware requestid/traceid |   Completo | W3C Trace Context — Request-ID + Trace-ID com 12 testes |
 | Health check endpoints |   Completo | `/healthz` (liveness) e `/health` (readiness com PG + Redis) |
 | Coleta de erros em goroutines |   Completo | Channel de erro + `slog.Warn` na Fase 2 (não bloqueante) |
@@ -24,7 +24,7 @@ Atualizado em 2026-06-22 01:10 — C-001 (Pipeline Order SOP-013) concluída. Pi
 | Porta configurável |   Completo | `PORT` env var com default `:3000` |
 | LegacyAdapter |   Completo | Conversão de calculadoras legacy para interface `TaxCalculator` unificada |
 | Cache Redis |   Completo | Cache de regras via decorator pattern (`CachedTaxRepository`) |
-| Documentação de regras |   Completo | 13 arquivos README-*.md em `docs/` + 22 arquivos `.specs/` |
+| Documentação de regras |   Completo | Consolidada em `.specs/domain/domain.md` + 22 arquivos `.specs/` |
 | Reforma Tributária (CBS/IBS/IS) |   Completo (2026-06-21 15:17) | CBS, IBS (estadual+municipal) e IS baseado em `iva_dual_rules` com 7 testes. Redução de alíquotas, isenção, imposto seletivo. `ReformaCalculator` implementa `TaxCalculator` diretamente — sem adapter. |
 | Reorganização domain/ |   Completo (2026-06-21 18:49) | Extração da interface `TaxCalculator` para `internal/domain/` seguindo DDD. Pacote `domain` como camada mais interna (zero dependências internas). 5 arquivos atualizados, `go build`, `go vet` e `go test` passando. |
 | Calculadora ISS |   Completo (2026-06-21 23:09) | `ISSCalculator` — alíquota [2%,5%], item 1.05 LC 116/2003, retenção fonte. 7 testes. |
@@ -44,8 +44,14 @@ Atualizado em 2026-06-22 01:10 — C-001 (Pipeline Order SOP-013) concluída. Pi
 
 | Feature | Prioridade | Descrição |
 |---------|-----------|-----------|
-| Rate Limiting |   Alta | Proteger endpoint `/calculate` contra abuso/DoS. Sem rate limiting atualmente — risco de consumo excessivo de recursos (PG pool, Redis, CPU). Implementar via middleware Fiber com configuração por env var (`RATE_LIMIT_MAX`, `RATE_LIMIT_WINDOW`). |
-| API Versioning (`/v1/calculate`) |   Média | Endpoint atual é `/calculate` sem versionamento. Adotar prefixo `/v1/` para permitir evolução não-quebrante da API (ex: `/v1/calculate`, `/v2/calculate` com breaking changes na Reforma Tributária). |
+| Rate Limiting | ~~Alta~~ ✅ Concluída (Fase 0) | Proteger endpoint `/calculate` contra abuso/DoS. Middleware Fiber com `RATE_LIMIT_MAX` e `RATE_LIMIT_WINDOW`. |
+| API Versioning (`/v1/calculate`) | ~~Média~~ ✅ Concluída (Fase 0) | Prefixo `/v1/` adotado. Rotas legacy em `/calculate`, `/healthz`, `/metrics` com deprecation warning. |
+| Deploy (Docker & Kubernetes) | ~~Média~~ ✅ Concluída (GAP-010) | Dockerfile multi-stage, docker-compose.yaml (app+PG+Redis), deploy/k8s/ (configmap, deployment, service, hpa). |
+| Admin Fiscal (CRUD) | ~~Alta~~ ✅ Concluída (GAP-004) | `internal/admin/` — CRUD de regras fiscais (models, repository, service). `GET/POST /v1/admin/tax-rates/iva-dual`. |
+| Créditos Reforma Tributária | ~~Alta~~ ✅ Concluída (GAP-005) | `internal/credit/` — engine de créditos, supplier. `POST /v1/credit/calculate`. |
+| Simulação de Margem | ~~Média~~ ✅ Concluída (GAP-003) | `internal/simulation/` — projeção "what-if". `POST /v1/simulate`. |
+| TaxToken Snapshot | ~~Média~~ ✅ Concluída | `internal/token/` — geração de token fiscal. `POST /v1/token/generate`. |
+| Validação de Fornecedores | ~~Média~~ ✅ Concluída | `internal/supplier/` — models, service, store. `POST /v1/supplier/validate`, `GET /v1/supplier/:cnpj`. |
 | Atualização da especificação OpenAPI | ~~Média~~ ✅ Concluída | `tax-rates-api.yaml` reescrito em 2026-06-21 (Spec Miner): v1.0.0 com schemas alinhados, 4 endpoints, auth JWT documentado, 11 tributos no enum |
 | Payload Size Limits |   Média | Configurar `fiber.Config{BodyLimit: N}` para prevenir oversized payloads. Atualmente sem limite máximo de corpo de requisição. |
 | Monitoring Dashboard Templates |   Baixa | Templates Grafana para as 4 métricas Prometheus expostas (`http_requests_total`, `http_request_duration_seconds`, `cache_requests_total`, `errors_total`) + alertas para taxa de erro > 1% e latência p95 > 500ms. |
@@ -61,15 +67,15 @@ Atualizado em 2026-06-22 01:10 — C-001 (Pipeline Order SOP-013) concluída. Pi
 |----|-----------|-----------|-------|
 | DT-01 | `IDTransaction: "0"` placeholder — substituir por geração real (UUID) | ~~Baixa~~ ✅ Resolvida | `engine.go:49`, `icms.go:26` (`github.com/google/uuid`) |
 | DT-02 | `TODO: VERIFICAR SE PRECISAR SER O CRT DO EMITENTE OU DESTINATARIO` — resolvido silenciosamente: código agora usa `CRTEmitente` (ver `icms.go:31,369`). Marcador TODO removido durante reestruturação do fluxo ICMS. | ~~Baixa~~ ✅ Resolvida | `icms.go:31,369` (`models.NormalizeCRTEmitente(input.CRTEmitente)`) |
-| DT-03 | CST da Reforma Tributária usa valores provisórios (`01`/`04`) — aguardando tabela oficial da RFB |   Média | `internal/reforma/reforma.go` |
+| DT-03 | CST da Reforma Tributária usa valores provisórios (`01`/`04`) — aguardando tabela oficial da RFB | ~~Média~~ ✅ Resolvida (2026-07-01) | Tabela `cst_reforma` com 164 CCTs oficiais, `GetCSTReforma()` |
 | DT-04 | Integração com créditos (cash forward / `permite_credito_amplo`) não implementada na Reforma |   Média | `internal/reforma/reforma.go` |
 | DT-05 | CI/CD pipeline não documentado/configurado para este microserviço Go |   Baixa | — |
 | DT-06 | Estrutura `legacy/` ainda contém lógica de negócio misturada com acesso a dados — separar em handlers/services/repository |   Baixa | `internal/legacy/` |
 | DT-07 | Especificação OpenAPI (`tax-rates-api.yaml`) estava desatualizada — reescrita em 2026-06-21 para v1.0.0: schemas alinhados com modelos reais, 4 endpoints documentados, enum de tributos completo, auth documentado | ~~Média~~ ✅ Resolvida | `.specs/api/tax-rates-api.yaml` |
 | DT-08 | Nome do pacote `internal/legacy/` é enganoso — contém as calculadoras principais (ICMS, IPI, PIS/COFINS), não código legado. Renomear para `internal/taxes/` ou `internal/calculators/` alinharia com a semântica real. |   Baixa | `internal/legacy/` (7 arquivos .go) |
 | DT-09 | `middleware.InitTracing()` (OpenTelemetry W3C Trace Context) chamado em `main.go:33` não está documentado nos diagramas de arquitetura (`architecture.md` e `c4-context.md`). O middleware pipeline documentado omite a inicialização do propagador OTEL. |   Baixa | `cmd/api/main.go:33`, `internal/middleware/requestid.go:13` |
-| DT-10 | Ausência de artefatos de deploy para produção: sem Dockerfile, sem manifests Kubernetes (Deployment/Service/ConfigMap), sem configuração de resource limits/requests. |   Média | — |
-| DT-11 | Sem rate limiting no endpoint `/calculate` — risco de exaustão de recursos (PG pool, Redis connections, CPU) sob carga excessiva ou ataque DoS. |   Alta | `cmd/api/main.go` (middleware pipeline) |
+| DT-10 | Ausência de artefatos de deploy para produção: sem Dockerfile, sem manifests Kubernetes (Deployment/Service/ConfigMap), sem configuração de resource limits/requests. | ~~Média~~ ✅ Resolvida (GAP-010) | `Dockerfile`, `docker-compose.yaml`, `deploy/k8s/` (configmap, deployment, service, hpa) |
+| DT-11 | Sem rate limiting no endpoint `/calculate` — risco de exaustão de recursos (PG pool, Redis connections, CPU) sob carga excessiva ou ataque DoS. | ~~Alta~~ ✅ Resolvida (Fase 0) | Env vars `RATE_LIMIT_MAX`, `RATE_LIMIT_WINDOW` |
 | DT-12 | Pipeline de cálculo completamente reordenado (C-001). Motor 7-fases SOP-013: IS(F0)→IPI(F1)→CBS(F2)→ICMS(F3)→(IBS+ISS+PISCOFINS)(F4)→FUST(F5)→FUNTTEL(F6). CBS "por fora" antes do ICMS. ICMS sequencial antes do PIS/COFINS (Tese do Século — VALOR_EXCLUSAO_ICMS injetado automaticamente). FUST/FUNTTEL em cascata pós-paralela. | ~~Alta~~ ✅ Resolvida | `internal/calculator/engine.go`, `cmd/api/main.go` |
 | DT-15 | `ReformaCalculator` acumulava CBS, IBS e IS em um único calculator. IS extraído como pré-filtro independente (F-006) — `ISFilter` em Fase 0. | ~~Média~~ ✅ Resolvida | `internal/reforma/reforma.go`, `internal/legacy/is_filter.go` |
 | DT-16 | Phase Resolution System (F-005) implementado mas sem integração de pipeline automática: o `TaxSelector` seleciona calculadoras ativas, mas o wiring em `main.go` ainda é estático. Idealmente as calculadoras da Fase 2 deveriam ser montadas dinamicamente via `TaxSelector.Filter()`. |   Baixa | `cmd/api/main.go:74-86` |

@@ -55,6 +55,10 @@ func (m *mockTaxRepo) GetNCMSeletivo(ctx context.Context, ncm string) (*reposito
 	return nil, nil
 }
 
+func (m *mockTaxRepo) GetCSTReforma(ctx context.Context, flags repository.CSTFlags) (*repository.CSTReforma, error) {
+	return nil, nil
+}
+
 // validRule retorna uma regra IVA Dual válida para testes.
 func validRule() *repository.IvaDualRule {
 	return &repository.IvaDualRule{

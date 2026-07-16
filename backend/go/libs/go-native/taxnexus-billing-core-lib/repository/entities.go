@@ -155,3 +155,34 @@ type IvaDualRule struct {
 	InicioValidade       time.Time       `db:"inicio_validade"`
 	FinalValidade        *time.Time      `db:"final_validade"`
 }
+
+// CSTFlags define os parâmetros de contexto para seleção do CST oficial.
+type CSTFlags struct {
+	EfetivamenteIsento bool
+	IsMonofasico       bool
+	IsDiferimento      bool
+	PercentualReducao  decimal.Decimal
+	UFDestino          string
+}
+
+// CSTReforma representa uma entrada na tabela cst_reforma (CST oficial CBS/IBS — LC 214/2025).
+type CSTReforma struct {
+	ID                   int             `db:"id"`
+	CST                  string          `db:"cst"`
+	CCT                  string          `db:"cct"`
+	DescricaoCST         string          `db:"descricao_cst"`
+	DescricaoCCT         string          `db:"descricao_cct"`
+	ExigeTributacao      bool            `db:"exige_tributacao"`
+	ReducaoBC            bool            `db:"reducao_bc"`
+	ReducaoAliquota      bool            `db:"reducao_aliquota"`
+	TransferenciaCredito bool            `db:"transferencia_credito"`
+	Diferimento          bool            `db:"diferimento"`
+	Monofasica           bool            `db:"monofasica"`
+	CreditoPresumido     bool            `db:"credito_presumido"`
+	AjusteCompetencia    bool            `db:"ajuste_competencia"`
+	PercentualReducaoIBS decimal.Decimal `db:"percentual_reducao_ibs"`
+	PercentualReducaoCBS decimal.Decimal `db:"percentual_reducao_cbs"`
+	TipoAliquota         sql.NullString  `db:"tipo_aliquota"`
+	UrlLegislacao        sql.NullString  `db:"url_legislacao"`
+	SimplesNacional      sql.NullString  `db:"simples_nacional"`
+}

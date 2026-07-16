@@ -18,4 +18,5 @@ type TaxRepository interface {
 	GetIPIRegra(ctx context.Context, NCM string, ExIPI string, CrtEmitente string, TipoOperacaoFiscal string, PerfilComprador string, UFDestino string, ZonaEspecial bool, DataOperacao string) (*IPIRegra, error)
 	GetIvaDualRule(ctx context.Context, ncm, ufDestino, municipioIBGE string) (*IvaDualRule, error)
 	GetNCMSeletivo(ctx context.Context, ncm string) (*NCMSeletivoRule, error)
+	GetCSTReforma(ctx context.Context, flags CSTFlags) (*CSTReforma, error)
 }

@@ -8,8 +8,10 @@ Microsserviço Go/Fiber que calcula tributos brasileiros (IPI, ICMS, PIS, COFINS
 [![Fiber](https://img.shields.io/badge/Fiber-v2.52.12-00ACC1?logo=go)](https://gofiber.io/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-pgx_v5-336791?logo=postgresql)](https://www.postgresql.org/)
 [![Redis](https://img.shields.io/badge/Redis-go--redis_v9-DC382D?logo=redis)](https://redis.io/)
-[![Tests](https://img.shields.io/badge/tests-150+-success)](./internal/)
+[![Tests](https://img.shields.io/badge/tests-211+-success)](./internal/)
 [![Docs Confidence](https://img.shields.io/badge/docs_confidence-99%25-brightgreen)](./.specs/governance/confidence-report.md)
+
+> 📅 **Última revisão:** 2026-06-30
 
 ---
 
@@ -81,6 +83,11 @@ internal/reforma/        ← Reforma Tributária (CBS, IBS)
 internal/phase/          ← Phase Resolver + TaxSelector (fases da Reforma)
 internal/circuitbreaker/ ← Circuit Breaker para API IBS
 internal/ibsclient/      ← IBS Client com cache Redis
+internal/admin/          ← Admin Fiscal — CRUD de regras fiscais
+internal/credit/         ← Créditos da Reforma Tributária
+internal/simulation/     ← Projeção de margem (/simulate)
+internal/supplier/       ← Validação de fornecedores
+internal/token/          ← TaxToken snapshot
     ↓
 repository (core-lib)    ← Acesso a dados + cache (taxnexus-billing-core-lib)
     ↓
@@ -98,7 +105,6 @@ PostgreSQL + Redis       ← Persistência e cache
 | Banco de Dados | PostgreSQL (pgx) | v5 |
 | Cache | Redis (go-redis) | v9 |
 | Matemática Financeira | shopspring/decimal | v1.3.1 |
-| Validação | go-playground/validator | v10 |
 | Identificadores | google/uuid | v1.6.0 |
 | Observabilidade | OpenTelemetry + W3C Trace Context | v1.44.0 |
 | Logging | log/slog (stdlib) | Go 1.21+ |
@@ -118,28 +124,34 @@ PostgreSQL + Redis       ← Persistência e cache
 
 ### Ambiente de Testes com Docker Compose  
 
-O projeto disponibiliza um manifesto Docker Compose que sobe PostgreSQL 16 + Redis 7 prontos para desenvolvimento local:
+O projeto disponibiliza um manifesto Docker Compose que sobe PostgreSQL 16 + Redis 7 prontos para desenvolvimento local, além do próprio microsserviço:
 
-**Arquivo:** `utils/docker-compose/docker-compose-db-worker-postgres.yml`  
-**Caminho absoluto:** `/home/bolismar/work/workspace-fbso/utils/docker-compose/docker-compose-db-worker-postgres.yml`
+**Arquivo:** `docker-compose.yaml` (raiz do projeto)
 
 ```bash
-# Subir banco e cache (background)
-docker compose -f /home/bolismar/work/workspace-fbso/utils/docker-compose/docker-compose-db-worker-postgres.yml up -d
+# Subir tudo (app + banco + cache) em background
+docker compose up -d
+
+# Apenas banco e cache (sem a aplicação)
+docker compose up -d db redis
 
 # Verificar se os containers subiram
-docker ps --filter "name=db-pg-worker" --filter "name=redis-tax-rules"
+docker compose ps
+
+# Logs da aplicação
+docker compose logs -f app
 
 # Parar os containers quando terminar
-docker compose -f /home/bolismar/work/workspace-fbso/utils/docker-compose/docker-compose-db-worker-postgres.yml down
+docker compose down
 ```
 
 **Serviços provisionados:**
 
 | Serviço | Container | Porta | Credenciais |
 |---------|-----------|-------|-------------|
-| PostgreSQL 16 | `db-pg-worker` | `5432` | `worker_user` / `worker_pass` / `worker_db` |
-| Redis 7 | `redis-tax-rules` | `6379` | — (sem senha) |
+| PostgreSQL 16 | `ms-tax-rates-pg` | `5432` | `worker_user` / `worker_pass` / `worker_db` |
+| Redis 7 | `ms-tax-rates-redis` | `6379` | — (sem senha) |
+| App (Go/Fiber) | `ms-tax-rates` | `3000` | — |
 
 ### Configuração
 
@@ -167,7 +179,7 @@ go mod tidy
 # Executar o schema SQL (tabelas de regras fiscais)
 psql "$DATABASE_URL" -f data/init.sql
 # Se estiver usando Docker Compose:
-# docker exec -i db-pg-worker psql -U worker_user -d worker_db < data/init.sql
+# docker exec -i ms-tax-rates-pg psql -U worker_user -d worker_db < data/init.sql
 
 # Compilar e rodar
 go run cmd/api/main.go
@@ -180,13 +192,13 @@ go test ./...
 
 ```bash
 # Liveness (Kubernetes)
-curl http://localhost:3000/healthz
+curl http://localhost:3000/v1/healthz
 
 # Readiness (verifica PostgreSQL + Redis)
-curl http://localhost:3000/health
+curl http://localhost:3000/v1/health
 
 # Métricas Prometheus
-curl http://localhost:3000/metrics
+curl http://localhost:3000/v1/metrics
 ```
 
 ---
@@ -269,10 +281,17 @@ kubectl rollout undo deployment/ms-tax-rates -n tax-engine
 | Método | Path | Descrição |
 |--------|------|-----------|
 | `POST` | `/v1/calculate` | Cálculo de tributos sobre documento fiscal |
-| `POST` | `/calculate` | ⚠️ Deprecado — use `/v1/calculate` |
+| `POST` | `/v1/simulate` | Simulação de margem (projeção "what-if") |
+| `POST` | `/v1/token/generate` | Geração de TaxToken (snapshot fiscal) |
+| `POST` | `/v1/credit/calculate` | Cálculo de créditos da Reforma Tributária |
+| `POST` | `/v1/supplier/validate` | Validação de fornecedor |
+| `GET` | `/v1/supplier/:cnpj` | Consulta de fornecedor por CNPJ |
+| `GET` | `/v1/admin/tax-rates/iva-dual` | Consulta de alíquotas IVA Dual (Admin Fiscal) |
 | `GET` | `/v1/healthz` | Liveness probe (Kubernetes) |
 | `GET` | `/v1/health` | Readiness probe (PostgreSQL + Redis) |
 | `GET` | `/v1/metrics` | Métricas Prometheus (text exposition) |
+| `POST` | `/calculate` | ⚠️ Deprecado — use `/v1/calculate` |
+| `GET` | `/healthz` | ⚠️ Deprecado — use `/v1/healthz` |
 
 ### POST /calculate
 
@@ -354,13 +373,20 @@ kubectl rollout undo deployment/ms-tax-rates -n tax-engine
 │   ├── phase/                       # Phase Resolver + TaxSelector (F-005)
 │   ├── circuitbreaker/              # Circuit Breaker (F-007)
 │   ├── ibsclient/                   # IBS Client HTTP + Cache
+│   ├── admin/                       # Admin Fiscal — CRUD de regras
+│   ├── credit/                      # Créditos da Reforma Tributária (GAP-005)
+│   ├── simulation/                  # Projeção de margem (GAP-003)
+│   ├── supplier/                    # Validação de fornecedores
+│   ├── token/                       # TaxToken snapshot
 │   └── middleware/
 │       ├── requestid.go             # W3C Trace Context
 │       ├── auth.go                  # JWT pass-through (Kong/Keycloak)
 │       └── metrics.go               # Prometheus metrics
 ├── data/init.sql                    # Schema DDL (10 tabelas)
-├── docs/                            # Documentação de regras fiscais (13 arquivos)
-└── .specs/                          # Especificações de engenharia (22 arquivos)
+├── deploy/k8s/                      # Manifests Kubernetes
+├── .specs/                          # Especificações de engenharia (22 arquivos)
+├── docker-compose.yaml              # Ambiente local (app + PG + Redis)
+└── Dockerfile                       # Build multi-stage
 ```
 
 ---
@@ -369,7 +395,7 @@ kubectl rollout undo deployment/ms-tax-rates -n tax-engine
 
 > **IMPORTANTE — Entry point para agentes de IA e times técnicos.**
 
-Toda a documentação técnica está nos diretórios `.specs/` e `docs/`. Comece pelo mapa centralizador:
+Toda a documentação técnica está no diretório `.specs/`. Comece pelo mapa centralizador:
 
 ###   Entry Point: [`.specs/INDEX.md`](./.specs/INDEX.md)
 
@@ -393,17 +419,9 @@ O `INDEX.md` é o **hub canônico de documentação** — mapeia cada aspecto do
 |   Confiança | [`governance/confidence-report.md`](./.specs/governance/confidence-report.md) | Score de confiança da documentação: **99%**   |
 |   Histórico | [`skill-output/`](./.specs/skill-output/) | 15 registros de sessão de implementação |
 
-###   Regras de Negócio (`.docs/`)
+###   Regras de Negócio
 
-| Arquivo | Conteúdo |
-|---------|----------|
-| [`README-ESCOPO.md`](./docs/README-ESCOPO.md) | Definição de escopo do projeto |
-| [`README-ICMS.md`](./docs/README-ICMS.md) | Regras detalhadas de ICMS |
-| [`README-IPI.md`](./docs/README-IPI.md) | Regras detalhadas de IPI |
-| [`README-PIS-COFINS.md`](./docs/README-PIS-COFINS.md) | Regras detalhadas de PIS/COFINS |
-| [`README-SIMPLES-NACIONAL.md`](./docs/README-SIMPLES-NACIONAL.md) | Documentação Simples Nacional |
-| [`README-TABELA-CST-CSON.md`](./docs/README-TABELA-CST-CSON.md) | Tabela de códigos CST/CSOSN |
-| [`README-CONSTANTS.md`](./docs/README-CONSTANTS.md) | Constantes e valores de referência |
+As regras fiscais detalhadas (ICMS, IPI, PIS/COFINS, Simples Nacional, CST/CSOSN, constantes) estão documentadas no domínio canônico: **[`.specs/domain/domain.md`](./.specs/domain/domain.md)**.
 
 ---
 
@@ -427,7 +445,7 @@ Request → recover → requestid (W3C) → auth (JWT) → logger → metrics �
 
 ##   Testes
 
-- **150+ cenários de teste** em 18 arquivos `*_test.go`
+- **211+ cenários de teste** em 25 arquivos `*_test.go`
 - Cobertura de todas as calculadoras, middleware, engine, pipeline, circuit breaker e phase resolver
 - Mock de `TaxRepository` disponível em `mock_repository_test.go`
 - Test harness manual: `cmd/test_engine/main.go`
@@ -448,9 +466,9 @@ go test ./internal/calculator/ -run TestPipeline
 ##   Observabilidade
 
 - **Logging:** `log/slog` (stdlib) com handler JSON e nível Debug — cada log inclui `trace_id` e `request_id`
-- **Métricas:** Prometheus via `GET /metrics` — `http_requests_total`, `http_request_duration_seconds`, `cache_requests_total`, `errors_total`
+- **Métricas:** Prometheus via `GET /v1/metrics` — `http_requests_total`, `http_request_duration_seconds`, `cache_requests_total`, `errors_total`
 - **Tracing:** W3C Trace Context — headers `traceparent`/`traceresponse` + `X-Request-ID`
-- **Health:** `/healthz` (liveness) + `/health` (readiness — verifica PG + Redis)
+- **Health:** `/v1/healthz` (liveness) + `/v1/health` (readiness — verifica PG + Redis)
 
 ---
 
@@ -463,6 +481,63 @@ Consulte [`product/feature-roadmap.md`](./.specs/product/feature-roadmap.md#d%C3
 | DT-03 | CSTs provisórios da Reforma (aguardando tabela oficial RFB) | Média |
 | DT-04 | Créditos da Reforma (cash forward) | Média |
 | DT-09 | API do Comitê Gestor IBS não publicada (Gap G2) | Média |
+
+---
+
+##   Runbooks
+
+Procedimentos operacionais para troubleshooting e manutenção do microsserviço.
+
+### Verificar saúde do serviço
+
+```bash
+# Liveness — serviço está respondendo?
+curl -s http://localhost:3000/v1/healthz
+
+# Readiness — dependências (PG + Redis) estão ok?
+curl -s http://localhost:3000/v1/health | jq .
+
+# Métricas — tráfego, erros, latência, cache
+curl -s http://localhost:3000/v1/metrics | grep -E "^(http_requests_total|http_request_duration|errors_total|cache)"
+```
+
+### Reiniciar o serviço
+
+```bash
+# Docker Compose (dev local)
+docker compose restart app
+
+# Kubernetes (produção)
+kubectl rollout restart deployment/ms-tax-rates -n tax-engine
+```
+
+### Diagnosticar degradação de performance
+
+1. Verificar latência P95: `curl -s http://localhost:3000/v1/metrics | grep http_request_duration`
+2. Verificar taxa de erros: `curl -s http://localhost:3000/v1/metrics | grep errors_total`
+3. Verificar cache hit ratio: comparar `cache_requests_total` com `cache_hits_total`
+4. Logs: `docker compose logs -f app` (dev) ou `kubectl logs -f deployment/ms-tax-rates -n tax-engine` (prod)
+
+### Circuit Breaker IBS disparou?
+
+O circuit breaker para a API do Comitê Gestor IBS (F-007) usa fallback para regras locais. Se disparar:
+
+1. Verificar métricas do circuit breaker: `curl -s http://localhost:3000/v1/metrics | grep circuit_breaker`
+2. Verificar conectividade com a API IBS: `curl -s -o /dev/null -w "%{http_code}" $IBS_API_BASE_URL/health`
+3. O serviço continua operando com regras locais — **não há indisponibilidade total**
+
+### Atualizar regras fiscais (Admin Fiscal)
+
+```bash
+# Listar regras IVA Dual atuais
+curl -s http://localhost:3000/v1/admin/tax-rates/iva-dual | jq .
+
+# Inserir/atualizar regra (requer autenticação JWT)
+curl -X POST http://localhost:3000/v1/admin/tax-rates/iva-dual \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"uf_origem":"SP","uf_destino":"RJ","aliquota":"12.00","vigencia_inicio":"2026-07-01"}'
+```
 
 ---
 

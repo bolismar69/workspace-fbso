@@ -3,9 +3,9 @@ openapi: 3.0.3
 info:
   title: TaxNexus Billing Engine — Tax Rates API
   description: >
-    API para cálculo de tributos sobre faturamento (IPI, ICMS, PIS, COFINS, CBS, IBS, IS).
+    API para cálculo de tributos sobre faturamento (IPI, ICMS, PIS, COFINS, ISS, CBS, IBS, IS, FUST, FUNTTEL).
     Processa documentos fiscais e retorna os tributos calculados para cada item,
-    utilizando motor bifásico (IPI sequencial → ICMS, PIS/COFINS e Reforma em paralelo).
+    utilizando motor 7-fases SOP-013 (IS→IPI→CBS→ICMS→IBS+ISS+PISCOFINS→FUST→FUNTTEL).
 
     **Autenticação:** JWT validado pelo API Gateway (Kong/Keycloak). O middleware
     interno decodifica o payload (sem validação de assinatura) e injeta
@@ -21,8 +21,8 @@ info:
     Respostas incluem headers `X-RateLimit-Limit`, `X-RateLimit-Remaining` e,
     em caso de bloqueio (429), `Retry-After`.
 
-    **Versão da documentação:** 1.1.0 — adicionado rate limiting (GAP-008).
-  version: 1.1.0
+    **Versão da documentação:** 2.0.0 — PR #6 merge (Fases 0-1-2: Admin Fiscal, Créditos, TaxToken, Simulação, Fornecedores, Deploy, Rate Limiting, API Versioning).
+  version: 2.0.0
 
 servers:
   - url: http://localhost:3000
@@ -34,12 +34,17 @@ paths:
       summary: Calcula tributos sobre documento fiscal
       description: >
         Processa um documento fiscal com itens (NCM, CFOP, valores, UFs) e
-        retorna os tributos calculados (IPI, ICMS, PIS, COFINS, CBS, IBS, IS)
+        retorna os tributos calculados (IPI, ICMS, PIS, COFINS, ISS, CBS, IBS, IS, FUST, FUNTTEL)
         para cada item.
 
-        **Motor bifásico:**
-        - Fase 1 (sequencial): IPI — seu valor compõe a base do ICMS
-        - Fase 2 (paralela): ICMS, PIS/COFINS e Reforma (CBS/IBS/IS)
+        **Motor SOP-013 7 fases:**
+        - F0 (Seq): IS — pré-filtro NCM seletivo
+        - F1 (Seq): IPI — compõe base do ICMS
+        - F2 (Seq): CBS — "por fora"
+        - F3 (Seq): ICMS — antes do PIS/COFINS (Tese do Século)
+        - F4 (Par): IBS + ISS + PIS/COFINS — com exclusão do ICMS
+        - F5 (Seq): FUST — depende ICMS+PIS+COFINS
+        - F6 (Seq): FUNTTEL — mesma base do FUST
 
         **Regimes suportados:** Normal (CRT=3), Simples Nacional (CRT=1).
         **Operações:** Interna, Interestadual, com DIFAL (EC 87/2015), ST.
@@ -815,6 +820,9 @@ components:
             - CBS
             - IBS
             - IS
+            - ISS
+            - FUST
+            - FUNTTEL
         cst:
           type: string
           description: Código de Situação Tributária (CST/CSOSN)

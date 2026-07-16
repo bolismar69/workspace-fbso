@@ -1,6 +1,6 @@
 # API Guidelines e Padrões Globais — ms-billing-engine-tax-rates
 
-Atualizado em 2026-06-21 15:47 (DT-01: UUID IDTransaction).
+Atualizado em 2026-06-30 (PR #6 merge — Fases 0-1-2: rate limiting, API versioning, novos endpoints).
 
 ## Tratamento de Erros e Rastreabilidade
 
@@ -117,4 +117,28 @@ Atualizado em 2026-06-21 15:47 (DT-01: UUID IDTransaction).
 - **GET /health:** Readiness probe — verifica PostgreSQL + Redis, retorna `200` ou `503`
 - **Structured logging:** `log/slog` JSON com trace_id e request_id em todas as mensagens
 
-**Fonte:** `internal/middleware/metrics.go`, `cmd/api/main.go:81-118`
+**Fonte:** `internal/middleware/metrics.go`, `cmd/api/main.go`
+
+### Rate Limiting
+
+- **429 Too Many Requests:** Retornado quando o cliente excede `RATE_LIMIT_MAX` requisições em `RATE_LIMIT_WINDOW` segundos
+- **Headers:** `X-RateLimit-Limit` (limite), `X-RateLimit-Remaining` (restantes), `Retry-After` (segundos até reset)
+- **Configuração:** `RATE_LIMIT_MAX` (default 100), `RATE_LIMIT_WINDOW` (default 60)
+- **Fonte:** `cmd/api/main.go`
+
+### API Versioning
+
+- **Prefixo:** `/v1/` em todas as rotas (ex: `/v1/calculate`, `/v1/healthz`)
+- **Legado:** Rotas sem prefixo (`/calculate`, `/healthz`, `/metrics`) mantidas com header `Deprecation: true`
+- **Evolução:** Breaking changes futuros (ex: Reforma 2029) devem usar `/v2/`
+
+### Novos Endpoints (PR #6)
+
+| Método | Path | Descrição |
+|--------|------|-----------|
+| POST | `/v1/simulate` | Simulação de margem (GAP-003) |
+| POST | `/v1/token/generate` | TaxToken snapshot fiscal |
+| POST | `/v1/credit/calculate` | Créditos Reforma Tributária (GAP-005) |
+| POST | `/v1/supplier/validate` | Validação de fornecedor |
+| GET | `/v1/supplier/:cnpj` | Consulta de fornecedor |
+| GET | `/v1/admin/tax-rates/iva-dual` | Admin Fiscal (GAP-004) |

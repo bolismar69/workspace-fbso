@@ -2,7 +2,7 @@
 
 > Projeto: `ms-billing-engine-tax-rates`
 > Score:   VERDE (99%)
-> Data da reavaliação: 2026-06-22 (Spec Miner — C-001 pipeline SOP-013 7-fases concluído, todas as 9 features do gap analysis implementadas)
+> Data da reavaliação: 2026-06-30 (PR #6 merge — Fases 0-1-2 Reforma Tributária: Admin Fiscal, Créditos, TaxToken, Simulação, Fornecedores; Deploy Docker/K8s; 211+ testes)
 
 ## Resumo de Cobertura de Artefatos
 
@@ -14,7 +14,7 @@ A documentação foi gerada a partir de análise estática do código fonte (Spe
 |----------|-----------|-----------|
 | Estrutura de diretórios e entry points |  100% | `cmd/api/main.go`, `cmd/test_engine/main.go` |
 | Stack tecnológica (Go, Fiber, pgx, Redis, decimal) |  100% | `go.mod` |
-| Motor bifásico (Fase 1 sequencial, Fase 2 paralela) |  100% | `internal/calculator/engine.go:43-135` |
+| Motor 7-fases SOP-013 (Fase 0-F6) |  100% | `internal/calculator/engine.go:43-350` |
 | Strategy pattern PIS/COFINS |  100% | `internal/legacy/pis_strategies.go`, `cofins_strategies.go` |
 | Adapter pattern (LegacyAdapter) |  100% | `internal/calculator/legacy_adapter.go:80-101` |
 | Cálculo de IPI (Ad Valorem/Ad Pauta, rateio) |  100% | `internal/legacy/ipi.go:1-217` |
@@ -26,7 +26,7 @@ A documentação foi gerada a partir de análise estática do código fonte (Spe
 | PIS/COFINS via banco (federal_tax_rules) |  100% | `internal/legacy/pis_cofins.go:44-66` — com fallback |
 | Exclusão ICMS da base PIS/COFINS |  100% | `pis_cofins_calculate_test.go` — 13 cenários validando flag `ExcluiICMSBase` com mock repository |
 | Cobertura total de CSTs PIS/COFINS (01-06, 49, 50-99) |  100% | `pis_strategies.go`, `cofins_strategies.go` — 100% de CSTs implementados |
-| Testes automatizados |  100% | 12 arquivos `*_test.go`, 109 testes |
+| Testes automatizados |  100% | 25 arquivos `*_test.go`, 211+ testes |
 | ISS — Imposto sobre Serviços |  100% | `internal/legacy/iss.go:1-140`, `iss_test.go` — 7 cenários |
 | FUST/FUNTTEL — Contribuições de Telecom |  100% | `internal/legacy/fust.go`, `funttel.go`, `telecom.go` + `fust_test.go` (6) + `funttel_test.go` (4) — 10 cenários |
 | Motor 7-fases SOP-013 (C-001) |  100% | `internal/calculator/engine.go` — `BillingEnginePhased()`, `CalculationPhase`, `injectTributoValues()` — 7 fases |
@@ -36,16 +36,24 @@ A documentação foi gerada a partir de análise estática do código fonte (Spe
 | Phase Resolution System (F-005) |  100% | `internal/phase/phase.go`, `tax_selector.go` — 4 fases, DT-001 |
 | IS Pré-Filtro (F-006) |  100% | `internal/legacy/is_filter.go` — Fase 0, tabela `ncm_seletivo`, 8 testes |
 | IBS Circuit Breaker (F-007) |  100% | `internal/circuitbreaker/`, `ibsclient/` — HTTP+Redis+Fallback DB, 12 testes |
+| Admin Fiscal (GAP-004) |  100% | `internal/admin/` — CRUD de regras fiscais |
+| Créditos Reforma Tributária (GAP-005) |  100% | `internal/credit/` — engine + supplier |
+| Simulação de Margem (GAP-003) |  100% | `internal/simulation/` — projeção `/v1/simulate` |
+| Validação de Fornecedores |  100% | `internal/supplier/` — models, service, store |
+| TaxToken Snapshot |  100% | `internal/token/` — geração de token fiscal |
+| Deploy Docker + Kubernetes (GAP-010) |  100% | `Dockerfile`, `docker-compose.yaml`, `deploy/k8s/` |
+| Rate Limiting (Fase 0) |  100% | Env vars `RATE_LIMIT_MAX`, `RATE_LIMIT_WINDOW` |
+| API Versioning (Fase 0) |  100% | Prefixo `/v1/` em todas as rotas |
 | Pipeline tests (C-001) |  100% | `internal/calculator/pipeline_test.go` — 22 cenários (ordenação, concorrência, injeção, phase-aware) |
 | Schema SQL expandido (C-002) |  100% | `data/init.sql` — 10 tabelas (`ncm_seletivo`, `cbs_rates`, `iss_rates` adicionadas) |
 | Middleware requestid (W3C Trace Context) |  100% | `internal/middleware/requestid.go:1-157`, `requestid_test.go` — 12 cenários |
-| Health check endpoints |  100% | `cmd/api/main.go:81-116` — `/healthz` (liveness) e `/health` (readiness com postgres+redis) |
+| Health check endpoints |  100% | `cmd/api/main.go` — `/v1/healthz` (liveness) e `/v1/health` (readiness com postgres+redis) |
 | Coleta de erros em goroutines (Fase 2) |  100% | `internal/calculator/engine.go:83-114` — channel de erro + `slog.Warn` |
 | Autenticação JWT (Kong/Keycloak) |  100% | `internal/middleware/auth.go:1-147`, `auth_test.go` — 9 cenários |
-| Métricas Prometheus |  100% | `internal/middleware/metrics.go:1-147` — `/metrics` endpoint, stdlib only |
+| Métricas Prometheus |  100% | `internal/middleware/metrics.go` — `/v1/metrics` endpoint, stdlib only |
 | Porta configurável |  100% | `cmd/api/main.go:169-175` — `PORT` env var com default `:3000` |
 | Cache Redis (decorator pattern) |  100% | `cmd/api/main.go:46-47` — `CachedTaxRepository` |
-| Modelo de dados (ERD) |  100% | 7 tabelas documentadas no ERD: `icms_rules`, `federal_tax_rules`, `product_tax_exceptions`, `tax_equivalence`, `simples_nacional_rates`, `ipi_regras`, `iva_dual_rules` + `iva_dual_rules_log` + `reforma_tributaria_rules` + 2 funções PL/pgSQL — corrigido em 2026-06-21 |
+| Modelo de dados (ERD) |  100% | 10 tabelas documentadas no ERD: `icms_rules`, `federal_tax_rules`, `product_tax_exceptions`, `tax_equivalence`, `simples_nacional_rates`, `ipi_regras`, `iva_dual_rules`, `ncm_seletivo`, `cbs_rates`, `iss_rates` + `iva_dual_rules_log` + `reforma_tributaria_rules` + 2 funções PL/pgSQL |
 
 ## Artefatos com Confiança Parcial
 
@@ -63,7 +71,7 @@ A documentação foi gerada a partir de análise estática do código fonte (Spe
 
 1. **Migrar ID de transação para UUID** ✅ **CONCLUÍDO** (2026-06-21) — `uuid.NewString()` em engine.go e icms.go
 2. **Corrigir especificação OpenAPI** ✅ **CONCLUÍDO** (2026-06-21) — reescrita v1.0.0 alinhada com modelos reais
-3. **Corrigir ERD** ✅ **CONCLUÍDO** (2026-06-21) — 7 tabelas documentadas, colunas alinhadas com SQL real
+3. **Corrigir ERD** ✅ **CONCLUÍDO** (2026-06-21) — 10 tabelas documentadas, colunas alinhadas com SQL real
 4. **Documentar CI/CD pipeline** — pendente (não há GitHub Actions para este microserviço Go)
 
 ## Evolução do Score
@@ -82,3 +90,4 @@ A documentação foi gerada a partir de análise estática do código fonte (Spe
 | 2026-06-21 (Spec Miner) |   98% | Revisão documental: OpenAPI reescrita v1.0.0, ERD corrigido (+2 tabelas), correções factuais (contagem testes, referências) |
 | 2026-06-21 (golang-pro) |   98% | ISS, FUST, FUNTTEL implementados (F-001 a F-003) — 17 testes, motor trifásico, security fixes |
 | 2026-06-22 (golang-pro) |   99% | C-001 Pipeline SOP-013 7-fases concluído — `BillingEnginePhased`, CBS/IBS split, ICMS→PIS/COFINS (Tese do Século), 22 testes de pipeline. ICMS Desonerado (F-004) + Phase Resolver (F-005) + IS Pré-Filtro (F-006) + IBS Circuit Breaker (F-007). Todas as 9 features do gap analysis implementadas. 150+ testes. |
+| 2026-06-30 (PR #6 merge) |   99% | Fases 0-1-2 Reforma Tributária concluídas. Admin Fiscal, Créditos, TaxToken, Simulação, Fornecedores implementados. Rate Limiting + API Versioning (Fase 0). Deploy Docker/K8s (GAP-010). 25 arquivos de teste, 211+ cenários. |

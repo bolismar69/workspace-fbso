@@ -2,10 +2,11 @@
 
 **Projeto:** PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO
 **Microserviço:** `ms-billing-engine-tax-rates`
-**Versão:** 1.0
-**Data:** 24 de Junho de 2026
+**Versão:** 2.0
+**Data:** 30 de Junho de 2026
+**Status:** ✅ **Todas as 65 tarefas concluídas** — PR #6 merged (commit `83f6905`)
 
-> 📋 **Propósito:** Este documento decompõe o roadmap de 3 fases do [SPECS.md](./SPECS.md#24-ordem-sugerida-de-implementação-roadmap-técnico) em tarefas granulares com dependências, Definition of Done, e runbook operacional. Use-o como checklist diário de execução.
+> 📋 **Propósito:** Este documento foi o plano de implementação em 3 fases. Todas as tarefas foram executadas e o código está no branch `feature/reforma-tributaria-2026-fases-0-1-2`. O conteúdo abaixo é preservado como registro histórico da execução.
 
 📄 **Referências:** [SPECS.md](./SPECS.md) (escopo), [ARCHITECTURE.md](./ARCHITECTURE.md) (decisões técnicas), [TEST_PLAN.md](./TEST_PLAN.md) (estratégia de validação)
 
