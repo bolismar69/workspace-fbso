@@ -1,0 +1,16 @@
+# path: backend/go/fiber/microservices/ms-billing-engine-tax-rates/deploy/k8s/configmap.yaml
+# ConfigMap para ms-billing-engine-tax-rates (GAP-010)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ms-tax-rates-config
+  namespace: tax-engine
+  labels:
+    app: ms-tax-rates
+    component: billing-engine
+data:
+  PORT: "3000"
+  IBS_API_BASE_URL: "https://api.comitegestoribs.gov.br"
+  TAX_TOKEN_TTL_MINUTES: "120"
+  RATE_LIMIT_MAX: "100"
+  RATE_LIMIT_WINDOW: "60"
