@@ -33,10 +33,10 @@ flowchart TD
     REQ[REQUIREMENTS.md<br>Requisitos de Negócio - Lucro Real]:::requisitos
     
     %% Desdobramento Onda 1 (Documento e Épicos)
-    E1_COM[EPICS-COMMERCIAL-CHANNELS.md<br>Onda 1: Canais Comerciais e Vendas]:::onda1
-    E1_EP1[Épico 01: Qualificação e Saneamento CRM]:::onda1
-    E1_EP2[Épico 02: Conexão à Inteligência Corporativa]:::onda1
-    E1_EP3[Épico 03: Precificação Dinâmica e IVA por Fora]:::onda1
+    EPICS[03-EPICS.md<br>Épicos Onda 1 e Onda 2]:::requisitos
+    E1_EP1[Épico 01.01: Qualificação e Saneamento CRM]:::onda1
+    E1_EP2[Épico 01.02: Conexão à Inteligência Corporativa]:::onda1
+    E1_EP3[Épico 01.03: Precificação Dinâmica e IVA por Fora]:::onda1
 
     %% Features da Onda 1
     F1_1[Feature 01.1: Validação Cadastral em Tempo Real]:::features
@@ -48,10 +48,9 @@ flowchart TD
     F1_7[Feature 03.3: Token de Garantia Comercial]:::features
 
     %% Desdobramento Onda 2 (Documento e Épicos)
-    E2_FIN[EPICS-FINANCIAL-BILLING-ERP.md<br>Onda 2: Finanças, Faturamento e ERP]:::onda2
-    E2_EP1[Épico 01: Faturamento e Regimes de Santana de Parnaíba]:::onda2
-    E2_EP2[Épico 02: Governança do Split Payment Bancário]:::onda2
-    E2_EP3[Épico 03: Apropriação de Créditos no Lucro Real]:::onda2
+    E2_EP1[Épico 02.01: Faturamento e Consistência SAP]:::onda2
+    E2_EP2[Épico 02.02: Governança do Split Payment Bancário]:::onda2
+    E2_EP3[Épico 02.03: Apropriação de Créditos no Lucro Real]:::onda2
 
     %% Features da Onda 2
     F2_1[Feature 01.1: Validação Pré-Emissão e Trava Contábil]:::features
@@ -66,13 +65,12 @@ flowchart TD
 
     %% Relacionamentos Estratégicos Principais
     PC --> |Autoriza e direciona| REQ
-    REQ --> |Origina a esteira comercial| E1_COM
-    REQ --> |Origina a esteira de back-office| E2_FIN
+    REQ --> |Desdobra em épicos| EPICS
 
     %% Mapeamento da Onda 1 (Épicos -> Features)
-    E1_COM --> E1_EP1
-    E1_COM --> E1_EP2
-    E1_COM --> E1_EP3
+    EPICS --> E1_EP1
+    EPICS --> E1_EP2
+    EPICS --> E1_EP3
     E1_EP1 --> F1_1
     E1_EP1 --> F1_2
     E1_EP2 --> F1_3
@@ -82,9 +80,9 @@ flowchart TD
     E1_EP3 --> F1_7
 
     %% Mapeamento da Onda 2 (Épicos -> Features)
-    E2_FIN --> E2_EP1
-    E2_FIN --> E2_EP2
-    E2_FIN --> E2_EP3
+    EPICS --> E2_EP1
+    EPICS --> E2_EP2
+    EPICS --> E2_EP3
     E2_EP1 --> F2_1
     E2_EP1 --> F2_2
     E2_EP1 --> F2_3
@@ -121,38 +119,37 @@ flowchart TD
 
 | Documento | Descrição | Épicos | Status |
 |:---|:---|:---|:---|
-| [EPICS-COMMERCIAL-CHANNELS.md](./EPICS-COMMERCIAL-CHANNELS.md) | Onda 1 — Canais Comerciais e Vendas | Épico 01 (CRM), Épico 02 (Integração), Épico 03 (Precificação) | ✅ Pronto |
-| [EPICS-FINANCIAL-BILLING-ERP.md](./EPICS-FINANCIAL-BILLING-ERP.md) | Onda 2 — Finanças, Faturamento e ERP | Épico 01 (Faturamento), Épico 02 (Split), Épico 03 (Créditos) | ✅ Pronto |
+| [03-EPICS.md](./03-EPICS.md) | Épicos unificados — Onda 1 (Canais Comerciais e Vendas) + Onda 2 (Finanças, Faturamento e ERP) | 01.01 (CRM), 01.02 (Integração), 01.03 (Precificação), 02.01 (Faturamento), 02.02 (Split), 02.03 (Créditos) | ✅ Pronto |
 
 ### 3.4 Nível Funcional — Features
+
+**Documento:** [04-FEATURES.md](./04-FEATURES.md) — 16 features unificadas (7 Onda 1 + 9 Onda 2)
 
 #### Onda 1: Canais Comerciais e Vendas
 
 | Feature | Épico | Descrição | User Stories |
 |:---|:---|:---|:---|
-| [FEATURES-01-01-COMMERCIAL-CHANNELS.md](./FEATURES-01-01-COMMERCIAL-CHANNELS.md) | — | Documento consolidado de todas as Features da Onda 1 | — |
-| Feature 01.1 | Épico 01 | Validação Cadastral Geográfica em Tempo Real | [01.01.1 US](./USER-STORYS-01-01-1-VALIDACAO-CADASTRAL-GEOGRAFICA-TEMPO-REAL.md) ✅ |
-| Feature 01.2 | Épico 01 | Governança e Trava Comercial de Vendas (CRM) | [01-01-2 US](./USER-STORYS-01-01-2-TRAVA-COMERCIAL-NO-CRM-POR-FALTA-DE-HIGIENIZACAO-CADASTRAL.md) ✅ |
-| Feature 02.1 | Épico 02 | Simulador Unificado em Telas de Proposta (Omnicanalidade) | [01-02-1 US](./USER-STORYS-01-02-1-SIMULADOR-UNIFICADO-OMNICANAL.md) ✅ |
-| Feature 02.2 | Épico 02 | Resiliência de Vendas (Contingência Local) | [01-02-2 US](./USER-STORYS-01-02-2-RESILIENCIA-VENDAS-CONTINGENCIA-LOCAL.md) ✅ |
-| Feature 03.1 | Épico 03 | Interface Visual de Checkout com Decomposição do IVA | [01-03-1 US](./USER-STORYS-01-03-1-INTERFACE-VISUAL-CHECKOUT-DECOMPOSICAO-IVA.md) ✅ |
-| Feature 03.2 | Épico 03 | Painel de Atratividade B2B (Calculadora de Crédito do IVA) | [01-03-2 US](./USER-STORYS-01-03-2-PAINEL-ATRATIVIDADE-B2B-CALCULADORA-CREDITO.md) ✅ |
-| Feature 03.3 | Épico 03 | Chave de Garantia Comercial (Token de Validade Fiscal) | [01-03-3 US](./USER-STORYS-01-03-3-CHAVE-DE-GARANTIA-TOKEN-DE-VALIDADE-FISCAL.md) ✅ |
+| Feature 01.1 | Épico 01.01 | Validação Cadastral Geográfica em Tempo Real | [01.01.1 US](./USER-STORYS-01-01-1-VALIDACAO-CADASTRAL-GEOGRAFICA-TEMPO-REAL.md) ✅ |
+| Feature 01.2 | Épico 01.01 | Governança e Trava Comercial de Vendas (CRM) | [01-01-2 US](./USER-STORYS-01-01-2-TRAVA-COMERCIAL-NO-CRM-POR-FALTA-DE-HIGIENIZACAO-CADASTRAL.md) ✅ |
+| Feature 02.1 | Épico 01.02 | Simulador Unificado em Telas de Proposta (Omnicanalidade) | [01-02-1 US](./USER-STORYS-01-02-1-SIMULADOR-UNIFICADO-OMNICANAL.md) ✅ |
+| Feature 02.2 | Épico 01.02 | Resiliência de Vendas (Contingência Local) | [01-02-2 US](./USER-STORYS-01-02-2-RESILIENCIA-VENDAS-CONTINGENCIA-LOCAL.md) ✅ |
+| Feature 03.1 | Épico 01.03 | Interface Visual de Checkout com Decomposição do IVA | [01-03-1 US](./USER-STORYS-01-03-1-INTERFACE-VISUAL-CHECKOUT-DECOMPOSICAO-IVA.md) ✅ |
+| Feature 03.2 | Épico 01.03 | Painel de Atratividade B2B (Calculadora de Crédito do IVA) | [01-03-2 US](./USER-STORYS-01-03-2-PAINEL-ATRATIVIDADE-B2B-CALCULADORA-CREDITO.md) ✅ |
+| Feature 03.3 | Épico 01.03 | Chave de Garantia Comercial (Token de Validade Fiscal) | [01-03-3 US](./USER-STORYS-01-03-3-CHAVE-DE-GARANTIA-TOKEN-DE-VALIDADE-FISCAL.md) ✅ |
 
 #### Onda 2: Finanças, Faturamento e ERP
 
 | Feature | Épico | Descrição | User Stories |
 |:---|:---|:---|:---|
-| [FEATURES-02-01-FINANCIAL-BILLING-ERP.md](./FEATURES-02-01-FINANCIAL-BILLING-ERP.md) | — | Documento consolidado de todas as Features da Onda 2 | — |
-| Feature 01.1 | Épico 01 | Validação de Faturamento Pré-Emissão e Trava Contábil | [02-01-1 US](./USER-STORYS-02-01-1-VALIDACAO-FATURAMENTO-PRE-EMISSAO-TRAVA-CONTABIL.md) ✅ |
-| Feature 01.2 | Épico 01 | Motor de Conversão do ISS para IBS (Serviços) | [02-01-2 US](./USER-STORYS-02-01-2-MOTOR-CONVERSAO-ISS-IBS.md) ✅ |
-| Feature 01.3 | Épico 01 | Automação de Benefícios e Regimes Especiais | [02-01-3 US](./USER-STORYS-02-01-3-AUTOMACAO-BENEFICIOS-REGIMES-ESPECIAIS.md) ✅ |
-| Feature 02.1 | Épico 02 | Liquidação e Conciliação Financeira Segregada (Split) | [02-02-1 US](./USER-STORYS-02-02-1-LIQUIDACAO-CONCILIACAO-SEGREGADA-SPLIT.md) ✅ |
-| Feature 02.2 | Épico 02 | Ajuste de Split para Operações Incentivadas | [02-02-2 US](./USER-STORYS-02-02-2-AJUSTE-SPLIT-OPERACOES-INCENTIVADAS.md) ✅ |
-| Feature 02.3 | Épico 02 | Painel de Auditoria e Reconciliação do Split Payment | [02-02-3 US](./USER-STORYS-02-02-3-PAINEL-AUDITORIA-RECONCILIACAO-SPLIT.md) ✅ |
-| Feature 03.1 | Épico 03 | Auditoria Fiscal de Entrada e Bloqueio de Créditos | [02-03-1 US](./USER-STORYS-02-03-1-AUDITORIA-FISCAL-ENTRADA-BLOQUEIO-CREDITOS.md) ✅ |
-| Feature 03.2 | Épico 03 | Segregação Contábil de Custos de Estoque e Ativos | [02-03-2 US](./USER-STORYS-02-03-2-SEGREGACAO-CONTABIL-CUSTOS-ESTOQUE-ATIVOS.md) ✅ |
-| Feature 03.3 | Épico 03 | Escrituração de Reserva de Incentivos (Subvenção) | [02-03-3 US](./USER-STORYS-02-03-3-ESCRITURACAO-RESERVA-INCENTIVOS.md) ✅ |
+| Feature 01.1 | Épico 02.01 | Validação de Faturamento Pré-Emissão e Trava Contábil | [02-01-1 US](./USER-STORYS-02-01-1-VALIDACAO-FATURAMENTO-PRE-EMISSAO-TRAVA-CONTABIL.md) ✅ |
+| Feature 01.2 | Épico 02.01 | Motor de Conversão do ISS para IBS (Serviços) | [02-01-2 US](./USER-STORYS-02-01-2-MOTOR-CONVERSAO-ISS-IBS.md) ✅ |
+| Feature 01.3 | Épico 02.01 | Automação de Benefícios e Regimes Especiais | [02-01-3 US](./USER-STORYS-02-01-3-AUTOMACAO-BENEFICIOS-REGIMES-ESPECIAIS.md) ✅ |
+| Feature 02.1 | Épico 02.02 | Liquidação e Conciliação Financeira Segregada (Split) | [02-02-1 US](./USER-STORYS-02-02-1-LIQUIDACAO-CONCILIACAO-SEGREGADA-SPLIT.md) ✅ |
+| Feature 02.2 | Épico 02.02 | Ajuste de Split para Operações Incentivadas | [02-02-2 US](./USER-STORYS-02-02-2-AJUSTE-SPLIT-OPERACOES-INCENTIVADAS.md) ✅ |
+| Feature 02.3 | Épico 02.02 | Painel de Auditoria e Reconciliação do Split Payment | [02-02-3 US](./USER-STORYS-02-02-3-PAINEL-AUDITORIA-RECONCILIACAO-SPLIT.md) ✅ |
+| Feature 03.1 | Épico 02.03 | Auditoria Fiscal de Entrada e Bloqueio de Créditos | [02-03-1 US](./USER-STORYS-02-03-1-AUDITORIA-FISCAL-ENTRADA-BLOQUEIO-CREDITOS.md) ✅ |
+| Feature 03.2 | Épico 02.03 | Segregação Contábil de Custos de Estoque e Ativos | [02-03-2 US](./USER-STORYS-02-03-2-SEGREGACAO-CONTABIL-CUSTOS-ESTOQUE-ATIVOS.md) ✅ |
+| Feature 03.3 | Épico 02.03 | Escrituração de Reserva de Incentivos (Subvenção) | [02-03-3 US](./USER-STORYS-02-03-3-ESCRITURACAO-RESERVA-INCENTIVOS.md) ✅ |
 
 ### 3.5 Nível de Governança e Métricas
 
