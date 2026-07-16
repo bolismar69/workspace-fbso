@@ -1,0 +1,132 @@
+openapi: "3.1.0"
+info:
+  title: "Solar Fácil — API de Contato"
+  version: "0.1.0"
+  description: |
+    ## Visão Geral
+
+    O site Solar Fácil é **predominantemente estático** — todos os dados de planos, FAQs,
+    concessionárias e consumo médio são servidos como constantes TypeScript e JSON mocks
+    no bundle client-side. Não há API backend para dados de negócio.
+
+    **Único endpoint externo**: envio do formulário de contato (Formspree ou similar).
+
+    ### Status Atual
+
+    | Recurso | Tipo | Status |
+    |---|---|---|
+    | Planos | Constantes TypeScript (`PLANS[]`) | Estático |
+    | FAQs | Constantes TypeScript (`FAQ_ITEMS[]`) | Estático |
+    | Concessionárias | JSON mock (`mockConcessionarias.json`) | Estático |
+    | Consumo Médio | JSON mock (`mockConsumoMedio.json`) | Estático |
+    | Formulário de Contato | POST externo (Formspree placeholder) | Placeholder |
+
+    ### Roadmap
+
+    Quando o backend for implementado, os serviços em `src/services/` (que atualmente
+    usam `setTimeout(500ms)` para simular latência) serão atualizados para `fetch` real.
+
+  contact:
+    name: "Time Solar Fácil"
+    email: "contato@solarfacil.com.br"
+
+servers:
+  - url: "https://formspree.io/f"
+    description: "Formspree — endpoint de formulário (placeholder)"
+
+paths:
+  /contact:
+    post:
+      summary: "Enviar formulário de contato"
+      description: |
+        Envia os dados do formulário de contato para processamento.
+        Atualmente usa Formspree como backend (placeholder — será substituído).
+      operationId: "submitContactForm"
+      tags:
+        - "Contato"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ContactFormData"
+      responses:
+        "200":
+          description: "Formulário enviado com sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactFormSuccess"
+        "400":
+          description: "Dados inválidos"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactFormError"
+        "500":
+          description: "Erro interno do servidor"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactFormError"
+
+components:
+  schemas:
+    PersonaProfile:
+      type: "string"
+      enum: ["consumidor", "fornecedor", "cooperativa"]
+      description: "Perfil do usuário"
+
+    ContactFormData:
+      type: "object"
+      required:
+        - "name"
+        - "email"
+        - "profile"
+      properties:
+        name:
+          type: "string"
+          minLength: 2
+          description: "Nome completo do contato"
+          example: "Maria Silva"
+        email:
+          type: "string"
+          format: "email"
+          description: "E-mail do contato"
+          example: "maria@exemplo.com.br"
+        phone:
+          type: "string"
+          pattern: '^\d{10,11}$'
+          description: "Telefone (DDD + número, 10-11 dígitos). Opcional."
+          example: "11999999999"
+        profile:
+          $ref: "#/components/schemas/PersonaProfile"
+        message:
+          type: "string"
+          maxLength: 1000
+          description: "Mensagem adicional. Opcional."
+          example: "Gostaria de saber mais sobre o plano Special"
+        website:
+          type: "string"
+          description: "Campo honeypot anti-spam. Deve estar vazio."
+
+    ContactFormSuccess:
+      type: "object"
+      properties:
+        ok:
+          type: "boolean"
+          example: true
+
+    ContactFormError:
+      type: "object"
+      properties:
+        error:
+          type: "string"
+          description: "Mensagem de erro"
+          example: "Invalid form data"
+
+  securitySchemes: {}
+
+tags:
+  - name: "Contato"
+    description: "Endpoints de formulário de contato"

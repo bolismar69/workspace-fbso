@@ -1,0 +1,225 @@
+openapi: "3.1.0"
+info:
+  title: "TaxNexus — API de Cálculo Tributário"
+  version: "1.0.0"
+  description: |
+    API de cálculo tributário comparativo para simulação da Reforma Tributária 2026.
+
+    Esta API é consumida pelo **TaxNexus Portal** (web_app-tax-nexus-portal) e provê:
+    - Cálculo de tributos do sistema atual (PIS, COFINS, ICMS, ISS, IPI)
+    - Cálculo de tributos do novo sistema IVA Dual (CBS, IBS, Imposto Seletivo)
+    - Projeções de transição (IPVA Novo, ITCMD Novo)
+    - Callback de rastreabilidade (Cadastro Único Corporativo)
+
+    **Nota:** Esta é uma especificação reversa — documenta o contrato observado no código do frontend.
+    O backend real (`ms-billing-engine-tax-rates`) pode divergir desta especificação.
+  contact:
+    name: "Time de Engenharia Tributária"
+  license:
+    name: "Proprietário"
+
+servers:
+  - url: "http://localhost:8080"
+    description: "Desenvolvimento local"
+
+tags:
+  - name: "tax"
+    description: "Cálculo tributário comparativo"
+
+paths:
+  /v1/tax/calculate:
+    post:
+      tags:
+        - tax
+      summary: "Calcular tributos comparativos (Legado vs. Reforma)"
+      description: |
+        Endpoint principal de simulação tributária. Recebe os parâmetros fiscais do contribuinte
+        e retorna o comparativo entre o sistema atual e o novo IVA Dual, incluindo projeções
+        e callback de rastreabilidade.
+      operationId: calculateTax
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaxRequest"
+            examples:
+              saoPaulo:
+                summary: "Simulação em São Paulo"
+                value:
+                  cnpj: "00000000000000"
+                  ncm: "62011100"
+                  ibge: "3550308"
+                  saldo_remanescente: 1500.00
+      responses:
+        "200":
+          description: "Cálculo realizado com sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaxResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+components:
+  schemas:
+    TaxRequest:
+      type: object
+      required:
+        - cnpj
+        - ncm
+        - ibge
+        - saldo_remanescente
+      properties:
+        cnpj:
+          type: string
+          description: "CNPJ do contribuinte (14 dígitos)"
+          pattern: "^[0-9]{14}$"
+          example: "00000000000000"
+          minLength: 14
+          maxLength: 14
+        ncm:
+          type: string
+          description: "Código NCM da mercadoria (8 dígitos)"
+          pattern: "^[0-9]{8}$"
+          example: "62011100"
+          minLength: 8
+          maxLength: 8
+        ibge:
+          type: string
+          description: "Código IBGE do município (7 dígitos)"
+          pattern: "^[0-9]{7}$"
+          example: "3550308"
+          minLength: 7
+          maxLength: 7
+        saldo_remanescente:
+          type: number
+          description: "Saldo remanescente de créditos tributários em R$"
+          minimum: 0
+          example: 1500.00
+
+    TaxResponse:
+      type: object
+      properties:
+        transaction_status:
+          type: string
+          description: "Status da transação"
+          example: "completed"
+          enum:
+            - "completed"
+            - "pending"
+            - "error"
+        calculation:
+          $ref: "#/components/schemas/Calculation"
+        callback:
+          $ref: "#/components/schemas/Callback"
+
+    Calculation:
+      type: object
+      properties:
+        municipio:
+          type: string
+          description: "Nome do município"
+          example: "São Paulo"
+        uf:
+          type: string
+          description: "Sigla da UF"
+          example: "SP"
+          minLength: 2
+          maxLength: 2
+        ncm:
+          type: string
+          description: "Código NCM usado no cálculo"
+          example: "62011100"
+        ano:
+          type: integer
+          description: "Ano base do cálculo"
+          example: 2026
+        pis:
+          type: number
+          description: "PIS calculado (R$)"
+          example: 165.00
+        cofins:
+          type: number
+          description: "COFINS calculado (R$)"
+          example: 760.00
+        icms:
+          type: number
+          description: "ICMS calculado (R$)"
+          example: 1800.00
+        iss:
+          type: number
+          description: "ISS calculado (R$)"
+          example: 500.00
+        ipi:
+          type: number
+          description: "IPI calculado (R$)"
+          example: 350.00
+        cbs_calculada:
+          type: number
+          description: "CBS calculada — IVA Dual federal (R$)"
+          example: 1200.00
+        ibs_calculado:
+          type: number
+          description: "IBS calculado — IVA Dual estadual/municipal (R$)"
+          example: 900.00
+        imposto_seletivo:
+          type: number
+          description: "Imposto Seletivo calculado (R$)"
+          example: 250.00
+        ipva_novo:
+          type: number
+          description: "Projeção IPVA reforma (R$)"
+          example: 75.00
+        itcmd_novo:
+          type: number
+          description: "Projeção ITCMD reforma (R$)"
+          example: 50.00
+        total:
+          type: number
+          description: "Total de tributos calculados (R$) — opcional"
+          example: 3425.00
+
+    Callback:
+      type: object
+      properties:
+        id_cadastro_unico:
+          type: string
+          description: "ID do cadastro único para rastreabilidade"
+          example: "CU-2026-00012345"
+        status_integracao:
+          type: string
+          description: "Status da integração com Cadastro Único"
+          example: "registered"
+          enum:
+            - "registered"
+            - "pending"
+            - "failed"
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: "Mensagem de erro"
+        details:
+          type: object
+          description: "Detalhes adicionais do erro"
+
+  responses:
+    BadRequest:
+      description: "Dados inválidos na requisição"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    InternalError:
+      description: "Erro interno do servidor"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  securitySchemes: {}

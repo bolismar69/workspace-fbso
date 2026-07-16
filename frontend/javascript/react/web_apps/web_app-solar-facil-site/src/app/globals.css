@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/* Solar Fácil Design System — Tailwind v4 Theme
+   Unificado com App Mobile (Sprint 2 — M2)
+   Ref: BRAND-GAP-ANALYSIS.md (docs-sprint1), lightTheme.ts (App)
+   Skills: agile-sprint-planning, user-stories, draft-project-charter */
+
+@theme inline {
+  /* ═══ Brand Colors (P01-P02: migradas para App) ═══ */
+  --color-solar-primary: #1E5631;        /* App: primary (era #16a34a) */
+  --color-solar-primary-dark: #153d23;    /* Derivado de #1E5631 (era #15803d) */
+  --color-solar-primary-light: #dcfce7;   /* Mantido — funciona com #1E5631 */
+
+  --color-solar-secondary: #A5C9CA;       /* App: secondary (era #f59e0b) */
+  --color-solar-secondary-dark: #7ab5b5;  /* Derivado de #A5C9CA (era #d97706) */
+  --color-solar-secondary-light: #e6f4f4; /* Derivado de #A5C9CA (era #fef3c7) */
+
+  /* ═══ Base (P03, P14, P16: alinhadas ao App) ═══ */
+  --color-solar-bg: #ffffff;
+  --color-solar-bg-alt: #ffffbf;          /* App: fundo de destaque (era #f0fdf4) */
+  --color-solar-text: #111827;
+  --color-solar-text-muted: #444444;      /* App: text-muted (era #6b7280) */
+  --color-solar-border: #cccccc;          /* App: border (era #e5e7eb) */
+
+  /* ═══ Status Colors (P04: adicionados — App) ═══ */
+  --color-solar-success: #e0f7e9;         /* App: statusBackground.pago */
+  --color-solar-warning: #fffde7;         /* App: statusBackground.pendente */
+  --color-solar-error: #fbe9e7;           /* App: statusBackground.atrasado */
+  --color-solar-error-border: #ef4444;    /* Borda de campo com erro */
+  --color-solar-error-text: #dc2626;      /* Texto de mensagem de erro */
+  --color-solar-error-surface: #fef2f2;   /* Fundo de mensagem de erro */
+
+  /* ═══ Typography ═══ */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ═══ Dark Theme — planejado para milestone futuro (ver .specs/PRODUCT.md) ═══
+   Estratégia: next-themes + data-theme="dark" + toggle no Header.
+   Tokens serão definidos com contraste WCAG AA validado em todas as combinações. */
+
+/* Base Styles */
+body {
+  color: var(--color-solar-text);
+  background: var(--color-solar-bg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scroll behavior for CTA smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Section scroll margin — compensates sticky header height */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+/* Keyframe animations */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+/* Reduced motion — WCAG 2.3.3 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Utility animation classes */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-fade-in {
+    animation: fade-in 0.4s ease-out;
+  }
+
+  .animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+  }
+}

@@ -1,0 +1,53 @@
+[
+  {
+    "titulo": "FAQs Gerais",
+    "faqs": [
+      {
+        "pergunta": "Como funciona a venda do excedente?",
+        "resposta": "Você vende a energia não utilizada diretamente para os beneficiários cadastrados."
+      },
+      {
+        "pergunta": "Como é feito o pagamento?",
+        "resposta": "Recebimentos mensais conforme a quantidade de energia disponibilizada e consumida."
+      },
+      {
+        "pergunta": "Preciso de licença específica?",
+        "resposta": "Sim, conforme regulamentação da ANEEL para microgeradores de energia."
+      }
+    ]
+  },
+  {
+    "titulo": "Para Beneficiários",
+    "faqs": [
+      {
+        "pergunta": "Como funciona a economia na conta de energia?",
+        "resposta": "Você passa a consumir energia com desconto, fornecida por produtores parceiros."
+      },
+      {
+        "pergunta": "Qual o tempo mínimo de adesão?",
+        "resposta": "Depende do plano: 6 ou 12 meses."
+      },
+      {
+        "pergunta": "Há algum custo de adesão?",
+        "resposta": "Não. A adesão é gratuita, mas há compromisso de permanência."
+      }
+    ]
+  },
+  {
+    "titulo": "Para Fornecedores",
+    "faqs": [
+      {
+        "pergunta": "Como funciona a venda do excedente?",
+        "resposta": "Você vende a energia não utilizada diretamente para os beneficiários cadastrados."
+      },
+      {
+        "pergunta": "Como é feito o pagamento?",
+        "resposta": "Recebimentos mensais conforme a quantidade de energia disponibilizada e consumida."
+      },
+      {
+        "pergunta": "Preciso de licença específica?",
+        "resposta": "Sim, conforme regulamentação da ANEEL para microgeradores de energia."
+      }
+    ]
+  }
+]

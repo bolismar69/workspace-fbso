@@ -1,0 +1,64 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.tsbuildinfo
+
+# Expo
+.expo/
+.expo-shared/
+dist/
+web-build/
+expo-env.d.ts
+
+# EAS Builds
+*.tar.gz
+*.apk
+*.aab
+*.ipa
+
+# Metro
+.metro-cache/
+.cache/
+.haste/
+
+# Environment
+.env
+.env.*
+.env*.local
+
+# iOS / Android / Native
+*.jks
+*.keystore
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# Logs / Reports
+*.log
+*.pid
+*.gz
+
+# macOS
+.DS_Store
+
+# VSCode / IDEs
+.vscode/
+.idea/
+*.swp
+
+# OS/System
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Certs or keys
+*.pem
+
+# Example app data
+app-example/
+
