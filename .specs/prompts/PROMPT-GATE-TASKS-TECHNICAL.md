@@ -18,7 +18,6 @@ O agente validador verifica se o plano de tarefas é **completo, sequenciado cor
 | `{PROJECT_PATH}` | Caminho absoluto da pasta do projeto de negócio | `/home/user/work/business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG` |
 | `{PROJECT_NAME}` | Nome/código do projeto | `PRJ-FIN-2026-0003-SAAS-FBSO-ORG` |
 | `{SOLUTION_NAME}` | Nome da solução/microsserviço | `ms-fbso-platform-admin` |
-| `{BRANCH_NAME}` | Nome da branch onde deve ser realizado o desenvolvimento. Negar realizar desenvolvimento direto na branch `main` ou `master` |
 
 ---
 

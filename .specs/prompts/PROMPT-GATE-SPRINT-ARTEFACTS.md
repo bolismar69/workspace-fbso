@@ -22,7 +22,6 @@ O gate é executado **após a geração** dos artefatos (via `PROMPT-GENERATE-SP
 | `{SPRINT_NUMBER}` | Número da sprint (1 a N) | `1` |
 | `{SPRINT_NAME}` | Nome curto da sprint (kebab-case) | `sprint-01-setup` |
 | `{STACK}` | Stack tecnológica principal | `Java 25 + Spring Boot + PostgreSQL` |
-| `{BRANCH_NAME}` | Nome da branch onde deve ser realizado o desenvolvimento. Negar realizar desenvolvimento direto na branch `main` ou `master` |
 
 ---
 
