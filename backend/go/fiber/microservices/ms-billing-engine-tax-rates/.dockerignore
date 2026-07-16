@@ -1,0 +1,22 @@
+# .dockerignore — ms-billing-engine-tax-rates
+# Exclui do build context do Docker
+
+**/.git
+**/.gitignore
+**/README.md
+**/LICENSE
+**/.specs
+**/.agents
+**/.claude
+**/.reversa
+**_reversa_sdd
+**/AGENTS.md
+**/CLAUDE.md
+**/GEMINI.md
+**/docs
+**/node_modules
+**/vendor
+**/.vscode
+**/.idea
+**/*_test.go
+**/test_engine
