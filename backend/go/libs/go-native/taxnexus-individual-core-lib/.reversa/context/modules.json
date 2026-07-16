@@ -1,0 +1,267 @@
+{
+  "generated_at": "2026-06-10T00:00:00Z",
+  "modules": [
+    {
+      "name": "repository",
+      "path": "repository",
+      "purpose": "Camada de acesso a dados com cache-aside: resolve a faixa de imposto aplicável e lê parâmetros de configuração, todos filtrados por vigência temporal.",
+      "primary_files": ["repository/tax_repository.go"],
+      "functions": [
+        {
+          "name": "NewTaxRepository",
+          "file": "repository/tax_repository.go",
+          "params": ["db *pgxpool.Pool", "rdb *redis.Client"],
+          "returns": "*TaxRepository",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "GetApplicableRule",
+          "file": "repository/tax_repository.go",
+          "params": ["ctx context.Context", "taxCode string", "baseValue decimal.Decimal", "refDate time.Time"],
+          "returns": "(*models.TaxRule, error)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "GetConfig",
+          "file": "repository/tax_repository.go",
+          "params": ["ctx context.Context", "taxCode string", "key string", "refDate time.Time"],
+          "returns": "(decimal.Decimal, error)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "GetTableConfigs",
+          "file": "repository/tax_repository.go",
+          "params": ["ctx context.Context", "taxCode string", "refDate time.Time"],
+          "returns": "(map[string]decimal.Decimal, error)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "GetTaxRulesForPeriod",
+          "file": "repository/tax_repository.go",
+          "params": ["ctx context.Context", "taxCode string", "refDate time.Time"],
+          "returns": "([]models.TaxRule, error)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [],
+      "business_rules": [
+        {
+          "description": "Faixa aplicável e a primeira (ordenada por range_min ASC) cujo intervalo fechado [RangeMin, RangeMax] contem o baseValue; RangeMax nil = faixa aberta sem teto.",
+          "location": "repository/tax_repository.go:33",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Vigencia temporal: registro valido quando valid_from <= refDate AND (valid_to IS NULL OR valid_to >= refDate).",
+          "location": "repository/tax_repository.go:49",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Cache-aside Redis com TTL fixo de 12h para tax_rules_list e tax_configs; chave inclui taxCode e data de referencia.",
+          "location": "repository/tax_repository.go:97",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "GetConfig (valor unico) NAO usa cache, vai direto ao Postgres.",
+          "location": "repository/tax_repository.go:44",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["models", "db", "cache"],
+      "algorithms": [
+        "Resolucao de faixa progressiva em memoria (range matching)",
+        "Cache-aside com serializacao JSON e degradacao graciosa",
+        "Filtro de vigencia temporal (temporal validity / historizacao)"
+      ],
+      "complexity": "medium"
+    },
+    {
+      "name": "models",
+      "path": "models",
+      "purpose": "Definicoes de structs de dominio (entidades persistidas) e DTOs de request/response do simulador de impostos. Sem logica.",
+      "primary_files": ["models/tax_models.go"],
+      "functions": [],
+      "entities": [
+        {
+          "name": "TaxDefinition",
+          "table": "individual_tax_rates.tax_definitions",
+          "fields": [
+            { "name": "id", "type": "int", "required": true },
+            { "name": "tax_code", "type": "string", "required": true },
+            { "name": "name", "type": "string", "required": true },
+            { "name": "sphere", "type": "string", "required": true },
+            { "name": "rounding_precision", "type": "int", "required": true },
+            { "name": "active", "type": "bool", "required": true }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "TaxRule",
+          "table": "individual_tax_rates.tax_rules_history",
+          "fields": [
+            { "name": "id", "type": "int", "required": true },
+            { "name": "tax_definition_id", "type": "int", "required": true },
+            { "name": "description", "type": "string", "required": true },
+            { "name": "range_min", "type": "decimal", "required": true },
+            { "name": "range_max", "type": "decimal", "required": false },
+            { "name": "aliq_percent", "type": "decimal", "required": true },
+            { "name": "deduction_val", "type": "decimal", "required": true },
+            { "name": "valid_from", "type": "time", "required": true },
+            { "name": "valid_to", "type": "time", "required": false }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "TaxCalculationLog",
+          "table": "tax_calculation_log",
+          "fields": [
+            { "name": "id", "type": "uuid", "required": true },
+            { "name": "calculation_date", "type": "time", "required": true },
+            { "name": "tax_code", "type": "string", "required": true },
+            { "name": "input_base_value", "type": "decimal", "required": true },
+            { "name": "calculated_amount", "type": "decimal", "required": true },
+            { "name": "applied_aliq", "type": "decimal", "required": true },
+            { "name": "trace_id", "type": "string", "required": true }
+          ],
+          "confidence": "inferred"
+        },
+        {
+          "name": "TaxRequest",
+          "table": null,
+          "fields": [
+            { "name": "calculation_type", "type": "string", "required": true },
+            { "name": "reference_date", "type": "time", "required": true },
+            { "name": "gross_income", "type": "decimal", "required": true },
+            { "name": "pension_deduction_amount", "type": "decimal", "required": false },
+            { "name": "pension_deduction_percentage", "type": "decimal", "required": false },
+            { "name": "dependents_count", "type": "int", "required": false },
+            { "name": "education_expenses", "type": "decimal", "required": false },
+            { "name": "health_expenses", "type": "decimal", "required": false },
+            { "name": "pgbl_contribution", "type": "decimal", "required": false },
+            { "name": "other_deductions", "type": "decimal", "required": false }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "UniversalTaxRequest",
+          "table": null,
+          "fields": [
+            { "name": "tax_code", "type": "string", "required": true },
+            { "name": "calculation_type", "type": "string", "required": true },
+            { "name": "reference_date", "type": "time", "required": true },
+            { "name": "gross_income", "type": "decimal", "required": true },
+            { "name": "inputs", "type": "[]documentoFiscalRequest", "required": false }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "documentoFiscalRequest",
+          "table": null,
+          "fields": [
+            { "name": "key", "type": "string", "required": true },
+            { "name": "value", "type": "decimal", "required": true },
+            { "name": "unit", "type": "string", "required": true }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "TaxResponse",
+          "table": null,
+          "fields": [
+            { "name": "reference_date", "type": "string", "required": true },
+            { "name": "gross_income", "type": "decimal", "required": true },
+            { "name": "total_deduction_amount", "type": "decimal", "required": true },
+            { "name": "base_value", "type": "decimal", "required": true },
+            { "name": "tax_amount", "type": "decimal", "required": true },
+            { "name": "effective_rate", "type": "decimal", "required": true },
+            { "name": "is_recommended", "type": "bool", "required": true },
+            { "name": "deduction_details", "type": "[]DeductionDetail", "required": false },
+            { "name": "applied_rule_summary", "type": "string", "required": true },
+            { "name": "used_configs", "type": "map[string]string", "required": false }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "DeductionDetail",
+          "table": null,
+          "fields": [
+            { "name": "type", "type": "string", "required": true },
+            { "name": "amount", "type": "decimal", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Valores monetarios e aliquotas usam shopspring/decimal (nunca float) para precisao fiscal.",
+          "location": "models/tax_models.go",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Ponteiros (*decimal, *time.Time) modelam colunas NULL-aveis (range_max, valid_to).",
+          "location": "models/tax_models.go:25",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "TaxRequest expoe o escopo do simulador IRPF: tipo monthly/annual, deducoes previdenciarias (fixo e percentual), dependentes, educacao, saude, PGBL.",
+          "location": "models/tax_models.go:43",
+          "confidence": "inferred"
+        }
+      ],
+      "dependencies": [],
+      "algorithms": [],
+      "complexity": "low"
+    },
+    {
+      "name": "db",
+      "path": "db",
+      "purpose": "Fabrica de pool de conexao PostgreSQL via pgxpool.",
+      "primary_files": ["db/postgres.go"],
+      "functions": [
+        {
+          "name": "ConnectPostgres",
+          "file": "db/postgres.go",
+          "params": ["connString string"],
+          "returns": "(*pgxpool.Pool, error)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [],
+      "business_rules": [
+        {
+          "description": "Cria pool com pgxpool.ParseConfig + NewWithConfig usando context.Background (sem deadline).",
+          "location": "db/postgres.go:9",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": [],
+      "algorithms": [],
+      "complexity": "low"
+    },
+    {
+      "name": "cache",
+      "path": "cache",
+      "purpose": "Fabrica de cliente Redis (conexao lazy, somente endereco).",
+      "primary_files": ["cache/redis.go"],
+      "functions": [
+        {
+          "name": "ConnectRedis",
+          "file": "cache/redis.go",
+          "params": ["addr string"],
+          "returns": "*redis.Client",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [],
+      "business_rules": [
+        {
+          "description": "Cliente Redis criado apenas com Addr; sem Ping, password, DB index ou TLS. Conexao lazy.",
+          "location": "cache/redis.go:8",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": [],
+      "algorithms": [],
+      "complexity": "low"
+    }
+  ]
+}
