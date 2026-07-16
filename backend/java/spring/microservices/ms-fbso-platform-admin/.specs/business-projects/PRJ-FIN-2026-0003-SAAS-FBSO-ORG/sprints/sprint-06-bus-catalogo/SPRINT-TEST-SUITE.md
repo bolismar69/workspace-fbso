@@ -7,7 +7,6 @@
 
 ---
 
-> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
 
 ## 1. F04-05: Unidades de Negócio (9 cenários)
 

@@ -4,7 +4,7 @@
 - **Total de Sprints:** 7
 - **Duração:** 14 semanas (24/07/2026 → 30/10/2026)
 - **Documentos-mestre:** [TASKS.md](../TASKS.md) v2.4 | [SPECS.md](../SPECS.md) v1.6 | [TEST_PLAN.md](../TEST_PLAN.md) v2.4 | [PRD.md](../PRD.md) v1.5 | [ARCHITECTURE.md](../ARCHITECTURE.md) v1.4
-- **🚫 Branch Obrigatória:** `feature/java-fbso-platform-admin` — [ver detalhes no PRD §8.4](../PRD.md#84-branch-de-desenvolvimento)
+- **🚫 Estratégia de Branching:** Uma branch por sprint — [ver detalhes no PRD §8.4](../PRD.md#84-estratégia-de-branching--uma-branch-por-sprint)
 
 ---
 
