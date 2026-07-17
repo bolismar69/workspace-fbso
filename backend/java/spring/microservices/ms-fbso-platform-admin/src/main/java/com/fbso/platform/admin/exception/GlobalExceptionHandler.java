@@ -56,6 +56,64 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    // ---- 409 — Email Duplicado (RN09-02) ----
+
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateEmail(DuplicateEmailException ex) {
+        log.warn("Email duplicado: {}", ex.getMessage());
+        ErrorResponse body = ErrorResponse.of(
+                "https://api.fbso.org/errors/" + ex.getErrorCode(),
+                ex.getMessage(),
+                409,
+                null
+        );
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    // ---- 422 — Autodesativação Proibida (RN09-03) ----
+
+    @ExceptionHandler(SelfDeactivationException.class)
+    public ResponseEntity<ErrorResponse> handleSelfDeactivation(SelfDeactivationException ex) {
+        log.warn("Tentativa de autodesativação: {}", ex.getMessage());
+        return ResponseEntity.unprocessableEntity().body(
+                ErrorResponse.of(
+                        "https://api.fbso.org/errors/" + ex.getErrorCode(),
+                        ex.getMessage(),
+                        422,
+                        null
+                )
+        );
+    }
+
+    // ---- 404 — Usuário Não Encontrado ----
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFound(UserNotFoundException ex) {
+        log.warn("Usuário não encontrado: {}", ex.getMessage());
+        ErrorResponse body = ErrorResponse.of(
+                "https://api.fbso.org/errors/" + ex.getErrorCode(),
+                ex.getMessage(),
+                404,
+                null
+        );
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    // ---- 403 — Tenant Isolation Violation (DT-075) ----
+
+    @ExceptionHandler(TenantIsolationException.class)
+    public ResponseEntity<ErrorResponse> handleTenantIsolation(TenantIsolationException ex) {
+        log.warn("Violação de isolamento multi-tenant: {}", ex.getMessage());
+        return ResponseEntity.status(403).body(
+                ErrorResponse.of(
+                        "https://api.fbso.org/errors/access-denied",
+                        "Acesso negado",
+                        403,
+                        "Você não tem permissão para acessar esta área."
+                )
+        );
+    }
+
     // ---- 409 — Conflito (CNPJ duplicado) ----
 
     @ExceptionHandler(DuplicateCnpjException.class)

@@ -30,6 +30,7 @@ public class User extends BaseEntity {
     private String email;
     private String name;
     private UserStatus status;
+    private java.time.OffsetDateTime invitedDt;
 
     public User() {
         super();
@@ -77,6 +78,14 @@ public class User extends BaseEntity {
         this.status = status;
     }
 
+    public java.time.OffsetDateTime getInvitedDt() {
+        return invitedDt;
+    }
+
+    public void setInvitedDt(java.time.OffsetDateTime invitedDt) {
+        this.invitedDt = invitedDt;
+    }
+
     // -- Métodos de infraestrutura (BaseRepository) --
 
     @Override
@@ -97,6 +106,7 @@ public class User extends BaseEntity {
         columns.put("email", email);
         columns.put("name", name);
         columns.put("status", status != null ? status.name() : null);
+        columns.put("invited_dt", invitedDt);
         return columns;
     }
 

@@ -4,6 +4,7 @@ import com.fbso.platform.admin.exception.PermissionDeniedException;
 import com.fbso.platform.admin.security.TenantContext;
 import com.fbso.platform.admin.security.annotation.RequiresPermission;
 import com.fbso.platform.admin.security.aspect.RbacAspect;
+import com.fbso.platform.admin.service.PermissionService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.jupiter.api.AfterEach;
@@ -15,23 +16,22 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.UUID;
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("RbacAspect")
+@DisplayName("RbacAspect (DB-backed via PermissionService)")
 class RbacAspectTest {
 
     @Mock private ProceedingJoinPoint joinPoint;
     @Mock private MethodSignature methodSignature;
+    @Mock private PermissionService permissionService;
 
-    private final RbacAspect aspect = new RbacAspect();
+    private RbacAspect aspect;
 
-    // Método anotado para teste
+    // Métodos anotados para teste
     @RequiresPermission(resource = "PRODUCT_SERVICE", action = "edit")
     public void annotatedEditMethod() {}
 
@@ -42,9 +42,8 @@ class RbacAspectTest {
     public void annotatedAuditMethod() {}
 
     @BeforeEach
-    void setUp() throws NoSuchMethodException {
-        // signature é usado apenas por testes que chamam joinPoint.proceed()
-        // (ex: AdminGranted). Demais testes não chegam ao proceed().
+    void setUp() {
+        aspect = new RbacAspect(permissionService);
     }
 
     @AfterEach
@@ -52,17 +51,37 @@ class RbacAspectTest {
         TenantContext.clear();
     }
 
-    // ---- TC-S2-012: OPERATOR sem permissão → 403 ----
+    // ---- ADMIN acesso total (bypass por role) ----
 
     @Nested
-    @DisplayName("TC-S2-012 — OPERATOR sem permissão")
+    @DisplayName("ADMIN_TENANT — acesso total")
+    class AdminGranted {
+
+        @Test
+        @DisplayName("ADMIN_TENANT pode editar produto (PermissionService não lança)")
+        void shouldAllowAdminToEditProduct() throws Throwable {
+            doNothing().when(permissionService).checkPermission("PRODUCT_SERVICE", "edit");
+
+            RequiresPermission annotation = RbacAspectTest.class
+                    .getMethod("annotatedEditMethod")
+                    .getAnnotation(RequiresPermission.class);
+
+            aspect.checkPermission(joinPoint, annotation);
+            // Não lança exceção → sucesso
+        }
+    }
+
+    // ---- OPERATOR sem permissão → 403 ----
+
+    @Nested
+    @DisplayName("OPERATOR_BU — acesso negado")
     class OperatorDenied {
 
         @Test
         @DisplayName("OPERATOR tentando editar produto → PermissionDeniedException")
         void shouldDenyOperatorEditingProduct() throws Throwable {
-            TenantContext.set(UUID.randomUUID(), UUID.randomUUID(),
-                    List.of("OPERATOR_BU"), List.of(), List.of());
+            doThrow(new PermissionDeniedException())
+                    .when(permissionService).checkPermission("PRODUCT_SERVICE", "edit");
 
             RequiresPermission annotation = RbacAspectTest.class
                     .getMethod("annotatedEditMethod")
@@ -75,8 +94,8 @@ class RbacAspectTest {
         @Test
         @DisplayName("OPERATOR tentando criar tenant → PermissionDeniedException")
         void shouldDenyOperatorCreatingTenant() throws Throwable {
-            TenantContext.set(UUID.randomUUID(), UUID.randomUUID(),
-                    List.of("OPERATOR_BU"), List.of(), List.of());
+            doThrow(new PermissionDeniedException())
+                    .when(permissionService).checkPermission("TENANT", "create");
 
             RequiresPermission annotation = RbacAspectTest.class
                     .getMethod("annotatedCreateMethod")
@@ -87,51 +106,30 @@ class RbacAspectTest {
         }
     }
 
-    // ---- TC-S2-013: ADMIN acesso total ----
+    // ---- AUDITOR acesso restrito ----
 
     @Nested
-    @DisplayName("TC-S2-013 — ADMIN acesso total")
-    class AdminGranted {
+    @DisplayName("AUDITOR — acesso restrito")
+    class AuditorAccess {
 
         @Test
-        @DisplayName("ADMIN_TENANT pode editar produto")
-        void shouldAllowAdminToEditProduct() throws Throwable {
-            TenantContext.set(UUID.randomUUID(), UUID.randomUUID(),
-                    List.of("ADMIN_TENANT"), List.of(), List.of());
-
-            RequiresPermission annotation = RbacAspectTest.class
-                    .getMethod("annotatedEditMethod")
-                    .getAnnotation(RequiresPermission.class);
-
-            // Não deve lançar exceção
-            aspect.checkPermission(joinPoint, annotation);
-        }
-    }
-
-    // ---- TC-S2-014: AUDITOR acesso apenas leitura de auditoria ----
-
-    @Nested
-    @DisplayName("TC-S2-014 — AUDITOR acesso restrito")
-    class AuditorGranted {
-
-        @Test
-        @DisplayName("AUDITOR pode ver auditoria")
+        @DisplayName("AUDITOR pode ver auditoria (PermissionService não lança)")
         void shouldAllowAuditorToViewAudit() throws Throwable {
-            TenantContext.set(UUID.randomUUID(), UUID.randomUUID(),
-                    List.of("AUDITOR"), List.of(), List.of());
+            doNothing().when(permissionService).checkPermission("AUDIT", "view");
 
             RequiresPermission annotation = RbacAspectTest.class
                     .getMethod("annotatedAuditMethod")
                     .getAnnotation(RequiresPermission.class);
 
             aspect.checkPermission(joinPoint, annotation);
+            // Não lança exceção → sucesso
         }
 
         @Test
         @DisplayName("AUDITOR não pode criar tenant")
         void shouldDenyAuditorCreatingTenant() throws Throwable {
-            TenantContext.set(UUID.randomUUID(), UUID.randomUUID(),
-                    List.of("AUDITOR"), List.of(), List.of());
+            doThrow(new PermissionDeniedException())
+                    .when(permissionService).checkPermission("TENANT", "create");
 
             RequiresPermission annotation = RbacAspectTest.class
                     .getMethod("annotatedCreateMethod")

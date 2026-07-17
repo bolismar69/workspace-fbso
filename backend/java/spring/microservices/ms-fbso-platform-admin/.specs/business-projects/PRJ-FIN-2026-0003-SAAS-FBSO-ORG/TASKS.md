@@ -2,9 +2,9 @@
 
 - **Solucao:** `ms-fbso-platform-admin`
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 2.9
+- **Versao:** 3.0
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execucao — Sprints 1-3 concluidas ✅ (57/136 tarefas, 42%). 142 testes (100 unit + 42 IT). 18 endpoints REST. Proximo: Sprint 4 — RBAC (Frente 0: 20 correções pré-sprint + 11 features + 17 recomendações)
+- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 4 Frente 0 concluída ✅ (20/20). 77/136 tarefas (57%). Próximo: Sprint 4 Frentes 1-5b (28 tarefas pendentes)
 - **Origem:** [PRD.md](./PRD.md) + [SPECS.md](./SPECS.md) v1.8 + [ARCHITECTURE.md](./ARCHITECTURE.md) v2.2 + [04-FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES.md) + [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md)
 
 ---
@@ -18,7 +18,7 @@
 | **Sprint 3 — M2 Portal Admin** | 8 tarefas (8/8 concluídas ✅) |
 | **Sprint 3 — Frente 3** | 7 tarefas (correções durante-sprint) |
 | **M3 — Contas e Planos** | 15 tarefas |
-| **Sprint 4 — Frente 0** | 20 tarefas (correções pré-sprint RBAC — NOVO) |
+| **Sprint 4 — Frente 0** | 20 tarefas (correções pré-sprint RBAC) ✅ |
 | **M4 — RBAC** | 11 tarefas |
 | **Sprint 4 — Recomendados** | 17 tarefas (correções durante-sprint RBAC — NOVO) |
 | **M5 — Portal Cliente** | 12 tarefas |
@@ -26,7 +26,7 @@
 | **M7 — Homologacao** | 9 tarefas |
 | **Must Have** | 133 |
 | **Should Have** | 3 tarefas: T-021 (F01-03), T-063, T-064 (F04-03) |
-| **Progresso Atual** | 57/136 (42%) — Sprints 1-3 concluídas ✅. Sprint 4: Frente 0 (20 tasks) + M4 (11 tasks) + Recomendados (17 tasks) = 48 tasks planejadas. 142 testes (100 unit + 42 IT). 18 endpoints REST. 10 features. 28 débitos resolvidos. 56 débitos catalogados (47 novos + 9 backlog Sprint 3)
+| **Progresso Atual** | 77/136 (57%) — Sprints 1-3 concluídas ✅. Sprint 4 Frente 0 concluída ✅ (20/20). 28 tarefas pendentes na Sprint 4 (Frentes 1-5b). 142 testes (100 unit + 42 IT). 18 endpoints REST. 10 features. 28 débitos resolvidos. 56 débitos catalogados (47 novos + 9 backlog Sprint 3) |
 
 ### Cobertura de Features (18/18)
 
@@ -177,14 +177,14 @@ Pre-M2 (Setup+Frente0)  M2 (EP-01)  M3 (EP-02)  Frente3  M4 (EP-03)  M5 (EP-04a)
 
 | ID | Tarefa | Feature | US | Prio. | Est. | Responsavel | Criterio DONE |
 |:---|:---|:---|:---:|:---:|:---:|:---|:---|
-| **T-046** | Criar entidade User (fields: id, tenant_id FK, external_keycloak_id, email, name, status ACTIVE/INACTIVE/INVITE_PENDING) + UserRepository com `findByEmailAndTenant` e validacao email unico por tenant ativo (RN09-02, indice parcial) | F03-01 | US-024 | Must | 1d | A definir | UserRepository funcional. Email unico por tenant ativo. Soft delete respeitado. Indice parcial unique_email_active |
+| **T-046** | Criar entidade User + UserRepository com `findByEmailAndTenant`. Email único por tenant ativo (RN09-02, índice parcial) ⚠️ Base: `User.java` + `UserRepository.java` + `UserRowMapper.java` criados na Frente 0 (T-101). Complementar com UserStatus enum + testes unitários | F03-01 | US-024 | Must | 1d | A definir | UserRepository funcional. Soft delete respeitado |
 | **T-047** | `UserService`: convite usuario (email unico por tenant, RN09-02), desativar (nao permite autodesativacao RN09-03), reativar. Convite expira em 7 dias (RN09-01). Integracao email de convite | F03-01 | US-024, US-025, US-026 | Must | 1.5d | A definir | Convite com email valido. Email duplicado no mesmo tenant → 409. Autodesativacao → 422. Reativacao restaura acesso |
 | **T-048** | `UserController`: `GET /api/v1/users`, `POST /api/v1/users`, `PATCH /users/{id}`, `POST /users/{id}/deactivate`. `@RequiresPermission(resource="USER", action="view"/"create"/"edit"/"delete")` | F03-01 | US-024, US-025, US-026 | Must | 1d | A definir | CRUD usuarios funcional. Deactivate bloqueia login. Lista exibe nome, email, role, status, BUs vinculadas. Filtro por status |
-| **T-049** | Criar entidades de dominio ResourceAction (resource_name, action) + RoleResource (role, resource_action_id FK). Populate seed data via migration com matriz completa RN10-01 (4 roles x recursos: DASHBOARD, BUSINESS_UNIT, PRODUCT, USER, AUDIT, PERMISSION, PLAN) | F03-02 | US-027, US-028, US-029, US-030 | Must | 1d | A definir | Seed data carrega corretamente. Matriz de permissoes completa conforme RN10-01. Consulta `findByRole` retorna recursos corretos |
+| **T-049** | Criar entidades ResourceAction + RoleResource. Seed data via migration V004 com matriz completa RN10-01 ⚠️ Entities criadas na Frente 0 (T-102). Seed V004 criado (T-105). Complementar: validar seed em dev/staging/CI, testes | F03-02 | US-027 a US-030 | Must | 1d | A definir | Seed carrega corretamente em todos os ambientes. Consulta `findByRole` retorna recursos corretos |
 | **T-050** | Criar entidade UserPermission (user_id FK, business_unit_id FK, role) + PermissionRepository. Vincular usuario x BU x role. Tabela ponte com UNIQUE (user_id, business_unit_id) | F03-02, F03-03 | US-027 a US-033 | Must | 1.5d | A definir | UserPermission com UNIQUE constraint. Query de permissoes por usuario retorna todas as BUs + role. Admin tenant tem acesso implicito a todas as BUs (US-029) |
-| **T-051** | `PermissionService`: atribuir/revogar permissoes, vincular BU, gerenciar modulos. Admin tenant tem acesso implicito a todas as BUs. Usuario sem BU vinculada nao acessa portal (RN11-01). Usuario sem modulo nao acessa portal (RN11-02) | F03-02, F03-03 | US-027 a US-033 | Must | 2d | A definir | Permissoes atribuidas corretamente. Admin tenant ve todas as BUs. Usuario sem BU → acesso negado. Efeito imediato na proxima acao (RN11-03) |
+| **T-051** | `PermissionService`: atribuir/revogar permissoes, vincular BU, gerenciar modulos. Admin acesso implícito (RN11-01, RN11-02). Efeito imediato (RN11-03) ⚠️ Base criada na Frente 0 (T-100, T-115): PermissionService com matriz carregada + validateBusinessUnitAccess(). Complementar: assignRole(), revokeRole(), testes | F03-02, F03-03 | US-027 a US-033 | Must | 2d | A definir | Permissoes atribuidas corretamente. Admin tenant ve todas as BUs. Efeito imediato na proxima acao |
 | **T-052** | `PermissionController`: `GET /users/{uid}/permissions`, `PUT /users/{uid}/permissions`. `@RequiresPermission(resource="PERMISSION", action="view"/"edit")` | F03-02, F03-03 | US-027 a US-033 | Must | 1d | A definir | GET retorna permissoes atuais. PUT atualiza vinculos. Validacoes de negocio no service. Auditoria registrada para cada alteracao |
-| **T-053** | Integrar `RbacAspect` com `RoleResource` carregado do banco: antes de executar metodo com `@RequiresPermission`, consultar matriz e verificar se role do usuario tem acesso ao resource+action. Cache de matriz para performance | F03-04 | US-034, US-035 | Must | 1.5d | A definir | RBAC funcional para todos os endpoints. Requisicao sem permissao → 403 (nao 404 — RN12-01). Cache de permissoes (TTL 5min) |
+| **T-053** | Integrar `RbacAspect` com `RoleResource` do banco. Cache de matriz em memória (sem TTL — RN11-03) ⚠️ RbacAspect refatorado na Frente 0 (T-100, T-106): DB-backed, sem Sets, usa Role enum. Complementar: testes de integração, remover fallback JWT | F03-04 | US-034, US-035 | Must | 1.5d | A definir | RBAC funcional para todos os endpoints. Requisição sem permissão → 403 (não 404 — RN12-01) |
 | **T-054** | Garantir resposta 403 padrao (JSON amigavel): `{"title": "Acesso negado", "detail": "Voce nao tem permissao para acessar esta area.", "status": 403}`. Sem detalhes tecnicos ou caminhos internos (RN12-02) | F03-04 | US-036 | Must | 0.5d | A definir | Resposta 403 sempre no formato padrao. Nenhum stack trace. Mensagem em PT-BR |
 | **T-055** | Testes unitarios M4: `UserService`, `PermissionService` com JUnit 5 + Mockito. Testar RN09-03 (autodesativacao), RN10-01 (matriz permissoes), RN11-01 (sem BU), RN11-02 (sem modulo) | F03-01, F03-02, F03-03 | US-024 a US-033 | Must | 1.5d | A definir | Todos os cenario de RN testados. Excecoes lancadas corretamente. Cobertura ≥ 80% |
 | **T-056** | Testes seguranca RBAC (integrados): cada papel × endpoint proibido → 403. Testar com Testcontainers. Cenarios: Operador tenta PATCH /products, Auditor tenta POST /users, Gerente tenta POST /plans | F03-02, F03-04 | US-027 a US-036 | Must | 2d | A definir | Testes automatizados para combinacoes papel x recurso. 403 retornado para todas as combinacoes proibidas. Matriz RN10-01 validada como teste parametrizado |
@@ -266,42 +266,42 @@ Pre-M2 (Setup+Frente0)  M2 (EP-01)  M3 (EP-02)  Frente3  M4 (EP-03)  M5 (EP-04a)
 
 ---
 
-### Sprint 4 — Frente 0: Correções Pré-Sprint (Bloqueantes) | 17/07/2026
+### Sprint 4 — Frente 0: Correções Pré-Sprint (Bloqueantes) ✅ CONCLUÍDA | 17/07/2026
 
-**Estimativa total:** ~16-24h (2-3 dias) / **Responsavel:** A definir
+**Estimativa total:** ~16-24h (2-3 dias) / **Responsavel:** Agente IA / **Status:** ✅ 20/20 concluídas
 
-> Débitos técnicos impeditivos identificados na auditoria multidisciplinar com 9 skills ([IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md)). Devem ser corrigidos ANTES de iniciar qualquer feature da Sprint 4 (RBAC).
+> Débitos técnicos impeditivos identificados na auditoria multidisciplinar com 9 skills ([IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md)). **Todas as 20 tarefas foram concluídas.** Evidências no [Relatório de Execução](./sprints/sprint-04-rbac/SPRINT-4-EXECUTION-REPORT-Frente-0.md).
 
-| ID | Tarefa | Débito | Est. | Critério DONE |
-|:---|:---|:---:|:---:|:---|
-| **T-096.DT-048** | DT-048: Adicionar `spring-boot-starter-cache` + `caffeine:3.2.4` ao pom.xml + `CacheConfig.java` | DT-048 | 1h | Caffeine no classpath. CacheConfig com `@EnableCaching` |
-| **T-097.DT-049** | DT-049: Adicionar `rest-assured:5.5.7` + `rest-assured-spring-mock-mvc:5.5.7` (test scope) | DT-049 | 30min | REST Assured disponível nos testes |
-| **T-098.DT-050** | DT-050: Definir estratégia de merge JWT×banco para roles. `RbacAspect` consulta `user_permission` como fonte primária | DT-050 | 3h | Roles do banco prevalecem sobre JWT. RN11-03 funcional |
-| **T-099.DT-051** | DT-051: Abandonar cache TTL 5min no RBAC. Carregar matriz via `findAll()` com query indexada (<1ms) | DT-051 | 2h | Sem stale permissions. RN11-03 "efeito imediato" respeitado |
-| **T-100.DT-052** | DT-052: Refatorar `RbacAspect`: injetar `PermissionService`, remover Sets hardcoded, carregar do banco | DT-052 | 4h | RbacAspect sem Sets estáticos. Permissões 100% DB-backed |
-| **T-101.DT-053** | DT-053: Criar `User.java` entity + `UserRepository.java` (estende `BaseRepository<User>`) | DT-053 | 2h | UserRepository funcional. Índice parcial email único por tenant ativo |
-| **T-102.DT-054** | DT-054: Criar `ResourceAction.java` + `RoleResource.java` entities | DT-054 | 1h | Entities compilam. Mapeamento colunas correto |
-| **T-103.DT-055** | DT-055: Criar `BusinessUnit.java` entity (estende `BaseEntity`) | DT-055 | 1h | Entity compila. Referenciável por `UserPermission` |
-| **T-104.DT-056** | DT-056: Criar migration V006: `ALTER TABLE user_permission ADD CONSTRAINT fk_up_bu FOREIGN KEY (business_unit_id) REFERENCES business_unit(id)` + U006 rollback | DT-056 | 30min | FK criada. Rollback testado |
-| **T-105.DT-057** | DT-057: Criar migration V004: `INSERT INTO resource_action` (8 resources × 4 actions) + `INSERT INTO role_resource` (matriz RN10-01: 4 roles) + U004 rollback | DT-057 | 1h | Seed carrega. Matriz RN10-01 completa. Rollback funcional |
-| **T-106.DT-058** | DT-058 + DT-035 (backlog): Migrar `RbacAspect` de strings literais para `Role` enum | DT-058, DT-035 | 1h | Role enum referenciado. Type-safety na matriz |
-| **T-107.DT-059** | DT-059: Refatorar `TenantController.list()` para usar `TenantService` (não `TenantRepository` direto). Garantir `@RequiresPermission` | DT-059 | 1h | RBAC aplicado no endpoint de listagem. TenantRepository não injetado no controller |
-| **T-108.DT-060** | DT-060: Adicionar `JwtValidators.createDefaultWithIssuer(issuerUri)` no `NimbusJwtDecoder` em `SecurityConfig` | DT-060 | 1h | JWT de realms não autorizados → 401 |
-| **T-109.DT-061** | DT-061: Adicionar `ALTER TABLE ... FORCE ROW LEVEL SECURITY` nas 4 tabelas RLS do V003 (subscription, user, business_unit, audit_log) | DT-061 | 2h | RLS aplicado inclusive para table owner. RLSIsolationTest passa sem FORCE manual |
-| **T-110.DT-062** | DT-062: Validar `tenant_id` da URL contra `TenantContext.getTenantId()` no `SubscriptionService`. Adicionar `tenantClause()` no `findActiveByTenantId()` | DT-062 | 2h | Tenant mismatch → 403. Queries com tenant_id do contexto |
-| **T-111.DT-063** | DT-063: Corrigir `TenantAwareDataSource.applyTenantContext()`: wrap `UUID.fromString()` em try-catch próprio, fechar conexão antes de relançar | DT-063 | 1h | Connection leak eliminado. Pool estável |
-| **T-112.DT-064** | DT-064: Alinhar matriz RBAC: decidir SPRINT-CARD (restritiva) vs RbacAspect (permissiva). Documentar breaking change e plano de cutover | DT-064 | 1h | Matriz unificada. MANAGER_BU impacto documentado |
-| **T-113.DT-065** | DT-065 + DT-057 (backlog): Corrigir diagrama de dependências TASKS.md §3: FASE 3 tasks reais T-046..T-056 | DT-065 | 30min | Diagrama reflete tasks atuais. Sem tasks fantasmas |
-| **T-114.DT-066** | DT-066: Corrigir header SPRINT-TEST-SUITE.md: 19→27 cenários. Atualizar SPRINT-CARD.md métricas | DT-066 | 15min | Métricas corretas em todos os artefatos |
-| **T-115.DT-067** | DT-067: Adicionar verificação de escopo BU: `RbacAspect` ou `PermissionService` valida `business_unit_id` contra `TenantContext.getBusinessUnitIds()` | DT-067 | 3h | MANAGER_BU acessa apenas BUs designadas. RN10-01 escopo correto |
+| ID | Tarefa | Débito | Est. | Status | Critério DONE |
+|:---|:---|:---:|:---:|:---:|:---|
+| **T-096.DT-048** | DT-048: Adicionar `spring-boot-starter-cache` + `caffeine:3.2.4` ao pom.xml + `CacheConfig.java` | DT-048 | 1h | ✅ | Caffeine no classpath. CacheConfig com `@EnableCaching` |
+| **T-097.DT-049** | DT-049: Adicionar `rest-assured:5.5.7` + `rest-assured-spring-mock-mvc:5.5.7` (test scope) | DT-049 | 30min | ✅ | REST Assured disponível nos testes |
+| **T-098.DT-050** | DT-050: Definir estratégia de merge JWT×banco para roles. `RbacAspect` consulta `user_permission` como fonte primária | DT-050 | 3h | ✅ | Roles do banco prevalecem sobre JWT. RN11-03 funcional |
+| **T-099.DT-051** | DT-051: Abandonar cache TTL 5min no RBAC. Carregar matriz via `findAll()` com query indexada (<1ms) | DT-051 | 2h | ✅ | Sem stale permissions. RN11-03 "efeito imediato" respeitado |
+| **T-100.DT-052** | DT-052: Refatorar `RbacAspect`: injetar `PermissionService`, remover Sets hardcoded, carregar do banco | DT-052 | 4h | ✅ | RbacAspect sem Sets estáticos. Permissões 100% DB-backed |
+| **T-101.DT-053** | DT-053: Criar `User.java` entity + `UserRepository.java` (estende `BaseRepository<User>`) | DT-053 | 2h | ✅ | UserRepository funcional. Índice parcial email único por tenant ativo |
+| **T-102.DT-054** | DT-054: Criar `ResourceAction.java` + `RoleResource.java` entities | DT-054 | 1h | ✅ | Entities compilam. Mapeamento colunas correto |
+| **T-103.DT-055** | DT-055: Criar `BusinessUnit.java` entity (estende `BaseEntity`) | DT-055 | 1h | ✅ | Entity compila. Referenciável por `UserPermission` |
+| **T-104.DT-056** | DT-056: Criar migration V006: FK user_permission → business_unit + U006 rollback | DT-056 | 30min | ✅ | FK criada. Rollback testado |
+| **T-105.DT-057** | DT-057: Criar migration V004: seed resource_action + role_resource (matriz RN10-01) + U004 rollback | DT-057 | 1h | ✅ | Seed carrega. Matriz RN10-01 completa. Rollback funcional |
+| **T-106.DT-058** | DT-058 + DT-035 (backlog): Migrar `RbacAspect` de strings literais para `Role` enum | DT-058, DT-035 | 1h | ✅ | Role enum referenciado. Type-safety na matriz |
+| **T-107.DT-059** | DT-059: Refatorar `TenantController.list()` para usar `TenantService`. Garantir `@RequiresPermission` | DT-059 | 1h | ✅ | RBAC aplicado no endpoint de listagem |
+| **T-108.DT-060** | DT-060: Adicionar `JwtValidators.createDefaultWithIssuer(issuerUri)` no `SecurityConfig` | DT-060 | 1h | ✅ | JWT de realms não autorizados → 401 |
+| **T-109.DT-061** | DT-061: Adicionar FORCE ROW LEVEL SECURITY nas 4 tabelas RLS do V003 | DT-061 | 2h | ✅ | RLS aplicado inclusive para table owner |
+| **T-110.DT-062** | DT-062: Validar tenant_id URL vs JWT no SubscriptionService. Adicionar tenantClause() | DT-062 | 2h | ✅ | Tenant mismatch → 403 |
+| **T-111.DT-063** | DT-063: Corrigir connection leak no TenantAwareDataSource | DT-063 | 1h | ✅ | Connection leak eliminado. Pool estável |
+| **T-112.DT-064** | DT-064: Alinhar matriz RBAC: SPRINT-CARD restritiva + breaking change documentado | DT-064 | 1h | ✅ | Matriz unificada. MANAGER_BU impacto documentado |
+| **T-113.DT-065** | DT-065: Corrigir diagrama de dependências TASKS.md §3: tasks reais T-046..T-056 | DT-065 | 30min | ✅ | Diagrama reflete tasks atuais |
+| **T-114.DT-066** | DT-066: Corrigir header SPRINT-TEST-SUITE.md: 19→27 cenários + SPRINT-CARD métricas | DT-066 | 15min | ✅ | Métricas corretas em todos os artefatos |
+| **T-115.DT-067** | DT-067: Adicionar BU scope check no PermissionService.validateBusinessUnitAccess() | DT-067 | 3h | ✅ | MANAGER_BU acessa apenas BUs designadas |
 
 ---
 
-### Sprint 4 — Recomendados (Durante a Sprint) | 17/07/2026
+### Sprint 4 — Recomendados (Durante a Sprint) ⬜ | 17/07/2026
 
-**Estimativa total:** ~28-32h / **Responsavel:** A definir
+**Estimativa total:** ~28-32h / **Responsavel:** A definir / **Status:** ⬜ 0/17 concluídas
 
-> Débitos não-bloqueantes que devem ser tratados durante a Sprint 4 para garantir qualidade e segurança.
+> Débitos não-bloqueantes que devem ser tratados durante a Sprint 4 para garantir qualidade e segurança. Paralelizáveis com as Frentes 1-4.
 
 | ID | Tarefa | Débito | Est. | Critério DONE |
 |:---|:---|:---:|:---:|:---|

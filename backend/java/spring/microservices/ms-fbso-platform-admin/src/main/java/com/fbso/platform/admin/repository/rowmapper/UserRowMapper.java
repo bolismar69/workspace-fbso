@@ -25,6 +25,7 @@ public class UserRowMapper implements RowMapper<User> {
         if (statusStr != null) {
             u.setStatus(UserStatus.valueOf(statusStr));
         }
+        u.setInvitedDt(rs.getObject("invited_dt", java.time.OffsetDateTime.class));
         // Auditoria
         u.setCreatedDt(rs.getObject("created_dt", java.time.OffsetDateTime.class));
         u.setUpdatedDt(rs.getObject("updated_dt", java.time.OffsetDateTime.class));

@@ -2,12 +2,11 @@
 
 - **Solução:** `ms-fbso-platform-admin`
 - **Tipo:** Backend
-- **Stack:** Java 25 + Spring Boot + PostgreSQL
+- **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.0
+- **Versão:** 2.1
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-3 concluídas ✅. 18 endpoints REST (5 Dashboard + 7 Tenant + 6 Plan + 4 Subscription + 1 Audit). 142 testes. 21 RNs implementadas. Próximo: Sprint 4 — RBAC
-- **Status:** Em Desenvolvimento — Sprint 3 (M2+M3) em andamento. Frentes 0+1 concluídas. Dashboard endpoints (§4.1) implementados. 50 testes passando.
+- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 4 Frente 0 concluída ✅ (20/20 correções). 18 endpoints REST. 142 testes. 21 RNs implementadas. Próximo: Sprint 4 Frentes 1-5b (RBAC)
 - **Origem:** [PRD.md](./PRD.md) + [ARCHITECTURE.md](./ARCHITECTURE.md)
 
 ---
@@ -399,11 +398,13 @@ CREATE TABLE audit_log (
 | Unidade de Negócio | `business_unit` (tabela) | CNPJ/filial vinculada a um Tenant |
 | Plano | `plan` (tabela) | Pacote comercial com módulos e preço |
 | Assinatura | `subscription` (tabela) | Vínculo Tenant × Plano com vigência |
-| RBAC | `@RequiresPermission` + `RbacAspect` | Controle de acesso baseado em papéis |
+| RBAC | `@RequiresPermission` + `PermissionService` + `RbacAspect` (DB-backed via `resource_action` + `role_resource`) | Controle de acesso baseado em papéis — matriz RN10-01 carregada do banco |
 | Soft Delete | `deleted_dt IS NULL` + índices parciais | Exclusão lógica — dados nunca removidos |
-| Tenant Isolation | PostgreSQL RLS + `BaseRepository` + Teste cross-tenant (3 camadas) | Isolamento de dados entre clientes — defesa em profundidade |
-| RLS (Row-Level Security) | PostgreSQL — `CREATE POLICY tenant_isolation USING (tenant_id = current_setting('app.current_tenant_id')::UUID)` | Camada 1 do isolamento multi-tenant — garantia no nível do banco |
-| Migration V003 | Flyway — ativa RLS + cria políticas em 5 tabelas (subscription, user, business_unit, product_service, audit_log) | Nova migration da Sprint 2 para isolamento multi-tenant |
+| Tenant Isolation | PostgreSQL RLS com FORCE + `BaseRepository` + Teste cross-tenant (3 camadas) | Isolamento de dados entre clientes — defesa em profundidade |
+| RLS (Row-Level Security) | PostgreSQL — `FORCE ROW LEVEL SECURITY` + `CREATE POLICY tenant_isolation USING (tenant_id = current_setting('app.current_tenant_id')::UUID)` em 4 tabelas | Camada 1 do isolamento multi-tenant — FORCE garante que nem o table owner escapa |
+| Migration V003 | Flyway — ativa RLS + FORCE + cria políticas em 4 tabelas (subscription, user, business_unit, audit_log) | Atualizada na Sprint 4 Frente 0 com FORCE ROW LEVEL SECURITY |
+| Migration V004 | Flyway — seed data: `INSERT INTO resource_action` (32 ações) + `INSERT INTO role_resource` (matriz RN10-01) | Criada na Sprint 4 Frente 0 — matriz RBAC populada |
+| Migration V006 | Flyway — FK `user_permission.business_unit_id → business_unit.id` | Criada na Sprint 4 Frente 0 — integridade referencial |
 | App Switcher | Lógica no frontend; backend provê `modules[]` no JWT | Seletor de módulos do portal |
 | Onboarding | `/onboarding/*` endpoints | Fluxo guiado de primeiro acesso |
 | JWT | JSON Web Token — assinado pelo Keycloak (RS256) | Token de autenticação stateless |
@@ -414,6 +415,7 @@ CREATE TABLE audit_log (
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.1 | 17/07/2026 | **Sprint 4 Frente 0 concluída:** Stack atualizado (Caffeine Cache). Glossário (§10): RBAC DB-backed, RLS com FORCE, novas migrations V004+V006. Status atualizado. Linha de status duplicada removida | Agente IA |
 | 1.7 | 16/07/2026 | v1.7 — RN06-02 e RN08-01 reforçadas, 2 novos cenários de teste (TC-F02-04-010, TC-F02-05-009), referência a débitos técnicos (IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) | Time Técnico |
 | 1.6 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Desenvolvimento". | Time Técnico |
 | 1.5 | 15/07/2026 | Revisão Caveman (DOCS-SERVICE-CAVEMAN-REVIEW.md): Corrigida contagem de entidades (10→11, §1.2). Adicionado endpoint `GET /dashboard/client/summary` (§4.1, 36→37). Corrigida contagem RN (45→51, §3.3). Corrigido header da matriz RN (~45→51). | Caveman/IA |

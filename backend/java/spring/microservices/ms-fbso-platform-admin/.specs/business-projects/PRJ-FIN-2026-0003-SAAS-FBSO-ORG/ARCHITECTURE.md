@@ -1,13 +1,13 @@
 # ARCHITECTURE.md — Arquitetura da Solução: ms-fbso-platform-admin
 
 - **Microserviço:** `ms-fbso-platform-admin`
-- **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL
+- **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.4
+- **Versão:** 2.5
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 3: 42/42 tasks. 18 endpoints REST. maven-failsafe-plugin configurado. V003 product_service RLS corrigido. AuditAspect com previous_value/new_value (DT-021). BaseRepository.save/update genéricos. 142 testes. Próximo: Sprint 4 — RBAC
+- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 4 Frente 0 concluída ✅ (20/20). RbacAspect DB-backed via PermissionService. RLS com FORCE. JWT issuer validation ativa. 4 novas entities + V004 (seed RBAC) + V006 (FK). Próximo: Sprint 4 Frentes 1-5b
 - **Origem:** [PRD.md](./PRD.md)
-- **Débitos Técnicos:** [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) — 47 débitos (7 skills, 16/07/2026)
+- **Débitos Técnicos:** [Sprint 3](./sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) · [Sprint 4](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md) — 56 débitos catalogados (47 novos + 9 backlog)
 - **Escopo:** Estilo arquitetural + C4 L1-L3 + Design detalhado + C4 Deployment + ADRs
 
 ---
@@ -353,7 +353,7 @@ C4Component
 flowchart TD
     req["🔐 HTTP Request<br/>Authorization: Bearer JWT"] --> jwtFilter["<b>1. JwtAuthenticationFilter</b><br/>Valida assinatura RS256 (Keycloak)<br/>Valida expiração (exp)<br/>Extrai claims → tenant_id, user_id, roles<br/>Seta TenantContext + app.current_tenant_id"]
     jwtFilter -->|"401 se inválido"| error401["❌ 401 Unauthorized"]
-    jwtFilter -->|"válido"| rbac["<b>2. RbacAspect</b><br/>Lê @RequiresPermission<br/>Verifica role do JWT × resource + action<br/>(Matriz RN10-01)"]
+    jwtFilter -->|"válido"| rbac["<b>2. RbacAspect + PermissionService</b><br/>Lê @RequiresPermission<br/>Consulta roles do banco (user_permission)<br/>Valida contra matriz RN10-01 (role_resource)<br/>DB-backed — sem cache TTL (RN11-03)"]
     rbac -->|"403 se negado"| error403["🚫 403 Forbidden"]
     rbac -->|"permitido"| controller["<b>3. Controller</b><br/>Valida DTO (@Valid + Bean Validation)<br/>Converte DTO → entity<br/>Chama Service"]
     controller -->|"400 se inválido"| error400["⚠️ 400 Bad Request"]
@@ -875,6 +875,7 @@ flowchart LR
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.5 | 17/07/2026 | **Sprint 4 Frente 0 concluída:** RbacAspect DB-backed com PermissionService (matriz RN10-01 do banco, sem Sets hardcoded). RLS com FORCE ROW LEVEL SECURITY nas 4 tabelas (ADR-L07 atualizado). JWT issuer validation ativa. Caffeine Cache + REST Assured adicionados. Pipeline de segurança atualizado (§4). 4 novas entities (User, ResourceAction, RoleResource, BusinessUnit). Migrations V004 (seed RBAC) + V006 (FK). [Detalhes](sprints/sprint-04-rbac/SPRINT-4-EXECUTION-REPORT-Frente-0.md) | Agente IA |
 | 2.1 | 16/07/2026 | BaseRepository.save/update (DT-003), TenantIsolationException no TenantAwareDataSource (DT-006), referência a débitos técnicos da Sprint 3 ([IDENTIFIED-TECHNICAL-DEBT](sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) — auditoria com 7 skills). ADR-L01 e ADR-L07 atualizados. | Time Técnico |
 | 2.0 | 16/07/2026 | **Consolidação dos 3 documentos de arquitetura:** C4 L1-L3 (§3) e C4 Deployment (§10) integrados ao ARCHITECTURE.md. Diagramas ASCII convertidos para Mermaid: package-by-layer (§1.1), pipeline de segurança (§4), pirâmide de testes (§8.1). Seções renumeradas. Changelog unificado. Documentos `ARCHITECTURE-C4.md` e `ARCHITECTURE-C4-DEPLOYMENT.md` arquivados. | Arquiteto/IA |
 | 1.4 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Execução". | Time Técnico |
@@ -886,4 +887,4 @@ flowchart LR
 ------------------------------
 
 ---
-🤖 *Documentação gerada de forma automatizada pelo Agente: Analista de Negócios/Claude. Foram utilizados os skills: architecture-patterns, 030-architecture-adr-general, engineering-skills. v2.0 em 16/07/2026: Consolidação dos 3 documentos de arquitetura.*
+🤖 *Documentação gerada de forma automatizada pelo Agente: Analista de Negócios/Claude. Foram utilizados os skills: architecture-patterns, 030-architecture-adr-general, engineering-skills. v2.5 em 17/07/2026: Atualizado pós-Sprint 4 Frente 0 — RbacAspect DB-backed, RLS FORCE, PermissionService, Caffeine, REST Assured.*

@@ -1,11 +1,11 @@
 # PRD — Product Requirements Document (Backend: ms-fbso-platform-admin)
 
 - **Microserviço:** `ms-fbso-platform-admin`
-- **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL
+- **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.11
+- **Versão:** 1.12
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 3: 42/42 tasks (100%). 10 features (F01-01 a F02-05). 18 endpoints REST. 142 testes. 28 débitos resolvidos. 9 postergados Sprint 4+. 57/99 tarefas (58%). Próximo: Sprint 4 — RBAC
+- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 4 Frente 0 concluída ✅ (20/20). 77/136 tarefas (57%). Próximo: Sprint 4 Frentes 1-5b (28 tarefas pendentes)
 
 ---
 
@@ -181,10 +181,11 @@ A **FBSO Platform** é o futuro SaaS multi-produto da FBSO.ORG. Nesta **Fase 0**
 | **Linguagem** | Java 25 |
 | **Framework** | Spring Boot (versão compatível com Java 25) |
 | **Build** | Maven (preferencial) |
-| **Persistência** | Spring Data JDBC / JDBC Template + Flyway ou Liquibase (migrations) |
-| **Segurança** | Spring Security + JWT (Keycloak) |
+| **Persistência** | Spring Data JDBC / JDBC Template + Flyway (migrations) |
+| **Segurança** | Spring Security + JWT (Keycloak) + JWT Issuer Validation |
+| **Cache** | Caffeine Cache (spring-boot-starter-cache) |
 | **Container** | Docker + GraalVM Native Image (preferencial para produção) |
-| **Testes** | JUnit 5 + Mockito + Testcontainers |
+| **Testes** | JUnit 5 + Mockito + Testcontainers + REST Assured |
 
 ### 5.2 ADRs que Impactam Este Microserviço
 
@@ -196,25 +197,23 @@ A **FBSO Platform** é o futuro SaaS multi-produto da FBSO.ORG. Nesta **Fase 0**
 | **ADR-05** | Soft Delete universal | `deleted_dt IS NULL` em toda query. Índices únicos parciais |
 | **ADR-06** | API Contract First | OpenAPI YAML é a verdade. Código gerado ou validado contra ele |
 | **ADR-07** | JWT Stateless | Sem sessão no servidor. `TenantContext` por request (ThreadLocal) |
-| **ADR-08** | PostgreSQL Row-Level Security | Camada de defesa em profundidade — RLS no banco garante isolamento mesmo se query da aplicação esquecer `WHERE tenant_id = ?`. Política: `USING (tenant_id = current_setting('app.current_tenant_id')::UUID)` |
+| **ADR-08** | PostgreSQL Row-Level Security + FORCE | Camada de defesa em profundidade. `FORCE ROW LEVEL SECURITY` aplicado a 4 tabelas (subscription, user, business_unit, audit_log). Política: `USING (tenant_id = current_setting('app.current_tenant_id')::UUID)`. FORCE garante que nem o table owner (app user) escapa do RLS |
 
 ### 5.3 Estrutura de Pacotes Esperada
 
 ```
 com.fbso.platform.admin/
-├── config/           ← SecurityConfig, TenantContext, WebConfig
-├── security/         ← JwtAuthFilter, TenantIsolationFilter, RbacInterceptor
-├── tenant/           ← TenantController, Service, Repository
-├── plan/             ← PlanController, Service, Repository
-├── subscription/     ← SubscriptionController, Service, Repository
-├── user/             ← UserController, Service, Repository, InviteService
-├── permission/       ← PermissionController, Service, Repository
-├── businessunit/     ← BusinessUnitController, Service, Repository
-├── product/          ← ProductController, Service, Repository
-├── dashboard/        ← DashboardController, Service
-├── onboarding/       ← OnboardingController, Service
-├── audit/            ← AuditController, Service, EntityListener
-└── common/           ← BaseEntity, SoftDeleteRepository
+├── config/           ← SecurityConfig, CacheConfig, TenantContext, TenantAwareDataSource
+├── security/         ← JwtAuthenticationFilter, aspect/RbacAspect, aspect/AuditAspect
+├── entity/           ← User, ResourceAction, RoleResource, BusinessUnit, Tenant, Plan, etc.
+├── enums/            ← Role, UserStatus, SubscriptionStatus, etc.
+├── controller/       ← TenantController, PlanController, UserController, etc.
+├── service/          ← TenantService, PermissionService, SubscriptionService, etc.
+├── repository/       ← UserRepository, TenantRepository, etc.
+│   └── rowmapper/    ← UserRowMapper, TenantRowMapper, etc.
+├── dto/              ← Request/Response DTOs
+├── exception/        ← GlobalExceptionHandler, domain exceptions
+└── common/           ← BaseEntity, BaseRepository, BaseRowMapper
 ```
 
 ---
@@ -236,16 +235,21 @@ com.fbso.platform.admin/
 **Implementação esperada:**
 - `TenantContext` — holder ThreadLocal que armazena o `tenant_id` da requisição atual
 - `JwtAuthenticationFilter` — extrai `tenant_id` do JWT e seta no `TenantContext` E configura `app.current_tenant_id` na sessão PostgreSQL
-- **Migration V003** — `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` + `CREATE POLICY tenant_isolation` em 5 tabelas com `tenant_id` (subscription, user, business_unit, product_service, audit_log). Demais tabelas com `tenant_id` receberão RLS nas fases seguintes
+- **Migration V003** — `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` + `FORCE ROW LEVEL SECURITY` + `CREATE POLICY tenant_isolation` nas tabelas multi-tenant (subscription, user, business_unit, audit_log). FORCE garante que nem o table owner escapa do RLS
+- **Migration V004** — Seed data da matriz RN10-01: `INSERT INTO resource_action` (8 resources × 4 actions) + `INSERT INTO role_resource` (4 roles). Criada na Sprint 4 Frente 0
+- **Migration V006** — `ALTER TABLE user_permission ADD CONSTRAINT fk_up_bu FOREIGN KEY (business_unit_id) REFERENCES business_unit(id)`. Criada na Sprint 4 Frente 0
 - **BaseRepository** — template JDBC com `AND tenant_id = ?` automático
 - **Teste obrigatório:** Tentar acessar dados de outro tenant deve retornar vazio (não 403 — o tenant nem sabe que o outro existe). Tentar INSERT com `tenant_id` diferente do contexto → rejeitado pelo PostgreSQL RLS
 
 ### 6.2 RBAC (Role-Based Access Control)
 
-**Implementação esperada:**
-- `RbacInterceptor` — verifica se o papel do usuário (do JWT) tem permissão para o recurso/ação
-- Matriz de permissões conforme `RN10-01` do FEATURES.md
-- **Teste obrigatório:** Operador tentando editar um produto deve receber 403
+**Implementação (DB-backed — Sprint 4 Frente 0):**
+- `RbacAspect` (AOP) + `PermissionService` — verifica permissões consultando o banco (não o JWT)
+- `PermissionService` carrega a matriz RN10-01 das tabelas `resource_action` + `role_resource` (seed V004)
+- Roles do usuário vêm da tabela `user_permission` (user_id, business_unit_id, role) — não do JWT
+- Sem cache TTL — alterações de permissão têm efeito imediato (RN11-03)
+- `@RequiresPermission(resource, action)` nos controllers — o aspecto intercepta e valida
+- **Teste obrigatório:** 20+ combinações papel × endpoint proibido → 403 (via REST Assured + Testcontainers)
 
 ### 6.3 Soft Delete
 
@@ -483,8 +487,8 @@ curl http://localhost:8081/api/v1/dashboard/admin/summary \
 | Sprint | Branch | Marco | Status |
 |:---|:---|:---|:---|
 | Sprint 1–2 | `feature/java-fbso-platform-admin` | Setup + Segurança | ✅ Mergeada e deletada |
-| Sprint 3 | `feature/sprint-03-portal-admin` | M2+M3 — Portal Admin + Contas/Planos | 🔄 Ativa |
-| Sprint 4 | `feature/sprint-04-rbac` | M4 — RBAC | ⬜ Pendente |
+| Sprint 3 | `feature/sprint-03-portal-admin` | M2+M3 — Portal Admin + Contas/Planos | ✅ Mergeada e deletada |
+| Sprint 4 | `PRJ-FIN-2026-0003-java-ms-fbso-platform-admin-sprint-04-rbac` | M4 — RBAC | 🔄 Ativa (Frente 0 ✅) |
 | Sprint 5 | `feature/sprint-05-portal-cliente` | M5 — Portal Cliente | ⬜ Pendente |
 | Sprint 6 | `feature/sprint-06-bus-catalogo` | M6 — BUs e Catálogo | ⬜ Pendente |
 | Sprint 7 | `feature/sprint-07-homologacao` | M7 — Homologação | ⬜ Pendente |
@@ -565,6 +569,7 @@ git checkout -b hotfix/sprint-NN-<descricao> <merge-commit-hash>
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.12 | 17/07/2026 | **Sprint 4 Frente 0 concluída:** Stack atualizado (Caffeine Cache, REST Assured). §5.3 Estrutura de pacotes reflete código real (entity/, aspect/, enums/). §6.1 Migrations: V004 (seed RBAC) + V006 (FK). §6.2 RBAC reescrito: DB-backed via PermissionService + ResourceAction/RoleResource (não JWT). ADR-08 com FORCE ROW LEVEL SECURITY. §8.4 Branch status: Sprint 3 mergeada, Sprint 4 ativa. [Detalhes](sprints/sprint-04-rbac/SPRINT-4-EXECUTION-REPORT-Frente-0.md) | Agente IA |
 | 1.8 | 16/07/2026 | Atualização de stack (Spring Boot 3.5.14, Jackson 2.21.4 — CVE-2026-22733/CVE-2026-22731 auth bypass CVSS 8.2). Adicionada referência a débitos técnicos da Sprint 3 ([IDENTIFIED-TECHNICAL-DEBT](sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) — auditoria com 7 skills). | Time Técnico |
 | 1.5 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Execução". | Time Técnico |
 | 1.7 | 16/07/2026 | Estratégia de branching alterada: modelo de branch única substituído por uma branch por sprint (§8.4). Adicionada tabela de mapeamento Sprint→Branch para Sprints 3–7. Documento canônico: `docs/superpowers/specs/2026-07-16-sprint-branching-strategy-design.md`. | Time Técnico |
