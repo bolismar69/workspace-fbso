@@ -28,7 +28,7 @@ Os artefatos gerados são:
 | `{SPRINT_NUMBER}` | Número da sprint (1 a N) | `1` |
 | `{SPRINT_NAME}` | Nome curto da sprint (kebab-case) | `sprint-01-setup` |
 | `{STACK}` | Stack tecnológica principal | `Java 25 + Spring Boot + PostgreSQL` |
-| `{BRANCH_NAME}` | Nome da branch onde deve ser realizado o desenvolvimento. Negar realizar desenvolvimento direto na branch `main` ou `master` |
+| `{BRANCH_NAME}` | Nome da branch da sprint no formato `feature/sprint-NN-<slug>`. Para projetos multi-sprint, cada sprint tem sua própria branch. Nunca usar `main` ou `master`. |
 
 ---
 
@@ -90,8 +90,17 @@ Extrair do `SPECS.md`:
 # SPRINT-CARD: Sprint {N} — {Nome Descritivo}
 
 **Sprint:** {N} de {M} | **Marco:** {marco} | **Datas:** {início} a {fim} | **Duração:** {dias} dias
-**Responsável:** {responsável} | **Branch:** {BRANCH_NAME}
+**Responsável:** {responsável}
 **Docs-mestre:** [TASKS.md](../TASKS.md) | [TEST_PLAN.md](../TEST_PLAN.md) | [SPECS.md](../SPECS.md)
+
+---
+
+> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `{BRANCH_NAME}`. Antes de começar, execute:
+> ```bash
+> git checkout {BRANCH_NAME}
+> git branch --show-current  # deve exibir: {BRANCH_NAME}
+> ```
+> 📖 Detalhes completos: [PRD.md — Estratégia de Branching](../PRD.md)
 
 ## 🎯 Sprint Goal
 [1-2 frases: o que esta sprint entrega de valor. Formato: "Verbo no imperativo. Métrica de sucesso."]
@@ -131,7 +140,6 @@ Extrair do `SPECS.md`:
 # SPRINT-TEST-SUITE: Sprint {N} — {Nome Descritivo}
 
 **Sprint:** {N} de {M} | **Origem:** [TEST_PLAN.md](../TEST_PLAN.md) | **Features cobertas:** {N} | **Total de cenários:** {N}
-**Branch:** {BRANCH_NAME}
 
 ## 1. {Feature ID}: {Nome da Feature} (N cenários)
 [Tabela: ID | Descrição | Nível (Unit/Integração/E2E/Segurança) | Ref. TEST_PLAN (seção)]
@@ -159,7 +167,7 @@ Extrair do `SPECS.md`:
 # SPRINT-REVIEW: Sprint {N} — {Nome Descritivo}
 
 **Sprint:** {N} de {M} | **Data da Review:** {data} | **Participantes:** {lista}
-**Features:** {lista} | **Branch:** {BRANCH_NAME}
+**Features:** {lista}
 
 ## 🎯 O Que Demonstrar
 
@@ -238,6 +246,7 @@ Atualizar o arquivo `{SPRINTS_INDEX}` (`sprints/README.md`):
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.1 | 16/07/2026 | Padronização de branching: `{BRANCH_NAME}` agora segue convenção `feature/sprint-NN-<slug>`. SPRINT-CARD.md ganha bloco 🚫 BRANCH OBRIGATÓRIA com comandos git. SPRINT-TEST-SUITE.md e SPRINT-REVIEW.md não incluem mais `Branch:` no header. | Time Técnico |
 | 1.0 | 14/07/2026 | Criação inicial: geração de 3 artefatos de sprint (SPRINT-CARD, SPRINT-TEST-SUITE, SPRINT-REVIEW) a partir de TASKS.md, TEST_PLAN.md e SPECS.md | Time de Arquitetura |
 
 ------------------------------

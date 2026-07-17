@@ -1,12 +1,13 @@
 # ARCHITECTURE.md — Arquitetura da Solução: ms-fbso-platform-admin
 
 - **Microserviço:** `ms-fbso-platform-admin`
-- **Stack:** Java 25 + Spring Boot + PostgreSQL
+- **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.0
-- **Data:** 16 de Julho de 2026
-- **Status:** Em Execução — Sprint 3 (M2+M3) iniciada em 16/07/2026
+- **Versão:** 2.4
+- **Data:** 17 de Julho de 2026
+- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 3: 42/42 tasks. 18 endpoints REST. maven-failsafe-plugin configurado. V003 product_service RLS corrigido. AuditAspect com previous_value/new_value (DT-021). BaseRepository.save/update genéricos. 142 testes. Próximo: Sprint 4 — RBAC
 - **Origem:** [PRD.md](./PRD.md)
+- **Débitos Técnicos:** [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) — 47 débitos (7 skills, 16/07/2026)
 - **Escopo:** Estilo arquitetural + C4 L1-L3 + Design detalhado + C4 Deployment + ADRs
 
 ---
@@ -657,13 +658,13 @@ class TenantIsolationIntegrationTest {
 
 | ID | Decisão | Justificativa |
 |:---|:---|:---|
-| **ADR-L01** | JDBC Template (não JPA/Hibernate) | Controle total sobre SQL — essencial para Multi-Tenant e Soft Delete. Sem anotações mágicas |
+| **ADR-L01** | JDBC Template (não JPA/Hibernate) | Controle total sobre SQL — essencial para Multi-Tenant e Soft Delete. Sem anotações mágicas. BaseRepository agora inclui `save(T)` e `update(T)` genéricos (DT-003, Sprint 3) |
 | **ADR-L02** | Aspectos AOP para cross-cutting | RBAC e Auditoria não poluem services e repositories. Zero risco de esquecimento humano. Tenant Isolation delegado ao PostgreSQL RLS (ADR-L07) |
 | **ADR-L03** | Auditoria assíncrona | Não bloqueia a operação principal. Trade-off: perda de registros em crash (aceitável para Fase 0) |
 | **ADR-L04** | RFC 7807 para erros | Padrão IETF. Frontend implementa tratamento genérico. Sem surpresas |
 | **ADR-L05** | Índices únicos parciais (PostgreSQL) | Permite reúso de CNPJ/e-mail após soft delete. Sem triggers complexos |
 | **ADR-L06** | Package-by-Layer tradicional | Simplicidade > pureza arquitetural. Time reduzido, prazo curto. Reavaliar na Fase 1 |
-| **ADR-L07** | PostgreSQL Row-Level Security (RLS) | Defesa em profundidade — camada 1 de 3 para isolamento multi-tenant. Garantia no nível do banco: impossível burlar via aplicação. Substitui o TenantIsolationAspect AOP (removido — redundante e frágil) |
+| **ADR-L07** | PostgreSQL Row-Level Security (RLS) | Defesa em profundidade — camada 1 de 3 para isolamento multi-tenant. Garantia no nível do banco: impossível burlar via aplicação. Substitui o TenantIsolationAspect AOP (removido — redundante e frágil). TenantAwareDataSource agora lança `TenantIsolationException` em falha (DT-006, Sprint 3) |
 
 ---
 
@@ -874,6 +875,7 @@ flowchart LR
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.1 | 16/07/2026 | BaseRepository.save/update (DT-003), TenantIsolationException no TenantAwareDataSource (DT-006), referência a débitos técnicos da Sprint 3 ([IDENTIFIED-TECHNICAL-DEBT](sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) — auditoria com 7 skills). ADR-L01 e ADR-L07 atualizados. | Time Técnico |
 | 2.0 | 16/07/2026 | **Consolidação dos 3 documentos de arquitetura:** C4 L1-L3 (§3) e C4 Deployment (§10) integrados ao ARCHITECTURE.md. Diagramas ASCII convertidos para Mermaid: package-by-layer (§1.1), pipeline de segurança (§4), pirâmide de testes (§8.1). Seções renumeradas. Changelog unificado. Documentos `ARCHITECTURE-C4.md` e `ARCHITECTURE-C4-DEPLOYMENT.md` arquivados. | Arquiteto/IA |
 | 1.4 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Execução". | Time Técnico |
 | 1.3 | 15/07/2026 | Revisão Caveman (DOCS-SERVICE-CAVEMAN-REVIEW.md): Corrigido SQL injection (L337, concatenação→PreparedStatement). Corrigido RLS de 11→5 tabelas com justificativa (§5.3). Removido TenantIsolationAspect do file listing (§2) e diagrama (§1.1) — substituído por RLS. Adicionado TenantAwareDataSource. Reordenado changelog cronologicamente. Adicionado mapeamento ADR-Lxx↔ADR-xx (§9). | Caveman/IA |

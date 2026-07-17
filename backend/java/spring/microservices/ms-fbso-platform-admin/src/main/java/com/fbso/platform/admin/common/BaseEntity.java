@@ -1,6 +1,8 @@
 package com.fbso.platform.admin.common;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -78,6 +80,25 @@ public abstract class BaseEntity {
 
     public void setDeletedBy(UUID deletedBy) {
         this.deletedBy = deletedBy;
+    }
+
+    /**
+     * @return o ID da entidade (implementado por cada subclasse)
+     */
+    public abstract UUID getId();
+
+    /**
+     * Define o ID da entidade (usado pelo BaseRepository após INSERT).
+     */
+    public abstract void setId(UUID id);
+
+    /**
+     * @return mapa coluna→valor com os campos específicos da entidade
+     *         (excluindo id, created_dt, updated_dt, created_by, updated_by,
+     *          deleted_dt, deleted_by — que são gerenciados pelo BaseRepository)
+     */
+    public Map<String, Object> toColumnMap() {
+        return Collections.emptyMap();
     }
 
     /**

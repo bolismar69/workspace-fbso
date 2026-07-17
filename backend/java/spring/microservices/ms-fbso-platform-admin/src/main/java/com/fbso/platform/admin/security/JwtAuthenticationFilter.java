@@ -1,6 +1,8 @@
 package com.fbso.platform.admin.security;
 
+import com.fbso.platform.admin.dto.response.ErrorResponse;
 import com.fbso.platform.admin.utils.JwtUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,9 +45,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String HEADER_AUTHORIZATION = "Authorization";
 
     private final JwtDecoder jwtDecoder;
+    private final ObjectMapper objectMapper;
 
-    public JwtAuthenticationFilter(JwtDecoder jwtDecoder) {
+    public JwtAuthenticationFilter(JwtDecoder jwtDecoder, ObjectMapper objectMapper) {
         this.jwtDecoder = jwtDecoder;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -118,17 +122,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     /**
-     * Retorna 401 Unauthorized com corpo JSON amigável (RFC 7807).
+     * Retorna 401 Unauthorized com corpo JSON RFC 7807 (Problem Details).
+     * Usa ObjectMapper para garantir escape JSON correto e consistência com o resto da API.
      */
     private void sendUnauthorized(HttpServletResponse response, String message) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json; charset=UTF-8");
-        response.getWriter().write("""
-            {
-                "type": "https://api.fbso.org/errors/unauthorized",
-                "title": "%s",
-                "status": 401
-            }
-            """.formatted(message));
+        objectMapper.writeValue(response.getWriter(),
+                ErrorResponse.of(
+                        "https://api.fbso.org/errors/unauthorized",
+                        message,
+                        401,
+                        null));
     }
 }

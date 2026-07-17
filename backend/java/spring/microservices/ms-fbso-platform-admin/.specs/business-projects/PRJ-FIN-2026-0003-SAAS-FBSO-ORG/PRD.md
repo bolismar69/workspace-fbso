@@ -1,11 +1,11 @@
 # PRD — Product Requirements Document (Backend: ms-fbso-platform-admin)
 
 - **Microserviço:** `ms-fbso-platform-admin`
-- **Stack:** Java 25 + Spring Boot + PostgreSQL
+- **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.6
-- **Data:** 16 de Julho de 2026
-- **Status:** Em Execução — Sprint 3 (M2+M3) iniciada em 16/07/2026
+- **Versão:** 1.11
+- **Data:** 17 de Julho de 2026
+- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 3: 42/42 tasks (100%). 10 features (F01-01 a F02-05). 18 endpoints REST. 142 testes. 28 débitos resolvidos. 9 postergados Sprint 4+. 57/99 tarefas (58%). Próximo: Sprint 4 — RBAC
 
 ---
 
@@ -466,36 +466,80 @@ curl http://localhost:8081/api/v1/dashboard/admin/summary \
 | `staging` | Homologação (K8s) | postgres.staging.svc | keycloak.staging.svc |
 | `prod` | Produção (K8s) | postgres.prod.svc | keycloak.prod.svc |
 
-### 8.4 Branch de Desenvolvimento
+### 8.4 Estratégia de Branching — Uma Branch por Sprint
 
-> **🚫 Obrigatório:** Toda e qualquer implementação relacionada a este projeto de negócio (`PRJ-FIN-2026-0003-SAAS-FBSO-ORG`) **DEVE** ser feita exclusivamente na branch abaixo. NÃO commitar diretamente em `main` ou em qualquer outra branch.
+> **🚫 Regra de ouro:** Toda implementação deste projeto (`PRJ-FIN-2026-0003-SAAS-FBSO-ORG`) **DEVE** passar por uma `feature/sprint-NN-*`. **NUNCA** commitar diretamente em `main`.
 
-| Item | Valor |
-|:---|:---|
-| **Branch** | `feature/java-fbso-platform-admin` |
-| **Repositório** | `backend/java/spring/microservices/ms-fbso-platform-admin` |
-| **Base** | `main` |
-| **Propósito** | Branch única para todas as tarefas dos 7 sprints (Sprint 1 a 7) do escopo FASE 0–3 |
-| **Criada em** | 16/07/2026 |
+**Decisão:** Cada sprint tem sua própria branch de vida curta (~2 semanas). Ao final da sprint, a branch é mergeada no `main` via PR e deletada. Esta estratégia substitui o modelo anterior de branch única (descontinuado em 16/07/2026).
+
+**Justificativa:**
+- **Segurança:** branches de 2 semanas têm risco muito menor de perda/sobrescrita que uma branch de 14 semanas
+- **Isolamento:** problemas em uma sprint não afetam as demais
+- **Entrega incremental:** `main` sempre contém o último estado validado e funcional
+- **Clareza operacional:** `feature/sprint-03-portal-admin` é inequívoco — elimina confusão entre branches
+
+#### Mapeamento Sprint → Branch
+
+| Sprint | Branch | Marco | Status |
+|:---|:---|:---|:---|
+| Sprint 1–2 | `feature/java-fbso-platform-admin` | Setup + Segurança | ✅ Mergeada e deletada |
+| Sprint 3 | `feature/sprint-03-portal-admin` | M2+M3 — Portal Admin + Contas/Planos | 🔄 Ativa |
+| Sprint 4 | `feature/sprint-04-rbac` | M4 — RBAC | ⬜ Pendente |
+| Sprint 5 | `feature/sprint-05-portal-cliente` | M5 — Portal Cliente | ⬜ Pendente |
+| Sprint 6 | `feature/sprint-06-bus-catalogo` | M6 — BUs e Catálogo | ⬜ Pendente |
+| Sprint 7 | `feature/sprint-07-homologacao` | M7 — Homologação | ⬜ Pendente |
+
+#### Ciclo de Vida de Cada Sprint
+
+```
+CRIAR ─── DESENVOLVER ─── PR + REVIEW ─── MERGE NO MAIN ─── DELETAR
+  ↑                                                              │
+  └────────────────── próxima sprint ────────────────────────────┘
+```
 
 **Fluxo de trabalho:**
 
 ```bash
-# 1. Certifique-se de estar na branch correta
-git checkout feature/java-fbso-platform-admin
+# === INÍCIO DA SPRINT ===
+# 1. A partir de main, crie a branch da sprint
+git checkout main && git pull
+git checkout -b feature/sprint-NN-<slug>
 
-# 2. Atualize com o remote (se aplicável)
-git pull origin feature/java-fbso-platform-admin
-
-# 3. Trabalhe normalmente — todos os commits vão para esta branch
+# === DURANTE A SPRINT ===
+# 2. Commits convencionais com prefixo da sprint
 git add .
-git commit -m "feat(sprint-3): implementa endpoint X (T-0XX)"
+git commit -m "feat(sprint-03): implementa endpoint X (T-0XX)"
+git push origin feature/sprint-NN-<slug>
 
-# 4. Ao finalizar uma sprint, faça push
-git push origin feature/java-fbso-platform-admin
+# === FINAL DA SPRINT ===
+# 3. Abra PR contra main
+gh pr create --base main --head feature/sprint-NN-<slug> \
+  --title "Sprint NN: <marco>" \
+  --body "Entrega da Sprint NN conforme TASKS.md.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)"
+
+# 4. Após merge, delete a branch
+git branch -d feature/sprint-NN-<slug>
+git push origin --delete feature/sprint-NN-<slug>
 ```
 
-> ⚠️ **Atenção:** Antes de iniciar qualquer tarefa, verifique com `git branch --show-current` se você está na branch `feature/java-fbso-platform-admin`. Commits em branches erradas serão rejeitados no code review.
+> ⚠️ **Antes de começar qualquer tarefa:** verifique com `git branch --show-current` se você está na branch correta da sprint. Commits em branches erradas serão rejeitados no code review.
+
+#### Hotfix em Sprint Anterior
+
+Se uma sprint já mergeada precisar de correção, crie uma branch de hotfix a partir do merge commit:
+
+```bash
+# Encontre o merge commit da sprint
+git log --oneline --merges main | grep "Sprint"
+# Crie branch de hotfix a partir desse ponto
+git checkout -b hotfix/sprint-NN-<descricao> <merge-commit-hash>
+```
+
+---
+
+> 📖 **Documento canônico completo:** [`docs/superpowers/specs/2026-07-16-sprint-branching-strategy-design.md`](../../../../../../../docs/superpowers/specs/2026-07-16-sprint-branching-strategy-design.md)
 
 ---
 
@@ -521,8 +565,10 @@ git push origin feature/java-fbso-platform-admin
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.8 | 16/07/2026 | Atualização de stack (Spring Boot 3.5.14, Jackson 2.21.4 — CVE-2026-22733/CVE-2026-22731 auth bypass CVSS 8.2). Adicionada referência a débitos técnicos da Sprint 3 ([IDENTIFIED-TECHNICAL-DEBT](sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) — auditoria com 7 skills). | Time Técnico |
 | 1.5 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Execução". | Time Técnico |
-| 1.6 | 16/07/2026 | Adicionada seção 8.4 — Branch de Desenvolvimento (`feature/java-fbso-platform-admin`) como obrigatória para todas as tarefas do projeto. | Time Técnico |
+| 1.7 | 16/07/2026 | Estratégia de branching alterada: modelo de branch única substituído por uma branch por sprint (§8.4). Adicionada tabela de mapeamento Sprint→Branch para Sprints 3–7. Documento canônico: `docs/superpowers/specs/2026-07-16-sprint-branching-strategy-design.md`. | Time Técnico |
+| 1.6 | 16/07/2026 | Adicionada seção 8.4 — Branch de Desenvolvimento (`feature/java-fbso-platform-admin`) como obrigatória para todas as tarefas do projeto. (Substituída pela v1.7.) | Time Técnico |
 | 1.4 | 15/07/2026 | Revisão Caveman (DOCS-SERVICE-CAVEMAN-REVIEW.md): Adicionado AuditEntry à tabela de entidades (§4.1, 10→11). Corrigida contagem ADR (8→7, §5.2). Corrigido RLS "11 tabelas"→"5 tabelas" (§6.1). Atualizadas versões dos artefatos em §3.3. | Caveman/IA |
 | 1.2 | 14/07/2026 | Adicionado PostgreSQL Row-Level Security (RLS) como camada 1 de defesa em profundidade no isolamento multi-tenant (§6.1). Novo ADR-08 (§5.2). Atualizada sequência de segurança (§7.1) com migration V003 para RLS. Estratégia de 3 camadas: RLS (banco) + BaseRepository (aplicação) + Teste de Isolamento (detecção). | Agente Arquiteto/IA |
 | 1.1 | 14/07/2026 | Correção pós-gate: 7 não-conformidades resolvidas do PRD_SCOPE_FAIL_REPORT.md v1.0. Adicionadas seções: §4.4 Matriz de Rastreabilidade, §4.5 Cobertura de Features/US, §4.6 Cobertura de BRs, §6.6 Regras de Negócio (18 RNs), §6.7 Cobertura de NFRs (8 NFRs). Atualizada §7.2 com referência explícita a critérios de aceite por US. NCs resolvidas: NC-001 a NC-007. | Agente Corretor PRD/IA |

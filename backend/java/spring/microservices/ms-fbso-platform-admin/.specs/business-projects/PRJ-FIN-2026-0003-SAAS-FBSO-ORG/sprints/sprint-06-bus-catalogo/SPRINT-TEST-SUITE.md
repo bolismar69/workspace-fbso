@@ -7,7 +7,6 @@
 
 ---
 
-> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
 
 ## 1. F04-05: Unidades de Negócio (9 cenários)
 
@@ -48,7 +47,7 @@
 
 ---
 
-## 4. Teste de Isolamento Específico da Sprint (T-070)
+## 4. Teste de Isolamento Específico da Sprint (T-077)
 
 | ID | Descrição | Nível | Critério |
 |:---|:---|:---|:---|
@@ -85,4 +84,4 @@
 
 ---
 
-🤖 *Extraído de TEST_PLAN.md v2.0. O isolamento multi-tenant (T-070) é o diferencial desta sprint.*
+🤖 *Extraído de TEST_PLAN.md v2.0. O isolamento multi-tenant (T-077) é o diferencial desta sprint.*

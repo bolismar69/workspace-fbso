@@ -36,12 +36,10 @@ CREATE POLICY tenant_isolation ON fbso_platform.business_unit
 
 -- ---------------------------------------------------------------------------
 -- 4. product_service — Catálogo de Produtos/Serviços por BU
--- ---------------------------------------------------------------------------
-ALTER TABLE fbso_platform.product_service ENABLE ROW LEVEL SECURITY;
-CREATE POLICY tenant_isolation ON fbso_platform.product_service
-    FOR ALL
-    USING (tenant_id = current_setting('app.current_tenant_id')::UUID)
-    WITH CHECK (tenant_id = current_setting('app.current_tenant_id')::UUID);
+-- NOTA: product_service NÃO possui coluna tenant_id própria —
+-- o isolamento ocorre via JOIN com business_unit.tenant_id.
+-- RLS não é aplicável diretamente nesta tabela.
+-- (product_service removido — sem coluna tenant_id)
 
 -- ---------------------------------------------------------------------------
 -- 5. audit_log — Trilha de auditoria (imutável, segmentada por tenant)

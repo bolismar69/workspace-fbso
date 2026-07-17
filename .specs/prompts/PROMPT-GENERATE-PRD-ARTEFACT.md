@@ -21,7 +21,7 @@ O artefato gerado é a **porta de entrada para a documentação de negócio** �
 | `{PROJECT_NAME}` | Nome/código do projeto | `PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO` |
 | `{SOLUTION_NAME}` | Nome da solução/microsserviço | `ms-billing-engine-tax-rates` |
 | `{SCOPE}` | Escopo da geração | `full` (criar do zero), `delta` (atualizar existente), `review` (apenas revisar) |
-| `{BRANCH_NAME}` | Nome da branch onde deve ser realizado o desenvolvimento. Negar realizar desenvolvimento direto na branch `main` ou `master` |
+| `{BRANCH_STRATEGY}` | Estratégia de branching do projeto: `branch-por-sprint` (múltiplas sprints, uma branch `feature/sprint-NN-<slug>` por sprint) ou `branch-unica` (sprint único, branch `feature/<nome-projeto>`). A seção de branching do PRD.md gerado deve documentar a estratégia completa com tabela, workflow git e comandos. |
 
 ---
 
@@ -93,7 +93,6 @@ Gerar o arquivo em:
 **Versão do PRD:** {X.0}
 **Data:** {data atual}
 **Status:** {status — ex: "Em Definição", "Aprovado", "Fase 1 implementada"}
-**Branch:** {BRANCH_NAME}
 **Tipo:** Resumo de Alto Nível — porta de entrada para a documentação de negócio completa
 
 > ⚠️ **Aviso de Leitura:** Este documento é um sumário executivo. Todas as especificações detalhadas,
@@ -189,6 +188,23 @@ Gerar o arquivo em:
 
 ---
 
+## 11. Estratégia de Branching
+
+> 🚫 **Regra de ouro:** Nenhum commit deste projeto pode ser feito diretamente em `main`. Todo desenvolvimento passa por branches `feature/*`.
+
+**Se o projeto tem múltiplas sprints,** documentar a estratégia **uma branch por sprint**:
+
+- Tabela de mapeamento Sprint → Branch (ex: `feature/sprint-03-portal-admin`)
+- Ciclo de vida: CRIAR → DESENVOLVER → PR + REVIEW → MERGE NO MAIN → DELETAR
+- Workflow de comandos git para início, durante e final da sprint
+- Seção de hotfix para sprints já mergeadas
+
+**Se o projeto tem sprint único,** documentar a branch única (ex: `feature/<nome-do-projeto>`).
+
+> 📖 O design document canônico da estratégia (se existir) deve ser referenciado aqui.
+
+---
+
 ## Rodapé
 - Indicação de geração por IA, skills utilizados
 - Link para o próximo passo: "Consulte os documentos-fonte listados acima para especificações completas"
@@ -201,7 +217,7 @@ Após gerar o arquivo, executar as seguintes verificações:
 | # | Verificação | Critério |
 |---|---|---|
 | 1 | Arquivo no path correto | `{SOLUTION_PATH}/.specs/business-projects/{PROJECT_NAME}/PRD.md` existe |
-| 2 | Header com metadados | Código, versão, data, status, branch e tipo declarados no header |
+| 2 | Header com metadados | Código, versão, data, status e tipo declarados no header |
 | 3 | Visão geral presente | §1 contextualiza o programa e suas dimensões |
 | 4 | Objetivos estratégicos | §2 lista 4-8 objetivos com verbo de ação, referenciando Project Charter |
 | 5 | BRs resumidos | §3 tabela cobre TODOS os BRs do 02-BUSINESS-REQUIREMENTS.md, organizados por bloco |
@@ -215,6 +231,7 @@ Após gerar o arquivo, executar as seguintes verificações:
 | 13 | Links relativos funcionais | Todos os links usam paths relativos (ex: `../../../../../../../business-inputs/...`) |
 | 14 | Aviso de leitura | Bloco ⚠️ no header indicando que este é um sumário — detalhes nos docs-fonte |
 | 15 | Rodapé de IA | Indicação de geração automatizada + skills utilizados |
+| 16 | Estratégia de branching | Seção de Estratégia de Branching documenta a estratégia (tabela Sprint→Branch ou branch única) com workflow de comandos git |
 
 ---
 
@@ -272,7 +289,7 @@ Agente: "Vou precisar de 6 parâmetros:
   - PROJECT_PATH: caminho da pasta do projeto de negócio
   - PROJECT_NAME: código do projeto
   - SOLUTION_NAME: nome do microsserviço
-  - BRANCH_NAME: nome da branch para desenvolvimento
+  - BRANCH_STRATEGY: estratégia de branching (ex: 'branch por sprint' ou branch única)
   - SCOPE: full, delta, ou review"
 
 Humano: "SOLUTION_PATH=/home/user/work/backend/go/fiber/microservices/ms-billing-engine-tax-rates
@@ -280,7 +297,7 @@ Humano: "SOLUTION_PATH=/home/user/work/backend/go/fiber/microservices/ms-billing
          PROJECT_NAME=PRJ-FIN-2026-0001-REFORMA-TRIBUTARIA-2026-CORPORATIVO
          SOLUTION_NAME=ms-billing-engine-tax-rates
          SCOPE=full
-         BRANCH_NAME=feature/reforma-tributaria"
+         BRANCH_STRATEGY=branch-por-sprint"
 
 Agente: [Executa Passo 1 → Passo 2 → Passo 3 → Passo 4]
 ```
@@ -309,6 +326,7 @@ Agente: [Executa Passo 1 → Passo 2 → Passo 3 → Passo 4]
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.1 | 16/07/2026 | Padronização de branching: `{BRANCH_NAME}` substituído por `{BRANCH_STRATEGY}`. Header do template sem linha `Branch:`. Adicionada §11 (Estratégia de Branching) com tabela Sprint→Branch, ciclo de vida e workflow git. Validação #16 adicionada. | Time Técnico |
 | 1.0 | 13/07/2026 | Criação inicial: fluxo de 5 passos, 5 skills orquestradas, 3 modos de operação (full/delta/review), 15 verificações pós-geração, estrutura de 10 seções baseada nos PRDs existentes | Time de Arquitetura |
 
 ------------------------------

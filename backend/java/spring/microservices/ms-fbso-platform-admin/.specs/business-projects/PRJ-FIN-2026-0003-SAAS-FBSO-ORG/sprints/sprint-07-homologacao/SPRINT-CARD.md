@@ -9,12 +9,12 @@
 
 ---
 
-> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/java-fbso-platform-admin`. Antes de começar, execute:
+> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/sprint-07-homologacao`. Antes de começar, execute:
 > ```bash
-> git checkout feature/java-fbso-platform-admin
-> git branch --show-current  # deve exibir: feature/java-fbso-platform-admin
+> git checkout feature/sprint-07-homologacao
+> git branch --show-current  # deve exibir: feature/sprint-07-homologacao
 > ```
-> 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-branch-de-desenvolvimento)
+> 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-estratégia-de-branching--uma-branch-por-sprint)
 
 ## 🎯 Sprint Goal
 
@@ -28,15 +28,15 @@
 
 | ID | Tarefa | Est. | Critério DONE |
 |:---|:---|:---:|:---|
-| **T-071** | Testes de regressão: bateria completa M2-M6. Automatizar como suite única | 2d | Suite executa sem falhas. Zero quebras em features já homologadas |
-| **T-072** | Testes de performance: dashboard ≤3s (p95) com 1000 tenants. Listas paginadas 10k registros. JMeter ou k6 | 2d | p95 ≤ 3s. Listas ≤ 1s. Relatório de carga |
-| **T-073** | Criar/atualizar `fbso-platform-api.yaml` (OpenAPI 3.0): 37 endpoints, schemas, exemplos, erros (BR-NFR04) | 2d | OpenAPI válido. 37 endpoints. Schemas com exemplos |
-| **T-074** | Documentar `README.md` raiz + README.md por pacote (controller, service, repository, security) (BR-NFR04) | 1.5d | Quickstart. README por pacote com responsabilidade |
-| **T-075** | SAST scan (Semgrep / SonarQube): zero críticas/high. Verificar OWASP Top 10: SQL injection, broken auth, XSS, CSRF | 2d | 0 críticos/high. PreparedStatement. JSON escapado |
-| **T-076** | Verificar LGPD: dados pessoais mascarados em logs. 100% entidades com soft delete (NFR-LGPD) | 1d | Logs sem dados pessoais. 11 entidades com deleted_dt |
-| **T-077** | Deploy staging (K8s): manifests, smoke test, health checks (liveness, readiness). BR-NFR01 (99,5%) | 2d | Staging operacional. Health check UP. Smoke test passa |
-| **T-078** | UAT com Product Owner: demonstração 18 features. Correção de bugs. Aprovação formal (DoD) | 2d | PO valida. Bugs corrigidos. Termo de aceite |
-| **T-079** | Deploy produção (K8s): promote staging → prod. Validação pós-go-live (KPIs). Rollback plan. Monitoramento | 2d | Produção operacional. KPIs monitorados. Rollback testado |
+| **T-078** | Testes de regressão: bateria completa M2-M6. Automatizar como suite única | 2d | Suite executa sem falhas. Zero quebras em features já homologadas |
+| **T-079** | Testes de performance: dashboard ≤3s (p95) com 1000 tenants. Listas paginadas 10k registros. JMeter ou k6 | 2d | p95 ≤ 3s. Listas ≤ 1s. Relatório de carga |
+| **T-080** | Criar/atualizar `fbso-platform-api.yaml` (OpenAPI 3.0): 37 endpoints, schemas, exemplos, erros (BR-NFR04) | 2d | OpenAPI válido. 37 endpoints. Schemas com exemplos |
+| **T-081** | Documentar `README.md` raiz + README.md por pacote (controller, service, repository, security) (BR-NFR04) | 1.5d | Quickstart. README por pacote com responsabilidade |
+| **T-082** | SAST scan (Semgrep / SonarQube): zero críticas/high. Verificar OWASP Top 10: SQL injection, broken auth, XSS, CSRF | 2d | 0 críticos/high. PreparedStatement. JSON escapado |
+| **T-083** | Verificar LGPD: dados pessoais mascarados em logs. 100% entidades com soft delete (NFR-LGPD) | 1d | Logs sem dados pessoais. 11 entidades com deleted_dt |
+| **T-084** | Deploy staging (K8s): manifests, smoke test, health checks (liveness, readiness). BR-NFR01 (99,5%) | 2d | Staging operacional. Health check UP. Smoke test passa |
+| **T-085** | UAT com Product Owner: demonstração 18 features. Correção de bugs. Aprovação formal (DoD) | 2d | PO valida. Bugs corrigidos. Termo de aceite |
+| **T-086** | Deploy produção (K8s): promote staging → prod. Validação pós-go-live (KPIs). Rollback plan. Monitoramento | 2d | Produção operacional. KPIs monitorados. Rollback testado |
 
 **Total:** 9 tarefas · ~16.5 dias-homem
 

@@ -9,9 +9,8 @@
 
 ---
 
-> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
 
-## 1. Regressão Completa (T-071)
+## 1. Regressão Completa (T-078)
 
 Executar a suite completa conforme [TEST_PLAN.md §6.2](../../TEST_PLAN.md):
 
@@ -68,7 +67,7 @@ echo "=== REGRESSAO COMPLETA ==="
 
 ---
 
-## 2. Testes de Performance (T-072)
+## 2. Testes de Performance (T-079)
 
 | ID | Descrição | Carga | Meta | Status |
 |:---|:---|:---|:---|:---:|
@@ -88,7 +87,7 @@ echo "=== REGRESSAO COMPLETA ==="
 
 ---
 
-## 3. Testes de Segurança OWASP (T-075)
+## 3. Testes de Segurança OWASP (T-082)
 
 | ID | Categoria | Descrição | Status |
 |:---|:---|:---|:---:|
@@ -109,7 +108,7 @@ echo "=== REGRESSAO COMPLETA ==="
 
 ---
 
-## 4. Smoke Tests Pós-Deploy (T-077)
+## 4. Smoke Tests Pós-Deploy (T-084)
 
 | ID | Verificação | Comando | Resultado | Status |
 |:---|:---|:---|:---|:---:|
@@ -122,7 +121,7 @@ echo "=== REGRESSAO COMPLETA ==="
 
 ---
 
-## 5. Verificação LGPD (T-076)
+## 5. Verificação LGPD (T-083)
 
 | ID | Verificação | Critério | Status |
 |:---|:---|:---|:---:|

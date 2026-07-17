@@ -7,7 +7,6 @@
 
 ---
 
-> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
 
 ## 🎯 O Que Demonstrar
 
@@ -32,7 +31,7 @@
 - [ ] **Desativar/Reativar:** Produto desativado não aparece no catálogo. Reativar volta a exibir
 - [ ] **Segmentação:** GET /products?business_unit_id=A → apenas produtos da BU-A
 
-### 3. Isolamento Multi-Tenant (T-070) ⭐
+### 3. Isolamento Multi-Tenant (T-077) ⭐
 
 - [ ] **Demonstrar:** Login como Tenant-A → vê BUs e produtos do Tenant-A
 - [ ] **Demonstrar:** Login como Tenant-B → vê BUs e produtos do Tenant-B

@@ -1,5 +1,6 @@
 package com.fbso.platform.admin.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,11 +19,9 @@ import org.springframework.security.oauth2.jwt.JwtException;
 import java.io.PrintWriter;
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,10 +37,11 @@ class JwtAuthenticationFilterTest {
     @Mock private PrintWriter writer;
 
     private JwtAuthenticationFilter filter;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
-        filter = new JwtAuthenticationFilter(jwtDecoder);
+        filter = new JwtAuthenticationFilter(jwtDecoder, objectMapper);
     }
 
     /** Configura o mock do writer apenas para testes que escrevem resposta de erro. */

@@ -9,50 +9,49 @@
 
 ---
 
-> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
 
 ## 🎯 O Que Demonstrar
 
-### 1. Suite de Regressão (T-071)
+### 1. Suite de Regressão (T-078)
 
 - [ ] Executar `./mvnw test` (regressão completa) ao vivo OU mostrar relatório da última execução
 - [ ] **Resultado esperado:** 146/146 cenários verdes
 - [ ] Mostrar relatório JaCoCo: ≥ 80% linhas, ≥ 70% branchs
 
-### 2. Performance (T-072)
+### 2. Performance (T-079)
 
 - [ ] Dashboard admin com 1000 tenants: p95 ≤ 3s
 - [ ] Listas paginadas (1000 registros): p95 ≤ 1s
 - [ ] Mostrar relatório JMeter/k6
 - [ ] Testes de concorrência: zero race conditions
 
-### 3. OpenAPI 3.0 (T-073)
+### 3. OpenAPI 3.0 (T-080)
 
 - [ ] Abrir `fbso-platform-api.yaml` no Swagger UI
 - [ ] Mostrar 37 endpoints documentados
 - [ ] Demonstrar exemplos de request/response
 - [ ] Códigos de erro documentados por endpoint
 
-### 4. Documentação (T-074)
+### 4. Documentação (T-081)
 
 - [ ] Mostrar `README.md` raiz com quickstart
 - [ ] Mostrar README.md por pacote (controller, service, repository, security)
 - [ ] "Novo desenvolvedor consegue rodar o projeto em ≤30min?"
 
-### 5. Segurança (T-075, T-076)
+### 5. Segurança (T-082, T-083)
 
 - [ ] Relatório SAST (Semgrep/SonarQube): 0 críticos/high
 - [ ] OWASP Top 10 verificado
 - [ ] LGPD: demonstrar logs sem dados pessoais
 - [ ] Soft delete: `\dt fbso_platform.*` — 11 tabelas com `deleted_dt`
 
-### 6. Deploy Staging (T-077)
+### 6. Deploy Staging (T-084)
 
 - [ ] Smoke test staging: `curl /actuator/health` → `{"status":"UP"}`
 - [ ] Autenticação funcional em staging
 - [ ] Deploy em K8s: mostrar `kubectl get pods`
 
-### 7. Demonstração Completa para o PO (T-078)
+### 7. Demonstração Completa para o PO (T-085)
 
 - [ ] **Dashboard Admin:** Métricas, lista de contas, alertas
 - [ ] **Gestão:** Criar tenant, suspender, reativar. Criar/editar/desativar plano. Assinar/upgrade

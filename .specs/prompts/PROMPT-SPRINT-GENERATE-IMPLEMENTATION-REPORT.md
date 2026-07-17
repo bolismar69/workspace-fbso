@@ -1,5 +1,5 @@
 # Contexto:
-- Obter o historico de implementações, assim como o historico de logs e evidencias de testes, usando alguns skills para ajudar nessa atividade (skils: code-documenter, gap-analysis, spec-miner, code-reviewer, fullstack-guardian)
+- Obter o historico de implementações, assim como o historico de logs e evidencias de testes, usando alguns skills para ajudar nessa atividade (skils: code-documenter, gap-analysis, spec-miner, code-reviewer, fullstack-guardian, caveman)
 
 # Missão:
 - Gerar um arquivo de documentação de saída na pasta correspondente da funcionalidade.

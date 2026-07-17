@@ -20,7 +20,6 @@ O artefato gerado deve ser a **ponte entre os requisitos de negócio e a impleme
 | `{SOLUTION_NAME}` | Nome da solução/microsserviço | `ms-fbso-platform-admin` |
 | `{SOLUTION_TYPE}` | Tipo da solução | `backend`, `frontend`, `batch`, `mobile` |
 | `{SCOPE}` | Escopo da geração | `full` (criar do zero), `delta` (atualizar existente), `review` (apenas revisar) |
-| `{BRANCH_NAME}` | Nome da branch onde deve ser realizado o desenvolvimento. Negar realizar desenvolvimento direto na branch `main` ou `master` |
 
 ---
 
@@ -28,7 +27,7 @@ O artefato gerado deve ser a **ponte entre os requisitos de negócio e a impleme
 
 ### Passo 0 — Validação de Parâmetros
 
-Antes de qualquer ação, verificar se TODOS os 7 parâmetros foram informados. Se algum estiver ausente, perguntar ao humano antes de prosseguir.
+Antes de qualquer ação, verificar se TODOS os 6 parâmetros foram informados. Se algum estiver ausente, perguntar ao humano antes de prosseguir.
 
 ### Passo 1 — Verificar e Preparar a Estrutura de Pastas
 
@@ -99,7 +98,6 @@ Gerar o arquivo em:
 **Versão do SPECS:** {X.0}
 **Data:** {data atual}
 **Status:** {status}
-**Branch:** {BRANCH_NAME}
 
 ## 1. Visão Geral da Solução
 - Parágrafo descrevendo o propósito da solução no contexto do projeto
@@ -228,13 +226,12 @@ Após gerar o arquivo, executar as seguintes verificações:
 ```
 Humano: "Gerar SPECS.md para o backend ms-fbso-platform-admin"
 
-Agente: "Vou precisar de 7 parâmetros:
+Agente: "Vou precisar de 6 parâmetros:
   - SOLUTION_PATH: caminho da pasta da solução
   - PROJECT_PATH: caminho da pasta do projeto
   - PROJECT_NAME: código do projeto
   - SOLUTION_NAME: nome da solução
   - SOLUTION_TYPE: backend, frontend, batch, ou mobile
-  - BRANCH_NAME: nome da branch para desenvolvimento
   - SCOPE: full, delta, ou review"
 
 Humano: "SOLUTION_PATH=/home/user/work/backend/java/spring/microservices/ms-fbso-platform-admin
@@ -242,8 +239,7 @@ Humano: "SOLUTION_PATH=/home/user/work/backend/java/spring/microservices/ms-fbso
          PROJECT_NAME=PRJ-FIN-2026-0003-SAAS-FBSO-ORG
          SOLUTION_NAME=ms-fbso-platform-admin
          SOLUTION_TYPE=backend
-         SCOPE=full
-         BRANCH_NAME=feature/platform-admin"
+         SCOPE=full"
 
 Agente: [Executa Passo 1 → Passo 2 → Passo 3 → Passo 4]
 ```
@@ -270,6 +266,7 @@ Agente: [Executa Passo 1 → Passo 2 → Passo 3 → Passo 4]
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.1 | 16/07/2026 | Removido `{BRANCH_NAME}` — informação de branch é documentada no PRD.md e SPRINT-CARD.md, não no SPECS.md. Header do template sem linha `Branch:`. Parâmetros reduzidos de 7 para 6. | Time Técnico |
 | 1.0 | 13/07/2026 | Criação inicial: fluxo de 5 passos, 5 skills orquestradas, 3 modos de operação (full/delta/review), 10 verificações pós-geração | Time de Arquitetura |
 
 ------------------------------

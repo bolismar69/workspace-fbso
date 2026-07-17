@@ -9,12 +9,12 @@
 
 ---
 
-> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/java-fbso-platform-admin`. Antes de começar, execute:
+> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/sprint-04-rbac`. Antes de começar, execute:
 > ```bash
-> git checkout feature/java-fbso-platform-admin
-> git branch --show-current  # deve exibir: feature/java-fbso-platform-admin
+> git checkout feature/sprint-04-rbac
+> git branch --show-current  # deve exibir: feature/sprint-04-rbac
 > ```
-> 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-branch-de-desenvolvimento)
+> 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-estratégia-de-branching--uma-branch-por-sprint)
 
 ## 🎯 Sprint Goal
 
@@ -26,17 +26,17 @@
 
 | ID | Tarefa | Feature | Est. | Critério DONE |
 |:---|:---|:---|:---:|:---|
-| **T-039** | Entidade User + UserRepository. `findByEmailAndTenant`. Email único por tenant ativo (RN09-02, índice parcial) | F03-01 | 1d | UserRepository funcional. Soft delete respeitado |
-| **T-040** | `UserService`: convite (email único RN09-02), desativar (não autodesativar RN09-03), reativar. Convite expira 7 dias (RN09-01) | F03-01 | 1.5d | Duplicado → 409. Autodesativar → 422 |
-| **T-041** | `UserController`: CRUD `/api/v1/users` + `POST /{id}/deactivate`. `@RequiresPermission(USER, ...)` | F03-01 | 1d | Lista exibe nome, email, role, status, BUs vinculadas |
-| **T-042** | Entidades ResourceAction + RoleResource. Seed data com matriz RN10-01 (4 roles × 7+ resources) | F03-02 | 1d | Seed carrega. Matriz completa. `findByRole` retorna recursos |
-| **T-043** | Entidade UserPermission (user_id, business_unit_id, role). UNIQUE(user_id, business_unit_id) | F03-02, F03-03 | 1.5d | Tabela ponte com constraint. Admin tenant acesso implícito a todas BUs |
-| **T-044** | `PermissionService`: atribuir/revogar, vincular BU, gerenciar módulos. Admin acesso implícito (RN11-01, RN11-02) | F03-02, F03-03 | 2d | Sem BU → acesso negado. Sem módulo → acesso negado. Efeito imediato (RN11-03) |
-| **T-045** | `PermissionController`: `GET /users/{uid}/permissions`, `PUT /users/{uid}/permissions`. `@RequiresPermission(PERMISSION, ...)` | F03-02, F03-03 | 1d | GET retorna atuais. PUT atualiza vínculos. Auditoria registrada |
-| **T-046** | Integrar `RbacAspect` com `RoleResource` do banco. Cache de matriz (TTL 5min) | F03-04 | 1.5d | RBAC funcional. Cache melhora performance. 403 (não 404 — RN12-01) |
-| **T-047** | Garantir 403 padrão: `{"title":"Acesso negado","detail":"Você não tem permissão para acessar esta área.","status":403}` (RN12-02) | F03-04 | 0.5d | Resposta sempre nesse formato. PT-BR |
-| **T-048** | Testes unitários M4: `UserService`, `PermissionService`. RN09-03, RN10-01, RN11-01, RN11-02 | F03-01 a F03-03 | 1.5d | ≥ 80%. Cada RN positivo+negativo |
-| **T-049** | Testes segurança RBAC: cada papel × endpoint proibido → 403. Teste parametrizado com Testcontainers | F03-02, F03-04 | 2d | Matriz RN10-01 validada como teste parametrizado com 20+ combinações |
+| **T-046** | Entidade User + UserRepository. `findByEmailAndTenant`. Email único por tenant ativo (RN09-02, índice parcial) | F03-01 | 1d | UserRepository funcional. Soft delete respeitado |
+| **T-047** | `UserService`: convite (email único RN09-02), desativar (não autodesativar RN09-03), reativar. Convite expira 7 dias (RN09-01) | F03-01 | 1.5d | Duplicado → 409. Autodesativar → 422 |
+| **T-048** | `UserController`: CRUD `/api/v1/users` + `POST /{id}/deactivate`. `@RequiresPermission(USER, ...)` | F03-01 | 1d | Lista exibe nome, email, role, status, BUs vinculadas |
+| **T-049** | Entidades ResourceAction + RoleResource. Seed data com matriz RN10-01 (4 roles × 7+ resources) | F03-02 | 1d | Seed carrega. Matriz completa. `findByRole` retorna recursos |
+| **T-050** | Entidade UserPermission (user_id, business_unit_id, role). UNIQUE(user_id, business_unit_id) | F03-02, F03-03 | 1.5d | Tabela ponte com constraint. Admin tenant acesso implícito a todas BUs |
+| **T-051** | `PermissionService`: atribuir/revogar, vincular BU, gerenciar módulos. Admin acesso implícito (RN11-01, RN11-02) | F03-02, F03-03 | 2d | Sem BU → acesso negado. Sem módulo → acesso negado. Efeito imediato (RN11-03) |
+| **T-052** | `PermissionController`: `GET /users/{uid}/permissions`, `PUT /users/{uid}/permissions`. `@RequiresPermission(PERMISSION, ...)` | F03-02, F03-03 | 1d | GET retorna atuais. PUT atualiza vínculos. Auditoria registrada |
+| **T-053** | Integrar `RbacAspect` com `RoleResource` do banco. Cache de matriz (TTL 5min) | F03-04 | 1.5d | RBAC funcional. Cache melhora performance. 403 (não 404 — RN12-01) |
+| **T-054** | Garantir 403 padrão: `{"title":"Acesso negado","detail":"Você não tem permissão para acessar esta área.","status":403}` (RN12-02) | F03-04 | 0.5d | Resposta sempre nesse formato. PT-BR |
+| **T-055** | Testes unitários M4: `UserService`, `PermissionService`. RN09-03, RN10-01, RN11-01, RN11-02 | F03-01 a F03-03 | 1.5d | ≥ 80%. Cada RN positivo+negativo |
+| **T-056** | Testes segurança RBAC: cada papel × endpoint proibido → 403. Teste parametrizado com Testcontainers | F03-02, F03-04 | 2d | Matriz RN10-01 validada como teste parametrizado com 20+ combinações |
 
 **Total:** 11 tarefas · ~15 dias-homem
 

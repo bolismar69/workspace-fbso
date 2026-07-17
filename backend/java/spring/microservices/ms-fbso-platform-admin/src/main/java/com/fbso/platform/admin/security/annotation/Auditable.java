@@ -40,4 +40,13 @@ public @interface Auditable {
      * {@code REACTIVATED}, {@code PLAN_CHANGED}, {@code DEACTIVATED}.
      */
     String action();
+
+    /**
+     * Nome do parâmetro do método que contém o ID da entidade a auditar.
+     * <p>
+     * Se não informado, o aspecto tenta extrair o ID do primeiro argumento.
+     * Exemplo: para {@code suspend(UUID tenantId, String reason)},
+     * use {@code idParamName = "tenantId"}.
+     */
+    String idParamName() default "";
 }

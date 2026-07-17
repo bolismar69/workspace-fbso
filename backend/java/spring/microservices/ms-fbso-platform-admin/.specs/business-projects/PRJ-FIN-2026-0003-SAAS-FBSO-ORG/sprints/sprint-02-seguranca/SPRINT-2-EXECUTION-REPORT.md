@@ -9,7 +9,7 @@
 
 ---
 
-> 🚫 **Branch:** `feature/java-fbso-platform-admin` ([PRD §8.4](../../PRD.md#84-branch-de-desenvolvimento))
+> 📝 Sprint executada na branch `feature/java-fbso-platform-admin` (modelo legado de branch única). Estratégia atual: uma branch por sprint — [PRD §8.4](../../PRD.md#84-estratégia-de-branching--uma-branch-por-sprint).
 
 ## 1. Resumo da Execução
 
