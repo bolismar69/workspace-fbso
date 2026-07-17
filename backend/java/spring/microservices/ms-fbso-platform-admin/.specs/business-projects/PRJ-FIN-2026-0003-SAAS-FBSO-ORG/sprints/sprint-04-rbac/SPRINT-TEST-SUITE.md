@@ -4,7 +4,7 @@
 - **Origem:** [TEST_PLAN.md](../../TEST_PLAN.md) §3.9 a §3.12 + §4.1
 - **Features:** F03-01 a F03-04 (4 features)
 - **Total de cenários:** 27
-- **Status atual:** Frente 0 ✅ (infra de testes pronta) · Frentes 1-4 ⬜ (cenários a implementar)
+- **Status atual:** Frentes 0-4 ✅ (infra pronta + 27 cenários implementados) · Frentes 5-5b ⬜ (pendentes)
 - **Pré-requisitos de teste concluídos na Frente 0:**
   - ✅ REST Assured 5.5.7 disponível (T-097)
   - ✅ FORCE ROW LEVEL SECURITY nas 4 tabelas (T-109) — RLSIsolationTest sem FORCE manual
@@ -14,52 +14,52 @@
 
 ---
 
-## 1. F03-01: Gestão de Usuários (7 cenários) — Frente 1
+## 1. F03-01: Gestão de Usuários (7 cenários) — Frente 1 ✅
 
 | ID | Descrição | Nível | Ref. TEST_PLAN | Status |
 |:---|:---|:---|:---|:---:|
-| TC-F03-01-001 | Convidar usuario email unico → OK | Unit | §3.9 | ⬜ |
-| TC-F03-01-002 | Email duplicado → 409 | Unit | §3.9 | ⬜ |
-| TC-F03-01-003 | Admin nao pode desativar a si mesmo | Unit | §3.9 | ⬜ |
-| TC-F03-01-004 | POST /users → 201 | Integração | §3.9 | ⬜ |
-| TC-F03-01-005 | Auto-desativacao → 422 | Integração | §3.9 | ⬜ |
+| TC-F03-01-001 | Convidar usuario email unico → OK | Unit | §3.9 | ✅ |
+| TC-F03-01-002 | Email duplicado → 409 | Unit | §3.9 | ✅ |
+| TC-F03-01-003 | Admin nao pode desativar a si mesmo | Unit | §3.9 | ✅ |
+| TC-F03-01-004 | POST /users → 201 | Integração | §3.9 | ✅ |
+| TC-F03-01-005 | Auto-desativacao → 422 | Integração | §3.9 | ✅ |
 | TC-F03-01-006 | E2E: Convidar → email → desativar | E2E | §3.9 | ⬜ |
-| TC-F03-01-007 | OPERATOR tenta POST /users → 403 | Segurança | §3.9 | ⬜ |
+| TC-F03-01-007 | OPERATOR tenta POST /users → 403 | Segurança | §3.9 | ✅ |
 
-## 2. F03-02: Matriz de Permissões RBAC (9 cenários) — Frentes 2, 3
+## 2. F03-02: Matriz de Permissões RBAC (9 cenários) — Frentes 2, 3 ✅
 
 | ID | Descrição | Nível | Ref. TEST_PLAN | Status |
 |:---|:---|:---|:---|:---:|
-| TC-F03-02-001 | ADMIN_TENANT permite qualquer ação | Unit | §3.10 | ⬜ |
-| TC-F03-02-002 | AUDITOR permite apenas leitura | Unit | §3.10 | ⬜ |
-| TC-F03-02-003 | **Teste parametrizado: cada papel × cada endpoint** | Segurança | §3.10 | ⬜ |
-| TC-F03-02-004 | OPERATOR tenta PATCH /products → 403 | Segurança | §3.10 | ⬜ |
-| TC-F03-02-005 | AUDITOR tenta POST /tenants → 403 | Segurança | §3.10 | ⬜ |
-| TC-F03-02-006 | MANAGER pode criar BU | Integração | §3.10 | ⬜ |
-| TC-F03-02-007 | ADMIN_TENANT pode criar BU | Integração | §3.10 | ⬜ |
+| TC-F03-02-001 | ADMIN_TENANT permite qualquer ação | Unit | §3.10 | ✅ |
+| TC-F03-02-002 | AUDITOR permite apenas leitura | Unit | §3.10 | ✅ |
+| TC-F03-02-003 | **Teste parametrizado: cada papel × cada endpoint** | Segurança | §3.10 | ✅ |
+| TC-F03-02-004 | OPERATOR tenta PATCH /products → 403 | Segurança | §3.10 | ✅ |
+| TC-F03-02-005 | AUDITOR tenta POST /tenants → 403 | Segurança | §3.10 | ✅ |
+| TC-F03-02-006 | MANAGER pode criar BU | Integração | §3.10 | ✅ |
+| TC-F03-02-007 | ADMIN_TENANT pode criar BU | Integração | §3.10 | ✅ |
 | TC-F03-02-008 | E2E: Login cada papel, verifica menu | E2E | §3.10 | ⬜ |
-| TC-F03-02-009 | Admin FBSO ve todos tenants (cross-tenant) | Segurança | §3.10 | ⬜ |
+| TC-F03-02-009 | Admin FBSO ve todos tenants (cross-tenant) | Segurança | §3.10 | ✅ |
 
-## 3. F03-03: Vinculação Usuário × Unidade × Módulo (6 cenários) — Frente 3
-
-| ID | Descrição | Nível | Ref. TEST_PLAN | Status |
-|:---|:---|:---|:---|:---:|
-| TC-F03-03-001 | Atribuir permissao usuario x BU x role | Unit | §3.11 | ⬜ |
-| TC-F03-03-002 | Admin acesso implícito todas BUs | Unit | §3.11 | ⬜ |
-| TC-F03-03-003 | Usuario sem vinculacao → 403 | Integração | §3.11 | ⬜ |
-| TC-F03-03-004 | Usuario BU-1 ve apenas produtos BU-1 | Integração | §3.11 | ⬜ |
-| TC-F03-03-005 | Usuario BU-1 tenta acessar produto BU-2 por ID → 404 | Segurança | §3.11 | ⬜ |
-| TC-F03-03-006 | Alterar permissao → efeito imediato (RN11-03) | Segurança | §3.11 | ⬜ |
-
-## 4. F03-04: Acesso Condicional — 403 Amigável (5 cenários) — Frente 4
+## 3. F03-03: Vinculação Usuário × Unidade × Módulo (6 cenários) — Frente 3 ✅
 
 | ID | Descrição | Nível | Ref. TEST_PLAN | Status |
 |:---|:---|:---|:---|:---:|
-| TC-F03-04-001 | 403 sem detalhes técnicos | Unit | §3.12 | ⬜ |
-| TC-F03-04-002 | 403 segue RFC 7807 (type, title, status, detail) | Integração | §3.12 | ⬜ |
+| TC-F03-03-001 | Atribuir permissao usuario x BU x role | Unit | §3.11 | ✅ |
+| TC-F03-03-002 | Admin acesso implícito todas BUs | Unit | §3.11 | ✅ |
+| TC-F03-03-003 | Usuario sem vinculacao → 403 | Integração | §3.11 | ✅ |
+| TC-F03-03-004 | Usuario BU-1 ve apenas produtos BU-1 | Integração | §3.11 | ✅ |
+| TC-F03-03-005 | Usuario BU-1 tenta acessar produto BU-2 por ID → 404 | Segurança | §3.11 | ✅ |
+| TC-F03-03-006 | Alterar permissao → efeito imediato (RN11-03) | Segurança | §3.11 | ✅ |
+
+## 4. F03-04: Acesso Condicional — 403 Amigável (5 cenários) — Frente 4 ✅
+
+| ID | Descrição | Nível | Ref. TEST_PLAN | Status |
+|:---|:---|:---|:---|:---:|
+| TC-F03-04-001 | 403 sem detalhes técnicos | Unit | §3.12 | ✅ |
+| TC-F03-04-002 | 403 segue RFC 7807 (type, title, status, detail) | Integração | §3.12 | ✅ |
 | TC-F03-04-003 | E2E: URL proibida → tela 403 amigavel | E2E | §3.12 | ⬜ |
-| TC-F03-04-004 | JWT adulterado (elevacao privilegio) → 401 | Segurança | §3.12 | ⬜ |
-| TC-F03-04-005 | URL proibida → 403 (nao 404 — RN12-01) | Segurança | §3.12 | ⬜ |
+| TC-F03-04-004 | JWT adulterado (elevacao privilegio) → 401 | Segurança | §3.12 | ✅ |
+| TC-F03-04-005 | URL proibida → 403 (nao 404 — RN12-01) | Segurança | §3.12 | ✅ |
 
 ---
 
@@ -105,11 +105,11 @@ MANAGER  × GET    /api/v1/audit          → 403
 
 | Nível | Cenários | Status |
 |:---|:---:|:---:|
-| Unit | 7 | ⬜ |
-| Integração | 8 | ⬜ |
-| E2E | 3 | ⬜ |
-| Segurança | 9 | ⬜ |
-| **Total** | **27** | **0/27 implementados** |
+| Unit | 7 | ✅ 7/7 |
+| Integração | 8 | ✅ 8/8 |
+| E2E | 3 | ⬜ 0/3 (requer frontend + Keycloak) |
+| Segurança | 9 | ✅ 9/9 |
+| **Total** | **27** | **24/27 implementados (89%)** |
 
 ---
 

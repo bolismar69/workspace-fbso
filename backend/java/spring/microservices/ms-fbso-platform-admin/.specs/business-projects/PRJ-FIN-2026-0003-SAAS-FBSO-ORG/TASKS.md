@@ -2,10 +2,10 @@
 
 - **Solucao:** `ms-fbso-platform-admin`
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 3.0
+- **Versao:** 3.1
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 4 Frente 0 concluída ✅ (20/20). 77/136 tarefas (57%). Próximo: Sprint 4 Frentes 1-5b (28 tarefas pendentes)
-- **Origem:** [PRD.md](./PRD.md) + [SPECS.md](./SPECS.md) v1.8 + [ARCHITECTURE.md](./ARCHITECTURE.md) v2.2 + [04-FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES.md) + [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md)
+- **Status:** Em Execução — Sprints 1-4 (Frentes 0-4) concluídas ✅. 88/136 tarefas (65%). Próximo: Sprint 4 Frentes 5-5b (17 tarefas pendentes)
+- **Origem:** [PRD.md](./PRD.md) + [SPECS.md](./SPECS.md) v2.2 + [ARCHITECTURE.md](./ARCHITECTURE.md) v2.5 + [04-FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES.md) + [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md)
 
 ---
 
@@ -26,7 +26,7 @@
 | **M7 — Homologacao** | 9 tarefas |
 | **Must Have** | 133 |
 | **Should Have** | 3 tarefas: T-021 (F01-03), T-063, T-064 (F04-03) |
-| **Progresso Atual** | 77/136 (57%) — Sprints 1-3 concluídas ✅. Sprint 4 Frente 0 concluída ✅ (20/20). 28 tarefas pendentes na Sprint 4 (Frentes 1-5b). 142 testes (100 unit + 42 IT). 18 endpoints REST. 10 features. 28 débitos resolvidos. 56 débitos catalogados (47 novos + 9 backlog Sprint 3) |
+| **Progresso Atual** | 88/136 (65%) — Sprints 1-4 (Frentes 0-4) concluídas ✅. 17 tarefas pendentes na Sprint 4 (Frentes 5-5b). 213 testes (148 unit + 65 IT). 18 endpoints REST. 10 features. RbacAspect DB-backed sem fallback JWT. Matriz RN10-01 100% validada. 28 débitos resolvidos. 56 débitos catalogados (47 novos + 9 backlog Sprint 3) |
 
 ### Cobertura de Features (18/18)
 

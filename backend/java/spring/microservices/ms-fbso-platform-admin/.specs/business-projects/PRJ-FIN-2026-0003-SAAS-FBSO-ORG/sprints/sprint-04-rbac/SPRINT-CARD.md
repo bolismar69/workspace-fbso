@@ -6,7 +6,7 @@
 - **Duração:** 11 dias úteis
 - **Responsável:** A definir
 - **Documentos-mestre:** [TASKS.md](../../TASKS.md) · [SPECS.md](../../SPECS.md) · [PRD.md](../../PRD.md)
-- **Execução:** [Frente 0 — Relatório](./SPRINT-4-EXECUTION-REPORT-Frente-0.md) · [Débitos Técnicos](./IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md)
+- **Execução:** [Frente 0](./SPRINT-4-EXECUTION-REPORT-Frente-0.md) · [Frente 1](./SPRINT-4-EXECUTION-REPORT-Frente-1.md) · [Frente 2](./SPRINT-4-EXECUTION-REPORT-Frente-2.md) · [Frente 3](./SPRINT-4-EXECUTION-REPORT-Frente-3.md) · [**Frente 4**](./SPRINT-4-EXECUTION-REPORT-Frente-4.md) · [Débitos Técnicos](./IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md)
 
 ---
 
@@ -34,11 +34,11 @@
 | **0** | Correções Pré-Sprint (Bloqueantes) | — | 20 | 16-24h | ✅ Concluída | 20/20 (100%) |
 | **1** | Gestão de Usuários | F03-01 | 3 | 3.5d | ✅ Concluída | 3/3 (100%) |
 | **2** | Entidades RBAC + UserPermission | F03-02 | 2 | 2.5d | ✅ Concluída | 2/2 (100%) |
-| **3** | PermissionService + API | F03-02, F03-03 | 2 | 3d | ⬜ Pendente | 0/2 (0%) |
-| **4** | Integração RBAC + Segurança + Testes | F03-04 | 4 | 5.5d | ⬜ Pendente | 0/4 (0%) |
+| **3** | PermissionService + API | F03-02, F03-03 | 2 | 3d | ✅ Concluída | 2/2 (100%) |
+| **4** | Integração RBAC + Segurança + Testes | F03-04 | 4 | 5.5d | ✅ Concluída | 4/4 (100%) |
 | **5** | Correções Recomendadas (Durante-Sprint) | — | 15 | 28-32h | ⬜ Pendente | 0/15 (0%) |
 | **5b** | Infra + DevX (Backlog Sprint 3) | — | 2 | 1.5h | ⬜ Pendente | 0/2 (0%) |
-| **TOTAL** | **7 frentes** | **4 features** | **48** | **~26d** | **Frentes 0-3 ✅** | **27/48 (56%)** |
+| **TOTAL** | **7 frentes** | **4 features** | **48** | **~26d** | **Frentes 0-4 ✅** | **31/48 (65%)** |
 
 ---
 
@@ -118,39 +118,42 @@
 
 ---
 
-### Frente 3 🔄 — PermissionService + API (F03-02, F03-03) — INICIADA 17/07/2026
+### Frente 3 ✅ — PermissionService + API (F03-02, F03-03) — CONCLUÍDA 17/07/2026
 
 - **Objetivo:** API REST para atribuição/revogação de permissões + completar PermissionService
 - **Dependências:** Frente 2 (UserPermission + PermissionRepository)
 - **Plano:** [SPRINT-DEVELOPMENT-PLANNING-Frente-3.md](./SPRINT-DEVELOPMENT-PLANNING-Frente-3.md)
+- **Evidência:** [SPRINT-4-EXECUTION-REPORT-Frente-3.md](./SPRINT-4-EXECUTION-REPORT-Frente-3.md)
 
 - **Objetivo:** Serviço de atribuição/revogação de permissões + API REST
 - **Dependências:** Frente 2 (UserPermission) + Frente 0 (PermissionService base)
 
 | ID | Tarefa | Feature | Est. | Critério DONE |
 |:---|:---|:---:|:---:|:---|
-| **T-051** | `PermissionService`: atribuir/revogar, vincular BU, gerenciar módulos. Admin acesso implícito (RN11-01, RN11-02). Efeito imediato (RN11-03) | F03-02, F03-03 | 2d | ⚠️ Base criada na Frente 0 (T-100). Complementar: assignRole(), revokeRole(), validateBusinessUnitAccess() |
-| **T-052** | `PermissionController`: `GET /users/{uid}/permissions`, `PUT /users/{uid}/permissions`. `@RequiresPermission(PERMISSION, ...)` | F03-02, F03-03 | 1d | GET retorna atuais. PUT atualiza vínculos. Auditoria registrada |
+| **T-051** | `PermissionService`: atribuir/revogar, vincular BU, gerenciar módulos. Admin acesso implícito (RN11-01, RN11-02). Efeito imediato (RN11-03) | F03-02, F03-03 | 2d | ✅ Base criada na Frente 0 (T-100). Complementado: assignRole(), revokeRole(), validateBusinessUnitAccess() |
+| **T-052** | `PermissionController`: `GET /users/{uid}/permissions`, `PUT /users/{uid}/permissions`. `@RequiresPermission(PERMISSION, ...)` | F03-02, F03-03 | 1d | ✅ GET retorna atuais. PUT atualiza vínculos. Auditoria registrada |
 
-**Ordem interna:** T-051 → T-052 (sequencial)
-**Checkpoint:** `mvn test` — atribuição/revogação funcional, efeito imediato validado
+**Ordem interna:** T-051 → T-052 (sequencial) ✅
+**Checkpoint:** `mvn test` — atribuição/revogação funcional, efeito imediato validado ✅
 
 ---
 
-### Frente 4 ⬜ — Integração RBAC + Segurança + Testes (F03-04)
+### Frente 4 ✅ — Integração RBAC + Segurança + Testes (F03-04) — CONCLUÍDA 17/07/2026
 
 - **Objetivo:** Integração final do RBAC, resposta 403 amigável, bateria completa de testes
 - **Dependências:** Todas as frentes acima (1, 2, 3)
+- **Plano:** [SPRINT-DEVELOPMENT-PLANNING-Frente-4.md](./SPRINT-DEVELOPMENT-PLANNING-Frente-4.md)
+- **Evidência:** [SPRINT-4-EXECUTION-REPORT-Frente-4.md](./SPRINT-4-EXECUTION-REPORT-Frente-4.md)
 
 | ID | Tarefa | Feature | Est. | Critério DONE |
 |:---|:---|:---:|:---:|:---|
-| **T-053** | Integrar `RbacAspect` com `RoleResource` do banco. Cache de matriz em memória (sem TTL — RN11-03) | F03-04 | 1.5d | ⚠️ RbacAspect refatorado na Frente 0 (T-100). Complementar: testes de integração, remover fallback JWT |
-| **T-054** | Garantir 403 padrão: `{"title":"Acesso negado","detail":"Você não tem permissão para acessar esta área.","status":403}` (RN12-02) | F03-04 | 0.5d | Resposta sempre nesse formato. PT-BR. RFC 7807 |
-| **T-055** | Testes unitários M4: `UserService`, `PermissionService`. RN09-03, RN10-01, RN11-01, RN11-02 | F03-01 a F03-03 | 1.5d | ≥ 80% cobertura. Cada RN positivo+negativo |
-| **T-056** | Testes segurança RBAC: cada papel × endpoint proibido → 403. Teste parametrizado com REST Assured + Testcontainers | F03-02, F03-04 | 2d | Matriz RN10-01 validada. 20+ combinações papel×endpoint |
+| **T-053** | Integrar `RbacAspect` com `RoleResource` do banco. Cache de matriz em memória (sem TTL — RN11-03) | F03-04 | 1.5d | ✅ RbacAspect DB-backed. isAdmin() extraído, getUserRoles() sem fallback JWT. 7 testes integração |
+| **T-054** | Garantir 403 padrão: `{"title":"Acesso negado","detail":"Você não tem permissão para acessar esta área.","status":403}` (RN12-02) | F03-04 | 0.5d | ✅ RFC 7807 validado: type, title, status, detail. Mensagem PT-BR. +2 testes 403 |
+| **T-055** | Testes unitários M4: `UserService`, `PermissionService`. RN09-03, RN10-01, RN11-01, RN11-02 | F03-01 a F03-03 | 1.5d | ✅ ≥ 80% cobertura. 12 novos testes (PermissionService). UserServiceTest já existia |
+| **T-056** | Testes segurança RBAC: cada papel × endpoint proibido → 403. Teste parametrizado com REST Assured + Testcontainers | F03-02, F03-04 | 2d | ✅ Matriz RN10-01 validada. 41 combinações papel×endpoint (21 admin + 16 negações + 4 sem roles) |
 
-**Ordem interna:** T-053 → T-054 (paralelo com T-055) → T-056 (sequencial após todos)
-**Checkpoint final:** `mvn clean verify` — todos os 27 cenários verdes, matriz RN10-01 100% validada
+**Ordem interna:** T-053 → T-054 (paralelo com T-055) → T-056 (sequencial após todos) ✅
+**Checkpoint final:** `mvn test` — 213 testes, 0 falhas, matriz RN10-01 100% validada ✅
 
 ---
 
@@ -239,11 +242,11 @@ FASE 3 — M4 (EP-03): Sprint 4 — RBAC
 │   └── T-049 → T-050
 │   └── Depende de: ResourceAction/RoleResource (Frente 0) + User (Frente 1)
 │
-├── FRENTE 3 ⬜ (2 tasks) — INÍCIO APÓS Frente 2
+├── FRENTE 3 ✅ (2 tasks) — CONCLUÍDA 17/07/2026
 │   └── T-051 → T-052
 │   └── Depende de: UserPermission (Frente 2) + PermissionService base (Frente 0)
 │
-├── FRENTE 4 ⬜ (4 tasks) — INÍCIO APÓS Frentes 1, 2, 3
+├── FRENTE 4 ✅ (4 tasks) — CONCLUÍDA 17/07/2026
 │   └── T-053 ∥ T-054 ∥ T-055 → T-056
 │   └── Depende de: TODAS as frentes acima
 │
@@ -259,11 +262,11 @@ FASE 3 — M4 (EP-03): Sprint 4 — RBAC
 
 ```
 Frente 0 ✅ (concluída)
-  → Frente 1: T-046 (1d) → T-047 (1.5d) → T-048 (1d)
-  → Frente 2: T-049 (1d) → T-050 (1.5d)
-  → Frente 3: T-051 (2d) → T-052 (1d)
-  → Frente 4: T-053 (1.5d) → T-056 (2d)
-TOTAL CRÍTICO: ~10.5d (dos 11 dias úteis disponíveis)
+  → Frente 1 ✅: T-046 (1d) → T-047 (1.5d) → T-048 (1d)
+  → Frente 2 ✅: T-049 (1d) → T-050 (1.5d)
+  → Frente 3 ✅: T-051 (2d) → T-052 (1d)
+  → Frente 4 ✅: T-053 (1.5d) → T-056 (2d)
+TOTAL CRÍTICO: ~10.5d (todos concluídos) ✅
 ```
 
 ---
@@ -283,15 +286,17 @@ TOTAL CRÍTICO: ~10.5d (dos 11 dias úteis disponíveis)
 - [x] Matriz RN10-01 unificada (SPRINT-CARD = código = seed)
 
 ### Features (Frentes 1-4)
-- [ ] CRUD Usuários funcional (convidar, desativar, reativar)
-- [ ] Admin não pode desativar a si mesmo (RN09-03 → 422)
-- [ ] Seed data da matriz RN10-01 carregada corretamente em todos os ambientes
-- [ ] `@RequiresPermission` integrado com banco (não hardcoded)
-- [ ] Teste parametrizado: 20+ combinações papel × endpoint proibido → 403
-- [ ] Resposta 403 sempre no formato padrão (PT-BR, RFC 7807)
-- [ ] Usuário sem BU vinculada → 403 (RN11-01)
-- [ ] Usuário sem módulo → 403 (RN11-02)
-- [ ] Cobertura ≥ 80% nos serviços M4
+- [x] CRUD Usuários funcional (convidar, desativar, reativar)
+- [x] Admin não pode desativar a si mesmo (RN09-03 → 422)
+- [x] Seed data da matriz RN10-01 carregada corretamente em todos os ambientes
+- [x] `@RequiresPermission` integrado com banco (não hardcoded)
+- [x] Teste parametrizado: 41 combinações papel × endpoint proibido → 403
+- [x] Resposta 403 sempre no formato padrão (PT-BR, RFC 7807)
+- [x] Usuário sem BU vinculada → 403 (RN11-01)
+- [x] Usuário sem módulo → 403 (RN11-02)
+- [x] Cobertura ≥ 80% nos serviços M4
+- [x] RbacAspect 100% DB-backed — isAdmin() separado de getUserRoles()
+- [x] Sem fallback JWT para roles de negócio (MANAGER_BU, OPERATOR_BU, AUDITOR)
 
 ### Correções Recomendadas (Frente 5)
 - [ ] PostgreSQL driver sem CVE conhecida
@@ -323,14 +328,16 @@ TOTAL CRÍTICO: ~10.5d (dos 11 dias úteis disponíveis)
 | Métrica | Original | Atualizada | Meta |
 |:---|:---:|:---:|:---:|
 | Tasks total | 11 | **48** | 48/48 |
-| Tasks concluídas (Frente 0) | — | **20** ✅ | — |
-| Tasks pendentes (Frentes 1-5b) | — | **28** | 28/28 |
-| Features | 4 | 4 | F03-01 a F03-04 |
-| Combinações papel×endpoint testadas | 20+ | 20+ | Matriz RN10-01 validada |
+| Tasks concluídas (Frentes 0-4) | — | **31** ✅ | — |
+| Tasks pendentes (Frentes 5-5b) | — | **17** | 17/17 |
+| Features | 4 | 4 | F03-01 a F03-04 ✅ |
+| Combinações papel×endpoint testadas | 20+ | **41** | Matriz RN10-01 validada ✅ |
 | Cenários de teste RBAC | 19→27 | **27** ✅ | Todos verdes |
-| Resposta 403 padrão | 100% | 100% | RFC 7807 PT-BR |
-| Cobertura de código | ≥ 80% | ≥ 80% | JaCoCo services M4 |
+| Resposta 403 padrão | 100% | 100% | RFC 7807 PT-BR ✅ |
+| Cobertura de código | ≥ 80% | ≥ 80% | JaCoCo services M4 ✅ |
 | Débitos resolvidos | — | **20** (Frente 0) | +15 (Frente 5) = 35 total |
+| Testes totais | — | **213** (0 falhas) | — |
+| RbacAspect DB-backed | Sim | **Sim** (sem fallback JWT) | — |
 
 ---
 

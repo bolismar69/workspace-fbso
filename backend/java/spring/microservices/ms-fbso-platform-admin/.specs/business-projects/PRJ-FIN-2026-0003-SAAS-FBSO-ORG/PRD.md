@@ -3,9 +3,9 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.12
+- **Versão:** 1.13
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 4 Frente 0 concluída ✅ (20/20). 77/136 tarefas (57%). Próximo: Sprint 4 Frentes 1-5b (28 tarefas pendentes)
+- **Status:** Em Execução — Sprints 1-4 (Frentes 0-4) concluídas ✅. 88/136 tarefas (65%). Próximo: Sprint 4 Frentes 5-5b (17 tarefas pendentes)
 
 ---
 

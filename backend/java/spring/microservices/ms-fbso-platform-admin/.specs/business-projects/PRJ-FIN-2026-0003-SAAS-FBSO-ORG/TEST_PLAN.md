@@ -3,9 +3,9 @@
 - **Solucao:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + REST Assured 5.5.7
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 2.9
+- **Versao:** 3.0
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-3 testadas ✅. Sprint 4 Frente 0: infra de testes pronta (REST Assured, RLS FORCE, seed RBAC). 142 testes totais: 100 unitários + 42 integração. Próximo: 27 cenários Sprint 4 (Frentes 1-4)
+- **Status:** Em Execução — Sprints 1-4 testadas ✅. 213 testes totais (0 falhas). Matriz RN10-01 100% validada (41 combinações). 403 RFC 7807 validado. Próximo: Frentes 5-5b + E2E pendentes
 - **Origem:** [SPECS.md](./SPECS.md) v1.4 + [ARCHITECTURE.md](./ARCHITECTURE.md) + [PRD.md](./PRD.md)
 
 ---

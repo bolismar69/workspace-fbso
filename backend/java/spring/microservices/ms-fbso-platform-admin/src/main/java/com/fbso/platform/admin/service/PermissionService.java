@@ -94,70 +94,84 @@ public class PermissionService {
     /**
      * Verifica se o usuário atual tem permissão para o recurso + ação.
      * <p>
-     * ADMIN_TENANT tem acesso implícito total (não requer registros em user_permission).
-     * Demais roles são verificadas contra a matriz carregada do banco.
+     * <b>ADMIN_TENANT</b> tem acesso implícito total — verificado via JWT
+     * (Keycloak é a fonte autoritativa de autenticação). Não requer registros
+     * em {@code user_permission}.
+     * <p>
+     * <b>Demais roles</b> (MANAGER_BU, OPERATOR_BU, AUDITOR) são verificadas
+     * contra a matriz carregada do banco ({@code user_permission} +
+     * {@code role_resource}). Isso garante RN11-03 ("efeito imediato") —
+     * alterações de permissão têm efeito na próxima requisição, sem esperar
+     * refresh do token JWT.
      *
      * @param resource nome do recurso (ex: "TENANT")
      * @param action   ação solicitada (ex: "create")
      * @throws PermissionDeniedException se o acesso for negado
      */
     public void checkPermission(String resource, String action) {
-        List<String> roles = getUserRoles();
-
-        if (roles.isEmpty()) {
-            log.warn("RBAC: sem roles no contexto — acesso negado a {}:{}", resource, action);
-            throw new PermissionDeniedException();
-        }
-
-        // Admin tem acesso total implícito
-        if (roles.contains(Role.ADMIN_TENANT.name())) {
+        // ADMIN_TENANT: acesso implícito total via JWT
+        // Keycloak é a fonte autoritativa de autenticação — não requer
+        // registros em user_permission. Isso permite que o admin inicial
+        // (criado no Keycloak) funcione sem seed manual de permissões.
+        if (isAdmin()) {
             log.debug("RBAC: admin acessa {}:{}", resource, action);
             return;
         }
 
-        // Verificar cada role do usuário contra a matriz
+        // Demais roles: banco como fonte primária (DT-050)
+        List<String> dbRoles = getUserRoles();
+        if (dbRoles.isEmpty()) {
+            log.warn("RBAC: sem roles no banco — acesso negado a {}:{}", resource, action);
+            throw new PermissionDeniedException();
+        }
+
+        // Verificar cada role do usuário contra a matriz RN10-01
         String permissionKey = resource + ":" + action;
-        boolean granted = roles.stream().anyMatch(role -> {
+        boolean granted = dbRoles.stream().anyMatch(role -> {
             Set<String> permissions = permissionMatrix.get(role);
             return permissions != null && permissions.contains(permissionKey);
         });
 
         if (!granted) {
             log.warn("RBAC: acesso negado — roles={}, resource={}, action={}",
-                    roles, resource, action);
+                    dbRoles, resource, action);
             throw new PermissionDeniedException();
         }
 
         log.debug("RBAC: acesso permitido — roles={}, resource={}, action={}",
-                roles, resource, action);
+                dbRoles, resource, action);
+    }
+
+    /**
+     * Verifica se o usuário atual é ADMIN_TENANT (via JWT/Keycloak).
+     * <p>
+     * Keycloak é a fonte autoritativa de autenticação. ADMIN_TENANT é um papel
+     * de autenticação que concede acesso implícito total — não requer registros
+     * em {@code user_permission}.
+     */
+    private boolean isAdmin() {
+        return TenantContext.getRoles().contains(Role.ADMIN_TENANT.name());
     }
 
     /**
      * Obtém os roles do usuário atual a partir do banco ({@code user_permission}).
      * <p>
-     * Fonte primária (DT-050): banco, não JWT. Isso garante que alterações
+     * <b>Fonte primária (DT-050):</b> banco, não JWT. Isso garante que alterações
      * de permissão tenham efeito imediato (RN11-03).
+     * <p>
+     * <b>ADMIN_TENANT NÃO é retornado por este método.</b> Admin é verificado
+     * separadamente via {@link #isAdmin()} no {@link #checkPermission(String, String)}.
+     * Isso mantém a separação clara: Keycloak para autenticação, banco para autorização.
+     *
+     * @return roles do banco ({@code user_permission}), ou lista vazia se o
+     *         usuário não tiver permissões explícitas
      */
     public List<String> getUserRoles() {
         UUID userId = TenantContext.getUserIdQuietly();
         if (userId == null) {
             return List.of();
         }
-
-        // ADMIN_TENANT: acesso implícito total — não requer registros em user_permission
-        // Para outros papéis, consultar user_permission via PermissionRepository
-        List<String> roles = permissionRepo.findRolesByUser(userId);
-
-        // Se não há registros em user_permission, verificar se é admin via JWT
-        // (fallback para transição gradual JWT→DB)
-        if (roles.isEmpty()) {
-            List<String> jwtRoles = TenantContext.getRoles();
-            if (jwtRoles.contains(Role.ADMIN_TENANT.name())) {
-                return List.of(Role.ADMIN_TENANT.name());
-            }
-        }
-
-        return roles;
+        return permissionRepo.findRolesByUser(userId);
     }
 
     // ---- Validação de Escopo por Business Unit (DT-067) ----
@@ -172,17 +186,15 @@ public class PermissionService {
      * @throws PermissionDeniedException se o usuário não tiver acesso à BU
      */
     public void validateBusinessUnitAccess(UUID businessUnitId) {
-        List<String> roles = getUserRoles();
-
-        // Admin tem acesso total
-        if (roles.contains(Role.ADMIN_TENANT.name())) {
+        // Admin tem acesso total implícito a todas as BUs
+        if (isAdmin()) {
             return;
         }
 
         List<UUID> assignedBus = TenantContext.getBusinessUnitIds();
         if (assignedBus.isEmpty() || !assignedBus.contains(businessUnitId)) {
-            log.warn("RBAC: acesso negado à BU {} — roles={}, BUs designadas={}",
-                    businessUnitId, roles, assignedBus);
+            log.warn("RBAC: acesso negado à BU {} — BUs designadas={}",
+                    businessUnitId, assignedBus);
             throw new PermissionDeniedException();
         }
     }
@@ -279,8 +291,7 @@ public class PermissionService {
      * Demais papéis: retorna BUs de {@code user_permission}.
      */
     public List<UUID> getUserBusinessUnits(UUID userId) {
-        List<String> roles = getUserRoles();
-        if (roles.contains(Role.ADMIN_TENANT.name())) {
+        if (isAdmin()) {
             return List.of(); // acesso implícito a todas
         }
         return permissionRepo.findByUser(userId).stream()

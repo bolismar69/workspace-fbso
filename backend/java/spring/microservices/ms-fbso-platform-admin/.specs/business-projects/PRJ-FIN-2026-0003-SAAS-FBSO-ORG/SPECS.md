@@ -4,9 +4,9 @@
 - **Tipo:** Backend
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.1
+- **Versão:** 2.2
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 4 Frente 0 concluída ✅ (20/20 correções). 18 endpoints REST. 142 testes. 21 RNs implementadas. Próximo: Sprint 4 Frentes 1-5b (RBAC)
+- **Status:** Em Execução — Sprints 1-4 concluídas ✅ (Frentes 0-4). 18 endpoints REST. 213 testes. 21 RNs implementadas. RBAC DB-backed com matriz RN10-01 100% validada. Próximo: Sprint 4 Frentes 5-5b (correções recomendadas)
 - **Origem:** [PRD.md](./PRD.md) + [ARCHITECTURE.md](./ARCHITECTURE.md)
 
 ---

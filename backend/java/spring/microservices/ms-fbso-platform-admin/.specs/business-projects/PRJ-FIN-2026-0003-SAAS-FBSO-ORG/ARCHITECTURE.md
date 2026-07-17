@@ -3,9 +3,9 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.5
+- **Versão:** 2.6
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 4 Frente 0 concluída ✅ (20/20). RbacAspect DB-backed via PermissionService. RLS com FORCE. JWT issuer validation ativa. 4 novas entities + V004 (seed RBAC) + V006 (FK). Próximo: Sprint 4 Frentes 1-5b
+- **Status:** Em Execução — Sprints 1-4 (Frentes 0-4) concluídas ✅. RbacAspect DB-backed via PermissionService com isAdmin() separado de getUserRoles(). Sem fallback JWT para roles de negócio. RLS com FORCE. JWT issuer validation ativa. 4 novas entities + V004 (seed RBAC) + V006 (FK). 213 testes (0 falhas). Próximo: Sprint 4 Frentes 5-5b
 - **Origem:** [PRD.md](./PRD.md)
 - **Débitos Técnicos:** [Sprint 3](./sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) · [Sprint 4](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md) — 56 débitos catalogados (47 novos + 9 backlog)
 - **Escopo:** Estilo arquitetural + C4 L1-L3 + Design detalhado + C4 Deployment + ADRs

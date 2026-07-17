@@ -61,6 +61,42 @@ class GlobalExceptionHandlerTest {
             // Mensagem amigável — sem detalhes técnicos
             assertThat(response.getBody().detail()).contains("Você não tem permissão");
         }
+
+        @Test
+        @DisplayName("TC-T-054: 403 segue EXATAMENTE o formato RFC 7807 com type, title, status, detail")
+        void shouldReturn403ExactRfc7807Format() {
+            var ex = new PermissionDeniedException();
+
+            ResponseEntity<ErrorResponse> response = handler.handlePermissionDenied(ex);
+            ErrorResponse body = response.getBody();
+
+            assertThat(body).isNotNull();
+            // RFC 7807 requer campo type (URI identificando o tipo de erro)
+            assertThat(body.type()).isEqualTo("https://api.fbso.org/errors/access-denied");
+            // Título em PT-BR
+            assertThat(body.title()).isEqualTo("Acesso negado");
+            // Status HTTP
+            assertThat(body.status()).isEqualTo(403);
+            // Detalhe amigável (RN12-02)
+            assertThat(body.detail()).isEqualTo("Você não tem permissão para acessar esta área.");
+            // fields deve ser null (não é erro de validação)
+            assertThat(body.fields()).isNull();
+        }
+
+        @Test
+        @DisplayName("TC-T-054: Spring AccessDeniedException também retorna 403 RFC 7807")
+        void springAccessDeniedAlsoReturnsRfc7807() {
+            var ex = new org.springframework.security.access.AccessDeniedException("Access Denied");
+
+            ResponseEntity<ErrorResponse> response = handler.handleSpringAccessDenied(ex);
+            ErrorResponse body = response.getBody();
+
+            assertThat(body).isNotNull();
+            assertThat(body.status()).isEqualTo(403);
+            assertThat(body.type()).contains("access-denied");
+            assertThat(body.title()).isEqualTo("Acesso negado");
+            assertThat(body.detail()).contains("Você não tem permissão");
+        }
     }
 
     // ---- TC-S2-020: Exception → 500 sem stack trace ----
