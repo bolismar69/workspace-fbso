@@ -3,13 +3,17 @@ package com.fbso.platform.admin.service;
 import com.fbso.platform.admin.dto.response.SubscriptionResponse;
 import com.fbso.platform.admin.entity.Plan;
 import com.fbso.platform.admin.entity.Subscription;
+import com.fbso.platform.admin.exception.PermissionDeniedException;
 import com.fbso.platform.admin.repository.PlanRepository;
 import com.fbso.platform.admin.repository.SubscriptionRepository;
+import com.fbso.platform.admin.security.TenantContext;
 import com.fbso.platform.admin.security.annotation.Auditable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -56,6 +60,13 @@ public class SubscriptionService {
             throw new com.fbso.platform.admin.exception.BusinessException(
                     "plan-inactive",
                     "Plano " + plan.getName() + " não está ativo (status=" + plan.getStatus() + ")");
+        }
+
+        // DT-062: Validar tenant_id da URL contra JWT para prevenir bypass multi-tenant
+        UUID jwtTenantId = TenantContext.getTenantId();
+        if (!tenantId.equals(jwtTenantId)) {
+            log.warn("Tenant mismatch: URL={}, JWT={} — acesso negado", tenantId, jwtTenantId);
+            throw new PermissionDeniedException();
         }
 
         Subscription sub = new Subscription();

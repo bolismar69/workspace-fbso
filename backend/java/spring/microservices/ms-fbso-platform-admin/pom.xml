@@ -116,7 +116,16 @@
 
         <!-- Jackson JSR-310 — incluso transitivamente via spring-boot-starter-web -->
 
-        <!-- Cache (Caffeine) — Sprint 4: rate limiting, cache de permissões RBAC -->
+        <!-- Cache (Caffeine) — Sprint 4: cache de permissões RBAC -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>3.2.4</version>
+        </dependency>
 
         <!-- ===== Testes ===== -->
 
@@ -155,6 +164,18 @@
         </dependency>
 
         <!-- REST Assured — Sprint 4: testes E2E de API -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.5.7</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>spring-mock-mvc</artifactId>
+            <version>5.5.7</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

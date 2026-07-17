@@ -3,7 +3,7 @@
 - **Sprint:** 4 de 7
 - **Origem:** [TEST_PLAN.md](../../TEST_PLAN.md) §3.9 a §3.12 + §4.1
 - **Features:** F03-01 a F03-04 (4 features)
-- **Total de cenários:** 19
+- **Total de cenários:** 27
 
 ---
 

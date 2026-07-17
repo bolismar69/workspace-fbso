@@ -2,7 +2,7 @@
 
 ## Contexto
 
-Este prompt orquestra a **identificação e catalogação de débitos técnicos** antes do início de uma nova sprint, como parte do fluxo Spec-Driven Development. Ele atua como uma **auditoria técnica multidisciplinar** que combina **7 skills complementares** para varrer documentação, código, arquitetura, complexidade, dependências e qualidade, produzindo um documento único e acionável de débitos técnicos.
+Este prompt orquestra a **identificação e catalogação de débitos técnicos** antes do início de uma nova sprint, como parte do fluxo Spec-Driven Development. Ele atua como uma **auditoria técnica multidisciplinar** que combina **9 skills complementares** para varrer documentação, código, arquitetura, complexidade, duplicação, atalhos intencionais, qualidade, dívida técnica estrutural e segurança de dependências, produzindo um documento único e acionável de débitos técnicos.
 
 **Princípios fundamentais:**
 
@@ -88,17 +88,19 @@ Escanear:
 
 ## Skills Empregadas
 
-Este prompt orquestra **7 skills** em paralelo, cada uma cobrindo um ângulo diferente. Cada skill produz seus achados no seu formato nativo, que são depois consolidados no documento único.
+Este prompt orquestra **9 skills** em paralelo, cada uma cobrindo um ângulo diferente. Cada skill produz seus achados no seu formato nativo, que são depois consolidados no documento único.
 
 | # | Skill | Ângulo | O que encontra |
 |:---:|:---|:---|:---|
-| 1 | `engineering-skills` | Engenharia | Violações de padrões de código, más práticas de arquitetura, dependências incorretas, configurações erradas, falta de cobertura de testes, vulnerabilidades de segurança |
+| 1 | `code-reviewer` | Qualidade de Código | Violações SOLID, code smells, más práticas de arquitetura, padrões incorretos — regras universais (segurança, async, recursos, exceções, performance) + regras específicas por linguagem (14 linguagens suportadas) |
 | 2 | `caveman-review` | Consistência | Inconsistências entre documentação e código, métricas divergentes entre artefatos, versões desatualizadas, referências cruzadas quebradas |
 | 3 | `superpowers:brainstorming` | Decisões | Decisões arquiteturais questionáveis, trade-offs não documentados, premissas inválidas, gaps no planejamento que afetam a sprint atual |
 | 4 | `ponytail-review` | Complexidade | Código morto, abstrações desnecessárias (YAGNI), dependências que podem ser substituídas por stdlib/nativas, lógica que pode ser simplificada |
-| 5 | `code-review` | Qualidade | Bugs, vulnerabilidades de segurança, anti-padrões, problemas de performance via CodeRabbit CLI — revisão automatizada com severidade (Critical/Warning/Info) |
-| 6 | `codebase-cleanup-tech-debt` | Dívida Estrutural | Código duplicado, complexidade ciclomática, god classes, métodos longos, dependências circulares, cobertura de testes insuficiente, documentação ausente — com métricas quantificadas e análise de ROI |
-| 7 | `codebase-cleanup-deps-audit` | Dependências | Vulnerabilidades em dependências (CVEs), licenças incompatíveis, pacotes desatualizados (major/minor), supply chain risks, dependências transitivas problemáticas |
+| 5 | `ponytail-debt` | Atalhos Intencionais | Coleta todos os comentários `ponytail:` do código em um ledger de dívida, sinalizando marcadores sem trigger de upgrade como risco de apodrecimento |
+| 6 | `code-review` | Bugs & Vulnerabilidades | Bugs, vulnerabilidades de segurança, anti-padrões, problemas de performance via CodeRabbit CLI — revisão automatizada com severidade (Critical/Warning/Info) |
+| 7 | `jscpd` + `dry-refactoring` | Duplicação | Código duplicado (copy-paste) detectado via jscpd em 220+ linguagens com métricas de % duplicação; `dry-refactoring` propõe estratégias de eliminação (extract function/module/constant/base class) |
+| 8 | `tech-debt` | Dívida Estrutural | Categorização sistemática (Code, Architecture, Test, Dependency, Documentation, Infrastructure) com framework de priorização: `(Impact + Risk) × (6 − Effort)`, plano de remediação faseado |
+| 9 | `security-review` | Segurança & Dependências | Data-flow tracing entre arquivos, CVEs em dependências, licenças incompatíveis, pacotes desatualizados, secrets expostos, vulnerabilidades de injeção — 8 linguagens suportadas |
 
 ---
 
@@ -115,50 +117,87 @@ Se `{STACK}` não for informado, auto-detectar a partir de `PRD.md` e `ARCHITECT
 ```
 1. Ler TODOS os documentos-mestre (PRD, SPECS, TASKS, TEST_PLAN, ARCHITECTURE)
 2. Ler TODOS os artefatos da sprint atual (SPRINT-CARD, SPRINT-TEST-SUITE, SPRINT-REVIEW, etc.)
-3. Escanear a estrutura completa do código-fonte:
+3. **Buscar TODOS os IDENTIFIED-TECHNICAL-DEBT-*.md de sprints anteriores:**
+   - Localizar em `{SPRINT_DIR}/../sprint-*/IDENTIFIED-TECHNICAL-DEBT-*.md`
+   - Extrair débitos com status diferente de "Concluído"/"Resolvido"
+   - Montar o Backlog de Débitos Técnicos (seção §Backlog)
+   - Estes débitos NÃO ganham novo DT-XXX — mantêm o código original
+4. Escanear a estrutura completa do código-fonte:
    - Listar todos os pacotes e classes
    - Listar todas as migrations Flyway
    - Listar todos os testes e sua cobertura
    - Verificar configurações (application.yml, pom.xml/build.gradle)
-4. Se existir DOCS-SPRINT-CAVEMAN-REVIEW.md de sprint anterior, carregar como baseline
+5. Se existir DOCS-SPRINT-CAVEMAN-REVIEW.md de sprint anterior, carregar como baseline
 ```
 
-### Passo 2 — Executar as 7 Skills em Paralelo
+### Passo 2 — Executar as 9 Skills em Paralelo
 
-Cada skill é invocada como um agente independente, com seu próprio escopo. Os agentes 1-4 são baseados em skills locais (zero dependências externas). Os agentes 5-7 requerem verificação de pré-requisitos.
+Cada skill é invocada como um agente independente, com seu próprio escopo. Os agentes 1-5 são baseados em skills locais (zero dependências externas). Os agentes 6-9 requerem verificação de pré-requisitos.
 
-**Verificação de pré-requisitos (Agentes 5-7):**
+**Verificação de pré-requisitos (Agentes 6-9):**
 
 ```
-Agente 5 (code-review): Verificar se CodeRabbit CLI está instalado e autenticado.
+Agente 6 (code-review): Verificar se CodeRabbit CLI está instalado e autenticado.
   → coderabbit --version && coderabbit auth status
   → Se NÃO disponível: executar mesmo assim com revisão manual de código
     (análise estática sem CLI, usando padrões conhecidos de bugs/security)
 
-Agente 6 (codebase-cleanup-tech-debt): Sem dependências externas.
+Agente 7 (jscpd + dry-refactoring): Verificar se Node.js está disponível.
+  → node --version && npx jscpd --version
+  → Se NÃO disponível: executar mesmo assim com grep manual de duplicação
+    (buscar blocos idênticos >10 linhas em arquivos do mesmo pacote)
+
+Agente 8 (tech-debt): Sem dependências externas.
   → Análise puramente baseada em leitura de código e métricas estáticas.
 
-Agente 7 (codebase-cleanup-deps-audit): Verificar arquivos de build.
-  → pom.xml, build.gradle, package.json, Cargo.toml, etc.
+Agente 9 (security-review): Sem dependências externas obrigatórias.
+  → Análise de dados de build files (pom.xml, build.gradle, package.json, etc.).
   → Se disponível, usar ferramentas nativas: mvn dependency:analyze, npm audit, etc.
 ```
 
-#### Agente 1: engineering-skills
+#### Agente 1: code-reviewer
 
 ```
-Escopo: Código-fonte + Configurações + Build
+Escopo: Código-fonte completo (src/main/) + Configurações
 Prompt do agente:
-  "Usando as skills do engineering-skills (senior-backend, senior-architect,
-   code-reviewer, senior-security), faça uma análise completa do código em
-   {SOLUTION_PATH}/src/ e identifique:
-   1. Violações de padrões de arquitetura (ex: camadas puladas, responsabilidades erradas)
-   2. Código que não segue as convenções do projeto (ex: BaseRepository não usado)
-   3. Vulnerabilidades de segurança (ex: SQL injection, falta de validação)
-   4. Configurações incorretas ou duplicadas
-   5. Dependências ausentes ou incorretas no build file
-   6. Cobertura de testes insuficiente ou testes mal escritos
-   7. Código de sprints anteriores com bugs ou incompleto
-   Para cada achado, indique: localização exata (arquivo:linha), severidade,
+  "Execute uma revisão de qualidade de código completa em {SOLUTION_PATH}/src/
+   usando as regras do code-reviewer (rules/universal.md + language-specific).
+
+   Carregue nesta ordem:
+   1. rules/universal.md — segurança, async, recursos, exceções, performance (sempre)
+   2. languages/{lang}.md — regras específicas da linguagem do projeto
+
+   Identifique:
+   1. VIOLAÇÕES SOLID:
+      - Single Responsibility: classes/funções com múltiplas responsabilidades
+      - Open/Closed: modificações em classes estáveis em vez de extensão
+      - Liskov Substitution: subtipos que quebram contratos
+      - Interface Segregation: interfaces gordas com métodos não usados
+      - Dependency Inversion: dependências de concreto em vez de abstração
+
+   2. CODE SMELLS:
+      - Métodos longos (>30 linhas), god classes (>500 linhas, >20 métodos)
+      - Parâmetros excessivos (>5), flags booleanas como parâmetro
+      - Código comentado, nomes não descritivos, números mágicos
+      - Mutable state desnecessário, null handling ausente
+
+   3. PADRÕES DE ARQUITETURA:
+      - Violações de camadas (ex: controller acessando repository direto sem service)
+      - Convenções do projeto não seguidas (ex: BaseRepository não usado)
+      - Configurações incorretas ou duplicadas em application.yml/properties
+
+   4. SEGURANÇA (universal rules):
+      - SQL injection, XSS, path traversal, command injection
+      - Insecure deserialization, weak cryptography
+      - Secrets hardcoded, variáveis de ambiente não validadas
+
+   5. TESTES:
+      - Cobertura insuficiente em caminhos críticos (@Transactional, @Auditable)
+      - Testes sem asserts reais, testes que dormem (Thread.sleep)
+      - Falta de testes de integração para repositories e serviços
+
+   Para cada achado, indique: localização exata (arquivo:linha), severidade
+   (🔴 Critical / 🟡 Warning / 🔵 Info), regra violada (ex: SOLID-SRP, SMELL-long-method),
    e se é impeditivo para a Sprint {SPRINT_NUMBER}."
 ```
 
@@ -211,7 +250,37 @@ Prompt do agente:
    Termine com 'net: -N lines possible.'"
 ```
 
-#### Agente 5: code-review (CodeRabbit)
+#### Agente 5: ponytail-debt
+
+```
+Escopo: Comentários `ponytail:` no código-fonte
+Prompt do agente:
+  "Execute um ponytail-debt scan no código em {SOLUTION_PATH}/src/.
+
+   1. Grep por todos os comentários marcados com 'ponytail:':
+      grep -rnE '(#|//|--) ?ponytail:' {SOLUTION_PATH}/src/ \
+        --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=target
+
+   2. Para cada marcador encontrado, extraia:
+      - Arquivo:linha
+      - O que foi simplificado (contexto do comentário)
+      - Ceiling (limite nomeado após 'ponytail:')
+      - Trigger de upgrade (quando revisitar)
+
+   3. Classifique cada marcador:
+      - 🟢 has-trigger: tem trigger de upgrade definido
+      - 🔴 no-trigger: NÃO tem trigger — risco de apodrecimento (vira 'later means never')
+
+   4. Opcional: use git blame -L<linha>,<linha> para identificar o autor
+      de cada marcador (para follow-up com o time)
+
+   Output final:
+   - Arquivo agrupado por diretório
+   - '<N> markers, <M> with no trigger.'
+   - Se nada encontrado: 'No ponytail: debt. Clean ledger.'"
+```
+
+#### Agente 6: code-review (CodeRabbit)
 
 ```
 Escopo: Bugs, vulnerabilidades e qualidade de código
@@ -235,107 +304,148 @@ Prompt do agente:
    NÃO revisar código de dependências externas (node_modules, .m2, etc.)."
 ```
 
-#### Agente 6: codebase-cleanup-tech-debt
+#### Agente 7: jscpd + dry-refactoring
 
 ```
-Escopo: Dívida técnica estrutural com métricas quantificadas e análise de ROI
+Escopo: Duplicação de código (copy-paste) em todo o source
+Pré-requisito: Node.js (node --version). Se indisponível, fallback para grep manual.
 Prompt do agente:
-  "Execute uma análise completa de dívida técnica estrutural em {SOLUTION_PATH}/src/.
+  "Execute uma análise de duplicação de código em {SOLUTION_PATH}/src/.
 
-   Categorias a inspecionar:
+   1. DETECÇÃO (jscpd):
+      Se Node.js disponível:
+        npx jscpd --reporters ai --min-lines 10 --min-tokens 50 \
+          --ignore '**/node_modules/**,**/target/**,**/dist/**' \
+          {SOLUTION_PATH}/src/
+      → Output: lista de clones (arquivo:linhas ~ arquivo:linhas) + % duplicação
 
-   1. CODE DEBT — Duplicação, Complexidade, Estrutura:
-      - Código duplicado (copy-paste, lógica repetida em múltiplos arquivos)
-      - Complexidade ciclomática alta (>10) — identifique hotspots
-      - Métodos longos (>50 linhas) e god classes (>500 linhas, >20 métodos)
-      - Dependências circulares entre pacotes/módulos
-      - Feature envy (métodos que usam mais dados de outras classes que da própria)
+      Se Node.js NÃO disponível (fallback manual):
+        - Buscar blocos idênticos >10 linhas entre arquivos do mesmo pacote
+        - Identificar lógica repetida em múltiplos serviços/handlers
+        - Verificar constantes e configurações duplicadas
 
-   2. ARCHITECTURE DEBT — Design e Tecnologia:
-      - Abstrações ausentes ou com vazamento (leaky abstractions)
-      - Fronteiras arquiteturais violadas (ex: controller acessando DAO direto)
-      - Componentes monolíticos que deveriam ser modularizados
-      - Uso de APIs deprecadas ou padrões legados
+   2. CATEGORIZAÇÃO (dry-refactoring — escolher estratégia para cada clone):
+      | Estratégia | Quando usar | Exemplo |
+      |-----------|-------------|---------|
+      | Extract function | Bloco de lógica repetido | Função de validação duplicada em 3 services |
+      | Extract module/utility | Lógica compartilhada entre domínios diferentes | DateUtils em múltiplos pacotes |
+      | Extract constant/config | Dados/configuração repetidos | Valores default duplicados |
+      | Template/base class | Estrutura de classe repetida | Repository custom methods idênticos |
 
-   3. TESTING DEBT — Cobertura e Qualidade:
-      - Caminhos críticos sem teste (identifique pelo @Auditable, @Transactional)
-      - Testes frágeis (dependentes de ambiente, sleep, ordem de execução)
-      - Falta de testes de integração (Testcontainers não usado apesar de configurado)
-      - Cobertura abaixo da meta (JaCoCo <80% em classes da sprint atual)
+   3. PRIORIZAÇÃO:
+      - Clones com maior número de linhas primeiro (maior impacto)
+      - Clones entre módulos não relacionados → sinalizam missing shared utility
+      - Clones entre testes → sinalizam missing test helper
+      - Use --min-lines 10 para filtrar ruído
 
-   4. DOCUMENTATION DEBT:
-      - APIs públicas sem JavaDoc/OpenAPI
-      - Lógica complexa sem comentário explicativo
-      - ADRs ausentes para decisões arquiteturais já implementadas
+   4. MÉTRICAS:
+      - % total de duplicação no projeto
+      - Top 5 arquivos mais duplicados
+      - Número de clones por categoria de estratégia
 
-   5. INFRASTRUCTURE DEBT:
-      - Passos manuais de deploy (verificar Dockerfile, docker-compose)
-      - Ausência de health checks ou métricas de produção
-      - Scripts de seed/rollback inexistentes ou desatualizados
-
-   Para CADA achado, quantificar:
-   - Localização exata (arquivo:linha)
-   - Métrica (ex: complexidade=14, duplicação=85 linhas em 3 arquivos)
-   - Impacto em velocidade (horas/perda por mês)
-   - ROI estimado da correção (horas investidas vs. horas economizadas)
-   - Se é impeditivo para a Sprint {SPRINT_NUMBER}
-
-   Output agrupado por categoria, ordenado por severidade (Critical → High → Medium → Low)."
+   Output: lista de clones com estratégia sugerida, priorizados por impacto."
 ```
 
-#### Agente 7: codebase-cleanup-deps-audit
+#### Agente 8: tech-debt
 
 ```
-Escopo: Segurança de dependências, licenças e supply chain
+Escopo: Categorização e priorização de dívida técnica estrutural
 Prompt do agente:
-  "Execute uma auditoria completa de dependências em {SOLUTION_PATH}/.
+  "Execute uma análise completa de dívida técnica em {SOLUTION_PATH}/src/
+   usando o framework de categorização e priorização do tech-debt.
 
-   1. INVENTÁRIO:
-      - Listar TODAS as dependências diretas do build file (pom.xml/build.gradle/etc.)
-      - Identificar dependências transitivas críticas (as trazidas por frameworks)
-      - Mapear escopo de cada dependência (compile, runtime, test, provided)
+   1. CATEGORIZAR cada achado:
 
-   2. VULNERABILIDADES (CVEs):
-      - Verificar dependências com vulnerabilidades conhecidas (CVE/CVSS ≥ 7.0 = crítico)
-      - Para cada CVE: ID, severidade, componente afetado, versão fixa, exploitability
-      - Priorizar: RCE > auth bypass > information disclosure > DoS
-      - Indicar se há exploit público conhecido
+   | Categoria | O que inclui | Indicadores |
+   |-----------|-------------|-------------|
+   | Code debt | Lógica duplicada, más abstrações, números mágicos | Bugs, desenvolvimento lento |
+   | Architecture debt | Monólitos que deveriam ser split, data store errado | Limites de escala |
+   | Test debt | Baixa cobertura, testes flaky, falta de integração | Regressões em produção |
+   | Dependency debt | Bibliotecas desatualizadas, sem manutenção | Vulnerabilidades de segurança |
+   | Documentation debt | Runbooks ausentes, READMEs desatualizados, tribal knowledge | Dor no onboarding |
+   | Infrastructure debt | Deploys manuais, sem monitoring, sem IaC | Incidentes, recovery lento |
 
-   3. LICENÇAS:
-      - Identificar licenças de TODAS as dependências
-      - Sinalizar licenças problemáticas: GPL viral, AGPL, EUPL, SSPL, BUSL, Commons Clause
-      - Verificar compatibilidade com o modelo de negócio (SaaS B2B)
-      - Dependências sem licença declarada → risco legal
+   2. PRIORIZAR cada item (framework quantitativo):
+      - Impact: Quanto isso desacelera o time? (1-5)
+      - Risk: O que acontece se não corrigirmos? (1-5)
+      - Effort: Quão difícil é a correção? (1-5, invertido — menor esforço = maior prioridade)
 
-   4. VERSÕES DESATUALIZADAS:
-      - Identificar pacotes com major version lag (>1 major atrás)
-      - Identificar pacotes com minor version lag (>3 minors atrás)
-      - Pacotes sem update nos últimos 12 meses (abandonados?)
-      - Sugerir upgrade path: current → recommended (com breaking changes list)
+      Priority = (Impact + Risk) × (6 − Effort)
 
-   5. SUPPLY CHAIN:
-      - Dependências de maintainers únicos (bus factor = 1)
-      - Dependências com histórico de compromise (ex: event-stream, left-pad)
-      - Dependências de repositórios com poucas estrelas/contribuidores
-      - Verificar se há dependências de forks não-oficiais
+   3. Para CADA achado, incluir:
+      - Categoria + localização exata (arquivo:linha)
+      - Métrica quantificada (ex: complexidade=14, 85 linhas duplicadas em 3 arquivos)
+      - Priority score (2-50) + severidade (🔴 ≥40, 🟡 25-39, 🔵 <25)
+      - Impacto em velocidade (horas/perda por mês)
+      - ROI estimado da correção (horas investidas vs. horas economizadas)
+      - Se é impeditivo para a Sprint {SPRINT_NUMBER}
 
-   6. FERRAMENTAS (se disponíveis):
-      - Maven: mvn dependency:analyze (unused/undeclared), mvn versions:display-dependency-updates
+   4. OUTPUT: plano de remediação faseado que pode ser executado junto com feature work:
+      - Fase 1 (Imediato — antes da sprint): itens com priority ≥40 e bloqueantes
+      - Fase 2 (Durante a sprint): itens com priority 25-39
+      - Fase 3 (Sprints futuras): itens com priority <25
+
+   Output agrupado por categoria, ordenado por priority score decrescente."
+```
+
+#### Agente 9: security-review
+
+```
+Escopo: Segurança de código, dependências, licenças e supply chain
+Prompt do agente:
+  "Execute uma auditoria de segurança completa em {SOLUTION_PATH}/.
+
+   1. DEPENDENCY AUDIT (fast wins primeiro):
+      - Varrer build files (pom.xml, build.gradle, package.json, Cargo.toml, go.mod)
+      - Identificar dependências com CVEs conhecidas (CVSS ≥7.0 → crítico)
+      - Sinalizar pacotes deprecated, sem manutenção (>12 meses sem update)
+      - Sugerir upgrade path: versão atual → versão recomendada (com breaking changes)
+
+   2. VULNERABILITY SCAN (data-flow tracing):
+      Traçar fluxos de dados entre arquivos para detectar:
+      - Injection: SQL, NoSQL, Command, LDAP, XPath — onde user input chega a sinks perigosos
+      - XSS: output não sanitizado em respostas HTML/JSON
+      - Path traversal: file paths construídos com input do usuário
+      - Insecure deserialization: ObjectMapper sem TypeSafe, pickle.loads, yaml.load
+      - SSRF: URLs controladas pelo usuário usadas em HTTP clients
+
+   3. SECRETS & EXPOSURE:
+      - API keys, tokens, senhas hardcoded no código
+      - Credenciais em arquivos de configuração (application.yml, .env)
+      - Chaves privadas, certificados, connection strings expostos
+      - Variáveis de ambiente lidas sem validação
+
+   4. AUTH & ACCESS CONTROL:
+      - Endpoints públicos sem autenticação (quando deveriam ter)
+      - Falta de autorização por role/scope
+      - JWT sem validação de exp, secret fraco, alg=none
+      - Password reset sem rate limiting
+
+   5. LICENSES & SUPPLY CHAIN:
+      - Licenças problemáticas: GPL viral, AGPL, EUPL, SSPL, BUSL, Commons Clause
+      - Dependências de maintainer único (bus factor = 1)
+      - Dependências com histórico de compromise (event-stream, left-pad, etc.)
+      - Forks não-oficiais, repositórios com <100 stars
+
+   6. FERRAMENTAS COMPLEMENTARES (se disponíveis):
+      - Maven: mvn dependency:analyze (unused/undeclared)
       - Gradle: gradle dependencies, gradle dependencyUpdates
       - npm: npm audit --json
       - Python: pip-audit, safety check
       - Geral: OWASP Dependency-Check, Trivy, Snyk CLI
 
    Para CADA achado, indicar:
-   - Componente + versão atual + versão recomendada
-   - Severidade (🔴 Critical: CVE≥9 ou GPL em SaaS | 🟡 High: CVE≥7 ou major lag>2 | 🔵 Medium: minor lag ou licença ambígua)
+   - Componente + versão atual + versão recomendada (se aplicável)
+   - CVE ID, CVSS score, exploitability (se CVE)
+   - Severidade: 🔴 Critical (CVE≥9 ou GPL em SaaS) | 🟡 High (CVE≥7 ou major lag>2) | 🔵 Medium (minor lag ou licença ambígua)
    - Se é impeditivo para a Sprint {SPRINT_NUMBER}
-   - Ação corretiva específica (ex: 'bump postgresql 42.7.1→42.7.5')"
+   - Ação corretiva específica (ex: 'bump postgresql 42.7.1→42.7.5')
+   - Self-verify: reconfirmar cada finding para eliminar falsos positivos"
 ```
 
 ### Passo 3 — Consolidar Achados no Documento Único
 
-Consolidar TODOS os achados dos 4 agentes em um único documento:
+Consolidar TODOS os achados dos 9 agentes + backlog de sprints anteriores em um único documento:
 
 ```
 ARQUIVO: {SPRINT_DIR}/IDENTIFIED-TECHNICAL-DEBT-{SPRINT_NAME}.md
@@ -348,7 +458,7 @@ O documento deve seguir esta estrutura:
 
 - **Sprint alvo:** {SPRINT_NUMBER} de N — {SPRINT_NAME}
 - **Data da análise:** YYYY-MM-DD
-- **Skills executadas:** engineering-skills, caveman-review, superpowers:brainstorming, ponytail-review, code-review, codebase-cleanup-tech-debt, codebase-cleanup-deps-audit
+- **Skills executadas:** code-reviewer, caveman-review, superpowers:brainstorming, ponytail-review, ponytail-debt, code-review (CodeRabbit), jscpd+dry-refactoring, tech-debt, security-review
 - **Stack:** {STACK}
 - **Total de achados:** X (🔴 Y críticos, 🟡 Z riscos, 🔵 W nits)
 - **Impeditivos para iniciar a sprint:** S sim, N não
@@ -362,28 +472,58 @@ sobre iniciar ou não a sprint sem correções prévias.]
 
 ---
 
+## Backlog de Débitos Técnicos (Sprints Anteriores)
+
+> **Instrução:** Antes de catalogar os novos débitos, o agente deve **obrigatoriamente**:
+> 1. Buscar TODOS os arquivos `IDENTIFIED-TECHNICAL-DEBT-*.md` de sprints anteriores em `{SPRINT_DIR}/../`.
+> 2. Para cada arquivo encontrado, extrair os débitos cujo status **não seja "Concluído"** ou "Resolvido".
+> 3. Consolidar abaixo como backlog ativo, com referência ao documento original.
+
+Débitos técnicos identificados em sprints anteriores que **permanecem não resolvidos** e são candidatos a tratamento na sprint atual ou futuras.
+
+| DT-XXX | Sprint Origem | Descrição | Severidade | Bloqueante? | Status | Resolução (do doc original ou revisada) |
+|:---|:---|:---|:---:|:---:|:---|:---|
+| DT-001 | Sprint 2 | [Descrição copiada do documento original] | 🔴 | SIM | Pendente | [Resumo da resolução original ou **revisado**: nova resolução se contexto mudou] |
+| DT-002 | Sprint 2 | [Descrição copiada do documento original] | 🟡 | NÃO | Pendente | [Resumo da resolução] |
+| DT-005 | Sprint 1 | [Descrição] | 🔵 | NÃO | Pendente | [Resumo — ou `↗ ver DT-005 em IDENTIFIED-TECHNICAL-DEBT-sprint-01-*.md` se detalhamento for extenso] |
+
+> **Regra de referência:** Se o detalhamento completo do débito for extenso (>5 linhas), fazer referência ao documento original em vez de copiar: `↗ ver DT-XXX em {arquivo-original}`. Isso mantém o documento enxuto. Apenas revise o resumo de resolução se o contexto técnico tiver mudado desde a sprint original.
+
+**Total em backlog:** N débitos pendentes de sprints anteriores.
+
+---
+
+---
+
 ## Matriz de Débitos Técnicos
 
+> **Esta matriz consolida TODOS os débitos — tanto os novos (descobertos nesta sprint) quanto os do backlog (sprints anteriores).**
+>
 > **Legenda das colunas:**
-> - **ID:** DT-XXX (Débito Técnico, numeração sequencial)
+> - **ID:** DT-XXX (Débito Técnico, numeração sequencial e IMUTÁVEL)
+> - **Sprint Origem:** Em qual sprint o débito foi identificado (Sprint 1, 2, 3, ...). Débitos do backlog mantêm o DT-XXX original.
 > - **Severidade:** 🔴 Crítico (bloqueante) | 🟡 Risco (deve ser tratado) | 🔵 Nit (desejável)
-> - **Skill:** Qual skill identificou (CR=caveman-review, PONY=ponytail-review, ARCH=brainstorming, ENG=engineering-skills, CODE=code-review, DEBT=codebase-cleanup-tech-debt, DEPS=codebase-cleanup-deps-audit)
+> - **Skill:** Qual skill identificou (CR=caveman-review, PONY=ponytail-review, PDBT=ponytail-debt, ARCH=brainstorming, CREV=code-reviewer, CODE=code-review, JSCPD=jscpd+dry-refactoring, DEBT=tech-debt, SEC=security-review). Débitos de backlog: `BACKLOG`.
 > - **Complexidade:** H (Alta, >4h) | M (Média, 1-4h) | L (Baixa, <1h)
 > - **Bloqueante?:** SIM (impede o início/incremento da sprint) | NÃO (pode ser tratado depois)
 > - **Efeito se não tratado:** O que acontece se este débito for ignorado
 
-| ID | Arquivo/Artefato | Achado | Severidade | Skill | Complexidade | Bloqueante? | Efeito se não tratado |
-|:---|:---|:---|:---:|:---:|:---:|:---:|:---|
-| DT-001 | `Arquivo.java:L42` | [Descrição concisa do problema] | 🔴 | PONY | M | SIM | [Consequência concreta] |
-| DT-002 | ... | ... | ... | ... | ... | ... | ... |
+| ID | Sprint Origem | Arquivo/Artefato | Achado | Severidade | Skill | Complexidade | Bloqueante? | Efeito se não tratado |
+|:---|:---|:---|:---|:---:|:---:|:---:|:---:|:---|
+| DT-001 | Sprint 2 | `Arquivo.java:L42` | [Descrição concisa — backlog] | 🔴 | BACKLOG | M | SIM | [Consequência concreta] |
+| DT-050 | Sprint 3 | `Service.java:L128` | [Descrição concisa — novo débito] | 🟡 | CREV | H | NÃO | [Consequência concreta] |
+| DT-051 | Sprint 3 | ... | ... | ... | ... | ... | ... | ... |
+
+> **Ordenação:** Débitos bloqueantes primeiro (🔴), depois por sprint origem (mais antigos primeiro — risco de apodrecimento), depois por severidade.
 
 ---
 
 ## Achados por Skill
 
-### engineering-skills (N achados)
+### code-reviewer (N achados)
 
-[Agrupados por categoria: Arquitetura, Segurança, Configuração, Testes, etc.]
+[Agrupados por categoria: SOLID Violations, Code Smells, Architecture Patterns, Security, Tests]
+Para cada achado: regra violada (ex: SOLID-SRP, SMELL-long-method, SEC-injection).
 
 ### caveman-review (N achados)
 
@@ -398,46 +538,66 @@ sobre iniciar ou não a sprint sem correções prévias.]
 [Agrupados por tag: delete, stdlib, native, yagni, shrink]
 Terminar com: `net: -N lines possible.`
 
+### ponytail-debt (N achados)
+
+[Agrupados por arquivo. Cada marcador: ceiling, trigger de upgrade, risco de apodrecimento.]
+Terminar com: `<N> markers, <M> with no trigger.`
+
 ### code-review (N achados)
 
 [Agrupados por severidade CodeRabbit: Critical, Warning, Info]
 Para cada Critical/Warning: indicar se foi verificado manualmente (não é falso positivo).
 Se CodeRabbit CLI indisponível: indicar "Revisão manual — CodeRabbit CLI não disponível."
 
-### codebase-cleanup-tech-debt (N achados)
+### jscpd + dry-refactoring (N achados)
 
-[Agrupados por categoria: Code Debt, Architecture Debt, Testing Debt, Documentation Debt, Infrastructure Debt]
-Para cada achado: incluir métrica quantificada (ex: complexidade=14, 85 linhas duplicadas em 3 arquivos),
-impacto em velocidade (horas/mês), e ROI estimado da correção.
+[Agrupados por estratégia: extract function, extract module, extract constant, template/base class]
+Para cada clone: % duplicação, estratégia sugerida, estimativa de esforço.
+Resumo: % total de duplicação do projeto, Top 5 arquivos mais duplicados.
 
-### codebase-cleanup-deps-audit (N achados)
+### tech-debt (N achados)
 
-[Agrupados por categoria: Vulnerabilidades, Licenças, Versões Desatualizadas, Supply Chain]
-Para cada CVE: ID, CVSS score, componente, versão fixa.
+[Agrupados por categoria: Code Debt, Architecture Debt, Test Debt, Dependency Debt, Documentation Debt, Infrastructure Debt]
+Para cada achado: priority score (2-50), métrica quantificada, impacto em velocidade (horas/mês), e ROI estimado da correção.
+Incluir plano de remediação faseado: Fase 1 (≥40), Fase 2 (25-39), Fase 3 (<25).
+
+### security-review (N achados)
+
+[Agrupados por categoria: Dependency CVEs, Injection Vulnerabilities, Secrets & Exposure, Auth & Access Control, Licenses & Supply Chain]
+Para cada CVE: ID, CVSS score, componente, versão fixa, exploitability.
 Para cada licença problemática: tipo de licença, por que é problemática para este projeto.
 Resumo: N dependências auditadas, X vulnerabilidades (Y críticas), Z licenças problemáticas.
 
 ---
 
-## Plano de Ação Recomendado
+## Recomendações Prioritárias
 
-### Correções Pré-Sprint (impeditivos — devem ser feitos ANTES de iniciar)
+> **Esta seção lista débitos que DEVEM ou DEVERIAM ser tratados na sprint atual.**
+> Inclui tanto débitos recém-descobertos (Agentes 1-9) quanto débitos do backlog (sprints anteriores) que se tornaram críticos para a sprint atual.
 
-| ID (TASKS.md) | Débito | Ação | Estimativa | Responsável |
-|:---|:---|:---|:---:|:---|
-| T-087.DT-001 | DT-001 | [O que fazer] | Xh | A definir |
+### 🔴 Bloqueantes (impeditivos — devem ser corrigidos ANTES de iniciar a sprint)
 
-### Correções Durante a Sprint (não-bloqueantes — podem ser incluídas no backlog)
+Débitos que **impedem** o início ou o avanço da Sprint {SPRINT_NUMBER}. Sem correção, o desenvolvimento para ou produz código quebrado.
 
-| ID (TASKS.md) | Débito | Ação | Estimativa | Sprint sugerida |
-|:---|:---|:---|:---:|:---|
-| T-099.DT-017 | DT-017 | [O que fazer] | Xh | Sprint {SPRINT_NUMBER} |
+| ID (TASKS.md) | DT-XXX | Sprint Origem | Ação Corretiva | Estimativa | Responsável |
+|:---|:---|:---|:---|:---:|:---|
+| T-087.DT-001 | DT-001 | Sprint 2 | [O que fazer — backlog revisado] | Xh | A definir |
+| T-088.DT-050 | DT-050 | Sprint 3 | [O que fazer — novo débito] | Xh | A definir |
 
-### Correções Pós-Sprint (débito de longo prazo — sprints futuras)
+### 🟡 Recomendados (devem ser tratados — podem ser incluídos no backlog da sprint)
 
-| ID (TASKS.md) | Débito | Ação | Estimativa | Sprint sugerida |
-|:---|:---|:---|:---:|:---|
-| T-150.DT-020 | DT-020 | [O que fazer] | Xh | Sprint N+1 |
+Débitos que **não bloqueiam** o início da sprint mas que, se ignorados, acumulam risco técnico significativo.
+
+| ID (TASKS.md) | DT-XXX | Sprint Origem | Ação Corretiva | Estimativa | Sprint sugerida |
+|:---|:---|:---|:---|:---:|:---|
+| T-099.DT-002 | DT-002 | Sprint 2 | [O que fazer — backlog revisado] | Xh | Sprint {SPRINT_NUMBER} |
+| T-100.DT-051 | DT-051 | Sprint 3 | [O que fazer — novo débito] | Xh | Sprint {SPRINT_NUMBER} |
+
+### 🔵 Desejáveis (nice-to-have — se houver capacidade)
+
+| ID (TASKS.md) | DT-XXX | Sprint Origem | Ação Corretiva | Estimativa |
+|:---|:---|:---|:---|:---:|
+| T-105.DT-005 | DT-005 | Sprint 1 | [O que fazer — backlog antigo] | Xh |
 
 ---
 
@@ -452,6 +612,24 @@ Resumo: N dependências auditadas, X vulnerabilidades (Y críticas), Z licenças
 |:---|:---|:---:|:---|
 | DT-XXX | Tratar agora | {SPRINT_NUMBER} | [Por que] |
 | DT-YYY | Postergar | Sprint N+1 | [Por que] |
+
+---
+
+## Débitos Técnicos Elegíveis para Sprints Futuras
+
+> **Esta seção lista débitos que NÃO serão tratados na sprint atual, mas permanecem no radar para sprints futuras.**
+> Inclui tanto débitos do backlog antigo quanto débitos recém-descobertos que o time decidiu postergar.
+> A classificação segue o mesmo formato da Matriz de Débitos Técnicos.
+
+Débitos que o time decidiu **explicitamente postergar** — seja por baixa severidade, alta complexidade, ou dependência de outros fatores. Estes itens devem ser reavaliados no próximo ciclo de `PROMPT-GENERATE-IDENTIFIED-TECHNICAL-DEBT`.
+
+| DT-XXX | Sprint Origem | Descrição | Severidade | Bloqueante? | Skill | Complexidade | Sprint Sugerida | Justificativa do Adiamento |
+|:---|:---|:---|:---:|:---:|:---:|:---:|:---|:---|
+| DT-005 | Sprint 1 | [Descrição] | 🔵 | NÃO | BACKLOG | L | Sprint 5 | Baixo impacto — dívida cosmética |
+| DT-052 | Sprint 3 | [Descrição — novo débito postergado] | 🟡 | NÃO | DEBT | H | Sprint 4 | Alta complexidade — requer refactor prévio do módulo X |
+| DT-053 | Sprint 3 | [Descrição] | 🔵 | NÃO | PONY | M | Sprint N+2 | Depende da entrega do EP-03 |
+
+> **Regra de reavaliação:** Na próxima execução deste prompt (próxima sprint), os débitos desta seção devem ser relidos e reclassificados — um débito que era 🟡 pode se tornar 🔴 se o contexto mudou.
 
 ---
 
@@ -488,7 +666,7 @@ Resumo: N dependências auditadas, X vulnerabilidades (Y críticas), Z licenças
 
 ---
 
-🤖 *Análise gerada em YYYY-MM-DD. {N} achados consolidados a partir de 7 skills. Documento base para decisão do time.*
+🤖 *Análise gerada em YYYY-MM-DD. {N} achados consolidados a partir de 9 skills. Documento base para decisão do time.*
 ```
 
 ### Passo 4 — Apresentar ao Time para Decisão
@@ -671,7 +849,7 @@ Humano: "SOLUTION_PATH=/home/user/work/backend/java/spring/microservices/ms-fbso
 
 Agente: [Executa Passos 0-3, gera IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md]
         "Análise concluída. 47 débitos técnicos identificados
-         (12 🔴 críticos, 22 🟡 riscos, 13 🔵 nits) por 7 skills.
+         (12 🔴 críticos, 22 🟡 riscos, 13 🔵 nits) por 9 skills.
          8 são impeditivos para iniciar a Sprint 3.
          Documento salvo em: .../sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md
          
@@ -686,4 +864,4 @@ Agente: [Registra decisões no documento, executa Passo 5 (propagação de impac
 
 ---
 
-🤖 *Prompt v3.0. Integra 7 skills no fluxo Spec-Driven Development para identificação sistemática de débitos técnicos pré-sprint. v3.0 adiciona: Regras de Numeração (§5.0) — código DT imutável, task sequencial contínua, rastreabilidade DT-XXX↔T-XXX para integração com ferramentas externas.*
+🤖 *Prompt v3.1. Integra 9 skills no fluxo Spec-Driven Development para identificação sistemática de débitos técnicos pré-sprint. v3.1 adiciona: code-reviewer (SOLID + 14 linguagens), ponytail-debt (ledger de atalhos), jscpd+dry-refactoring (duplicação), tech-debt (priorização quantitativa), security-review (data-flow tracing) — substituindo 2 skills inexistentes e 1 meta-índice. Regras de Numeração (§5.0): código DT imutável, task sequencial contínua, rastreabilidade DT-XXX↔T-XXX.*

@@ -11,6 +11,7 @@
 -- 1. subscription — Vínculo Tenant × Plano
 -- ---------------------------------------------------------------------------
 ALTER TABLE fbso_platform.subscription ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fbso_platform.subscription FORCE ROW LEVEL SECURITY;
 CREATE POLICY tenant_isolation ON fbso_platform.subscription
     FOR ALL
     USING (tenant_id = current_setting('app.current_tenant_id')::UUID)
@@ -20,6 +21,7 @@ CREATE POLICY tenant_isolation ON fbso_platform.subscription
 -- 2. user — Usuário do sistema
 -- ---------------------------------------------------------------------------
 ALTER TABLE fbso_platform."user" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fbso_platform."user" FORCE ROW LEVEL SECURITY;
 CREATE POLICY tenant_isolation ON fbso_platform."user"
     FOR ALL
     USING (tenant_id = current_setting('app.current_tenant_id')::UUID)
@@ -29,6 +31,7 @@ CREATE POLICY tenant_isolation ON fbso_platform."user"
 -- 3. business_unit — CNPJ/filial vinculada a um Tenant
 -- ---------------------------------------------------------------------------
 ALTER TABLE fbso_platform.business_unit ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fbso_platform.business_unit FORCE ROW LEVEL SECURITY;
 CREATE POLICY tenant_isolation ON fbso_platform.business_unit
     FOR ALL
     USING (tenant_id = current_setting('app.current_tenant_id')::UUID)
@@ -45,6 +48,7 @@ CREATE POLICY tenant_isolation ON fbso_platform.business_unit
 -- 5. audit_log — Trilha de auditoria (imutável, segmentada por tenant)
 -- ---------------------------------------------------------------------------
 ALTER TABLE fbso_platform.audit_log ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fbso_platform.audit_log FORCE ROW LEVEL SECURITY;
 CREATE POLICY tenant_isolation ON fbso_platform.audit_log
     FOR ALL
     USING (tenant_id = current_setting('app.current_tenant_id')::UUID)

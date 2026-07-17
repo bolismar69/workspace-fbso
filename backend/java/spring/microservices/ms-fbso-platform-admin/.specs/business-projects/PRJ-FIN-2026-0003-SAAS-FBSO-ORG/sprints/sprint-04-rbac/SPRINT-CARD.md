@@ -9,10 +9,10 @@
 
 ---
 
-> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/sprint-04-rbac`. Antes de começar, execute:
+> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `PRJ-FIN-2026-0003-java-ms-fbso-platform-admin-sprint-04-rbac`. Antes de começar, execute:
 > ```bash
-> git checkout feature/sprint-04-rbac
-> git branch --show-current  # deve exibir: feature/sprint-04-rbac
+> git checkout PRJ-FIN-2026-0003-java-ms-fbso-platform-admin-sprint-04-rbac
+> git branch --show-current  # deve exibir: PRJ-FIN-2026-0003-java-ms-fbso-platform-admin-sprint-04-rbac
 > ```
 > 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-estratégia-de-branching--uma-branch-por-sprint)
 
@@ -76,6 +76,8 @@
 - [ ] Usuário sem módulo → 403 (RN11-02)
 
 ---
+
+> ⚠️ **BREAKING CHANGE — MANAGER_BU:** A matriz RN10-01 restritiva (SPRINT-CARD) remove acesso de MANAGER_BU a Dashboard, Tenants, Plans e Subscriptions que eram temporariamente permitidos na Fase 0 (RbacAspect hardcoded). MANAGER_BU passa a acessar apenas BUSINESS_UNIT e PRODUCT_SERVICE. Comunicar ao frontend e ao PO antes do deploy.
 
 ## ⚠️ Riscos e Bloqueadores
 
