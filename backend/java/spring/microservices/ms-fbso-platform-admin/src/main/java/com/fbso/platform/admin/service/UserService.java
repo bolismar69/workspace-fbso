@@ -94,6 +94,13 @@ public class UserService {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
+        // Defesa em profundidade: verificar tenant do usuário vs contexto
+        UUID tenantId = TenantContext.getTenantId();
+        if (!tenantId.equals(user.getTenantId())) {
+            log.warn("Tentativa de acesso cross-tenant bloqueada: userId={}, tenant={}", userId, tenantId);
+            throw new UserNotFoundException(userId);
+        }
+
         UUID deletedBy = TenantContext.getUserIdQuietly();
         userRepo.softDelete(userId, deletedBy != null ? deletedBy : userId);
         log.info("Usuário desativado: id={}, email={}", userId, maskEmail(user.getEmail()));
@@ -110,6 +117,13 @@ public class UserService {
     public UserResponse reactivate(UUID userId) {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
+
+        // Defesa em profundidade: verificar tenant do usuário vs contexto
+        UUID tenantId = TenantContext.getTenantId();
+        if (!tenantId.equals(user.getTenantId())) {
+            log.warn("Tentativa de acesso cross-tenant bloqueada: userId={}, tenant={}", userId, tenantId);
+            throw new UserNotFoundException(userId);
+        }
 
         user.setDeletedDt(null);
         user.setDeletedBy(null);

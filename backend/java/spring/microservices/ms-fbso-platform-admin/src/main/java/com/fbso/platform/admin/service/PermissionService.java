@@ -2,6 +2,7 @@ package com.fbso.platform.admin.service;
 
 import com.fbso.platform.admin.enums.Role;
 import com.fbso.platform.admin.exception.PermissionDeniedException;
+import com.fbso.platform.admin.repository.PermissionRepository;
 import com.fbso.platform.admin.security.TenantContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ public class PermissionService {
     private static final Logger log = LoggerFactory.getLogger(PermissionService.class);
 
     private final JdbcTemplate jdbc;
+    private final PermissionRepository permissionRepo;
 
     /**
      * Matriz de permissões carregada do banco.
@@ -43,8 +45,9 @@ public class PermissionService {
      */
     private final Map<String, Set<String>> permissionMatrix = new ConcurrentHashMap<>();
 
-    public PermissionService(JdbcTemplate jdbc) {
+    public PermissionService(JdbcTemplate jdbc, PermissionRepository permissionRepo) {
         this.jdbc = jdbc;
+        this.permissionRepo = permissionRepo;
         loadPermissionMatrix();
     }
 
@@ -133,16 +136,8 @@ public class PermissionService {
         }
 
         // ADMIN_TENANT: acesso implícito total — não requer registros em user_permission
-        // Para outros papéis, consultar user_permission
-        String sql = """
-            SELECT up.role
-            FROM fbso_platform.user_permission up
-            WHERE up.user_id = ? AND up.deleted_dt IS NULL
-            """;
-
-        List<String> roles = jdbc.query(sql,
-                (rs, rowNum) -> rs.getString("role"),
-                userId);
+        // Para outros papéis, consultar user_permission via PermissionRepository
+        List<String> roles = permissionRepo.findRolesByUser(userId);
 
         // Se não há registros em user_permission, verificar se é admin via JWT
         // (fallback para transição gradual JWT→DB)
@@ -181,5 +176,35 @@ public class PermissionService {
                     businessUnitId, roles, assignedBus);
             throw new PermissionDeniedException();
         }
+    }
+
+    // ---- Gestão de Permissões (Frente 2 — T-050) ----
+
+    /**
+     * Atribui um papel a um usuário para uma Business Unit.
+     * <p>
+     * Efeito imediato (RN11-03): a próxima chamada a {@code getUserRoles()}
+     * já retorna o novo papel.
+     *
+     * @param userId         ID do usuário
+     * @param businessUnitId ID da BU
+     * @param role           papel a atribuir (ex: "MANAGER_BU")
+     */
+    public void assignRole(UUID userId, UUID businessUnitId, String role) {
+        permissionRepo.assign(userId, businessUnitId, role);
+        log.info("Role atribuído: userId={}, buId={}, role={}", userId, businessUnitId, role);
+    }
+
+    /**
+     * Revoga um papel de um usuário para uma Business Unit.
+     * <p>
+     * Efeito imediato (RN11-03).
+     *
+     * @param userId         ID do usuário
+     * @param businessUnitId ID da BU
+     */
+    public void revokeRole(UUID userId, UUID businessUnitId) {
+        permissionRepo.revoke(userId, businessUnitId);
+        log.info("Role revogado: userId={}, buId={}", userId, businessUnitId);
     }
 }

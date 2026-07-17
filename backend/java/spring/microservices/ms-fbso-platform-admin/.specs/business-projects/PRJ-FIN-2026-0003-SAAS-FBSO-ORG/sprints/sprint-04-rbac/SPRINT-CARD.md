@@ -33,12 +33,12 @@
 |:---:|:---|:---|:---:|:---:|:---:|:---:|
 | **0** | Correções Pré-Sprint (Bloqueantes) | — | 20 | 16-24h | ✅ Concluída | 20/20 (100%) |
 | **1** | Gestão de Usuários | F03-01 | 3 | 3.5d | ✅ Concluída | 3/3 (100%) |
-| **2** | Entidades RBAC + UserPermission | F03-02 | 2 | 2.5d | ⬜ Pendente | 0/2 (0%) |
+| **2** | Entidades RBAC + UserPermission | F03-02 | 2 | 2.5d | ✅ Concluída | 2/2 (100%) |
 | **3** | PermissionService + API | F03-02, F03-03 | 2 | 3d | ⬜ Pendente | 0/2 (0%) |
 | **4** | Integração RBAC + Segurança + Testes | F03-04 | 4 | 5.5d | ⬜ Pendente | 0/4 (0%) |
 | **5** | Correções Recomendadas (Durante-Sprint) | — | 15 | 28-32h | ⬜ Pendente | 0/15 (0%) |
 | **5b** | Infra + DevX (Backlog Sprint 3) | — | 2 | 1.5h | ⬜ Pendente | 0/2 (0%) |
-| **TOTAL** | **7 frentes** | **4 features** | **48** | **~26d** | **Frentes 0-1 ✅** | **23/48 (48%)** |
+| **TOTAL** | **7 frentes** | **4 features** | **48** | **~26d** | **Frentes 0-2 ✅** | **25/48 (52%)** |
 
 ---
 
@@ -103,7 +103,7 @@
 
 ---
 
-### Frente 2 ⬜ — Entidades RBAC + UserPermission (F03-02)
+### Frente 2 ✅ — Entidades RBAC + UserPermission (F03-02) — CONCLUÍDA 17/07/2026
 
 - **Objetivo:** Seed data da matriz RN10-01 + entidade de vínculo Usuário×BU×Role
 - **Dependências:** Frente 0 (ResourceAction, RoleResource, BusinessUnit criados) + Frente 1 (User)

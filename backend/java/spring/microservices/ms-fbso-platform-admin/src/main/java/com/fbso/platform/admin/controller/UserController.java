@@ -73,7 +73,8 @@ public class UserController {
     @RequiresPermission(resource = "USER", action = "create")
     public ResponseEntity<UserResponse> create(@Valid @RequestBody UserCreateRequest request) {
         UUID tenantId = TenantContext.getTenantId();
-        log.info("Convite de usuário: email={}, tenant={}", request.email(), tenantId);
+        log.info("Convite de usuário: email={}, tenant={}",
+                maskEmail(request.email()), tenantId);
         UserResponse created = userService.invite(request, tenantId);
         return ResponseEntity.created(URI.create("/api/v1/users/" + created.id()))
                 .body(created);
@@ -118,5 +119,12 @@ public class UserController {
     public ResponseEntity<UserResponse> reactivate(@PathVariable UUID id) {
         log.info("Reativando usuário {}", id);
         return ResponseEntity.ok(userService.reactivate(id));
+    }
+
+    /** Mascara email para logs (LGPD). */
+    static String maskEmail(String email) {
+        if (email == null || !email.contains("@")) return "***";
+        int at = email.indexOf('@');
+        return email.charAt(0) + "***" + email.substring(at);
     }
 }
