@@ -2,9 +2,9 @@
 
 - **Solucao:** `ms-fbso-platform-admin`
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 2.7
+- **Versao:** 2.8
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execucao — Sprints 1-2 concluidas, Sprint 3 em andamento (36/99 tarefas). Frentes 0+1 concluidas (20/20 tasks). 105 testes (77 unit + 28 IT), JaCoCo 87.1%. Frente 2 (M3) pendente
+- **Status:** Em Execucao — Sprints 1-3 concluidas ✅ (57/99 tarefas, 58%). 142 testes (100 unit + 42 IT). 18 endpoints REST. Proximo: Sprint 4 — RBAC
 - **Origem:** [PRD.md](./PRD.md) + [SPECS.md](./SPECS.md) v1.8 + [ARCHITECTURE.md](./ARCHITECTURE.md) v2.2 + [04-FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES.md) + [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md)
 
 ---
@@ -24,7 +24,7 @@
 | **M7 — Homologacao** | 9 tarefas |
 | **Must Have** | 96 |
 | **Should Have** | 3 tarefas: T-021 (F01-03), T-063, T-064 (F04-03) |
-| **Progresso Atual** | 36/99 (36%) — Sprints 1-2 concluídas + Sprint 3 Frentes 0+1 (20/20 tasks ✅). 105 testes (77 unit + 28 IT). JaCoCo 87.1% |
+| **Progresso Atual** | 57/99 (58%) — Sprints 1-3 concluídas ✅. 142 testes (100 unit + 42 IT). 18 endpoints REST. 10 features. 28 débitos resolvidos |
 
 ### Cobertura de Features (18/18)
 
@@ -127,7 +127,7 @@ Pre-M2 (Setup+Frente0)  M2 (EP-01)  M3 (EP-02)  Frente3  M4 (EP-03)  M5 (EP-04a)
 
 ---
 
-### M3 — Gestao de Clientes e Planos (EP-02) | Data: 31/08/2026
+### M3 — Gestao de Clientes e Planos (EP-02) | Data: 31/08/2026 | Status: ✅ 15/15 concluído em 17/07
 
 **Features:** F02-01, F02-02, F02-03, F02-04, F02-05
 
@@ -151,7 +151,7 @@ Pre-M2 (Setup+Frente0)  M2 (EP-01)  M3 (EP-02)  Frente3  M4 (EP-03)  M5 (EP-04a)
 
 ---
 
-### Sprint 3 — Frente 3: Correções Durante a Sprint (16/07 a 31/08)
+### Sprint 3 — Frente 3: Correções Durante a Sprint ✅ 7/7 concluído (17/07)
 
 **Estimativa total:** ~10h / **Responsavel:** A definir
 
@@ -380,6 +380,7 @@ T-001 (2d) -> T-007 (2d) -> T-012 (1.5d) -> T-016 (2d) -> T-017 (1d) -> T-019 (1
 
 | Versao | Data | Alteracao | Autor |
 |:---|:---|:---|:---|
+| 2.8 | 17/07/2026 | Sprint 3 100% concluída: Frentes 2 (M3 EP-02 — 15 tasks: Tenant/Plan/Subscription/Audit CRUD) e 3 (7 correções técnicas) finalizadas. 18 endpoints REST. 142 testes totais (100 unit + 42 IT). 28 débitos técnicos resolvidos (DT-001 a DT-046). 9 débitos postergados Sprints 4+. Progresso 57/99 (58%). v2.7→v2.8. | Agente IA |
 | 2.7 | 17/07/2026 | T-023 concluído: 23 testes integração PostgreSQL real (DashboardRepositoryIT). Adicionados DashboardRepositoryTest (11 testes mock), DashboardControllerTest (7 testes MockMvc). Expandido GlobalExceptionHandlerTest (+4 exceções). BaseRepository.save() bug array size corrigido (3→5). V003 product_service RLS removido (sem tenant_id). maven-failsafe-plugin adicionado. JaCoCo thresholds: LINE≥80%→85.8%✅, BRANCH 70%→64%. 105 testes totais (77 unit + 28 IT). M2 (EP-01) 100% concluído. v2.6→v2.7. | Agente IA |
 | 2.4 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado: Sprints 1-2 concluídas, Sprint 3 em andamento. | Time Técnico |
 | 2.3 | 15/07/2026 | Revisão Caveman (DOCS-SERVICE-CAVEMAN-REVIEW.md): Corrigido Must/Should M2 (6/2→7/1, §4). Corrigido total Should (4→3 tarefas, §1). Corrigido Must total (76→77, §1). Corrigida referência SPECS (v1.3→v1.4). Corrigido T-027 endpoint count (11→7). | Caveman/IA |

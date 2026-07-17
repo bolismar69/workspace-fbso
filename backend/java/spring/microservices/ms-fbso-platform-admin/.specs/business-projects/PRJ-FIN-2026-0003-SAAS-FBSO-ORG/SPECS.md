@@ -4,9 +4,9 @@
 - **Tipo:** Backend
 - **Stack:** Java 25 + Spring Boot + PostgreSQL
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.9
+- **Versão:** 2.0
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — M2 (EP-01) 100% concluído. 5 endpoints Dashboard REST implementados. 105 testes (77 unit + 28 IT). JaCoCo 87.1%
+- **Status:** Em Execução — Sprints 1-3 concluídas ✅. 18 endpoints REST (5 Dashboard + 7 Tenant + 6 Plan + 4 Subscription + 1 Audit). 142 testes. 21 RNs implementadas. Próximo: Sprint 4 — RBAC
 - **Status:** Em Desenvolvimento — Sprint 3 (M2+M3) em andamento. Frentes 0+1 concluídas. Dashboard endpoints (§4.1) implementados. 50 testes passando.
 - **Origem:** [PRD.md](./PRD.md) + [ARCHITECTURE.md](./ARCHITECTURE.md)
 

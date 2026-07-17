@@ -3,9 +3,9 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.10
+- **Versão:** 1.11
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprint 3 (M2+M3) em andamento. Frentes 0+1 concluídas (20/20 tasks ✅). Dashboard admin (F01-01 a F01-03) implementado e testado. 105 testes (77 unit + 28 IT). JaCoCo 87.1%. M2 (EP-01) 100% concluído. 36/99 tarefas (36%)
+- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 3: 42/42 tasks (100%). 10 features (F01-01 a F02-05). 18 endpoints REST. 142 testes. 28 débitos resolvidos. 9 postergados Sprint 4+. 57/99 tarefas (58%). Próximo: Sprint 4 — RBAC
 
 ---
 

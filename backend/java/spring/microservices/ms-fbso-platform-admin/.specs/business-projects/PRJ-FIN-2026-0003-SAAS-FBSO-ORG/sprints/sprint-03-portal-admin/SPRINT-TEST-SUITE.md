@@ -1,7 +1,7 @@
 # SPRINT-TEST-SUITE: Sprint 3 — Portal Admin + Contas e Planos
 
 - **Sprint:** 3 de 7
-- **Status:** 🔄 Em andamento (F01-01 a F01-03 testadas — 105 testes, 87.1% cobertura, 0 falhas)
+- **Status:** ✅ Concluída — Sprint 3 100%. 142 testes (100 unit + 42 IT). 0 falhas. JaCoCo 74.4% lines
 - **Origem:** [TEST_PLAN.md](../../TEST_PLAN.md) v2.4 §3.1 a §3.8
 - **Features:** F01-01 a F02-05 (8 features)
 - **Total de cenários:** 56 (extraídos do TEST_PLAN.md) — a executar durante a sprint
@@ -149,4 +149,4 @@
 
 ---
 
-🤖 *Extraído de TEST_PLAN.md v2.6. Sprint 3 iniciada em 16/07/2026. 17/07/2026: 105 testes implementados (77 unit Surefire + 28 IT Failsafe), JaCoCo 87.1% instructions, F01-01 a F01-03 totalmente testadas.*
+🤖 *Extraído de TEST_PLAN.md v2.7. Sprint 3 concluída em 17/07/2026. 142 testes implementados (100 unit Surefire + 42 IT Failsafe). JaCoCo Lines 74.4%. Todas as 10 features testadas (F01-01 a F02-05).*

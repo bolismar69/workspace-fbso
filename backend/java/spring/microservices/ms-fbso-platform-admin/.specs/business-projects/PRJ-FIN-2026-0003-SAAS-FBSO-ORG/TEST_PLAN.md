@@ -3,9 +3,9 @@
 - **Solucao:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot + PostgreSQL
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 2.7
+- **Versao:** 2.8
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execucao — M2 (EP-01) 100% testado. 105 testes totais: 77 unitários (Surefire) + 28 integração PostgreSQL real (Failsafe). 0 falhas, 6 skipped. JaCoCo: Instructions 87.1%, Lines 85.8%, Branches 64.6%. T-023 DashboardRepositoryIT concluído (23 cenários). maven-failsafe-plugin configurado. F01-01 a F01-03 cobertas.
+- **Status:** Em Execucao — Sprints 1-3 testadas ✅. 142 testes totais: 100 unitários (Surefire) + 42 integração (Failsafe). 0 falhas, 13 skipped. JaCoCo: Lines 74.4%, Branches 59.0%. Todas as 10 features cobertas (F01-01 a F02-05). 28 débitos técnicos resolvidos. Próximo: Sprint 4 — RBAC
 - **Origem:** [SPECS.md](./SPECS.md) v1.4 + [ARCHITECTURE.md](./ARCHITECTURE.md) + [PRD.md](./PRD.md)
 
 ---

@@ -3,9 +3,9 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.3
+- **Versão:** 2.4
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprint 3 (M2+M3) em andamento. Frentes 0+1 concluídas (20/20 tasks ✅). M2 100%. Dashboard implementado (5 endpoints REST) + testado (23 IT PostgreSQL real). maven-failsafe-plugin adicionado. 105 testes totais. V003 product_service RLS corrigido. JaCoCo 87.1%
+- **Status:** Em Execução — Sprints 1-3 concluídas ✅. Sprint 3: 42/42 tasks. 18 endpoints REST. maven-failsafe-plugin configurado. V003 product_service RLS corrigido. AuditAspect com previous_value/new_value (DT-021). BaseRepository.save/update genéricos. 142 testes. Próximo: Sprint 4 — RBAC
 - **Origem:** [PRD.md](./PRD.md)
 - **Débitos Técnicos:** [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) — 47 débitos (7 skills, 16/07/2026)
 - **Escopo:** Estilo arquitetural + C4 L1-L3 + Design detalhado + C4 Deployment + ADRs

@@ -1,12 +1,12 @@
 # SPRINT-REVIEW: Sprint 3 — Portal Admin + Contas e Planos
 
 - **Sprint:** 3 de 7
-- **Status:** 🔄 Em andamento (iniciada em 16/07/2026). Frentes 0+1 concluídas (20/42 tarefas)
+- **Status:** ✅ Concluída — 17/07/2026. 42/42 tarefas
 - **Data da Review:** 31/08/2026
 - **Participantes:** Time Técnico, Tech Lead, **Product Owner** 🎯
-- **Features:** 8 (F01-01 a F02-05) — 3 implementadas (F01-01, F01-02, F01-03)
+- **Features:** 10 (F01-01 a F02-05) — todas implementadas
 
-> 🎯 **Primeira review com demonstração para o PO.** F01-01, F01-02 e F01-03 (Dashboard) já implementadas e testadas (105 testes, 87.1% cobertura). Prepare o ambiente com dados seed para demo fluida. Checklist será preenchido na demonstração de 31/08.
+> 🎯 **Primeira review com demonstração para o PO.** Todas as 10 features implementadas e testadas (142 testes, 18 endpoints REST). 28 débitos técnicos resolvidos. Prepare o ambiente com dados seed para demo fluida na data da review (31/08).
 
 ---
 
