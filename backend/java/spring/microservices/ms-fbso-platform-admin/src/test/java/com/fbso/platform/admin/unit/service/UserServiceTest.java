@@ -94,8 +94,11 @@ class UserServiceTest {
         @Test
         @DisplayName("deve desativar usuário normalmente")
         void shouldDeactivateUser() {
+            TenantContext.set(tenantId, UUID.randomUUID(),
+                    List.of("ADMIN_TENANT"), List.of(), List.of());
             User user = new User();
             user.setId(userId);
+            user.setTenantId(tenantId);
             user.setEmail("other@fbso.org");
             when(userRepo.findById(userId)).thenReturn(Optional.of(user));
 
@@ -131,8 +134,11 @@ class UserServiceTest {
         @Test
         @DisplayName("deve reativar usuário restaurando status ACTIVE")
         void shouldReactivateUser() {
+            TenantContext.set(tenantId, UUID.randomUUID(),
+                    List.of("ADMIN_TENANT"), List.of(), List.of());
             User user = new User();
             user.setId(userId);
+            user.setTenantId(tenantId);
             user.setEmail("inactive@fbso.org");
             user.setStatus(UserStatus.INACTIVE);
             when(userRepo.findById(userId)).thenReturn(Optional.of(user));

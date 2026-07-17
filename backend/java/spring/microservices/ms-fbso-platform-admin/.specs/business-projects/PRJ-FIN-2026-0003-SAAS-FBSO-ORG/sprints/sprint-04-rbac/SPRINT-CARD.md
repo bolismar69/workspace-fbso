@@ -38,7 +38,7 @@
 | **4** | Integração RBAC + Segurança + Testes | F03-04 | 4 | 5.5d | ⬜ Pendente | 0/4 (0%) |
 | **5** | Correções Recomendadas (Durante-Sprint) | — | 15 | 28-32h | ⬜ Pendente | 0/15 (0%) |
 | **5b** | Infra + DevX (Backlog Sprint 3) | — | 2 | 1.5h | ⬜ Pendente | 0/2 (0%) |
-| **TOTAL** | **7 frentes** | **4 features** | **48** | **~26d** | **Frentes 0-2 ✅** | **25/48 (52%)** |
+| **TOTAL** | **7 frentes** | **4 features** | **48** | **~26d** | **Frentes 0-3 ✅** | **27/48 (56%)** |
 
 ---
 
@@ -118,7 +118,11 @@
 
 ---
 
-### Frente 3 ⬜ — PermissionService + API (F03-02, F03-03)
+### Frente 3 🔄 — PermissionService + API (F03-02, F03-03) — INICIADA 17/07/2026
+
+- **Objetivo:** API REST para atribuição/revogação de permissões + completar PermissionService
+- **Dependências:** Frente 2 (UserPermission + PermissionRepository)
+- **Plano:** [SPRINT-DEVELOPMENT-PLANNING-Frente-3.md](./SPRINT-DEVELOPMENT-PLANNING-Frente-3.md)
 
 - **Objetivo:** Serviço de atribuição/revogação de permissões + API REST
 - **Dependências:** Frente 2 (UserPermission) + Frente 0 (PermissionService base)

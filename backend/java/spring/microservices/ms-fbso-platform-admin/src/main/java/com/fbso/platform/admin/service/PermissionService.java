@@ -1,13 +1,19 @@
 package com.fbso.platform.admin.service;
 
+import com.fbso.platform.admin.dto.request.PermissionUpdateRequest;
+import com.fbso.platform.admin.dto.response.PermissionResponse;
+import com.fbso.platform.admin.entity.UserPermission;
 import com.fbso.platform.admin.enums.Role;
 import com.fbso.platform.admin.exception.PermissionDeniedException;
+import com.fbso.platform.admin.exception.UserNotFoundException;
 import com.fbso.platform.admin.repository.PermissionRepository;
+import com.fbso.platform.admin.repository.UserRepository;
 import com.fbso.platform.admin.security.TenantContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,6 +43,7 @@ public class PermissionService {
 
     private final JdbcTemplate jdbc;
     private final PermissionRepository permissionRepo;
+    private final UserRepository userRepo;
 
     /**
      * Matriz de permissões carregada do banco.
@@ -45,9 +52,11 @@ public class PermissionService {
      */
     private final Map<String, Set<String>> permissionMatrix = new ConcurrentHashMap<>();
 
-    public PermissionService(JdbcTemplate jdbc, PermissionRepository permissionRepo) {
+    public PermissionService(JdbcTemplate jdbc, PermissionRepository permissionRepo,
+                             UserRepository userRepo) {
         this.jdbc = jdbc;
         this.permissionRepo = permissionRepo;
+        this.userRepo = userRepo;
         loadPermissionMatrix();
     }
 
@@ -189,8 +198,12 @@ public class PermissionService {
      * @param userId         ID do usuário
      * @param businessUnitId ID da BU
      * @param role           papel a atribuir (ex: "MANAGER_BU")
+     * @throws UserNotFoundException se o usuário não pertencer ao tenant atual
      */
     public void assignRole(UUID userId, UUID businessUnitId, String role) {
+        validateUserTenant(userId);
+        // TODO Frente 3/Sprint 6: validateBusinessUnitTenant(businessUnitId)
+        //   quando BusinessUnitRepository for criado
         permissionRepo.assign(userId, businessUnitId, role);
         log.info("Role atribuído: userId={}, buId={}, role={}", userId, businessUnitId, role);
     }
@@ -202,9 +215,89 @@ public class PermissionService {
      *
      * @param userId         ID do usuário
      * @param businessUnitId ID da BU
+     * @throws UserNotFoundException se o usuário não pertencer ao tenant atual
      */
     public void revokeRole(UUID userId, UUID businessUnitId) {
+        validateUserTenant(userId);
         permissionRepo.revoke(userId, businessUnitId);
         log.info("Role revogado: userId={}, buId={}", userId, businessUnitId);
+    }
+
+    // ---- Consulta de Permissões (Frente 3 — T-051) ----
+
+    /**
+     * Lista as permissões atuais de um usuário.
+     *
+     * @param userId ID do usuário
+     * @return lista de permissões (userId, businessUnitId, role)
+     * @throws UserNotFoundException se o usuário não pertencer ao tenant
+     */
+    public List<PermissionResponse> getUserPermissions(UUID userId) {
+        validateUserTenant(userId);
+        return permissionRepo.findByUser(userId).stream()
+                .map(PermissionResponse::from)
+                .toList();
+    }
+
+    /**
+     * Atualiza em lote as permissões de um usuário (substituição completa).
+     * <p>
+     * Remove todas as permissões atuais e insere as novas em uma única transação.
+     * Efeito imediato (RN11-03).
+     *
+     * @param userId  ID do usuário
+     * @param request lista de assignments [{businessUnitId, role}]
+     * @throws UserNotFoundException se o usuário não pertencer ao tenant
+     */
+    @Transactional
+    public List<PermissionResponse> updateUserPermissions(UUID userId,
+                                                          PermissionUpdateRequest request) {
+        validateUserTenant(userId);
+
+        // 1. Revogar todas as permissões atuais
+        List<UserPermission> current = permissionRepo.findByUser(userId);
+        for (UserPermission up : current) {
+            permissionRepo.revoke(userId, up.getBusinessUnitId());
+        }
+
+        // 2. Atribuir as novas permissões
+        for (var assignment : request.permissions()) {
+            assignRole(userId, assignment.businessUnitId(), assignment.role());
+        }
+
+        log.info("Permissões atualizadas em lote: userId={}, novas={}", userId,
+                request.permissions().size());
+
+        // 3. Retornar estado atual
+        return getUserPermissions(userId);
+    }
+
+    /**
+     * Lista as BUs que o usuário tem acesso.
+     * <p>
+     * ADMIN_TENANT: retorna lista vazia (acesso implícito a todas).
+     * Demais papéis: retorna BUs de {@code user_permission}.
+     */
+    public List<UUID> getUserBusinessUnits(UUID userId) {
+        List<String> roles = getUserRoles();
+        if (roles.contains(Role.ADMIN_TENANT.name())) {
+            return List.of(); // acesso implícito a todas
+        }
+        return permissionRepo.findByUser(userId).stream()
+                .map(UserPermission::getBusinessUnitId)
+                .distinct()
+                .toList();
+    }
+
+    /** Valida que o usuário pertence ao tenant do contexto (defesa contra IDOR cross-tenant). */
+    private void validateUserTenant(UUID userId) {
+        UUID tenantId = TenantContext.getTenantId();
+        userRepo.findById(userId).ifPresent(user -> {
+            if (!tenantId.equals(user.getTenantId())) {
+                log.warn("Tentativa de assign/revoke cross-tenant bloqueada: userId={}, tenant={}",
+                        userId, tenantId);
+                throw new UserNotFoundException(userId);
+            }
+        });
     }
 }
