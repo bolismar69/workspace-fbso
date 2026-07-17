@@ -70,7 +70,23 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
-    // ---- 403 — Acesso Negado ----
+    // ---- 403 — Acesso Negado (Spring Security) ----
+
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleSpringAccessDenied(
+            org.springframework.security.access.AccessDeniedException ex) {
+        log.warn("Acesso negado (Spring Security): {}", ex.getMessage());
+        return ResponseEntity.status(403).body(
+                ErrorResponse.of(
+                        "https://api.fbso.org/errors/access-denied",
+                        "Acesso negado",
+                        403,
+                        "Você não tem permissão para acessar esta área."
+                )
+        );
+    }
+
+    // ---- 403 — Acesso Negado (Custom) ----
 
     @ExceptionHandler(PermissionDeniedException.class)
     public ResponseEntity<ErrorResponse> handlePermissionDenied(PermissionDeniedException ex) {

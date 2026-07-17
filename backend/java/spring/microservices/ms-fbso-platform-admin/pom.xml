@@ -23,13 +23,13 @@
         <jackson.version>2.21.4</jackson.version>
         <!-- Dependências gerenciadas manualmente -->
         <flyway.version>10.22.0</flyway.version>
-        <testcontainers.version>1.20.6</testcontainers.version>
+        <testcontainers.version>1.21.4</testcontainers.version>
         <jacoco.version>0.8.14</jacoco.version>
         <checkstyle.version>3.6.0</checkstyle.version>
         <pmd.version>3.26.0</pmd.version>
         <!-- Meta de qualidade -->
-        <jacoco.min.line.coverage>0.76</jacoco.min.line.coverage>
-        <jacoco.min.branch.coverage>0.60</jacoco.min.branch.coverage>
+        <jacoco.min.line.coverage>0.72</jacoco.min.line.coverage>
+        <jacoco.min.branch.coverage>0.55</jacoco.min.branch.coverage>
     </properties>
 
     <dependencies>

@@ -3,7 +3,7 @@ package com.fbso.platform.admin.unit.security;
 import com.fbso.platform.admin.security.TenantContext;
 import com.fbso.platform.admin.security.annotation.Auditable;
 import com.fbso.platform.admin.security.aspect.AuditAspect;
-import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +40,7 @@ class AuditAspectTest {
 
     @Mock private JdbcTemplate jdbc;
     @Mock private TaskExecutor taskExecutor;
-    @Mock private JoinPoint joinPoint;
+    @Mock private ProceedingJoinPoint joinPoint;
     @Mock private MethodSignature methodSignature;
 
     private AuditAspect aspect;
@@ -58,6 +58,12 @@ class AuditAspectTest {
             ((Runnable) invocation.getArgument(0)).run();
             return null;
         }).when(taskExecutor).execute(any(Runnable.class));
+
+        // Mock proceed() para @Around — retorna null (void methods)
+        try {
+            lenient().when(joinPoint.proceed()).thenReturn(null);
+            lenient().when(joinPoint.proceed(any())).thenReturn(null);
+        } catch (Throwable ignored) {}
     }
 
     @AfterEach
@@ -87,39 +93,41 @@ class AuditAspectTest {
 
         @Test
         @DisplayName("deve gravar registro com tenantId e userId corretos (DT-002)")
-        void shouldRecordAuditWithCorrectTenantAndUser() throws Exception {
+        void shouldRecordAuditWithCorrectTenantAndUser() throws Throwable {
             UUID entityId = UUID.randomUUID();
             Method method = getTestMethod("createTenant", UUID.class);
             when(joinPoint.getSignature()).thenReturn(methodSignature);
             when(methodSignature.getMethod()).thenReturn(method);
             when(joinPoint.getArgs()).thenReturn(new Object[]{entityId});
-            when(jdbc.update(anyString(), any(OffsetDateTime.class), eq(TENANT_ID),
-                    anyString(), anyString(), eq(entityId), eq(USER_ID))).thenReturn(1);
+            // DT-021: INSERT agora inclui previous_value e new_value (8 params)
+            lenient().when(jdbc.update(anyString(), any(OffsetDateTime.class), eq(TENANT_ID),
+                    anyString(), anyString(), eq(entityId), eq(USER_ID),
+                    any(), any())).thenReturn(1);
 
             Auditable annotation = method.getAnnotation(Auditable.class);
             aspect.audit(joinPoint, annotation);
 
             verify(jdbc).update(anyString(), any(OffsetDateTime.class), eq(TENANT_ID),
-                    anyString(), anyString(), eq(entityId), eq(USER_ID));
+                    anyString(), anyString(), eq(entityId), eq(USER_ID), any(), any());
         }
 
         @Test
         @DisplayName("deve extrair entityId via idParamName (DT-008)")
-        void shouldExtractEntityIdViaNamedParam() throws Exception {
+        void shouldExtractEntityIdViaNamedParam() throws Throwable {
             UUID subId = UUID.randomUUID();
             Method method = getTestMethod("changePlan", String.class, UUID.class);
             when(joinPoint.getSignature()).thenReturn(methodSignature);
             when(methodSignature.getMethod()).thenReturn(method);
             when(joinPoint.getArgs()).thenReturn(new Object[]{"upgrade requested", subId});
-            when(jdbc.update(anyString(), any(OffsetDateTime.class), any(UUID.class),
-                    anyString(), anyString(), eq(subId), any(UUID.class))).thenReturn(1);
+            lenient().when(jdbc.update(anyString(), any(OffsetDateTime.class), any(UUID.class),
+                    anyString(), anyString(), eq(subId), any(UUID.class),
+                    any(), any())).thenReturn(1);
 
             Auditable annotation = method.getAnnotation(Auditable.class);
             aspect.audit(joinPoint, annotation);
 
-            // Deve usar subscriptionId (2º param, nomeado), não "upgrade requested"
             verify(jdbc).update(anyString(), any(OffsetDateTime.class), any(UUID.class),
-                    anyString(), anyString(), eq(subId), any(UUID.class));
+                    anyString(), anyString(), eq(subId), any(UUID.class), any(), any());
         }
     }
 
@@ -129,7 +137,7 @@ class AuditAspectTest {
 
         @Test
         @DisplayName("não deve gravar auditoria quando TenantContext falha (DT-002)")
-        void shouldSkipAuditWhenTenantContextFails() throws Exception {
+        void shouldSkipAuditWhenTenantContextFails() throws Throwable {
             // Limpa o contexto para simular falha
             TenantContext.clear();
 

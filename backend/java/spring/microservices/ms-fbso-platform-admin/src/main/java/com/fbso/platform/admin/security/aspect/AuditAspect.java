@@ -1,9 +1,10 @@
 package com.fbso.platform.admin.security.aspect;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fbso.platform.admin.security.TenantContext;
 import com.fbso.platform.admin.security.annotation.Auditable;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
@@ -14,30 +15,29 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Parameter;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 /**
  * Aspecto de auditoria — grava operações anotadas com {@link Auditable}
  * na tabela {@code audit_log} de forma ASSÍNCRONA.
- * <p>
- * ADR-L03: Auditoria assíncrona para não bloquear a operação principal.
- * Trade-off: perda de registros em crash (aceitável para Fase 0).
- * <p>
- * Pipeline: Service → AuditAspect (captura main thread) → TaskExecutor (async) → audit_log
- * <p>
- * IMPORTANTE (T-015.3.DT-002): Os valores de tenantId/userId são capturados
- * na thread principal ANTES do dispatch assíncrono, pois o
- * {@link TenantContext} é um ThreadLocal que é limpo no finally do
- * {@code JwtAuthenticationFilter}.
+ *
+ * <p>ADR-L03: Auditoria assíncrona para não bloquear a operação principal.</p>
+ *
+ * <p>Pipeline: @Around → captura estado ANTES (main thread) → proceed() → captura estado DEPOIS
+ * → TaskExecutor (async) → INSERT audit_log com previous_value/new_value (DT-021).</p>
+ *
+ * <p>IMPORTANTE (T-015.3.DT-002): tenantId/userId capturados na thread principal
+ * ANTES do dispatch assíncrono (ThreadLocal é limpo no finally do Filter).</p>
  *
  * @see Auditable
- * @see <a href="ARCHITECTURE.md#4.2">ARCHITECTURE.md §4.2</a>
  */
 @Aspect
 @Component
 public class AuditAspect {
 
     private static final Logger log = LoggerFactory.getLogger(AuditAspect.class);
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final JdbcTemplate jdbc;
     private final TaskExecutor taskExecutor;
@@ -48,17 +48,14 @@ public class AuditAspect {
     }
 
     /**
-     * Intercepta métodos anotados com @Auditable APÓS execução bem-sucedida.
+     * Intercepta métodos anotados com @Auditable usando @Around (DT-021).
      * <p>
-     * Captura tenantId/userId/entityId na thread principal e despacha
-     * a gravação para um executor assíncrono (não bloqueia a requisição).
+     * Captura estado da entidade ANTES da execução, executa o método,
+     * captura estado DEPOIS, e despacha auditoria assíncrona com diff.
      */
-    @AfterReturning("@annotation(auditable)")
-    public void audit(JoinPoint joinPoint, Auditable auditable) {
-        // ---- Capturar contexto na THREAD PRINCIPAL (T-015.3.DT-002) ----
-        // O TenantContext é um ThreadLocal que será limpo no finally do
-        // JwtAuthenticationFilter. Precisamos capturar os valores aqui,
-        // ANTES que o TaskExecutor execute em outra thread.
+    @Around("@annotation(auditable)")
+    public Object audit(ProceedingJoinPoint joinPoint, Auditable auditable) throws Throwable {
+        // ---- Capturar contexto na THREAD PRINCIPAL ----
         UUID tenantId;
         UUID userId;
         try {
@@ -66,30 +63,56 @@ public class AuditAspect {
             userId = TenantContext.getUserId();
         } catch (Exception e) {
             log.warn("Audit: TenantContext não disponível — auditoria ignorada");
-            return;
+            return joinPoint.proceed();
         }
 
         String entityType = auditable.entityType();
         String action = auditable.action();
         String entityId = extractEntityId(joinPoint, auditable);
 
-        // ---- Despachar para thread assíncrona com valores capturados ----
-        taskExecutor.execute(() -> writeAuditLog(tenantId, userId, entityType,
-                action, entityId, auditable));
+        // ---- DT-021: Capturar estado ANTES ----
+        String previousValue = captureEntityState(entityType, entityId);
+
+        // ---- Executar método original ----
+        Object result;
+        try {
+            result = joinPoint.proceed();
+        } catch (Throwable ex) {
+            // Propagar exceção — não auditar operações que falharam
+            throw ex;
+        }
+
+        // ---- DT-021: Capturar estado DEPOIS ----
+        String newValue = captureEntityState(entityType, entityId);
+
+        // ---- Despachar para thread assíncrona ----
+        final UUID finalTenantId = tenantId;
+        final UUID finalUserId = userId;
+        final String finalEntityId = entityId;
+        final String finalPrevious = previousValue;
+        final String finalNew = newValue;
+
+        taskExecutor.execute(() -> writeAuditLog(finalTenantId, finalUserId, entityType,
+                action, finalEntityId, finalPrevious, finalNew, auditable));
+
+        return result;
     }
 
     /**
-     * Grava o registro de auditoria no banco (executado em thread separada).
+     * Grava o registro de auditoria com previous_value e new_value (DT-021).
      */
     private void writeAuditLog(UUID tenantId, UUID userId, String entityType,
-                                String action, String entityId, Auditable auditable) {
+                                String action, String entityId,
+                                String previousValue, String newValue,
+                                Auditable auditable) {
         try {
             UUID parsedEntityId = parseEntityId(entityId);
 
             String sql = """
                 INSERT INTO fbso_platform.audit_log
-                    (timestamp, tenant_id, action, entity_type, entity_id, actor_id)
-                VALUES (?, ?, ?, ?, ?, ?)
+                    (timestamp, tenant_id, action, entity_type, entity_id, actor_id,
+                     previous_value, new_value)
+                VALUES (?, ?, ?, ?, ?, ?, ?::jsonb, ?::jsonb)
                 """;
 
             jdbc.update(sql,
@@ -98,44 +121,98 @@ public class AuditAspect {
                     action,
                     entityType,
                     parsedEntityId,
-                    userId);
+                    userId,
+                    previousValue,
+                    newValue);
 
-            log.debug("Audit: {} {} — entity={}, tenant={}, user={}",
-                    entityType, action, entityId, tenantId, userId);
+            log.debug("Audit: {} {} — entity={}, tenant={}, user={}, hasPrevious={}, hasNew={}",
+                    entityType, action, entityId, tenantId, userId,
+                    previousValue != null, newValue != null);
 
         } catch (Exception e) {
-            // ADR-L03: falha na auditoria NÃO interrompe a operação principal
             log.warn("Audit: falha ao gravar registro — {}: {}", auditable.entityType(), e.getMessage());
         }
     }
 
     /**
-     * Converte o entityId bruto em UUID válido, ou gera fallback.
+     * DT-021: Consulta o estado atual da entidade no banco e serializa como JSON.
+     *
+     * @return JSON string com os dados da entidade, ou null se não encontrada
      */
+    private String captureEntityState(String entityType, String entityId) {
+        if (entityId == null || entityId.isBlank()) {
+            return null;
+        }
+        try {
+            UUID id = parseEntityId(entityId);
+            String tableName = resolveTableName(entityType);
+            if (tableName == null) {
+                return null;
+            }
+
+            String sql = "SELECT * FROM fbso_platform." + tableName + " WHERE id = ?";
+            Map<String, Object> row = null;
+            try {
+                var rows = jdbc.queryForList(sql, id);
+                if (!rows.isEmpty()) {
+                    row = rows.get(0);
+                }
+            } catch (Exception e) {
+                log.debug("Audit: não foi possível consultar estado de {}.{} — {}",
+                        entityType, entityId, e.getMessage());
+                return null;
+            }
+
+            if (row == null) {
+                return null; // entidade não existe (ex: antes de CREATE)
+            }
+
+            // Remover campos binários/pesados
+            row.remove("created_dt");
+            row.remove("updated_dt");
+            row.remove("created_by");
+            row.remove("updated_by");
+            row.remove("deleted_dt");
+            row.remove("deleted_by");
+
+            return objectMapper.writeValueAsString(row);
+        } catch (Exception e) {
+            log.debug("Audit: falha ao serializar estado de {} — {}", entityType, e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Mapeia entityType para nome da tabela no banco.
+     */
+    private String resolveTableName(String entityType) {
+        return switch (entityType) {
+            case "TENANT" -> "tenant";
+            case "PLAN" -> "plan";
+            case "SUBSCRIPTION" -> "subscription";
+            case "USER" -> "\"user\"";
+            case "BUSINESS_UNIT" -> "business_unit";
+            case "PRODUCT_SERVICE" -> "product_service";
+            default -> null;
+        };
+    }
+
     private UUID parseEntityId(String entityId) {
         if (entityId == null || entityId.isBlank()) {
-            log.warn("Audit: entity_id não encontrado — usando fallback UUID");
             return UUID.randomUUID();
         }
         try {
             return UUID.fromString(entityId);
         } catch (IllegalArgumentException e) {
-            log.warn("Audit: entity_id '{}' não é UUID válido — usando fallback", entityId);
+            log.warn("Audit: entity_id '{}' não é UUID válido", entityId);
             return UUID.randomUUID();
         }
     }
 
     /**
-     * Extrai o ID da entidade dos argumentos do método.
-     * <p>
-     * Estratégia (T-015.9.DT-008):
-     * <ol>
-     *   <li>Se {@code @Auditable(idParamName)} foi especificado, busca o parâmetro pelo nome</li>
-     *   <li>Caso contrário, tenta o primeiro argumento como UUID/String</li>
-     *   <li>Se o argumento for um objeto com método {@code getId()}, usa reflection</li>
-     * </ol>
+     * Extrai o ID da entidade dos argumentos do método (T-015.9.DT-008).
      */
-    private String extractEntityId(JoinPoint joinPoint, Auditable auditable) {
+    private String extractEntityId(ProceedingJoinPoint joinPoint, Auditable auditable) {
         Object[] args = joinPoint.getArgs();
         if (args.length == 0) {
             return null;
@@ -147,7 +224,7 @@ public class AuditAspect {
             return extractByParameterName(joinPoint, idParamName);
         }
 
-        // Estratégia 2: primeiro argumento que seja UUID ou String
+        // Estratégia 2: primeiro argumento UUID ou String
         Object firstArg = args[0];
         if (firstArg instanceof UUID uuid) {
             return uuid.toString();
@@ -156,28 +233,20 @@ public class AuditAspect {
             return str;
         }
 
-        // Estratégia 3: reflexão — tenta getId() no primeiro argumento
+        // Estratégia 3: reflexão getId()
         try {
             var getIdMethod = firstArg.getClass().getMethod("getId");
             Object id = getIdMethod.invoke(firstArg);
-            if (id instanceof UUID uuid) {
-                return uuid.toString();
-            }
-            if (id != null) {
-                return id.toString();
-            }
+            if (id instanceof UUID uuid) return uuid.toString();
+            if (id != null) return id.toString();
         } catch (Exception e) {
-            log.debug("Audit: não foi possível extrair ID via reflection de {}",
-                    firstArg.getClass().getSimpleName());
+            log.debug("Audit: reflection getId() falhou para {}", firstArg.getClass().getSimpleName());
         }
 
         return null;
     }
 
-    /**
-     * Extrai o valor de um parâmetro pelo nome (usa reflection no bytecode).
-     */
-    private String extractByParameterName(JoinPoint joinPoint, String paramName) {
+    private String extractByParameterName(ProceedingJoinPoint joinPoint, String paramName) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Parameter[] parameters = signature.getMethod().getParameters();
         Object[] args = joinPoint.getArgs();
@@ -185,15 +254,10 @@ public class AuditAspect {
         for (int i = 0; i < parameters.length; i++) {
             if (paramName.equals(parameters[i].getName())) {
                 Object value = args[i];
-                if (value instanceof UUID uuid) {
-                    return uuid.toString();
-                }
-                if (value != null) {
-                    return value.toString();
-                }
+                if (value instanceof UUID uuid) return uuid.toString();
+                if (value != null) return value.toString();
             }
         }
-        log.debug("Audit: parâmetro '{}' não encontrado no método", paramName);
         return null;
     }
 }

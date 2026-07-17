@@ -97,9 +97,8 @@ public abstract class BaseRepository<T extends BaseEntity> {
                    + " WHERE id = ? AND deleted_dt IS NULL"
                    + tenantClause();
 
-        Object[] params = hasTenantColumn
-                ? new Object[]{OffsetDateTime.now(), deletedBy, id, TenantContext.getTenantId()}
-                : new Object[]{OffsetDateTime.now(), deletedBy, id};
+        // DT-029: buildParams() centraliza o branching hasTenantColumn
+        Object[] params = buildParams(OffsetDateTime.now(), deletedBy, id);
 
         int updated = jdbc.update(sql, params);
         if (updated == 0) {

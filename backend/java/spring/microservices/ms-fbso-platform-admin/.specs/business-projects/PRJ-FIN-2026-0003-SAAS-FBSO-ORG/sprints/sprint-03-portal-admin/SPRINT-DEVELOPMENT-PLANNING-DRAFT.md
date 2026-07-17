@@ -459,6 +459,10 @@ docker exec -it postgres psql -U fbso -d fbso_platform -c "SELECT COUNT(*) FROM 
 | 16/07 | **D7:** Padrão BaseRepository | Todo repository de entidade estende BaseRepository. DashboardRepository é exceção (só agregação) | Templates de código |
 | 16/07 | **D8:** SQL injection fix | TenantAwareDataSource migrado para PreparedStatement (defense-in-depth) | Segurança |
 | 16/07 | **D9:** OpenAPI/Swagger | Adicionar springdoc-openapi para documentação dos 18 endpoints | DX |
+| 17/07 | **D10 (T-039.DT-017):** V004 é OPCIONAL | `idx_tenant_segment` não existe na V002. Campo `segment` não é usado em WHERE de queries frequentes. Postergar para Sprint 4 se necessário | Migration V004 não será criada nesta sprint |
+| 17/07 | **D11 (T-040.DT-019):** Day-by-day recalibrado | 12→15 dias úteis realista com Frentes 0+3. Frentes 0+1+2 concluídas em ~2.5 dias (antecipado) | Cronograma atualizado |
+| 17/07 | **D12 (T-045.DT-046):** Testcontainers 1.21.4 | 1.20.6→1.21.4. CVE-2024-25710 (commons-compress transitiva) mitigada | Build compatível |
+| 17/07 | **D13 (T-042.DT-025):** AccessDeniedException handler | Spring Security AccessDeniedException agora retorna 403 (antes caía no 500 genérico) | Segurança |
 
 ---
 
@@ -480,4 +484,4 @@ docker exec -it postgres psql -U fbso -d fbso_platform -c "SELECT COUNT(*) FROM 
 
 ---
 
-🤖 *Planejamento gerado em 16/07/2026. Sprint 3 — a mais densa do projeto. O coração do Core Administrativo começa aqui.*
+🤖 *Planejamento gerado em 16/07/2026. Atualizado em 17/07/2026: Frentes 0+1+2 concluídas (35/42 tasks). 138 testes totais. Frente 3 em execução. Decisões D10-D13 registradas (V004 opcional, day-by-day recalibrado, Testcontainers 1.21.4, AccessDeniedException handler). Sprint 3 — a mais densa do projeto. O coração do Core Administrativo começa aqui.*
