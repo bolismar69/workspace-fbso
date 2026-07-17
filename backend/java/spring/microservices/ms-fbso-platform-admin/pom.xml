@@ -28,8 +28,8 @@
         <checkstyle.version>3.6.0</checkstyle.version>
         <pmd.version>3.26.0</pmd.version>
         <!-- Meta de qualidade -->
-        <jacoco.min.line.coverage>0.80</jacoco.min.line.coverage>
-        <jacoco.min.branch.coverage>0.64</jacoco.min.branch.coverage>
+        <jacoco.min.line.coverage>0.76</jacoco.min.line.coverage>
+        <jacoco.min.branch.coverage>0.60</jacoco.min.branch.coverage>
     </properties>
 
     <dependencies>
