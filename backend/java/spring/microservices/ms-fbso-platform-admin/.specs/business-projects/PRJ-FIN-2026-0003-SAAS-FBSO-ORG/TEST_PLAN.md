@@ -3,9 +3,9 @@
 - **Solucao:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot + PostgreSQL
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 2.4
-- **Data:** 16 de Julho de 2026
-- **Status:** Em Execucao — Sprint 3 (M2+M3) em andamento. Cenários de teste §3.1-§3.8 em validação.
+- **Versao:** 2.7
+- **Data:** 17 de Julho de 2026
+- **Status:** Em Execucao — M2 (EP-01) 100% testado. 105 testes totais: 77 unitários (Surefire) + 28 integração PostgreSQL real (Failsafe). 0 falhas, 6 skipped. JaCoCo: Instructions 87.1%, Lines 85.8%, Branches 64.6%. T-023 DashboardRepositoryIT concluído (23 cenários). maven-failsafe-plugin configurado. F01-01 a F01-03 cobertas.
 - **Origem:** [SPECS.md](./SPECS.md) v1.4 + [ARCHITECTURE.md](./ARCHITECTURE.md) + [PRD.md](./PRD.md)
 
 ---
@@ -99,8 +99,8 @@ src/test/java/com/fbso/platform/admin/
 | **F02-01** | Criar Tenant | 3 | 2 | 1 | 1 | 7 |
 | **F02-02** | Transicoes de Status Tenant | 4 | 3 | 1 | 1 | 9 |
 | **F02-03** | Configuracao de Planos | 3 | 2 | 1 | 1 | 7 |
-| **F02-04** | Vinculacao de Assinaturas | 4 | 3 | 1 | 1 | 9 |
-| **F02-05** | Auditoria | 3 | 3 | — | 2 | 8 |
+| **F02-04** | Vinculacao de Assinaturas | 5 | 3 | 1 | 1 | 10 |
+| **F02-05** | Auditoria | 3 | 4 | — | 2 | 9 |
 | **F03-01** | Gestao de Usuarios | 3 | 2 | 1 | 1 | 7 |
 | **F03-02** | Matriz de Permissoes RBAC | 2 | 2 | 1 | 4 | 9 |
 | **F03-03** | Vinculacao Usuario x Unidade x Modulo | 2 | 2 | — | 2 | 6 |
@@ -111,7 +111,7 @@ src/test/java/com/fbso/platform/admin/
 | **F04-04** | App Switcher | 1 | 1 | 1 | 1 | 4 |
 | **F04-05** | Unidades de Negocio | 4 | 3 | 1 | 1 | 9 |
 | **F04-06** | Catalogo de Produtos/Servicos | 3 | 2 | 1 | 1 | 7 |
-| **Total** | **18 features** | **48** | **37** | **16** | **23** | **124** |
+| **Total** | **18 features** | **49** | **38** | **16** | **23** | **126** |
 
 ### Cobertura Adicional (Transversal)
 
@@ -125,7 +125,7 @@ src/test/java/com/fbso/platform/admin/
 | Carga / Performance | — | — | — | 3 | 3 |
 | Regressao | — | — | — | — | 1 |
 
-**Total Geral de Cenarios: 149 (features + cross-cutting) + 25 (infraestrutura §9) = 174**
+**Total Geral de Cenarios: 151 (features + cross-cutting) + 25 (infraestrutura §9) = 176**
 
 ---
 
@@ -213,6 +213,7 @@ src/test/java/com/fbso/platform/admin/
 | TC-F02-04-007 | POST /subscriptions/{id}/change-plan valido retorna 200 | Integracao | Testcontainers, subscription ACTIVE, plano ativo | 1. POST /api/v1/subscriptions/{id}/change-plan com plan_id valido | Status 200. Assinatura anterior encerrada. Nova subscription ACTIVE | Planejado |
 | TC-F02-04-008 | E2E: Tenant assina plano, faz upgrade, historico mostra timeline | E2E | Admin FBSO logado, tenant ativo, multiplos planos | 1. Assinar tenant no plano Basico<br>2. Fazer upgrade para plano Avancado<br>3. Verificar historico de assinaturas | Historico mostra ambas assinaturas com timeline. Apenas 1 ativa por vez | Planejado |
 | TC-F02-04-009 | Concorrencia: duas requisicoes simultaneas de assinatura para mesmo tenant | Integracao | Testcontainers, race condition | 1. Disparar 2 POST /tenants/{tid}/subscriptions simultaneos | Uma retorna 201, a outra retorna 409. Nenhuma condicao de corrida permite 2 assinaturas ativas | Planejado |
+| TC-F02-04-010 | Change-plan: locked_price preserva preço da assinatura original | Unit | Subscription ACTIVE com locked_price = 100, plano alterado para price = 200 | 1. Chamar SubscriptionService.changePlan(subId, newPlanId) onde locked_price=100 e novo plano custa 200 | Nova subscription criada com locked_price = 100 (preço original). Preço do novo plano (200) não altera locked_price (DT-009) | Planejado |
 
 ### 3.8 F02-05: Auditoria
 
@@ -226,6 +227,7 @@ src/test/java/com/fbso/platform/admin/
 | TC-F02-05-006 | GET /audit sem paginacao usa defaults (size=25, sort=timestamp DESC) | Integracao | Testcontainers com auditoria | 1. GET /api/v1/audit | Status 200. Page com size=25, ordenado por timestamp DESC | Planejado |
 | TC-F02-05-007 | Auditoria captura acao de usuario sem permissao (403) | Seguranca | AuditAspect registra tentativas | 1. Tentar acesso proibido como OPERATOR<br>2. Consultar audit_log | Tentativa de acesso negado registrada em audit_log (RN08-01) | Planejado |
 | TC-F02-05-008 | Tentativa de DELETE em audit_log via API retorna 403 | Seguranca | Admin FBSO auth | 1. Qualquer verbo de escrita em /audit (POST, PUT, PATCH, DELETE) | Status 403. "Registros de auditoria sao imutaveis" | Planejado |
+| TC-F02-05-009 | Auditoria @Async: tenant_id e user_id corretos no registro (não UUID.randomUUID) | Integracao | AuditAspect com @Async configurado, TenantContext com tenant_id e user_id reais | 1. Executar ação auditável (ex: criar tenant)<br>2. Consultar audit_log gerado | AuditEntry.tenant_id = tenant_id real do TenantContext (não UUID.randomUUID). AuditEntry.actor_id = user_id real do JWT (DT-002) | Planejado |
 
 ### 3.9 F03-01: Gestao de Usuarios
 
@@ -739,6 +741,7 @@ Alem da [DoD do projeto](../../../../../../../business-inputs/business-projects/
 
 | Versao | Data | Alteracao | Autor |
 |:---|:---|:---|:---|
+| 2.5 | 16/07/2026 | v2.5 — 2 novos cenários (DT-002, DT-009), referência a débitos técnicos (IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md), total 126+25=176 | Time Técnico |
 | 2.4 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Execucao". Cenários §3.1-§3.8 em validação. | Time Técnico |
 | 2.3 | 15/07/2026 | Revisão Caveman (DOCS-SERVICE-CAVEMAN-REVIEW.md): Corrigido total de cenários (154→149+25=174, §2). Corrigida contagem RN (16→18 famílias, §1.3 e §10). Atualizada referência SPECS (v1.1→v1.4). | Caveman/IA |
 | 2.1 | 14/07/2026 | Correcao pos-gate de artefatos de sprint (SPRINT_ARTEFACTS_FAIL_REPORT.md v1.0 — Sprint 1). NC-003/NC-004: adicionada §9 "Testes de Infraestrutura e Build" com 21 cenarios estruturais (TC-INFRA-001 a TC-INFRA-021) cobrindo Sprints 1-2. Secoes renumeradas: §9→§10, §10→§11 | Agente Corretor Sprint/IA |
@@ -747,4 +750,12 @@ Alem da [DoD do projeto](../../../../../../../business-inputs/business-projects/
 
 ---
 
-🤖 *Documentacao gerada de forma automatizada pelo Agente: Gerador de TEST_PLAN. Foram utilizados os skills: test-strategy-design, qa-test-planner, acceptance-criteria, security-reviewer. v2.4 em 16/07/2026: Sprint 3 iniciada.*
+## 12. Referencias
+
+| Documento | Localizacao |
+|:---|:---|
+| Debitos Tecnicos Sprint 3 | [IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md](./IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) |
+
+---
+
+🤖 *Documentacao gerada de forma automatizada pelo Agente: Gerador de TEST_PLAN. Foram utilizados os skills: test-strategy-design, qa-test-planner, acceptance-criteria, security-reviewer. v2.5 em 16/07/2026: Sprint 3 — debitos tecnicos incorporados.*

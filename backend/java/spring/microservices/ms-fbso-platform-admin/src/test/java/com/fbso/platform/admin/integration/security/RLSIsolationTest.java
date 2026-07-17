@@ -49,10 +49,11 @@ class RLSIsolationTest {
         String content = Files.readString(v003Path);
         assertThat(content).contains("ENABLE ROW LEVEL SECURITY");
 
-        // 5 tabelas com tenant_id devem ter RLS
+        // 4 tabelas com tenant_id devem ter RLS
+        // (product_service não tem tenant_id próprio — isolamento via business_unit)
         List<String> expectedTables = List.of(
                 "subscription", "\"user\"", "business_unit",
-                "product_service", "audit_log");
+                "audit_log");
 
         for (String table : expectedTables) {
             assertThat(content)
@@ -66,11 +67,11 @@ class RLSIsolationTest {
     void v003CreatesTenantIsolationPolicy() throws IOException {
         String content = Files.readString(v003Path);
 
-        // 5 políticas criadas
+        // 4 políticas criadas (product_service não tem tenant_id)
         long policyCount = content.lines()
                 .filter(line -> line.contains("CREATE POLICY tenant_isolation"))
                 .count();
-        assertThat(policyCount).isEqualTo(5);
+        assertThat(policyCount).isEqualTo(4);
 
         // Cada política usa current_setting('app.current_tenant_id')
         assertThat(content)
@@ -104,7 +105,7 @@ class RLSIsolationTest {
 
         String content = Files.readString(u003Path);
 
-        // 5 DROP POLICY + 5 DISABLE ROW LEVEL SECURITY
+        // 4 DROP POLICY + 4 DISABLE ROW LEVEL SECURITY
         long dropCount = content.lines()
                 .filter(line -> line.contains("DROP POLICY IF EXISTS tenant_isolation"))
                 .count();
@@ -112,8 +113,8 @@ class RLSIsolationTest {
                 .filter(line -> line.contains("DISABLE ROW LEVEL SECURITY"))
                 .count();
 
-        assertThat(dropCount).isEqualTo(5);
-        assertThat(disableCount).isEqualTo(5);
+        assertThat(dropCount).isEqualTo(4);
+        assertThat(disableCount).isEqualTo(4);
     }
 
     @Test

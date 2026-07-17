@@ -451,7 +451,7 @@ Se algum teste falhar durante a execução:
    - Propostas adicionais de solução (se houver)
 4. **Notifique o humano** e aguarde instruções antes de alterar qualquer outro arquivo.
 
-### Fase 7 — Code Review (PonyTail)
+### Fase 7 — Code Review
 
 14. **Executar auditoria PonyTail (`ponytail-audit`):**
 
@@ -481,18 +481,93 @@ Se algum teste falhar durante a execução:
     - Output: lista de pontos de melhoria com justificativa e sugestão de refatoração
     ```
 
-16. **Consolidar achados e gerar relatório de ajustes:**
+16. **Executar auditoria de engenharia (`engineering-skills`):**
 
     ```
-    SE houver findings do ponytail-audit OU pontos do ponytail-review:
+    - Acionar o skill `engineering-skills` sobre o código implementado na sprint
+    - O skill analisa:
+      · Práticas de engenharia de software (SOLID, DRY, KISS)
+      · Qualidade estrutural do código (coesão, acoplamento)
+      · Uso adequado de padrões de projeto
+      · Eficiência de algoritmos e estruturas de dados
+      · Tratamento de erros e resiliência
+      · Cobertura e qualidade dos testes
+    - Output: lista de achados com severidade (Critical/High/Medium/Low),
+      arquivo, linha, descrição e recomendação
+    ```
+
+17. **Executar auditoria de segurança (`security-audit`):**
+
+    ```
+    - Acionar o skill `security-audit` sobre o código implementado na sprint
+    - O skill analisa:
+      · Vulnerabilidades de segurança exploráveis (OWASP Top 10)
+      · Exposição de dados sensíveis (logs, respostas HTTP, stack traces)
+      · Falhas de autorização e autenticação
+      · Configurações inseguras (CORS, headers, TLS)
+      · Validação de entrada e sanitização
+      · Uso adequado de criptografia e hashing
+    - Output: lista de vulnerabilidades com severidade (Critical/High/Medium/Low),
+      arquivo, linha, descrição, exploit scenario e recomendação de mitigação
+    ```
+
+18. **Executar revisão de performance (`performance-review`):**
+
+    ```
+    - Acionar o skill `performance-review` sobre o código implementado na sprint
+    - O skill analisa:
+      · Queries N+1 e uso ineficiente de banco de dados
+      · Alocações desnecessárias de memória e objetos
+      · Chamadas bloqueantes em fluxos reativos ou assíncronos
+      · Falta de caching onde aplicável
+      · Algoritmos com complexidade inadequada ao volume de dados
+      · Configurações de pool (conexões, threads) subdimensionadas
+    - Output: lista de pontos de melhoria com severidade (Critical/High/Medium/Low),
+      arquivo, linha, descrição, impacto estimado e recomendação
+    ```
+
+19. **Executar revisão de código (`requesting-code-review`):**
+
+    ```
+    - Acionar o skill `requesting-code-review` sobre o código implementado na sprint
+    - O skill analisa:
+      · Legibilidade e clareza do código (nomes, comentários, estrutura)
+      · Consistência com o estilo e convenções do codebase
+      · Testabilidade do código (injeção de dependências, acoplamento)
+      · Cobertura de edge cases e cenários de erro
+      · Oportunidades de simplificação e redução de complexidade
+      · Documentação e comentários inline
+    - Output: lista de sugestões de melhoria com severidade (Critical/High/Medium/Low),
+      arquivo, linha, descrição e sugestão concreta de refatoração
+    ```
+
+20. **Executar revisão diferencial (`differential-review`):**
+
+    ```
+    - Acionar o skill `differential-review` sobre o diff da sprint (git diff)
+    - O skill analisa:
+      · Regressões de segurança introduzidas pelas mudanças
+      · Blast radius: impacto das alterações em outras partes do sistema
+      · Cobertura de testes das linhas alteradas
+      · Consistência com padrões adotados no restante do código
+      · Alterações que podem quebrar contratos de API ou interfaces
+      · Mudanças que afetam o schema do banco de dados
+    - Output: lista de riscos com severidade (Critical/High/Medium/Low),
+      arquivo, linha, descrição do risco e recomendação
+    ```
+
+21. **Consolidar achados e gerar relatório de ajustes:**
+
+    ```
+    SE houver findings de QUALQUER skill da Fase 7:
     
-      ├── 16.1 GERAR o relatório consolidado:
+      ├── 21.1 GERAR o relatório consolidado:
       │       {SPRINT_DIR}/PONYTAIL-REPORT-ADJUST-SPRINT-{SPRINT_NUMBER}.md
       │
-      ├── 16.2 CONSOLIDAR os achados de ambas as auditorias no relatório,
+      ├── 21.2 CONSOLIDAR os achados das sete auditorias no relatório,
       │       agrupando por arquivo e priorizando por severidade
       │
-      └── 16.3 PROSSEGUIR para o passo 17 (executar ajustes)
+      └── 21.3 PROSSEGUIR para o passo 22 (executar ajustes)
     
     SENÃO (zero achados relevantes):
     
@@ -507,7 +582,8 @@ Se algum teste falhar durante a execução:
     [Header: solução, projeto, sprint, stack detectada, data da revisão]
 
     ## 1. Resumo da Revisão
-    - Skills acionados: `ponytail-audit`, `ponytail-review`
+    - Skills acionados: `ponytail-audit`, `ponytail-review`, `engineering-skills`,
+      `security-audit`, `performance-review`, `requesting-code-review`, `differential-review`
     - Total de achados: N
     - Por severidade:
       | Critical | High | Medium | Low |
@@ -528,7 +604,42 @@ Se algum teste falhar durante a execução:
     | PR-002 | Low | `src/.../Service.java` | 120 | Nome do método não segue convenção do projeto | Renomear para `findByTenantId` |
     | ... | ... | ... | ... | ... | ... |
 
-    ## 4. Plano de Ajustes
+    ## 4. Achados — `engineering-skills`
+    | ID | Severidade | Arquivo | Linha | Descrição | Recomendação |
+    |:---|:---|:---|:---:|:---|:---|
+    | ES-001 | High | `src/.../Servico.java` | 88 | Método com complexidade ciclomática > 10 — difícil de testar | Extrair branches para métodos privados |
+    | ES-002 | Medium | `src/.../Repository.java` | 45 | Query N+1 detectada — pode degradar com escala | Usar JOIN ou batch fetch |
+    | ... | ... | ... | ... | ... | ... |
+
+    ## 5. Achados — `security-audit`
+    | ID | Severidade | Arquivo | Linha | Descrição | Recomendação |
+    |:---|:---|:---|:---:|:---|:---|
+    | SA-001 | Critical | `src/.../Controller.java` | 30 | Endpoint sem @RequiresPermission — acesso não autorizado | Adicionar anotação com resource e action |
+    | SA-002 | High | `src/.../Service.java` | 62 | Credencial hardcoded em variável — exposta em logs | Mover para variável de ambiente |
+    | ... | ... | ... | ... | ... | ... |
+
+    ## 6. Achados — `performance-review`
+    | ID | Severidade | Arquivo | Linha | Descrição | Recomendação |
+    |:---|:---|:---|:---:|:---|:---|
+    | PF-001 | High | `src/.../Repository.java` | 28 | findAll sem LIMIT — pode vazar milhões de linhas | Adicionar paginação padrão se não informada |
+    | PF-002 | Medium | `src/.../Service.java` | 45 | Loop com query individual por item — N+1 detectado | Substituir por query batch com IN clause |
+    | ... | ... | ... | ... | ... | ... |
+
+    ## 7. Achados — `requesting-code-review`
+    | ID | Severidade | Arquivo | Linha | Descrição | Recomendação |
+    |:---|:---|:---|:---:|:---|:---|
+    | RC-001 | Medium | `src/.../Service.java` | 34 | Nome do método `doStuff()` não expressa intenção | Renomear para `recalculateTenantMetrics()` |
+    | RC-002 | Low | `src/.../Controller.java` | 18 | Método sem Javadoc — endpoint público sem documentação | Adicionar @Operation e @ApiResponses |
+    | ... | ... | ... | ... | ... | ... |
+
+    ## 8. Achados — `differential-review`
+    | ID | Severidade | Arquivo | Linha | Descrição | Recomendação |
+    |:---|:---|:---|:---:|:---|:---|
+    | DR-001 | Critical | `src/.../BaseRepository.java` | 45 | Mudança na assinatura do método — quebra contratos existentes | Adicionar overload ou migration path |
+    | DR-002 | Medium | `pom.xml` | 14 | Nova dependência adicionada sem avaliação de licença | Verificar compatibilidade de licença com SaaS B2B |
+    | ... | ... | ... | ... | ... | ... |
+
+    ## 9. Plano de Ajustes
     [Lista priorizada de ajustes a executar, agrupados por arquivo e ordenados
      por severidade (Critical → High → Medium → Low)]
 
@@ -538,9 +649,11 @@ Se algum teste falhar durante a execução:
 
     ### Arquivo: `src/main/.../Servico.java`
     - [ ] PA-002 (Medium): Extrair lógica duplicada para método compartilhado
+    - [ ] ES-001 (High): Reduzir complexidade ciclomática — extrair branches
+    - [ ] SA-002 (High): Remover credencial hardcoded — usar env var
     ...
 
-    ## 5. Execução dos Ajustes
+    ## 10. Execução dos Ajustes
     [Registro do que foi alterado, arquivo por arquivo, com a justificativa e o
      resultado do build pós-ajuste]
 
@@ -548,9 +661,11 @@ Se algum teste falhar durante a execução:
     |:---|:---|:---|:---:|
     | PA-001 | `Classe.java` | Método `getX()` removido | ✅ Compila |
     | PA-002 | `Servico.java`, `Util.java` | Extraído `metodoCompartilhado()` | ✅ Compila |
+    | ES-001 | `Servico.java` | Complexidade reduzida — extraídos 3 métodos privados | ✅ Compila |
+    | SA-001 | `Controller.java` | @RequiresPermission adicionado | ✅ Compila |
     | ... | ... | ... | ... |
 
-    ## 6. Build Pós-Ajustes
+    ## 11. Build Pós-Ajustes
     - Comando: `[build command]`
     - Resultado: ✅ SUCCESS / ❌ FAILURE
     - Testes rápidos: N/N passando
@@ -559,32 +674,32 @@ Se algum teste falhar durante a execução:
     [Indicação de geração por IA, skills utilizados, data/hora da geração]
     ```
 
-17. **Executar ajustes a partir do relatório:**
+22. **Executar ajustes a partir do relatório:**
 
     ```
-    PARA cada achado no PONYTAIL-REPORT-ADJUST-SPRINT-{N}.md, na ordem do plano (§4):
+    PARA cada achado no PONYTAIL-REPORT-ADJUST-SPRINT-{N}.md, na ordem do plano (§9):
         │
         ├── 1. APLICAR a correção recomendada no código-fonte
-        ├── 2. MARCAR o achado como concluído no relatório (§5)
+        ├── 2. MARCAR o achado como concluído no relatório (§10)
         ├── 3. EXECUTAR build/compilação para validar
         │      - Se falhar → reverter ajuste, marcar como ❌ e documentar motivo
-        └── 4. ATUALIZAR a tabela de execução (§5) com o resultado
+        └── 4. ATUALIZAR a tabela de execução (§10) com o resultado
     ```
 
-18. **Retornar à Fase 3 — Planejamento dos Testes:**
+23. **Retornar à Fase 3 — Planejamento dos Testes:**
 
     ```
     Após concluir todos os ajustes de código:
     
-    ├── 18.1 VOLTAR para a Fase 3 — Planejamento dos Testes (passo 10)
+    ├── 23.1 VOLTAR para a Fase 3 — Planejamento dos Testes (passo 10)
     │       - O SPRINT-TEST-PLANNING.md pode precisar ser atualizado
     │         para refletir as mudanças de código
     │
-    ├── 18.2 REEXECUTAR Fases 3, 4 e 5 (planejamento → testes → qualidade)
+    ├── 23.2 REEXECUTAR Fases 3, 4 e 5 (planejamento → testes → qualidade)
     │       para garantir que os ajustes não quebraram testes existentes
     │       e que novos cenários de borda sejam cobertos
     │
-    └── 18.3 CONTROLE DE CICLOS:
+    └── 23.3 CONTROLE DE CICLOS:
             - Máximo de 2 ciclos completos (Fase 3→4→5→7)
             - Se após o 2º ciclo ainda houver achados Critical/High não resolvidos,
               registrar no SPRINT-EXECUTION-REPORT.md (§8) e prosseguir
@@ -592,7 +707,7 @@ Se algum teste falhar durante a execução:
               dívida técnica na seção de observações do relatório final
     ```
 
-    > ⚠️ **Por que voltar à Fase 3?** Ajustes de código motivados pelo PonyTail podem:
+    > ⚠️ **Por que voltar à Fase 3?** Ajustes de código motivados pelo Code Review podem:
     > - Alterar assinaturas de métodos → testes unitários precisam ser atualizados
     > - Introduzir novos métodos/classes → novos testes podem ser necessários
     > - Remover código morto → testes obsoletos devem ser removidos
@@ -688,6 +803,92 @@ Se algum teste falhar durante a execução:
 
 ---
 
+### Fase 10 — Atualização de Artefatos (OBRIGATÓRIO)
+
+25. **Atualizar artefatos da sprint com o resultado da execução:**
+
+    ```
+    APÓS gerar o relatório de execução (Fase 9), atualizar os seguintes
+    artefatos para refletir o estado real pós-execução:
+
+    ├── 25.1 ARTEFATOS DA SPRINT (pasta {SPRINT_DIR}/):
+    │
+    │   ├── SPRINT-CARD.md
+    │   │   - Marcar cada task como ✅ (concluída) ou ❌ (falha) no backlog
+    │   │   - Atualizar o checklist de Definition of Done (checkboxes)
+    │   │   - Atualizar a seção de Métricas da Sprint (tasks completadas,
+    │   │     endpoints, RNs, cenários de teste, cobertura)
+    │   │   - Se tasks foram adiadas para sprints futuras, documentar
+    │   │
+    │   ├── SPRINT-TEST-SUITE.md
+    │   │   - Marcar cenários executados com ✅ ou ❌
+    │   │   - Adicionar cenários de teste descobertos durante a execução
+    │   │     que não estavam previstos originalmente
+    │   │   - Atualizar o resumo (total de cenários executados)
+    │   │
+    │   └── SPRINT-REVIEW.md
+    │       - Marcar itens demonstrados com ✅ (checkboxes da demo)
+    │       - Atualizar a tabela de Métricas da Review com resultados reais
+    │       - Documentar bloqueios encontrados durante a execução
+    │       - Preencher os Pontos de Verificação (PO) com o que foi validado
+    │
+    ├── 25.2 DOCUMENTOS-MESTRE DO PROJETO ({SPECS_DIR}/):
+    │
+    │   ├── TASKS.md
+    │   │   - Atualizar o status de cada task executada (✅ ou ❌)
+    │   │   - Atualizar o Progresso Atual no header (ex: 35/99)
+    │   │   - Se novas tasks foram criadas durante a execução,
+    │   │     adicioná-las com numeração sequencial
+    │   │
+    │   ├── SPECS.md
+    │   │   - Atualizar a versão e data no header
+    │   │   - Atualizar o Status para refletir o progresso atual
+    │   │   - Se novas RNs foram formalizadas ou esclarecidas, registrá-las
+    │   │   - Se endpoints foram alterados, atualizar §4.1 e §4.2
+    │   │
+    │   ├── TEST_PLAN.md
+    │   │   - Atualizar a versão e data no header
+    │   │   - Marcar cenários de teste executados na sprint atual
+    │   │   - Atualizar o Status para refletir o progresso dos testes
+    │   │   - Se novas ferramentas de teste foram adotadas, documentá-las
+    │   │
+    │   ├── ARCHITECTURE.md
+    │   │   - Atualizar a versão e data no header
+    │   │   - Atualizar o Status para refletir o estado atual
+    │   │   - Se novas ADRs foram criadas durante a execução, adicioná-las
+    │   │   - Se novos pacotes/diretórios foram criados, atualizar §2
+    │   │
+    │   └── PRD.md
+    │       - Atualizar a versão e data no header
+    │       - Atualizar o Status para refletir a sprint atual
+    │       - Se o escopo foi alterado durante a execução, documentar
+    │
+    └── 25.3 ÍNDICE DE SPRINTS:
+    
+        └── sprints/README.md
+            - Atualizar a Matriz de Rastreabilidade (status, progresso,
+              data de atualização de cada fase)
+            - Atualizar a tabela de Progresso (datas reais de início/fim)
+            - Atualizar as versões dos documentos-mestre referenciados
+            - Atualizar o footer com o resumo atualizado
+            - Se novas fases foram criadas (ex: Frentes de débito técnico),
+              adicionar linhas na matriz
+    ```
+
+    > ⚠️ **Princípios da atualização de artefatos:**
+    > - **Documentos-mestre são a fonte da verdade** — os artefatos de sprint
+    >   são derivados. Se houver conflito, os documentos-mestre prevalecem.
+    > - **Atualizar versão e data** no header de TODO documento modificado.
+    > - **Não apagar histórico** — usar checkboxes marcados (✅/❌), nunca
+    >   remover linhas de tasks concluídas.
+    > - **Consistência cruzada:** o progresso em TASKS.md deve bater com
+    >   sprints/README.md, que deve bater com SPRINT-CARD.md.
+    > - **Se a sprint NÃO foi totalmente concluída,** registrar tasks
+    >   pendentes como observações e propor encaminhamento (mover para
+    >   sprint seguinte, criar nova task, etc.).
+
+---
+
 ## Skills (Acionamento Dinâmico)
 
 > **Este prompt não declara skills fixas.** As skills são descobertas dinamicamente na **Fase 0, passo 6** com base na stack do projeto. O skill `001-skills-inventory` é usado como ponto de partida para listar as skills disponíveis.
@@ -715,6 +916,11 @@ Se algum teste falhar durante a execução:
 | `caveman` | full | Compressão de prosa interativa (comunicação durante o desenvolvimento) |
 | `security-review` | automático | Revisão de segurança — OWASP Top 10, boas práticas |
 | `code-review` | automático | Revisão de qualidade do código gerado |
+| `engineering-skills` | automático | Auditoria de engenharia — SOLID, complexidade, padrões, resiliência |
+| `security-audit` | automático | Auditoria de segurança — vulnerabilidades exploráveis, OWASP Top 10, dados sensíveis |
+| `performance-review` | automático | Revisão de performance — queries N+1, alocações, caching, algoritmos |
+| `requesting-code-review` | automático | Revisão de código — legibilidade, convenções, testabilidade, simplificação |
+| `differential-review` | automático | Revisão diferencial do diff — regressões de segurança, blast radius, cobertura |
 | `verification-before-completion` | automático | Verificar que a implementação funciona antes de declarar concluída |
 
 > ⚠️ **caveman e ponytail NÃO atuam sobre artefatos permanentes** (SPRINT-CARD.md, SPRINT-TEST-SUITE.md, SPRINT-REVIEW.md, EXECUTION-REPORT.md). O caveman comprime apenas a comunicação interativa; o report final é gerado em prosa normal.
@@ -755,6 +961,15 @@ Se os testes falharem:
 | **ARTEFATO** | `{SPRINT_DIR}/PONYTAIL-REPORT-ADJUST-SPRINT-{N}.md` (se houver achados) |
 | **ARTEFATO** | `{SPRINT_DIR}/SPRINT-DEVELOPMENT-PLANNING.md` |
 | **ARTEFATO** | `{SPRINT_DIR}/SPRINT-TEST-PLANNING.md` |
+| **ATUALIZAÇÃO** | `{SPRINT_DIR}/SPRINT-CARD.md` — tasks marcadas ✅/❌, DoD atualizado |
+| **ATUALIZAÇÃO** | `{SPRINT_DIR}/SPRINT-TEST-SUITE.md` — cenários marcados ✅/❌ |
+| **ATUALIZAÇÃO** | `{SPRINT_DIR}/SPRINT-REVIEW.md` — checkboxes preenchidos, métricas |
+| **ATUALIZAÇÃO** | `{SPECS_DIR}/TASKS.md` — status das tasks, progresso geral |
+| **ATUALIZAÇÃO** | `{SPECS_DIR}/SPECS.md` — versão, status, endpoints alterados |
+| **ATUALIZAÇÃO** | `{SPECS_DIR}/TEST_PLAN.md` — cenários executados, status |
+| **ATUALIZAÇÃO** | `{SPECS_DIR}/ARCHITECTURE.md` — versão, status, novas ADRs |
+| **ATUALIZAÇÃO** | `{SPECS_DIR}/PRD.md` — versão, status, escopo |
+| **ATUALIZAÇÃO** | `{SPECS_DIR}/sprints/README.md` — matriz, progresso, footer |
 
 ---
 
@@ -772,9 +987,11 @@ Se os testes falharem:
 | Adicionar dependência nova para funcionalidade trivial | Usar o que já existe no projeto (stdlib, deps existentes) |
 | Usar padrão diferente do ARCHITECTURE.md "porque é melhor" | Seguir o padrão documentado; se precisar mudar, propor ADR |
 | Deixar stack trace ou detalhes internos em respostas de erro | Tratar erros conforme definido no SPECS.md e SECURITY.md |
-| Pular a Fase 7 (Code Review PonyTail) "porque o código já está bom" | `ponytail-audit` e `ponytail-review` são obrigatórios — sempre há algo a melhorar |
-| Ignorar achados do PonyTail e prosseguir direto para o Sanity Check | Aplicar os ajustes e revalidar com Fases 3→4→5 (máx. 2 ciclos) |
-| Fazer ajustes do PonyTail sem reexecutar os testes | Sempre voltar à Fase 3 após ajustes para garantir que nada quebrou |
+| Pular a Fase 7 (Code Review) "porque o código já está bom" | `ponytail-audit`, `ponytail-review` e `engineering-skills` são obrigatórios — sempre há algo a melhorar |
+| Ignorar achados do Code Review e prosseguir direto para o Sanity Check | Aplicar os ajustes e revalidar com Fases 3→4→5 (máx. 2 ciclos) |
+| Fazer ajustes do Code Review sem reexecutar os testes | Sempre voltar à Fase 3 após ajustes para garantir que nada quebrou |
+| Gerar relatório de execução e NÃO atualizar os artefatos | Executar Fase 10 — atualizar TODOS os documentos-mestre e artefatos da sprint |
+| Atualizar apenas os artefatos da sprint e ignorar os docs-mestre | SPRINT-CARD.md, TASKS.md, SPECS.md, TEST_PLAN.md, ARCHITECTURE.md, PRD.md e sprints/README.md devem ser atualizados em conjunto |
 
 ---
 
@@ -794,9 +1011,11 @@ Se os testes falharem:
 
 7. **Sprints de fundação (ex: Setup, Segurança) são diferentes.** Elas podem não ter features de negócio ou endpoints REST. Os testes tendem a ser estruturais (build, migração, segurança). O SPRINT-CARD.md sinaliza isso.
 
-8. **Code Review com PonyTail é obrigatório.** A Fase 7 (`ponytail-audit` + `ponytail-review`) deve ser executada em TODAS as sprints, independentemente do tamanho. Se zero achados forem encontrados, o relatório pode ser omitido, mas a auditoria deve ser executada e registrada no relatório de execução.
+8. **Code Review é obrigatório.** A Fase 7 (`ponytail-audit` + `ponytail-review` + `engineering-skills`) deve ser executada em TODAS as sprints, independentemente do tamanho. Se zero achados forem encontrados, o relatório pode ser omitido, mas as auditorias devem ser executadas e registradas no relatório de execução.
 
 9. **Ciclo de ajustes tem limite.** Após a Fase 7, o retorno à Fase 3 é esperado para revalidar testes. Porém, o ciclo Fase 3→4→5→7 não deve exceder 2 iterações. Achados remanescentes após 2 ciclos devem ser documentados como dívida técnica no relatório final.
+
+10. **Atualização de artefatos é obrigatória.** A Fase 10 deve ser executada após toda execução de sprint, independentemente do tamanho. Todos os documentos-mestre (TASKS.md, SPECS.md, TEST_PLAN.md, ARCHITECTURE.md, PRD.md), artefatos da sprint (SPRINT-CARD.md, SPRINT-TEST-SUITE.md, SPRINT-REVIEW.md) e o índice (sprints/README.md) devem ser atualizados com o resultado da execução. A consistência cruzada entre eles é mandatória.
 
 ---
 
@@ -804,6 +1023,7 @@ Se os testes falharem:
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 5.0 | 17/07/2026 | Fase 7 renomeada para Code Review. Adicionados 5 novos skills: `engineering-skills`, `security-audit`, `performance-review`, `requesting-code-review`, `differential-review`. Report template expandido com seções SA, PF, RC, DR (total 11 seções). Skills Transversais atualizado. Adicionada Fase 10 — Atualização de Artefatos (8 artefatos: 3 sprint + 5 master + README). Passo 25 com 3 sub-árvores (25.1 sprint, 25.2 master, 25.3 índice). Output Esperado, Anti-Padrões e Observações atualizados | Time de Arquitetura |
 | 4.0 | 14/07/2026 | Adicionada Fase 7 — Code Review (PonyTail) com `ponytail-audit` e `ponytail-review`. Geração de `PONYTAIL-REPORT-ADJUST-SPRINT-{N}.md`. Ciclo de retorno à Fase 3 para revalidação de testes pós-ajustes. Fases 7→8 (Sanity Check), 8→9 (Relatório). Total de 9 fases, 24 passos | Time de Arquitetura |
 | 3.0 | 14/07/2026 | Adicionados artefatos de planejamento: SPRINT-DEVELOPMENT-PLANNING.md (Fase 1) e SPRINT-TEST-PLANNING.md (Fase 3). Fases renumeradas: 0→5→8. Total de 8 fases, 19 passos | Time de Arquitetura |
 | 2.0 | 14/07/2026 | Generalização para stack-agnóstico. Stack detectada dos documentos do projeto (PRD.md, SPECS.md). Skills acionadas dinamicamente via `001-skills-inventory`. Comandos de build/teste/coverage inferidos do gerenciador de dependências. Removidas todas as referências hardcoded a Java/Spring Boot/Maven. Adicionada §2 (Stack e Skills) ao relatório de execução | Time de Arquitetura |

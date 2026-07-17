@@ -46,9 +46,15 @@ public class RbacAspect {
      * // ponytail: ceiling = Sprint 4 carrega do banco (RoleResource + ResourceAction)
      */
     private static final Set<String> ADMIN_ALL_ACCESS = Set.of("ADMIN_TENANT");
-    private static final Set<String> MANAGER_RESOURCES = Set.of("BUSINESS_UNIT", "PRODUCT_SERVICE");
-    private static final Set<String> MANAGER_ACTIONS = Set.of("view", "create", "edit");
-    private static final Set<String> OPERATOR_RESOURCES = Set.of("BUSINESS_UNIT", "PRODUCT_SERVICE");
+    private static final Set<String> MANAGER_EDIT_RESOURCES = Set.of("BUSINESS_UNIT", "PRODUCT_SERVICE");
+    private static final Set<String> MANAGER_VIEW_RESOURCES = Set.of(
+            "BUSINESS_UNIT", "PRODUCT_SERVICE",
+            "TENANT", "PLAN", "SUBSCRIPTION", "DASHBOARD");
+    private static final Set<String> MANAGER_EDIT_ACTIONS = Set.of("view", "create", "edit");
+    private static final Set<String> MANAGER_VIEW_ACTIONS = Set.of("view");
+    private static final Set<String> OPERATOR_RESOURCES = Set.of(
+            "BUSINESS_UNIT", "PRODUCT_SERVICE",
+            "TENANT", "PLAN", "SUBSCRIPTION", "DASHBOARD");
     private static final Set<String> OPERATOR_ACTIONS = Set.of("view");
     private static final Set<String> AUDITOR_RESOURCES = Set.of("AUDIT");
     private static final Set<String> AUDITOR_ACTIONS = Set.of("view");
@@ -74,8 +80,10 @@ public class RbacAspect {
 
         // Verificar permissão por papel
         boolean granted = roles.stream().anyMatch(role -> switch (role) {
-            case "MANAGER_BU" -> MANAGER_RESOURCES.contains(resource)
-                              && MANAGER_ACTIONS.contains(action);
+            case "MANAGER_BU" -> (MANAGER_EDIT_RESOURCES.contains(resource)
+                               && MANAGER_EDIT_ACTIONS.contains(action))
+                              || (MANAGER_VIEW_RESOURCES.contains(resource)
+                               && MANAGER_VIEW_ACTIONS.contains(action));
             case "OPERATOR_BU" -> OPERATOR_RESOURCES.contains(resource)
                               && OPERATOR_ACTIONS.contains(action);
             case "AUDITOR"     -> AUDITOR_RESOURCES.contains(resource)

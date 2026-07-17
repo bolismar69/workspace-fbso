@@ -26,18 +26,18 @@
 
 | ID | Tarefa | Feature | Prio. | Est. | Critério DONE |
 |:---|:---|:---|:---:|:---:|:---|
-| **T-050** | Configurar Keycloak realm `fbso-platform` + client Authorization Code Flow. Mapear claims (tenant_id, roles, business_unit_ids, modules). Exportar `realm-config.json` | F04-01 | Must | 2d | Realm funcional. JWT com claims corretas. Config versionada |
-| **T-051** | `POST /api/v1/auth/login` (delega Keycloak). Recuperação: `POST /auth/forgot-password` (expira 1h — RN13-03), `POST /auth/reset-password` (complexidade RN13-01) | F04-01 | Must | 2d | Login funcional. Link reset 1h. Senha 8+ chars, letra+número. Sessão 60min inatividade (RN13-02) |
-| **T-052** | Rate limiting: 5 tentativas → bloqueio 15min (US-039, RN13-02). Implementar via @Aspect ou filter + Caffeine | F04-01 | Must | 1.5d | 5 falhas → bloqueado. Mensagem exibe tempo restante |
-| **T-053** | `OnboardingService`: 4 passos obrigatórios (US-040 a US-044). Ordem obrigatória (RN14-01). Primeira BU = Matriz (RN14-02). Tenant → ACTIVE ao concluir (RN14-04). Retomável | F04-02 | Must | 2d | 4 passos. Ordem validada. Status salvo permite retomar |
-| **T-054** | `OnboardingController`: `GET /onboarding/status`, `PATCH /step-1`, `POST /step-2`, `POST /complete`. `@RequiresPermission` | F04-02 | Must | 1.5d | 4 endpoints. Step-2 valida CNPJ. Complete só se todos passos OK (RN14-03) |
-| **T-055** | Criação primeira BU como Matriz (step-2). Reutilizar `BusinessUnitService.create()` com flag `isMatrix=true`. CNPJ validado | F04-02 | Must | 1d | BU Matriz com parent_id=NULL. CNPJ válido |
-| **T-056** | `DashboardClientService`: cards — unidades ativas, produtos catálogo, plano contratado, notificações. Cards clicáveis | F04-03 | Should | 1.5d | Cards com dados resumidos. Link para área |
-| **T-057** | `DashboardClientController`: `GET /dashboard/client/summary`, `/notifications`. `@RequiresPermission`. Dashboard genérico Fase 0 (RN15-01, RN15-02) | F04-03 | Should | 1d | Dados do cliente autenticado. Filtrado por tenant_id |
-| **T-058** | Atualizar `JwtAuthenticationFilter`: claims `modules[]` + `business_unit_ids[]` no `TenantContext`. Placeholder "FBSO Platform" (RN16-01, RN16-02) | F04-04 | Must | 1.5d | JWT retorna modules[]. App Switcher viável com 1 módulo |
-| **T-059** | `GET /api/v1/auth/me`: retorna dados do usuário logado (id, name, email, role, business_unit_ids, modules[], tenant_id, status onboarding). Sem `@RequiresPermission` | F04-04 | Must | 1d | GET /auth/me funcional. Stateless (dados do token). 401 se sem token |
-| **T-060** | Testes unitários M5: `OnboardingService`, `DashboardClientService`, fluxo auth (login, recovery, rate-limit) | F04-01 a F04-04 | Must | 1.5d | ≥ 80%. Rate limit testado (5 tentativas, bloqueio, reset 15min) |
-| **T-061** | Testes integração M5: fluxo onboarding completo (PENDING→ACTIVE). Rate limiting PostgreSQL real. Teste expiração link reset | F04-01, F04-02 | Must | 2d | Onboarding completo testado. Tenant → ACTIVE |
+| **T-057** | Configurar Keycloak realm `fbso-platform` + client Authorization Code Flow. Mapear claims (tenant_id, roles, business_unit_ids, modules). Exportar `realm-config.json` | F04-01 | Must | 2d | Realm funcional. JWT com claims corretas. Config versionada |
+| **T-058** | `POST /api/v1/auth/login` (delega Keycloak). Recuperação: `POST /auth/forgot-password` (expira 1h — RN13-03), `POST /auth/reset-password` (complexidade RN13-01) | F04-01 | Must | 2d | Login funcional. Link reset 1h. Senha 8+ chars, letra+número. Sessão 60min inatividade (RN13-02) |
+| **T-059** | Rate limiting: 5 tentativas → bloqueio 15min (US-039, RN13-02). Implementar via @Aspect ou filter + Caffeine | F04-01 | Must | 1.5d | 5 falhas → bloqueado. Mensagem exibe tempo restante |
+| **T-060** | `OnboardingService`: 4 passos obrigatórios (US-040 a US-044). Ordem obrigatória (RN14-01). Primeira BU = Matriz (RN14-02). Tenant → ACTIVE ao concluir (RN14-04). Retomável | F04-02 | Must | 2d | 4 passos. Ordem validada. Status salvo permite retomar |
+| **T-061** | `OnboardingController`: `GET /onboarding/status`, `PATCH /step-1`, `POST /step-2`, `POST /complete`. `@RequiresPermission` | F04-02 | Must | 1.5d | 4 endpoints. Step-2 valida CNPJ. Complete só se todos passos OK (RN14-03) |
+| **T-062** | Criação primeira BU como Matriz (step-2). Reutilizar `BusinessUnitService.create()` com flag `isMatrix=true`. CNPJ validado | F04-02 | Must | 1d | BU Matriz com parent_id=NULL. CNPJ válido |
+| **T-063** | `DashboardClientService`: cards — unidades ativas, produtos catálogo, plano contratado, notificações. Cards clicáveis | F04-03 | Should | 1.5d | Cards com dados resumidos. Link para área |
+| **T-064** | `DashboardClientController`: `GET /dashboard/client/summary`, `/notifications`. `@RequiresPermission`. Dashboard genérico Fase 0 (RN15-01, RN15-02) | F04-03 | Should | 1d | Dados do cliente autenticado. Filtrado por tenant_id |
+| **T-065** | Atualizar `JwtAuthenticationFilter`: claims `modules[]` + `business_unit_ids[]` no `TenantContext`. Placeholder "FBSO Platform" (RN16-01, RN16-02) | F04-04 | Must | 1.5d | JWT retorna modules[]. App Switcher viável com 1 módulo |
+| **T-066** | `GET /api/v1/auth/me`: retorna dados do usuário logado (id, name, email, role, business_unit_ids, modules[], tenant_id, status onboarding). Sem `@RequiresPermission` | F04-04 | Must | 1d | GET /auth/me funcional. Stateless (dados do token). 401 se sem token |
+| **T-067** | Testes unitários M5: `OnboardingService`, `DashboardClientService`, fluxo auth (login, recovery, rate-limit) | F04-01 a F04-04 | Must | 1.5d | ≥ 80%. Rate limit testado (5 tentativas, bloqueio, reset 15min) |
+| **T-068** | Testes integração M5: fluxo onboarding completo (PENDING→ACTIVE). Rate limiting PostgreSQL real. Teste expiração link reset | F04-01, F04-02 | Must | 2d | Onboarding completo testado. Tenant → ACTIVE |
 
 **Total:** 12 tarefas · ~18.5 dias-homem (10 Must + 2 Should)
 

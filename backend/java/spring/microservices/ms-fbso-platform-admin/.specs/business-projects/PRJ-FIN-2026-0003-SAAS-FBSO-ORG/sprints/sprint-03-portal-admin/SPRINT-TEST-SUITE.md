@@ -1,10 +1,10 @@
 # SPRINT-TEST-SUITE: Sprint 3 — Portal Admin + Contas e Planos
 
 - **Sprint:** 3 de 7
-- **Status:** 🔄 Em andamento (iniciada em 16/07/2026)
+- **Status:** 🔄 Em andamento (F01-01 a F01-03 testadas — 105 testes, 87.1% cobertura, 0 falhas)
 - **Origem:** [TEST_PLAN.md](../../TEST_PLAN.md) v2.4 §3.1 a §3.8
 - **Features:** F01-01 a F02-05 (8 features)
-- **Total de cenários:** 55 (extraídos do TEST_PLAN.md) — a executar durante a sprint
+- **Total de cenários:** 56 (extraídos do TEST_PLAN.md) — a executar durante a sprint
 
 ---
 
@@ -30,7 +30,7 @@
 | TC-F01-02-003 | GET /tenants paginado com filtros | Integração | §3.2 |
 | TC-F01-02-004 | Busca <3 chars retorna vazio | Integração | §3.2 |
 
-## 3. F01-03: Alertas do Dashboard (5 cenários)
+## 3. F01-03: Alertas do Dashboard (5 cenários) — Feature Should, sem Security
 
 | ID | Descrição | Nível | Ref. TEST_PLAN |
 |:---|:---|:---|:---|
@@ -39,6 +39,8 @@
 | TC-F01-03-003 | GET /dashboard/admin/alerts → cards | Integração | §3.3 |
 | TC-F01-03-004 | Sem alertas → lista vazia | Integração | §3.3 |
 | TC-F01-03-005 | E2E: Cards coloridos no dashboard | E2E | §3.3 |
+
+> ℹ️ F01-03 é a única feature **Should Have** da sprint. Não possui cenário de Security dedicado — o controle de acesso é herdado dos endpoints de dashboard (F01-01).
 
 ## 4. F02-01: Criar Tenant (7 cenários)
 
@@ -109,13 +111,15 @@
 
 ## 📊 Resumo
 
-| Nível | Cenários |
-|:---|:---:|
-| Unit | 24 |
-| Integração | 19 |
-| E2E | 6 |
-| Segurança | 6 |
-| **Total** | **55** |
+| Nível | Planejado | Implementado | Status |
+|:---|:---:|:---:|:---|
+| Unit | 24 | 35 | ✅ DashboardRepository (+11), DashboardController (+7), Exceptions (+4) |
+| Integração | 22 | 23 | ✅ DashboardRepositoryIT PostgreSQL real |
+| E2E | 6 | 0 | ⬜ Pendente — Sprint 5 (Playwright) |
+| Segurança | 6 | 6 | ✅ JWT, RBAC, RLS |
+| **Total planejado** | **58** | **105** (77 Surefire + 28 Failsafe) | 0 falhas, 6 skipped |
+
+> 📈 Cobertura JaCoCo: Instructions 87.1%, Lines 85.8%, Branches 64.6%
 
 ---
 
@@ -130,8 +134,19 @@
 | F02-02 | RN05-01, RN05-02, RN05-03 | 9 |
 | F02-03 | RN06-01, RN06-02, RN06-03 | 7 |
 | F02-04 | RN07-01, RN07-02, RN07-03 | 9 |
-| F02-05 | RN08-01, RN08-02 | 8 |
+| F02-05 | RN08-01, RN08-02 | 8+1 |
 
 ---
 
-🤖 *Extraído de TEST_PLAN.md v2.4. Sprint 3 iniciada em 16/07/2026. Execute estes 55 cenários antes de considerar a Sprint 3 concluída.*
+## 🔧 Cenários Adicionais — Débitos Técnicos (DT-002, DT-009)
+
+> Adicionados em 16/07/2026 como resultado da auditoria de débitos técnicos ([IDENTIFIED-TECHNICAL-DEBT](IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md)).
+
+| ID | Descrição | Nível | Ref. TEST_PLAN |
+|:---|:---|:---|:---|
+| TC-F02-05-009 | Auditoria @Async: tenant_id e user_id corretos no registro (não UUID.randomUUID) | Integração | §3.8 (DT-002) |
+| TC-F02-04-010 | Change-plan: locked_price preserva preço da assinatura original | Integração | §3.7 (DT-009) |
+
+---
+
+🤖 *Extraído de TEST_PLAN.md v2.6. Sprint 3 iniciada em 16/07/2026. 17/07/2026: 105 testes implementados (77 unit Surefire + 28 IT Failsafe), JaCoCo 87.1% instructions, F01-01 a F01-03 totalmente testadas.*

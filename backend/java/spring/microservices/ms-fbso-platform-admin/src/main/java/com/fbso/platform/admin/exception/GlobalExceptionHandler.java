@@ -3,6 +3,7 @@ package com.fbso.platform.admin.exception;
 import com.fbso.platform.admin.dto.response.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -39,6 +40,34 @@ public class GlobalExceptionHandler {
                         null
                 )
         );
+    }
+
+    // ---- 404 — Recurso Não Encontrado ----
+
+    @ExceptionHandler(TenantNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleTenantNotFound(TenantNotFoundException ex) {
+        log.warn("Tenant não encontrado: {}", ex.getMessage());
+        ErrorResponse body = ErrorResponse.of(
+                "https://api.fbso.org/errors/" + ex.getErrorCode(),
+                ex.getMessage(),
+                404,
+                null
+        );
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    // ---- 409 — Conflito (CNPJ duplicado) ----
+
+    @ExceptionHandler(DuplicateCnpjException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateCnpj(DuplicateCnpjException ex) {
+        log.warn("CNPJ duplicado: {}", ex.getMessage());
+        ErrorResponse body = ErrorResponse.of(
+                "https://api.fbso.org/errors/" + ex.getErrorCode(),
+                ex.getMessage(),
+                409,
+                null
+        );
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
     // ---- 403 — Acesso Negado ----

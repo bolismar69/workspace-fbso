@@ -1,11 +1,11 @@
 # PRD — Product Requirements Document (Backend: ms-fbso-platform-admin)
 
 - **Microserviço:** `ms-fbso-platform-admin`
-- **Stack:** Java 25 + Spring Boot + PostgreSQL
+- **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.7
-- **Data:** 16 de Julho de 2026
-- **Status:** Em Execução — Sprint 3 (M2+M3) iniciada em 16/07/2026
+- **Versão:** 1.10
+- **Data:** 17 de Julho de 2026
+- **Status:** Em Execução — Sprint 3 (M2+M3) em andamento. Frentes 0+1 concluídas (20/20 tasks ✅). Dashboard admin (F01-01 a F01-03) implementado e testado. 105 testes (77 unit + 28 IT). JaCoCo 87.1%. M2 (EP-01) 100% concluído. 36/99 tarefas (36%)
 
 ---
 
@@ -565,6 +565,7 @@ git checkout -b hotfix/sprint-NN-<descricao> <merge-commit-hash>
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.8 | 16/07/2026 | Atualização de stack (Spring Boot 3.5.14, Jackson 2.21.4 — CVE-2026-22733/CVE-2026-22731 auth bypass CVSS 8.2). Adicionada referência a débitos técnicos da Sprint 3 ([IDENTIFIED-TECHNICAL-DEBT](sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) — auditoria com 7 skills). | Time Técnico |
 | 1.5 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Execução". | Time Técnico |
 | 1.7 | 16/07/2026 | Estratégia de branching alterada: modelo de branch única substituído por uma branch por sprint (§8.4). Adicionada tabela de mapeamento Sprint→Branch para Sprints 3–7. Documento canônico: `docs/superpowers/specs/2026-07-16-sprint-branching-strategy-design.md`. | Time Técnico |
 | 1.6 | 16/07/2026 | Adicionada seção 8.4 — Branch de Desenvolvimento (`feature/java-fbso-platform-admin`) como obrigatória para todas as tarefas do projeto. (Substituída pela v1.7.) | Time Técnico |

@@ -2,8 +2,12 @@ package com.fbso.platform.admin.unit.exception;
 
 import com.fbso.platform.admin.dto.response.ErrorResponse;
 import com.fbso.platform.admin.exception.BusinessException;
+import com.fbso.platform.admin.exception.DuplicateCnpjException;
 import com.fbso.platform.admin.exception.GlobalExceptionHandler;
+import com.fbso.platform.admin.exception.InvalidStatusTransitionException;
 import com.fbso.platform.admin.exception.PermissionDeniedException;
+import com.fbso.platform.admin.exception.PlanHasActiveSubscribersException;
+import com.fbso.platform.admin.exception.TenantNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -96,6 +100,77 @@ class GlobalExceptionHandlerTest {
             assertThat(response.getStatusCode().value()).isEqualTo(401);
             assertThat(response.getBody()).isNotNull();
             assertThat(response.getBody().title()).isEqualTo("Token de acesso não informado");
+        }
+    }
+
+    // ---- TenantNotFoundException → 404 ----
+
+    @Nested
+    @DisplayName("TenantNotFoundException → 404")
+    class TenantNotFoundTest {
+
+        @Test
+        @DisplayName("deve retornar 404 com código do erro")
+        void shouldReturn404() {
+            var ex = new TenantNotFoundException("tenant-123");
+
+            ResponseEntity<ErrorResponse> response = handler.handleTenantNotFound(ex);
+
+            assertThat(response.getStatusCode().value()).isEqualTo(404);
+            assertThat(response.getBody()).isNotNull();
+            assertThat(response.getBody().type()).contains("tenant-not-found");
+            assertThat(response.getBody().title()).contains("tenant-123");
+        }
+    }
+
+    // ---- DuplicateCnpjException → 409 ----
+
+    @Nested
+    @DisplayName("DuplicateCnpjException → 409")
+    class DuplicateCnpjTest {
+
+        @Test
+        @DisplayName("deve retornar 409 com CNPJ informado")
+        void shouldReturn409() {
+            var ex = new DuplicateCnpjException("12345678000199");
+
+            ResponseEntity<ErrorResponse> response = handler.handleDuplicateCnpj(ex);
+
+            assertThat(response.getStatusCode().value()).isEqualTo(409);
+            assertThat(response.getBody()).isNotNull();
+            assertThat(response.getBody().type()).contains("duplicate-cnpj");
+            assertThat(response.getBody().title()).contains("12345678000199");
+        }
+    }
+
+    // ---- Subclasses de BusinessException ----
+
+    @Nested
+    @DisplayName("Subclasses de BusinessException → 422")
+    class BusinessSubclassTest {
+
+        @Test
+        @DisplayName("InvalidStatusTransitionException deve retornar 422")
+        void invalidStatusTransitionShouldReturn422() {
+            var ex = new InvalidStatusTransitionException("ACTIVE", "PENDING_ONBOARDING");
+
+            ResponseEntity<ErrorResponse> response = handler.handleBusinessException(ex);
+
+            assertThat(response.getStatusCode().value()).isEqualTo(422);
+            assertThat(response.getBody()).isNotNull();
+            assertThat(response.getBody().title()).contains("ACTIVE");
+        }
+
+        @Test
+        @DisplayName("PlanHasActiveSubscribersException deve retornar 422")
+        void planHasActiveSubscribersShouldReturn422() {
+            var ex = new PlanHasActiveSubscribersException("Plano Enterprise");
+
+            ResponseEntity<ErrorResponse> response = handler.handleBusinessException(ex);
+
+            assertThat(response.getStatusCode().value()).isEqualTo(422);
+            assertThat(response.getBody()).isNotNull();
+            assertThat(response.getBody().title()).contains("Plano Enterprise");
         }
     }
 }

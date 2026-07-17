@@ -1,6 +1,7 @@
 package com.fbso.platform.admin.unit.config;
 
 import com.fbso.platform.admin.config.TenantAwareDataSource;
+import com.fbso.platform.admin.exception.TenantIsolationException;
 import com.fbso.platform.admin.security.TenantContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,12 +10,14 @@ import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -28,6 +31,7 @@ class TenantAwareDataSourceTest {
     private DataSource mockTarget;
     private Connection mockConnection;
     private Statement mockStatement;
+    private PreparedStatement mockPreparedStatement;
     private TenantAwareDataSource proxy;
 
     @BeforeEach
@@ -35,9 +39,11 @@ class TenantAwareDataSourceTest {
         mockTarget = mock(DataSource.class);
         mockConnection = mock(Connection.class);
         mockStatement = mock(Statement.class);
+        mockPreparedStatement = mock(PreparedStatement.class);
 
         when(mockTarget.getConnection()).thenReturn(mockConnection);
         when(mockConnection.createStatement()).thenReturn(mockStatement);
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
 
         proxy = new TenantAwareDataSource(mockTarget);
     }
@@ -60,7 +66,8 @@ class TenantAwareDataSourceTest {
 
         // Assert
         assertThat(conn).isSameAs(mockConnection);
-        verify(mockStatement).execute("SET app.current_tenant_id = '" + tenantId + "'");
+        verify(mockPreparedStatement).setObject(1, tenantId);
+        verify(mockPreparedStatement).execute();
         verify(mockTarget).getConnection();
     }
 
@@ -102,24 +109,24 @@ class TenantAwareDataSourceTest {
         proxy.getConnection("user", "pass");
 
         // Assert
-        verify(mockStatement).execute("SET app.current_tenant_id = '" + tenantId + "'");
+        verify(mockPreparedStatement).setObject(1, tenantId);
+        verify(mockPreparedStatement).execute();
         verify(mockTarget).getConnection("user", "pass");
     }
 
     @Test
-    @DisplayName("SQLException no SET é capturada — não propaga para o chamador")
-    void shouldSwallowSqlExceptionOnSet() throws SQLException {
+    @DisplayName("SQLException no PreparedStatement lança TenantIsolationException — conexão não retorna ao pool")
+    void shouldThrowTenantIsolationExceptionOnSet() throws SQLException {
         // Arrange
         UUID tenantId = UUID.randomUUID();
         TenantContext.set(tenantId, UUID.randomUUID(), List.of(), List.of(), List.of());
         doThrow(new SQLException("Connection closed"))
-                .when(mockStatement).execute(anyString());
+                .when(mockPreparedStatement).setObject(1, tenantId);
 
-        // Act — não deve lançar exceção
-        Connection conn = proxy.getConnection();
-
-        // Assert
-        assertThat(conn).isSameAs(mockConnection);
+        // Act & Assert — deve lançar TenantIsolationException para evitar vazamento cross-tenant
+        assertThatThrownBy(() -> proxy.getConnection())
+                .isInstanceOf(TenantIsolationException.class)
+                .hasMessageContaining("Falha ao configurar isolamento multi-tenant");
     }
 
     @Test

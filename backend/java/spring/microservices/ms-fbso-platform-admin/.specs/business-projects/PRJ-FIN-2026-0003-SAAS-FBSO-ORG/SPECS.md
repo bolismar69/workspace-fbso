@@ -4,9 +4,10 @@
 - **Tipo:** Backend
 - **Stack:** Java 25 + Spring Boot + PostgreSQL
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.6
-- **Data:** 16 de Julho de 2026
-- **Status:** Em Desenvolvimento — Sprint 3 (M2+M3) em andamento desde 16/07/2026
+- **Versão:** 1.9
+- **Data:** 17 de Julho de 2026
+- **Status:** Em Execução — M2 (EP-01) 100% concluído. 5 endpoints Dashboard REST implementados. 105 testes (77 unit + 28 IT). JaCoCo 87.1%
+- **Status:** Em Desenvolvimento — Sprint 3 (M2+M3) em andamento. Frentes 0+1 concluídas. Dashboard endpoints (§4.1) implementados. 50 testes passando.
 - **Origem:** [PRD.md](./PRD.md) + [ARCHITECTURE.md](./ARCHITECTURE.md)
 
 ---
@@ -36,8 +37,8 @@ O `ms-fbso-platform-admin` é o **backend do Core Administrativo da FBSO Platfor
 
 | Marco | Data | Entregas | O que esta solução entrega |
 |:---|:---|:---|:---|
-| M2 | 15/08/2026 | D1 — Portal Admin | Endpoints `GET /dashboard/admin/*` |
-| M3 | 31/08/2026 | D2, D3 — Contas e Planos | CRUD `/tenants`, `/plans`, `/subscriptions`, `/audit` |
+| M2 | 15/08/2026 | D1 — Portal Admin | 🔄 5 endpoints `GET /dashboard/admin/*` implementados (17/07/2026). 50 testes |
+| M3 | 31/08/2026 | D2, D3 — Contas e Planos | ⬜ Pendente — CRUD `/tenants`, `/plans`, `/subscriptions`, `/audit` |
 | M4 | 15/09/2026 | D4 — RBAC | CRUD `/users`, `/permissions` |
 | M5 | 30/09/2026 | D5 — Portal Cliente | `/onboarding`, `/dashboard/client` |
 | M6 | 15/10/2026 | D6, D7 — BUs e Catálogo | CRUD `/business-units`, `/products` |
@@ -88,11 +89,11 @@ O `ms-fbso-platform-admin` é o **backend do Core Administrativo da FBSO Platfor
 | **RN05-01** | Transições de status permitidas: PENDING→ACTIVE, ACTIVE→SUSPENDED, SUSPENDED→ACTIVE, ACTIVE→INACTIVE, INACTIVE→ACTIVE | F02-02 | Tentar ACTIVE→PENDING → 422 |
 | **RN05-02** | Suspensão exige motivo registrado | F02-02 | Motivo vazio → 400 |
 | **RN06-01** | Plano com assinantes ativos não pode ser excluído | F02-03 | Tentar excluir → 422 |
-| **RN06-02** | Alteração de preço não afeta assinaturas existentes | F02-03 | Upgrade mantém preço da data de contratação |
+| **RN06-02** | Alteração de preço não afeta assinaturas existentes (locked_price na subscription) | F02-03 | Upgrade mantém preço da data de contratação (atributo locked_price) (DT-009) |
 | **RN06-03** | Deve existir pelo menos 1 plano ativo no sistema | F02-03 | Tentar desativar o último plano ativo → 422 "Não é possível desativar o último plano ativo". Validação: `SELECT COUNT(*) FROM plan WHERE status = 'ACTIVE' AND deleted_dt IS NULL` antes de desativar |
 | **RN07-01** | Um tenant só pode ter 1 assinatura ativa por vez | F02-04 | Tentar criar segunda ativa → 409 |
 | **RN07-02** | Upgrade/downgrade não pode deixar tenant sem assinatura ativa durante a transição | F02-04 | Transação atômica (`@Transactional`): finalizar assinatura anterior (`end_date = NOW()`) + criar nova (`start_date = NOW()`) no mesmo batch. Se qualquer operação falhar → rollback completo. Assinatura atual não pode estar SUSPENDED no momento do upgrade |
-| **RN08-01** | Auditoria cobre 100% das ações administrativas | F02-05 | Query sem registro de auditoria → falha de conformidade |
+| **RN08-01** | Auditoria cobre 100% das ações administrativas com tenant_id e user_id corretos | F02-05 | Query sem registro de auditoria → falha de conformidade. Campo actor_id deve refletir user_id real (não UUID.randomUUID) (DT-002) |
 | **RN08-02** | Registros de auditoria são imutáveis | F02-05 | Tentar UPDATE/ DELETE em audit_log → 403 |
 | **RN09-03** | Admin do tenant não pode desativar a si mesmo | F03-01 | Tentar → 422 |
 | **RN10-01** | Matriz de permissões: Admin total, Gerente edita sua BU, Operador só lê, Auditor só lê | F03-02 | Operador tentar PATCH /products → 403 |
@@ -134,12 +135,12 @@ O `ms-fbso-platform-admin` é o **backend do Core Administrativo da FBSO Platfor
 | **RN05-02** | Suspensão exige motivo | §3.1 (formal) |
 | **RN05-03** | Reativação restaura permissões | §7 (F02-02) |
 | **RN06-01** | Plano com assinantes não pode ser excluído | §3.1 (formal) |
-| **RN06-02** | Alteração preço não afeta existentes | §3.1 (formal) |
+| **RN06-02** | Alteração preço não afeta existentes (locked_price) | §3.1 (formal) ← adicionado v1.7 |
 | **RN06-03** | Mínimo 1 plano ativo | §3.1 (formal) ← adicionado v1.2 |
 | **RN07-01** | 1 assinatura ativa por tenant | §3.1 (formal) |
 | **RN07-02** | Transição atômica no upgrade | §3.1 (formal) ← adicionado v1.2 |
 | **RN07-03** | Data término opcional (contínua) | §4.2 (`POST /subscriptions/{id}/change-plan`) + §6.1 (Subscription.end_date nullable) |
-| **RN08-01** | Auditoria 100% ações admin | §3.1 (formal) |
+| **RN08-01** | Auditoria 100% ações admin com tenant_id e user_id corretos | §3.1 (formal) ← adicionado v1.7 |
 | **RN08-02** | Auditoria imutável | §3.1 (formal) + §6.1 (AuditEntry immutable) |
 | **RN09-01** | Convite expira em 7 dias | §7 (F03-01) |
 | **RN09-02** | E-mail único por tenant | §4.2 (`POST /users`) |
@@ -330,8 +331,8 @@ CREATE TABLE audit_log (
 | **F02-01** | Tenant criado → status PENDING. E-mail enviado. Link expira em 7 dias. Reenvio funcional | E-mail recebido + log | F |
 | **F02-02** | Transições de status respeitam RN05-01. Suspensão bloqueia acesso em ≤5min. Timeline de status funcional | Teste de cada transição | F |
 | **F02-03** | Plano criado disponível para assinatura. Edição gera nova versão. Desativação preserva assinantes | Lista de planos reflete versão atualizada após edição; assinantes existentes não são afetados por alteração de preço | F |
-| **F02-04** | Assinatura vinculada a plano ativo. Upgrade/downgrade finaliza assinatura anterior e cria nova. Apenas 1 assinatura ativa por tenant. Suspensão bloqueia módulos em ≤5min | Histórico de assinaturas do tenant com timeline | F |
-| **F02-05** | Auditoria registra 100% das ações admin (criação, edição, mudança de status, alteração de permissões). Registros imutáveis (sem UPDATE/DELETE). Filtros por período e tipo de ação funcionam | Log de auditoria com linha do tempo + tentativa de exclusão rejeitada (403) | F |
+| **F02-04** | Assinatura vinculada a plano ativo. Upgrade/downgrade finaliza assinatura anterior e cria nova. Apenas 1 assinatura ativa por tenant. Suspensão bloqueia módulos em ≤5min. Change-plan preserva preço contratado (locked_price) (TC-F02-04-010, DT-009) | Histórico de assinaturas do tenant com timeline | F |
+| **F02-05** | Auditoria registra 100% das ações admin (criação, edição, mudança de status, alteração de permissões). Registros imutáveis (sem UPDATE/DELETE). Filtros por período e tipo de ação funcionam. Auditoria @Async com tenant_id e user_id corretos (TC-F02-05-009, DT-002) | Log de auditoria com linha do tempo + tentativa de exclusão rejeitada (403) | F |
 | **F03-01** | Usuário convidado recebe e-mail com link. E-mail único por tenant. Admin não pode desativar a si mesmo. Lista de usuários exibe nome, e-mail, papel, status, unidades vinculadas | E-mail de convite + teste de autodesativação rejeitada (422) | F |
 | **F03-02** | Matriz RN10-01 aplicada. Admin vê tudo. Operador não edita. Auditor só lê | Teste de cada papel × endpoint | F |
 | **F03-03** | Vinculação usuário × unidade × módulo configurável. Admin tem acesso implícito a todas as unidades. Usuário sem unidade ou módulo não acessa o portal. Efeito imediato na próxima ação | Teste de acesso com e sem vinculação | F |
@@ -413,6 +414,7 @@ CREATE TABLE audit_log (
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.7 | 16/07/2026 | v1.7 — RN06-02 e RN08-01 reforçadas, 2 novos cenários de teste (TC-F02-04-010, TC-F02-05-009), referência a débitos técnicos (IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) | Time Técnico |
 | 1.6 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Desenvolvimento". | Time Técnico |
 | 1.5 | 15/07/2026 | Revisão Caveman (DOCS-SERVICE-CAVEMAN-REVIEW.md): Corrigida contagem de entidades (10→11, §1.2). Adicionado endpoint `GET /dashboard/client/summary` (§4.1, 36→37). Corrigida contagem RN (45→51, §3.3). Corrigido header da matriz RN (~45→51). | Caveman/IA |
 | 1.3 | 14/07/2026 | Adicionado PostgreSQL Row-Level Security (RLS) como camada 1 de defesa em profundidade (§5 BR-NFR02). Atualizado pipeline de segurança (§1.2) incluindo RLS. Glossário (§10) com novas entradas: RLS, Migration V003, Tenant Isolation atualizado para 3 camadas. | Agente Arquiteto/IA |
@@ -420,7 +422,14 @@ CREATE TABLE audit_log (
 | 1.1 | 14/07/2026 | Correção pós-gate: 12 não-conformidades resolvidas do TECHNICAL_SPECS_FAIL_REPORT.md v1.0. 4 bloqueantes (NC-003, NC-009, NC-010, NC-011), 8 não-bloqueantes (NC-001, NC-002, NC-004, NC-005, NC-006, NC-007, NC-008, NC-012). Alterações: schemas e erros HTTP em §4.1; critérios de aceitação para 18 features em §7 com coluna Nível DoD; NFRs OWASP e LGPD em §5; mapeamento BR→Feature corrigido em §2.1; validades expandidas em §4.2; AuditEntry em §6.1; métricas NFR refinadas; referências cruzadas adicionadas | Agente Corretor SPECS/IA |
 | 1.0 | 13/07/2026 | Criação inicial: 11 seções. Cobertura completa dos 4 épicos, 18 features, 58 user stories, 10 BRs, 8 NFRs. Rastreabilidade BR→Feature→US. 37 endpoints REST especificados | Time Técnico |
 
-------------------------------
+---
+
+## 12. Referências
+
+| Documento | Localização |
+|:---|:---|
+| Débitos Técnicos Sprint 3 | [IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md](./IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) |
 
 ---
-🤖 *Documentação gerada de forma automatizada pelo Agente: Analista de Negócios/Claude. Foram utilizados os skills: create-specification, spec-miner, domain-modeling, acceptance-criteria, documentation-writer. v1.6 em 16/07/2026: Sprint 3 iniciada.*
+
+🤖 *Documentação gerada de forma automatizada pelo Agente: Analista de Negócios/Claude. Foram utilizados os skills: create-specification, spec-miner, domain-modeling, acceptance-criteria, documentation-writer. v1.7 em 16/07/2026: Sprint 3 — débitos técnicos incorporados.*

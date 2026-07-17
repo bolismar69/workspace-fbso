@@ -48,8 +48,7 @@ spring:
           starttls:
             enable: false
 
-# ---- Keycloak / OAuth2 Resource Server (JWT RS256) ----
-spring:
+  # ---- Keycloak / OAuth2 Resource Server (JWT RS256) ----
   security:
     oauth2:
       resourceserver:

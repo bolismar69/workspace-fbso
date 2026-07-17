@@ -83,6 +83,17 @@ public final class TenantContext {
     }
 
     /**
+     * Retorna o user_id sem lançar exceção.
+     * Usado pelo {@code BaseRepository} para preencher created_by/updated_by.
+     *
+     * @return user_id, ou {@code null} se o contexto não foi inicializado
+     */
+    public static UUID getUserIdQuietly() {
+        TenantContextData data = CONTEXT.get();
+        return data != null ? data.userId : null;
+    }
+
+    /**
      * Limpa o contexto. DEVE ser chamado no finally do filter.
      */
     public static void clear() {
