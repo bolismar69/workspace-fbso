@@ -48,13 +48,34 @@ spring:
           starttls:
             enable: false
 
-  # ---- Keycloak / OAuth2 Resource Server (JWT RS256) ----
+  # ---- Keycloak / OAuth2 ────────────────────────────────────────────────
+  # Porta 8081 = docker-compose (Keycloak exposto em 8081:8080)
+  # ────────────────────────────────────────────────────────────────────────
   security:
     oauth2:
+      # ---- Resource Server (API — validação JWT RS256) ----
       resourceserver:
         jwt:
-          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:8080/realms/fbso-platform/protocol/openid-connect/certs}
-          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/fbso-platform}
+          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:8081/realms/fbso-platform/protocol/openid-connect/certs}
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8081/realms/fbso-platform}
+
+      # ---- OAuth2 Client (Login — Authorization Code Flow) ----
+      client:
+        registration:
+          keycloak:
+            client-id: ${KEYCLOAK_CLIENT_ID:fbso-platform-admin}
+            client-secret: ${KEYCLOAK_CLIENT_SECRET:changeme}
+            authorization-grant-type: authorization_code
+            scope: openid,profile,email
+            redirect-uri: ${KEYCLOAK_REDIRECT_URI:http://localhost:8080/login/oauth2/code/keycloak}
+        provider:
+          keycloak:
+            issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8081/realms/fbso-platform}
+            authorization-uri: ${KEYCLOAK_AUTH_URI:http://localhost:8081/realms/fbso-platform/protocol/openid-connect/auth}
+            token-uri: ${KEYCLOAK_TOKEN_URI:http://localhost:8081/realms/fbso-platform/protocol/openid-connect/token}
+            user-info-uri: ${KEYCLOAK_USER_INFO_URI:http://localhost:8081/realms/fbso-platform/protocol/openid-connect/userinfo}
+            jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:8081/realms/fbso-platform/protocol/openid-connect/certs}
+            user-name-attribute: preferred_username
 
 # ---- Server ----
 server:

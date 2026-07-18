@@ -3,9 +3,9 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.6
+- **Versão:** 2.8
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-4 (Frentes 0-4) concluídas ✅. RbacAspect DB-backed via PermissionService com isAdmin() separado de getUserRoles(). Sem fallback JWT para roles de negócio. RLS com FORCE. JWT issuer validation ativa. 4 novas entities + V004 (seed RBAC) + V006 (FK). 213 testes (0 falhas). Próximo: Sprint 4 Frentes 5-5b
+- **Status:** Em Execução — Sprints 1-4 (Frentes 0-4) concluídas ✅. RbacAspect DB-backed via PermissionService com isAdmin() separado de getUserRoles(). Sem fallback JWT para roles de negócio. RLS com FORCE. JWT issuer validation ativa. 4 novas entities + V004 (seed RBAC) + V006 (FK). 213 testes (0 falhas). Sprint 5 Frente 0 concluída ✅. docker-compose.yml + realm-config.json criados.
 - **Origem:** [PRD.md](./PRD.md)
 - **Débitos Técnicos:** [Sprint 3](./sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) · [Sprint 4](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md) — 56 débitos catalogados (47 novos + 9 backlog)
 - **Escopo:** Estilo arquitetural + C4 L1-L3 + Design detalhado + C4 Deployment + ADRs
@@ -661,7 +661,7 @@ class TenantIsolationIntegrationTest {
 | **ADR-L01** | JDBC Template (não JPA/Hibernate) | Controle total sobre SQL — essencial para Multi-Tenant e Soft Delete. Sem anotações mágicas. BaseRepository agora inclui `save(T)` e `update(T)` genéricos (DT-003, Sprint 3) |
 | **ADR-L02** | Aspectos AOP para cross-cutting | RBAC e Auditoria não poluem services e repositories. Zero risco de esquecimento humano. Tenant Isolation delegado ao PostgreSQL RLS (ADR-L07) |
 | **ADR-L03** | Auditoria assíncrona | Não bloqueia a operação principal. Trade-off: perda de registros em crash (aceitável para Fase 0) |
-| **ADR-L04** | RFC 7807 para erros | Padrão IETF. Frontend implementa tratamento genérico. Sem surpresas |
+| **ADR-L04** | RFC 7807 para erros | Padrão IETF. Frontend implementa tratamento genérico. OAuth2 Client (Authorization Code Flow) adicionado no Sprint 5 (DT-099). Sem surpresas |
 | **ADR-L05** | Índices únicos parciais (PostgreSQL) | Permite reúso de CNPJ/e-mail após soft delete. Sem triggers complexos |
 | **ADR-L06** | Package-by-Layer tradicional | Simplicidade > pureza arquitetural. Time reduzido, prazo curto. Reavaliar na Fase 1 |
 | **ADR-L07** | PostgreSQL Row-Level Security (RLS) | Defesa em profundidade — camada 1 de 3 para isolamento multi-tenant. Garantia no nível do banco: impossível burlar via aplicação. Substitui o TenantIsolationAspect AOP (removido — redundante e frágil). TenantAwareDataSource agora lança `TenantIsolationException` em falha (DT-006, Sprint 3) |
@@ -875,6 +875,8 @@ flowchart LR
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.8 | 17/07/2026 | Sprint 5 Frente 0 concluida: docker-compose (Keycloak 26 + PG 17 + MailHog), realm-config.json (4 roles, 3 custom claims). SecurityConfig com 2 SecurityFilterChain beans (@Order). ADR-04: OAuth2 Client Authorization Code Flow documentado. Stack: Flyway 12.11.0, PG driver 42.7.11. | Agente IA |
+| 2.7 | 17/07/2026 | Sprint 5 planejada: stack atualizado (Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client). Novos pacotes planejados: auth/, onboarding/, dashboard/client/. ADR-04 expandido com Authorization Code Flow. Referência: [IDENTIFIED-TECHNICAL-DEBT-sprint-05](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md). | Agente IA |
 | 2.5 | 17/07/2026 | **Sprint 4 Frente 0 concluída:** RbacAspect DB-backed com PermissionService (matriz RN10-01 do banco, sem Sets hardcoded). RLS com FORCE ROW LEVEL SECURITY nas 4 tabelas (ADR-L07 atualizado). JWT issuer validation ativa. Caffeine Cache + REST Assured adicionados. Pipeline de segurança atualizado (§4). 4 novas entities (User, ResourceAction, RoleResource, BusinessUnit). Migrations V004 (seed RBAC) + V006 (FK). [Detalhes](sprints/sprint-04-rbac/SPRINT-4-EXECUTION-REPORT-Frente-0.md) | Agente IA |
 | 2.1 | 16/07/2026 | BaseRepository.save/update (DT-003), TenantIsolationException no TenantAwareDataSource (DT-006), referência a débitos técnicos da Sprint 3 ([IDENTIFIED-TECHNICAL-DEBT](sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) — auditoria com 7 skills). ADR-L01 e ADR-L07 atualizados. | Time Técnico |
 | 2.0 | 16/07/2026 | **Consolidação dos 3 documentos de arquitetura:** C4 L1-L3 (§3) e C4 Deployment (§10) integrados ao ARCHITECTURE.md. Diagramas ASCII convertidos para Mermaid: package-by-layer (§1.1), pipeline de segurança (§4), pirâmide de testes (§8.1). Seções renumeradas. Changelog unificado. Documentos `ARCHITECTURE-C4.md` e `ARCHITECTURE-C4-DEPLOYMENT.md` arquivados. | Arquiteto/IA |

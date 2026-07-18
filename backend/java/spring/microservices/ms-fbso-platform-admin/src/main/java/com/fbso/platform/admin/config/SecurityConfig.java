@@ -4,7 +4,7 @@ import com.fbso.platform.admin.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,15 +22,22 @@ import java.util.List;
 /**
  * Configuração central de segurança do microsserviço.
  * <p>
- * Pipeline por requisição:
+ * Dois {@link SecurityFilterChain} beans com ordens distintas:
+ * <ol>
+ *   <li>{@code oauth2LoginFilterChain} ({@code @Order(1)}) — OAuth2 Client
+ *       Authorization Code Flow para login (Keycloak). Aplica-se apenas a
+ *       {@code /auth/**, /login, /oauth2/**}.</li>
+ *   <li>{@code apiFilterChain} ({@code @Order(2)}) — Resource Server JWT
+ *       para APIs REST. Stateless, sem sessão, sem CSRF.</li>
+ * </ol>
+ * <p>
+ * Pipeline da API (stateless):
  * <ol>
  *   <li>JwtAuthenticationFilter — extrai e valida JWT (Keycloak RS256)</li>
  *   <li>RbacAspect — verifica @RequiresPermission contra matriz RN10-01</li>
  *   <li>TenantIsolationAspect — injeta WHERE tenant_id = ?</li>
  *   <li>AuditAspect — registra @Auditable de forma assíncrona</li>
  * </ol>
- * <p>
- * API stateless — sem sessão, sem CSRF. JWT substitui ambas.
  *
  * @see <a href="ARCHITECTURE.md#3">ARCHITECTURE.md §3 — Pipeline de Segurança</a>
  */
@@ -52,10 +59,41 @@ public class SecurityConfig {
     }
 
     /**
-     * Configura a cadeia de filtros de segurança.
+     * Filter chain para OAuth2 Login (Authorization Code Flow).
+     * <p>
+     * Aplica-se apenas a {@code /auth/**, /login, /oauth2/**}.
+     * Usa sessão para manter o estado do fluxo OAuth2 (necessário).
+     * Após login bem-sucedido, o frontend recebe o token JWT e o utiliza
+     * nas chamadas à API (Resource Server, stateless).
      */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Order(1)
+    public SecurityFilterChain oauth2LoginFilterChain(HttpSecurity http) throws Exception {
+        http
+            .securityMatcher("/auth/**", "/login", "/oauth2/**")
+            .authorizeHttpRequests(auth -> auth
+                .anyRequest().authenticated()
+            )
+            .oauth2Login(oauth2 -> oauth2
+                .defaultSuccessUrl("/api/v1/auth/me", true)
+            )
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+            );
+
+        return http.build();
+    }
+
+    /**
+     * Filter chain para API REST — Resource Server JWT (stateless).
+     * <p>
+     * Aplica-se a todos os endpoints exceto os capturados pelo
+     * {@code oauth2LoginFilterChain} (que tem precedência via {@code @Order(1)}).
+     */
+    @Bean
+    @Order(2)
+    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
             // ---- JWT Resource Server (Keycloak RS256) ----
             .oauth2ResourceServer(oauth2 -> oauth2

@@ -1,0 +1,141 @@
+{
+  "id": "fbso-platform",
+  "realm": "fbso-platform",
+  "displayName": "FBSO Platform",
+  "enabled": true,
+  "registrationAllowed": false,
+  "registrationEmailAsUsername": false,
+  "verifyEmail": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "rememberMe": true,
+  "accessTokenLifespan": 3600,
+  "ssoSessionIdleTimeout": 3600,
+  "ssoSessionMaxLifespan": 28800,
+  "sslRequired": "none",
+
+  "roles": {
+    "realm": [
+      { "name": "ADMIN_TENANT", "description": "Administrador do tenant — acesso total" },
+      { "name": "MANAGER_BU", "description": "Gestor de Unidade de Negócio" },
+      { "name": "OPERATOR_BU", "description": "Operador de Unidade de Negócio" },
+      { "name": "AUDITOR", "description": "Auditor — somente leitura" }
+    ]
+  },
+
+  "defaultRole": {
+    "name": "default-roles-fbso-platform",
+    "description": "Roles padrão do realm",
+    "composite": false,
+    "clientRole": false
+  },
+
+  "clients": [
+    {
+      "clientId": "fbso-platform-admin",
+      "name": "FBSO Platform Admin API",
+      "description": "Backend do Core Administrativo — Authorization Code Flow",
+      "enabled": true,
+      "publicClient": false,
+      "bearerOnly": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://localhost:8080/login/oauth2/code/keycloak"
+      ],
+      "webOrigins": ["+"],
+      "protocol": "openid-connect",
+      "attributes": {
+        "access.token.lifespan": "3600",
+        "pkce.code.challenge.method": "S256"
+      }
+    }
+  ],
+
+  "clientScopes": [
+    {
+      "name": "fbso-custom-claims",
+      "description": "Claims customizadas do FBSO Platform",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "tenant_id",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "tenant_id",
+            "claim.name": "tenant_id",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "business_unit_ids",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "business_unit_ids",
+            "claim.name": "business_unit_ids",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "multivalued": "true",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "modules",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "modules",
+            "claim.name": "modules",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "multivalued": "true",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    }
+  ],
+
+  "defaultDefaultClientScopes": [
+    "web-origins", "acr", "roles", "profile", "email", "fbso-custom-claims"
+  ],
+
+  "users": [
+    {
+      "username": "admin@fbso.org",
+      "email": "admin@fbso.org",
+      "firstName": "Admin",
+      "lastName": "FBSO",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["ADMIN_TENANT", "default-roles-fbso-platform"],
+      "attributes": {
+        "tenant_id": ["00000000-0000-0000-0000-000000000001"],
+        "business_unit_ids": ["00000000-0000-0000-0000-0000000000b1"],
+        "modules": ["FBSO Platform"]
+      }
+    }
+  ]
+}

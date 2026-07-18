@@ -3,7 +3,7 @@
 - **Projeto:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../)
 - **Total de Sprints:** 7
 - **Duração:** 14 semanas (24/07/2026 → 30/10/2026)
-- **Documentos-mestre:** [TASKS.md](../TASKS.md) v3.1 | [SPECS.md](../SPECS.md) v2.2 | [TEST_PLAN.md](../TEST_PLAN.md) v3.0 | [PRD.md](../PRD.md) v1.13 | [ARCHITECTURE.md](../ARCHITECTURE.md) v2.6
+- **Documentos-mestre:** [TASKS.md](../TASKS.md) v3.3 | [SPECS.md](../SPECS.md) v2.4 | [TEST_PLAN.md](../TEST_PLAN.md) v3.0 | [PRD.md](../PRD.md) v1.15 | [ARCHITECTURE.md](../ARCHITECTURE.md) v2.8
 - **🚫 Estratégia de Branching:** Uma branch por sprint — [ver detalhes no PRD §8.4](../PRD.md#84-estratégia-de-branching--uma-branch-por-sprint)
 
 ---
@@ -16,7 +16,7 @@
 | [**Sprint 2**](sprint-02-seguranca/) | 07/08 — 15/08 | Pre-M2 Segurança | T-009 a T-015, T-015.1 (8) | [Card](sprint-02-seguranca/SPRINT-CARD.md) · [Testes](sprint-02-seguranca/SPRINT-TEST-SUITE.md) · [Review](sprint-02-seguranca/SPRINT-REVIEW.md) |
 | [**Sprint 3 ✅**](sprint-03-portal-admin/) | 16/07 — 17/07 | M2 + M3 | 42/42 ✅ | [Card](sprint-03-portal-admin/SPRINT-CARD.md) · [Testes](sprint-03-portal-admin/SPRINT-TEST-SUITE.md) · [Review](sprint-03-portal-admin/SPRINT-REVIEW.md) · [Unified Report](sprint-03-portal-admin/SPRINT-3-EXECUTION-REPORT-UNIFIED.md) · [Tech Debt](sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) |
 | [**Sprint 4 🔄**](sprint-04-rbac/) | 31/08 — 15/09 | M4 | 48 tasks (Frentes 0-4 ✅, 31/48) | [Card](sprint-04-rbac/SPRINT-CARD.md) · [Testes](sprint-04-rbac/SPRINT-TEST-SUITE.md) · [Review](sprint-04-rbac/SPRINT-REVIEW.md) · [Exec Reports F0-F4](sprint-04-rbac/) · [Tech Debt](sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md) |
-| [**Sprint 5**](sprint-05-portal-cliente/) | 15/09 — 30/09 | M5 | T-050 a T-061 (12) | [Card](sprint-05-portal-cliente/SPRINT-CARD.md) · [Testes](sprint-05-portal-cliente/SPRINT-TEST-SUITE.md) · [Review](sprint-05-portal-cliente/SPRINT-REVIEW.md) |
+| [**Sprint 5 🔄**](sprint-05-portal-cliente/) | 15/09 — 30/09 | M5 | 36 tasks (Frente 0 ✅ 7/7, 19%) | [Card](sprint-05-portal-cliente/SPRINT-CARD.md) · [Testes](sprint-05-portal-cliente/SPRINT-TEST-SUITE.md) · [Review](sprint-05-portal-cliente/SPRINT-REVIEW.md) · [Dev Plan F0](sprint-05-portal-cliente/SPRINT-DEVELOPMENT-PLANNING-Frente-0.md) · [Exec Report F0](sprint-05-portal-cliente/SPRINT-5-EXECUTION-REPORT-Frente-0.md) · [Tech Debt](sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md) |
 | [**Sprint 6**](sprint-06-bus-catalogo/) | 30/09 — 15/10 | M6 | T-062 a T-070 (9) | [Card](sprint-06-bus-catalogo/SPRINT-CARD.md) · [Testes](sprint-06-bus-catalogo/SPRINT-TEST-SUITE.md) · [Review](sprint-06-bus-catalogo/SPRINT-REVIEW.md) |
 | [**Sprint 7**](sprint-07-homologacao/) | 15/10 — 30/10 | M7 | T-071 a T-079 (9) | [Card](sprint-07-homologacao/SPRINT-CARD.md) · [Testes](sprint-07-homologacao/SPRINT-TEST-SUITE.md) · [Review](sprint-07-homologacao/SPRINT-REVIEW.md) |
 
@@ -57,9 +57,9 @@ Documentos-Mestre (fonte da verdade)
 ```
 SEMANA  1  2  3  4  5  6  7  8  9 10 11 12 13 14
         ├─────────┬──────┬─────────┬─────────┬─────────┬─────────┬─────────┤
-        │ Sprint 1│Sprint│ Sprint 3│ Sprint 4│ Sprint 5│ Sprint 6│ Sprint 7│
-        │ Setup   │  2   │ M2 + M3 │   M4    │   M5    │   M6    │   M7    │
-        │         │ Seg. │         │         │         │         │         │
+        │ Sprint 1│Sprint│ Sprint 3│ Sprint 4│Sprint 5 │ Sprint 6│ Sprint 7│
+        │ Setup   │  2   │ M2 + M3 │   M4    │  M5 🔄  │   M6    │   M7    │
+        │         │ Seg. │         │         │ F0 ✅   │         │         │
         └─────────┴──────┴─────────┴─────────┴─────────┴─────────┴─────────┘
       24/07     07/08  15/08     31/08     15/09     30/09     15/10     30/10
 ```
@@ -68,7 +68,9 @@ SEMANA  1  2  3  4  5  6  7  8  9 10 11 12 13 14
 
 ## Matriz de Rastreabilidade
 
-> **Atualizado:** 17/07/2026 · **Fonte:** [TASKS.md](../TASKS.md) v3.1 + [PRD.md](../PRD.md) v1.13
+> **Atualizado:** 17/07/2026 · **Fonte:** [TASKS.md](../TASKS.md) v3.3 + [PRD.md](../PRD.md) v1.15
+>
+> Sprint 5 em andamento: Frente 0 ✅ (7/7). Próximo: Frente 1 (10 tarefas).
 >
 > Esta matriz é a **camada de integração** entre o planejamento ([TASKS.md](../TASKS.md)) e a execução (sprints/). Use-a como mapa único para navegar entre fases, sprints, tarefas, features e épicos.
 

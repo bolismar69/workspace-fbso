@@ -22,7 +22,8 @@
         <!-- Jackson: override for CVE-2026-54512/CVE-2026-54513 (RCE CVSS 8.1) -->
         <jackson.version>2.21.4</jackson.version>
         <!-- Dependências gerenciadas manualmente -->
-        <flyway.version>10.22.0</flyway.version>
+        <flyway.version>12.11.0</flyway.version>
+        <postgresql.version>42.7.11</postgresql.version><!-- override CVE-2026-42198 (DoS CVSS 7.5) -->
         <testcontainers.version>1.21.4</testcontainers.version>
         <jacoco.version>0.8.14</jacoco.version>
         <checkstyle.version>3.6.0</checkstyle.version>
@@ -49,6 +50,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+
+        <!-- OAuth2 Client (Keycloak Authorization Code Flow — DT-099, Sprint 5) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
         </dependency>
 
         <!-- JDBC (ADR-L01: JDBC Template, não JPA/Hibernate) -->

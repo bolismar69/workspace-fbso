@@ -4,9 +4,9 @@
 - **Tipo:** Backend
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.2
+- **Versão:** 2.4
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-4 concluídas ✅ (Frentes 0-4). 18 endpoints REST. 213 testes. 21 RNs implementadas. RBAC DB-backed com matriz RN10-01 100% validada. Próximo: Sprint 4 Frentes 5-5b (correções recomendadas)
+- **Status:** Em Execução — Sprints 1-4 concluídas ✅ (Frentes 0-4). Sprint 5 Frente 0 concluída ✅. 18 endpoints REST. 213 testes. 21 RNs implementadas. RBAC DB-backed com matriz RN10-01 100% validada. Sprint 5 Frente 0: docker-compose dev (Keycloak 26 + PG 17 + MailHog), Flyway 10→12.11.0, PG driver→42.7.11, +OAuth2 Client. 95/160 tarefas (59%).
 - **Origem:** [PRD.md](./PRD.md) + [ARCHITECTURE.md](./ARCHITECTURE.md)
 
 ---
@@ -39,7 +39,7 @@ O `ms-fbso-platform-admin` é o **backend do Core Administrativo da FBSO Platfor
 | M2 | 15/08/2026 | D1 — Portal Admin | 🔄 5 endpoints `GET /dashboard/admin/*` implementados (17/07/2026). 50 testes |
 | M3 | 31/08/2026 | D2, D3 — Contas e Planos | ⬜ Pendente — CRUD `/tenants`, `/plans`, `/subscriptions`, `/audit` |
 | M4 | 15/09/2026 | D4 — RBAC | CRUD `/users`, `/permissions` |
-| M5 | 30/09/2026 | D5 — Portal Cliente | `/onboarding`, `/dashboard/client` |
+| M5 | 30/09/2026 | D5 — Portal Cliente (4 frentes, 36 tarefas) | `/onboarding`, `/dashboard/client` |
 | M6 | 15/10/2026 | D6, D7 — BUs e Catálogo | CRUD `/business-units`, `/products` |
 | M7 | 30/10/2026 | Homologação | Todos os 11 recursos |
 
@@ -415,6 +415,8 @@ CREATE TABLE audit_log (
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.4 | 17/07/2026 | Sprint 5 Frente 0 concluida: ambiente dev dockerizado (Keycloak 26 + PG 17 + MailHog). Stack atualizado (Flyway 12.11.0, PG driver 42.7.11). OAuth2 Client configurado para Authorization Code Flow. | Agente IA |
+| 2.3 | 17/07/2026 | Sprint 5 planejada: auditoria 9-skill identificou 42 débitos. 24 débitos + 12 features = 36 tarefas em 4 frentes. Referência ao [IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md). | Agente IA |
 | 2.1 | 17/07/2026 | **Sprint 4 Frente 0 concluída:** Stack atualizado (Caffeine Cache). Glossário (§10): RBAC DB-backed, RLS com FORCE, novas migrations V004+V006. Status atualizado. Linha de status duplicada removida | Agente IA |
 | 1.7 | 16/07/2026 | v1.7 — RN06-02 e RN08-01 reforçadas, 2 novos cenários de teste (TC-F02-04-010, TC-F02-05-009), referência a débitos técnicos (IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) | Time Técnico |
 | 1.6 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Desenvolvimento". | Time Técnico |

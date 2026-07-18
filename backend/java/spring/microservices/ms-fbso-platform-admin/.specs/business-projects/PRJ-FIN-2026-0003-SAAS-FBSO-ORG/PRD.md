@@ -3,9 +3,9 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.13
+- **Versão:** 1.15
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-4 (Frentes 0-4) concluídas ✅. 88/136 tarefas (65%). Próximo: Sprint 4 Frentes 5-5b (17 tarefas pendentes)
+- **Status:** Em Execucao -- Sprints 1-4 concluidas ✅. Sprint 5 Frente 0 concluida (7/7 tasks). Stack: Flyway 12.11.0, PG driver 42.7.11, +OAuth2 Client. 95/160 tarefas (59%).
 
 ---
 
@@ -489,7 +489,7 @@ curl http://localhost:8081/api/v1/dashboard/admin/summary \
 | Sprint 1–2 | `feature/java-fbso-platform-admin` | Setup + Segurança | ✅ Mergeada e deletada |
 | Sprint 3 | `feature/sprint-03-portal-admin` | M2+M3 — Portal Admin + Contas/Planos | ✅ Mergeada e deletada |
 | Sprint 4 | `PRJ-FIN-2026-0003-java-ms-fbso-platform-admin-sprint-04-rbac` | M4 — RBAC | 🔄 Ativa (Frente 0 ✅) |
-| Sprint 5 | `feature/sprint-05-portal-cliente` | M5 — Portal Cliente | ⬜ Pendente |
+| Sprint 5 | `feature/sprint-05-portal-cliente` | M5 — Portal Cliente | ⬜ Planejada — 4 frentes definidas |
 | Sprint 6 | `feature/sprint-06-bus-catalogo` | M6 — BUs e Catálogo | ⬜ Pendente |
 | Sprint 7 | `feature/sprint-07-homologacao` | M7 — Homologação | ⬜ Pendente |
 
@@ -569,6 +569,8 @@ git checkout -b hotfix/sprint-NN-<descricao> <merge-commit-hash>
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.15 | 17/07/2026 | Sprint 5 Frente 0 concluida: docker-compose (Keycloak+PG+MailHog), Flyway 10→12.11.0, PG driver→42.7.11 (CVE fix), OAuth2 Client adicionado, SecurityConfig refatorado com 2 filter chains. 2 NO-OP (DT-096/DT-098 ja implementados). Build ✅, 213 testes. | Agente IA |
+| 1.14 | 17/07/2026 | Sprint 5 planejada: auditoria técnica com 9 skills identificou 42 débitos ([IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md)). Time decidiu tratar 24 débitos na Sprint 5 em 3 frentes (6🔴 Frente 0 pré-sprint + 10🟡 Frente 1 + 8🔵 Frente 2) + 12 tarefas de features (Frente 3). 16 débitos postergados Sprints 6-7. Stack atualizado: Flyway 12.11.0, PostgreSQL driver 42.7.11, spring-boot-starter-oauth2-client adicionado. | Agente IA |
 | 1.12 | 17/07/2026 | **Sprint 4 Frente 0 concluída:** Stack atualizado (Caffeine Cache, REST Assured). §5.3 Estrutura de pacotes reflete código real (entity/, aspect/, enums/). §6.1 Migrations: V004 (seed RBAC) + V006 (FK). §6.2 RBAC reescrito: DB-backed via PermissionService + ResourceAction/RoleResource (não JWT). ADR-08 com FORCE ROW LEVEL SECURITY. §8.4 Branch status: Sprint 3 mergeada, Sprint 4 ativa. [Detalhes](sprints/sprint-04-rbac/SPRINT-4-EXECUTION-REPORT-Frente-0.md) | Agente IA |
 | 1.8 | 16/07/2026 | Atualização de stack (Spring Boot 3.5.14, Jackson 2.21.4 — CVE-2026-22733/CVE-2026-22731 auth bypass CVSS 8.2). Adicionada referência a débitos técnicos da Sprint 3 ([IDENTIFIED-TECHNICAL-DEBT](sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) — auditoria com 7 skills). | Time Técnico |
 | 1.5 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Execução". | Time Técnico |
