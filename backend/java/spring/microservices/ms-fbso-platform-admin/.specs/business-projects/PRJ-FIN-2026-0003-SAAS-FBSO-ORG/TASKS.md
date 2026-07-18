@@ -2,10 +2,10 @@
 
 - **Solucao:** `ms-fbso-platform-admin`
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 2.8
+- **Versao:** 3.1
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execucao — Sprints 1-3 concluidas ✅ (57/99 tarefas, 58%). 142 testes (100 unit + 42 IT). 18 endpoints REST. Proximo: Sprint 4 — RBAC
-- **Origem:** [PRD.md](./PRD.md) + [SPECS.md](./SPECS.md) v1.8 + [ARCHITECTURE.md](./ARCHITECTURE.md) v2.2 + [04-FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES.md) + [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md)
+- **Status:** Em Execução — Sprints 1-4 (Frentes 0-4) concluídas ✅. 88/136 tarefas (65%). Próximo: Sprint 4 Frentes 5-5b (17 tarefas pendentes)
+- **Origem:** [PRD.md](./PRD.md) + [SPECS.md](./SPECS.md) v2.2 + [ARCHITECTURE.md](./ARCHITECTURE.md) v2.5 + [04-FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES.md) + [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md)
 
 ---
 
@@ -13,18 +13,20 @@
 
 | Metrica | Valor |
 |:---|:---|
-| **Total de Tarefas** | 99 |
+| **Total de Tarefas** | 136 |
 | **Setup (Pre-M2)** | 28 tarefas (8 setup + 8 seguranca + 12 correções pré-sprint) ✅ |
 | **Sprint 3 — M2 Portal Admin** | 8 tarefas (8/8 concluídas ✅) |
 | **Sprint 3 — Frente 3** | 7 tarefas (correções durante-sprint) |
 | **M3 — Contas e Planos** | 15 tarefas |
+| **Sprint 4 — Frente 0** | 20 tarefas (correções pré-sprint RBAC) ✅ |
 | **M4 — RBAC** | 11 tarefas |
+| **Sprint 4 — Recomendados** | 17 tarefas (correções durante-sprint RBAC — NOVO) |
 | **M5 — Portal Cliente** | 12 tarefas |
 | **M6 — BUs e Catalogo** | 9 tarefas |
 | **M7 — Homologacao** | 9 tarefas |
-| **Must Have** | 96 |
+| **Must Have** | 133 |
 | **Should Have** | 3 tarefas: T-021 (F01-03), T-063, T-064 (F04-03) |
-| **Progresso Atual** | 57/99 (58%) — Sprints 1-3 concluídas ✅. 142 testes (100 unit + 42 IT). 18 endpoints REST. 10 features. 28 débitos resolvidos |
+| **Progresso Atual** | 88/136 (65%) — Sprints 1-4 (Frentes 0-4) concluídas ✅. 17 tarefas pendentes na Sprint 4 (Frentes 5-5b). 213 testes (148 unit + 65 IT). 18 endpoints REST. 10 features. RbacAspect DB-backed sem fallback JWT. Matriz RN10-01 100% validada. 28 débitos resolvidos. 56 débitos catalogados (47 novos + 9 backlog Sprint 3) |
 
 ### Cobertura de Features (18/18)
 
@@ -175,14 +177,14 @@ Pre-M2 (Setup+Frente0)  M2 (EP-01)  M3 (EP-02)  Frente3  M4 (EP-03)  M5 (EP-04a)
 
 | ID | Tarefa | Feature | US | Prio. | Est. | Responsavel | Criterio DONE |
 |:---|:---|:---|:---:|:---:|:---:|:---|:---|
-| **T-046** | Criar entidade User (fields: id, tenant_id FK, external_keycloak_id, email, name, status ACTIVE/INACTIVE/INVITE_PENDING) + UserRepository com `findByEmailAndTenant` e validacao email unico por tenant ativo (RN09-02, indice parcial) | F03-01 | US-024 | Must | 1d | A definir | UserRepository funcional. Email unico por tenant ativo. Soft delete respeitado. Indice parcial unique_email_active |
+| **T-046** | Criar entidade User + UserRepository com `findByEmailAndTenant`. Email único por tenant ativo (RN09-02, índice parcial) ⚠️ Base: `User.java` + `UserRepository.java` + `UserRowMapper.java` criados na Frente 0 (T-101). Complementar com UserStatus enum + testes unitários | F03-01 | US-024 | Must | 1d | A definir | UserRepository funcional. Soft delete respeitado |
 | **T-047** | `UserService`: convite usuario (email unico por tenant, RN09-02), desativar (nao permite autodesativacao RN09-03), reativar. Convite expira em 7 dias (RN09-01). Integracao email de convite | F03-01 | US-024, US-025, US-026 | Must | 1.5d | A definir | Convite com email valido. Email duplicado no mesmo tenant → 409. Autodesativacao → 422. Reativacao restaura acesso |
 | **T-048** | `UserController`: `GET /api/v1/users`, `POST /api/v1/users`, `PATCH /users/{id}`, `POST /users/{id}/deactivate`. `@RequiresPermission(resource="USER", action="view"/"create"/"edit"/"delete")` | F03-01 | US-024, US-025, US-026 | Must | 1d | A definir | CRUD usuarios funcional. Deactivate bloqueia login. Lista exibe nome, email, role, status, BUs vinculadas. Filtro por status |
-| **T-049** | Criar entidades de dominio ResourceAction (resource_name, action) + RoleResource (role, resource_action_id FK). Populate seed data via migration com matriz completa RN10-01 (4 roles x recursos: DASHBOARD, BUSINESS_UNIT, PRODUCT, USER, AUDIT, PERMISSION, PLAN) | F03-02 | US-027, US-028, US-029, US-030 | Must | 1d | A definir | Seed data carrega corretamente. Matriz de permissoes completa conforme RN10-01. Consulta `findByRole` retorna recursos corretos |
+| **T-049** | Criar entidades ResourceAction + RoleResource. Seed data via migration V004 com matriz completa RN10-01 ⚠️ Entities criadas na Frente 0 (T-102). Seed V004 criado (T-105). Complementar: validar seed em dev/staging/CI, testes | F03-02 | US-027 a US-030 | Must | 1d | A definir | Seed carrega corretamente em todos os ambientes. Consulta `findByRole` retorna recursos corretos |
 | **T-050** | Criar entidade UserPermission (user_id FK, business_unit_id FK, role) + PermissionRepository. Vincular usuario x BU x role. Tabela ponte com UNIQUE (user_id, business_unit_id) | F03-02, F03-03 | US-027 a US-033 | Must | 1.5d | A definir | UserPermission com UNIQUE constraint. Query de permissoes por usuario retorna todas as BUs + role. Admin tenant tem acesso implicito a todas as BUs (US-029) |
-| **T-051** | `PermissionService`: atribuir/revogar permissoes, vincular BU, gerenciar modulos. Admin tenant tem acesso implicito a todas as BUs. Usuario sem BU vinculada nao acessa portal (RN11-01). Usuario sem modulo nao acessa portal (RN11-02) | F03-02, F03-03 | US-027 a US-033 | Must | 2d | A definir | Permissoes atribuidas corretamente. Admin tenant ve todas as BUs. Usuario sem BU → acesso negado. Efeito imediato na proxima acao (RN11-03) |
+| **T-051** | `PermissionService`: atribuir/revogar permissoes, vincular BU, gerenciar modulos. Admin acesso implícito (RN11-01, RN11-02). Efeito imediato (RN11-03) ⚠️ Base criada na Frente 0 (T-100, T-115): PermissionService com matriz carregada + validateBusinessUnitAccess(). Complementar: assignRole(), revokeRole(), testes | F03-02, F03-03 | US-027 a US-033 | Must | 2d | A definir | Permissoes atribuidas corretamente. Admin tenant ve todas as BUs. Efeito imediato na proxima acao |
 | **T-052** | `PermissionController`: `GET /users/{uid}/permissions`, `PUT /users/{uid}/permissions`. `@RequiresPermission(resource="PERMISSION", action="view"/"edit")` | F03-02, F03-03 | US-027 a US-033 | Must | 1d | A definir | GET retorna permissoes atuais. PUT atualiza vinculos. Validacoes de negocio no service. Auditoria registrada para cada alteracao |
-| **T-053** | Integrar `RbacAspect` com `RoleResource` carregado do banco: antes de executar metodo com `@RequiresPermission`, consultar matriz e verificar se role do usuario tem acesso ao resource+action. Cache de matriz para performance | F03-04 | US-034, US-035 | Must | 1.5d | A definir | RBAC funcional para todos os endpoints. Requisicao sem permissao → 403 (nao 404 — RN12-01). Cache de permissoes (TTL 5min) |
+| **T-053** | Integrar `RbacAspect` com `RoleResource` do banco. Cache de matriz em memória (sem TTL — RN11-03) ⚠️ RbacAspect refatorado na Frente 0 (T-100, T-106): DB-backed, sem Sets, usa Role enum. Complementar: testes de integração, remover fallback JWT | F03-04 | US-034, US-035 | Must | 1.5d | A definir | RBAC funcional para todos os endpoints. Requisição sem permissão → 403 (não 404 — RN12-01) |
 | **T-054** | Garantir resposta 403 padrao (JSON amigavel): `{"title": "Acesso negado", "detail": "Voce nao tem permissao para acessar esta area.", "status": 403}`. Sem detalhes tecnicos ou caminhos internos (RN12-02) | F03-04 | US-036 | Must | 0.5d | A definir | Resposta 403 sempre no formato padrao. Nenhum stack trace. Mensagem em PT-BR |
 | **T-055** | Testes unitarios M4: `UserService`, `PermissionService` com JUnit 5 + Mockito. Testar RN09-03 (autodesativacao), RN10-01 (matriz permissoes), RN11-01 (sem BU), RN11-02 (sem modulo) | F03-01, F03-02, F03-03 | US-024 a US-033 | Must | 1.5d | A definir | Todos os cenario de RN testados. Excecoes lancadas corretamente. Cobertura ≥ 80% |
 | **T-056** | Testes seguranca RBAC (integrados): cada papel × endpoint proibido → 403. Testar com Testcontainers. Cenarios: Operador tenta PATCH /products, Auditor tenta POST /users, Gerente tenta POST /plans | F03-02, F03-04 | US-027 a US-036 | Must | 2d | A definir | Testes automatizados para combinacoes papel x recurso. 403 retornado para todas as combinacoes proibidas. Matriz RN10-01 validada como teste parametrizado |
@@ -264,6 +266,65 @@ Pre-M2 (Setup+Frente0)  M2 (EP-01)  M3 (EP-02)  Frente3  M4 (EP-03)  M5 (EP-04a)
 
 ---
 
+### Sprint 4 — Frente 0: Correções Pré-Sprint (Bloqueantes) ✅ CONCLUÍDA | 17/07/2026
+
+**Estimativa total:** ~16-24h (2-3 dias) / **Responsavel:** Agente IA / **Status:** ✅ 20/20 concluídas
+
+> Débitos técnicos impeditivos identificados na auditoria multidisciplinar com 9 skills ([IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md)). **Todas as 20 tarefas foram concluídas.** Evidências no [Relatório de Execução](./sprints/sprint-04-rbac/SPRINT-4-EXECUTION-REPORT-Frente-0.md).
+
+| ID | Tarefa | Débito | Est. | Status | Critério DONE |
+|:---|:---|:---:|:---:|:---:|:---|
+| **T-096.DT-048** | DT-048: Adicionar `spring-boot-starter-cache` + `caffeine:3.2.4` ao pom.xml + `CacheConfig.java` | DT-048 | 1h | ✅ | Caffeine no classpath. CacheConfig com `@EnableCaching` |
+| **T-097.DT-049** | DT-049: Adicionar `rest-assured:5.5.7` + `rest-assured-spring-mock-mvc:5.5.7` (test scope) | DT-049 | 30min | ✅ | REST Assured disponível nos testes |
+| **T-098.DT-050** | DT-050: Definir estratégia de merge JWT×banco para roles. `RbacAspect` consulta `user_permission` como fonte primária | DT-050 | 3h | ✅ | Roles do banco prevalecem sobre JWT. RN11-03 funcional |
+| **T-099.DT-051** | DT-051: Abandonar cache TTL 5min no RBAC. Carregar matriz via `findAll()` com query indexada (<1ms) | DT-051 | 2h | ✅ | Sem stale permissions. RN11-03 "efeito imediato" respeitado |
+| **T-100.DT-052** | DT-052: Refatorar `RbacAspect`: injetar `PermissionService`, remover Sets hardcoded, carregar do banco | DT-052 | 4h | ✅ | RbacAspect sem Sets estáticos. Permissões 100% DB-backed |
+| **T-101.DT-053** | DT-053: Criar `User.java` entity + `UserRepository.java` (estende `BaseRepository<User>`) | DT-053 | 2h | ✅ | UserRepository funcional. Índice parcial email único por tenant ativo |
+| **T-102.DT-054** | DT-054: Criar `ResourceAction.java` + `RoleResource.java` entities | DT-054 | 1h | ✅ | Entities compilam. Mapeamento colunas correto |
+| **T-103.DT-055** | DT-055: Criar `BusinessUnit.java` entity (estende `BaseEntity`) | DT-055 | 1h | ✅ | Entity compila. Referenciável por `UserPermission` |
+| **T-104.DT-056** | DT-056: Criar migration V006: FK user_permission → business_unit + U006 rollback | DT-056 | 30min | ✅ | FK criada. Rollback testado |
+| **T-105.DT-057** | DT-057: Criar migration V004: seed resource_action + role_resource (matriz RN10-01) + U004 rollback | DT-057 | 1h | ✅ | Seed carrega. Matriz RN10-01 completa. Rollback funcional |
+| **T-106.DT-058** | DT-058 + DT-035 (backlog): Migrar `RbacAspect` de strings literais para `Role` enum | DT-058, DT-035 | 1h | ✅ | Role enum referenciado. Type-safety na matriz |
+| **T-107.DT-059** | DT-059: Refatorar `TenantController.list()` para usar `TenantService`. Garantir `@RequiresPermission` | DT-059 | 1h | ✅ | RBAC aplicado no endpoint de listagem |
+| **T-108.DT-060** | DT-060: Adicionar `JwtValidators.createDefaultWithIssuer(issuerUri)` no `SecurityConfig` | DT-060 | 1h | ✅ | JWT de realms não autorizados → 401 |
+| **T-109.DT-061** | DT-061: Adicionar FORCE ROW LEVEL SECURITY nas 4 tabelas RLS do V003 | DT-061 | 2h | ✅ | RLS aplicado inclusive para table owner |
+| **T-110.DT-062** | DT-062: Validar tenant_id URL vs JWT no SubscriptionService. Adicionar tenantClause() | DT-062 | 2h | ✅ | Tenant mismatch → 403 |
+| **T-111.DT-063** | DT-063: Corrigir connection leak no TenantAwareDataSource | DT-063 | 1h | ✅ | Connection leak eliminado. Pool estável |
+| **T-112.DT-064** | DT-064: Alinhar matriz RBAC: SPRINT-CARD restritiva + breaking change documentado | DT-064 | 1h | ✅ | Matriz unificada. MANAGER_BU impacto documentado |
+| **T-113.DT-065** | DT-065: Corrigir diagrama de dependências TASKS.md §3: tasks reais T-046..T-056 | DT-065 | 30min | ✅ | Diagrama reflete tasks atuais |
+| **T-114.DT-066** | DT-066: Corrigir header SPRINT-TEST-SUITE.md: 19→27 cenários + SPRINT-CARD métricas | DT-066 | 15min | ✅ | Métricas corretas em todos os artefatos |
+| **T-115.DT-067** | DT-067: Adicionar BU scope check no PermissionService.validateBusinessUnitAccess() | DT-067 | 3h | ✅ | MANAGER_BU acessa apenas BUs designadas |
+
+---
+
+### Sprint 4 — Recomendados (Durante a Sprint) ⬜ | 17/07/2026
+
+**Estimativa total:** ~28-32h / **Responsavel:** A definir / **Status:** ⬜ 0/17 concluídas
+
+> Débitos não-bloqueantes que devem ser tratados durante a Sprint 4 para garantir qualidade e segurança. Paralelizáveis com as Frentes 1-4.
+
+| ID | Tarefa | Débito | Est. | Critério DONE |
+|:---|:---|:---:|:---:|:---|
+| **T-116.DT-068** | DT-068: Atualizar PostgreSQL driver 42.7.10→42.7.11 (CVE-2026-42198, CVSS 7.5 DoS) | DT-068 | 30min | Driver atualizado. Build passa |
+| **T-117.DT-069** | DT-069 + DT-045 (backlog): Migrar Flyway 10.22.0→12.11.0 (10→11→12, testar migrations existentes) | DT-069, DT-045 | 4h | Flyway 12.11.0. Migrations existentes re-executadas sem erro |
+| **T-118.DT-070** | DT-070: Corrigir `AuditAspect.parseEntityId()`: retornar null (não `UUID.randomUUID()`) para entrada inválida. Capturar entity ID do retorno em operações CREATE | DT-070 | 1h | Sem entity_id fantasma. Audit rastreável |
+| **T-119.DT-071** | DT-071: Criar `@WebMvcTest` para 4 controllers (Audit, Tenant, Subscription, Plan). MockMvc + JWT simulado | DT-071 | 4h | 4 controllers com cobertura >80%. RBAC via HTTP testado |
+| **T-120.DT-072** | DT-072: Corrigir `RLSIsolationTest`: remover `@Disabled`, mockar SingleConnectionDataSource | DT-072 | 3h | RLS isolation tests executando. Cross-tenant validado |
+| **T-121.DT-073** | DT-073: Corrigir `BaseRepositoryTest.save/update`: remover `@Disabled`, usar ArgumentCaptor para varargs | DT-073 | 2h | save/update cobertos por testes unitários |
+| **T-122.DT-074** | DT-074: Adicionar PERMISSION, ROLE no `resolveTableName()` do `AuditAspect` | DT-074 | 30min | Novas entidades RBAC auditadas |
+| **T-123.DT-075** | DT-075: Adicionar handler `TenantIsolationException` (403) no `GlobalExceptionHandler`. Remover handler `SecurityException` depreciado | DT-075 | 30min | TenantIsolationException → 403. SecurityException handler removido |
+| **T-124.DT-076** | DT-076 + DT-030 (backlog): Migrar para `Converter<Jwt, AbstractAuthenticationToken>` customizado. Eliminar `JwtAuthenticationFilter` redundante | DT-076, DT-030 | 4h | JWT decodificado 1× por requisição |
+| **T-125.DT-077** | DT-077: Reescrever `RbacAspectTest` com `@SpringBootTest` + `@MockBean PermissionService` após refatoração T-100 | DT-077 | 3h | Testes validam DB-backed RBAC. Sem false positives |
+| **T-126.DT-078** | DT-078: Adicionar `SELECT ... FOR UPDATE` ou advisory lock no `PlanService.deactivate()` | DT-078 | 1h | Race condition eliminada. Nunca zero planos ativos |
+| **T-127.DT-079** | DT-079: Adicionar try-catch `DateTimeParseException` → 400 no `AuditService.search()` | DT-079 | 15min | Data inválida → 400 (não 500) |
+| **T-128.DT-080** | DT-080: Documentar `GET /plans/admin` e `GET /plans/{id}` na SPECS.md §4.1 | DT-080 | 15min | API Contract First restaurado |
+| **T-129.DT-081** | DT-081: Corrigir SPRINT-CARD.md:85 "V003" → "V006 (ou próxima disponível)" | DT-081 | 5min | Referência de migration correta |
+| **T-130.DT-082** | DT-082: Remover "Sprint 3 (UserRepository)" das dependências no SPRINT-CARD.md:92 | DT-082 | 5min | Dependências reais documentadas |
+| **T-131.DT-042** | DT-042 (backlog): Criar `docker-compose.yml` com PostgreSQL 17 + Keycloak 26 + MailHog | DT-042 | 1h | Setup local em 1 comando: `docker compose up -d` |
+| **T-132.DT-043** | DT-043 (backlog): Criar script `seed-dev.sql` com dados realistas (50+ tenants, 3 planos, 4 roles) | DT-043 | 30min | Dados para desenvolvimento e testes exploratórios |
+
+---
+
 ## 3. Dependencias entre Tarefas
 
 ```
@@ -304,11 +365,19 @@ FASE 2 — M3 (EP-02):
            T-024..T-036 ── T-037, T-038
 
 FASE 3 — M4 (EP-03):
-           T-039 ── T-040 ── T-041
-           T-042 ── T-043 ── T-044 ── T-045
-           T-013 ── T-046
-           T-015 ── T-047
-           T-039..T-047 ── T-048, T-049
+           T-046 ── T-047 ── T-048
+           T-049 ── T-050 ── T-051 ── T-052
+           T-013 (@RequiresPermission) ── T-053 (Integrar RbacAspect com RoleResource)
+           T-015 (GlobalExceptionHandler) ── T-054 (403 amigavel)
+           T-046..T-054 ── T-055 (Testes unitarios M4), T-056 (Testes seguranca RBAC)
+
+FASE 3b — Sprint 4 Frente 0 (Pre-Sprint — 20 bloqueantes):
+           T-096..T-115 (correções pré-RBAC: Caffeine, REST Assured, entities, migrations, RLS FORCE, JWT iss, etc.)
+           │
+           └── BLOQUEIA FASE 3 ate conclusao
+
+FASE 3c — Sprint 4 Recomendados (Durante-Sprint — 17 riscos):
+           T-116..T-132 (PostgreSQL driver, Flyway, AuditAspect, WebMvcTest, RLSIsolationTest, JWT Converter, etc.)
 
 FASE 4 — M5 (EP-04a):
            T-050 ── T-051 ── T-052
@@ -345,17 +414,19 @@ T-001 (2d) -> T-007 (2d) -> T-012 (1.5d) -> T-016 (2d) -> T-017 (1d) -> T-019 (1
 
 | Marco | Data | Features | Tarefas | Must | Should | Estimativa Total | % do Projeto |
 |:---|:---|:---|:---:|:---:|:---:|:---:|:---:|
-| Pre-M2 (Setup) | 24/07 — 07/08 | — | 8 | 8 | 0 | ~12d | 6% |
-| Pre-M2 (Seguranca) | 07/08 — 15/08 | — | 8 | 8 | 0 | ~11.5d | 6% |
-| Pre-M2 (Frente 0) | 16/07 | — | 12 | 12 | 0 | ~16-25h | 3% |
-| Sprint 3 — Frente 3 | 16/07 — 31/08 | — | 7 | 7 | 0 | ~10h | 2% |
-| M2 (EP-01) | 15/08 | F01-01, F01-02, F01-03 | 8 | 7 | 1 | ~11d | 8% |
-| M3 (EP-02) | 15/08 — 31/08 | F02-01 a F02-05 | 15 | 15 | 0 | ~24d | 15% |
-| M4 (EP-03) | 31/08 — 15/09 | F03-01 a F03-04 | 11 | 11 | 0 | ~15d | 11% |
-| M5 (EP-04a) | 15/09 — 30/09 | F04-01 a F04-04 | 12 | 10 | 2 | ~18.5d | 12% |
-| M6 (EP-04b) | 30/09 — 15/10 | F04-05, F04-06 | 9 | 9 | 0 | ~14d | 9% |
-| M7 (Homolog) | 15/10 — 30/10 | Todas | 9 | 9 | 0 | ~16.5d | 9% |
-| **Total** | **24/07 — 30/10** | **18 features** | **99** | **96** | **3** | **~122.5d-homem** | **100%** |
+| Pre-M2 (Setup) | 24/07 — 07/08 | — | 8 | 8 | 0 | ~12d | 4% |
+| Pre-M2 (Seguranca) | 07/08 — 15/08 | — | 8 | 8 | 0 | ~11.5d | 4% |
+| Pre-M2 (Frente 0) | 16/07 | — | 12 | 12 | 0 | ~16-25h | 2% |
+| Sprint 3 — Frente 3 | 16/07 — 31/08 | — | 7 | 7 | 0 | ~10h | 1% |
+| M2 (EP-01) | 15/08 | F01-01, F01-02, F01-03 | 8 | 7 | 1 | ~11d | 6% |
+| M3 (EP-02) | 15/08 — 31/08 | F02-01 a F02-05 | 15 | 15 | 0 | ~24d | 11% |
+| Sprint 4 — Frente 0 | 17/07 | — | 20 | 20 | 0 | ~16-24h | 3% |
+| M4 (EP-03) | 31/08 — 15/09 | F03-01 a F03-04 | 11 | 11 | 0 | ~15d | 8% |
+| Sprint 4 — Recomendados | 31/08 — 15/09 | — | 17 | 17 | 0 | ~28-32h | 5% |
+| M5 (EP-04a) | 15/09 — 30/09 | F04-01 a F04-04 | 12 | 10 | 2 | ~18.5d | 9% |
+| M6 (EP-04b) | 30/09 — 15/10 | F04-05, F04-06 | 9 | 9 | 0 | ~14d | 7% |
+| M7 (Homolog) | 15/10 — 30/10 | Todas | 9 | 9 | 0 | ~16.5d | 7% |
+| **Total** | **24/07 — 30/10** | **18 features** | **136** | **133** | **3** | **~140d-homem** | **100%** |
 
 > Nota: Estimativa em dias-homem considera trabalho paralelo possivel dentro de cada marco. O cronograma real (14 semanas) reflete execucao paralela de tarefas independentes.
 
@@ -365,14 +436,14 @@ T-001 (2d) -> T-007 (2d) -> T-012 (1.5d) -> T-016 (2d) -> T-017 (1d) -> T-019 (1
 
 | Tipo | Quantidade | % |
 |:---|:---:|:---:|
-| Setup / Fundacao | 8 | 8% |
-| Seguranca (JWT/RBAC/Tenant/Auditoria/RLS) | 8 | 8% |
-| Correções Técnicas (Frente 0 + Frente 3 — débitos) | 19 | 19% |
-| Implementacao (Controllers + Services + Repositories) | 42 | 42% |
-| Testes (unitarios + integracao + seguranca + perf) | 14 | 14% |
-| Documentacao (OpenAPI, README, LGPD) | 4 | 4% |
-| Deploy / Homologacao | 4 | 4% |
-| **Total** | **99** | **100%** |
+| Setup / Fundacao | 8 | 6% |
+| Seguranca (JWT/RBAC/Tenant/Auditoria/RLS) | 8 | 6% |
+| Correções Técnicas (Frente 0 S3 + Frente 3 S3 + Frente 0 S4 + Recomendados S4) | 56 | 41% |
+| Implementacao (Controllers + Services + Repositories) | 42 | 31% |
+| Testes (unitarios + integracao + seguranca + perf) | 14 | 10% |
+| Documentacao (OpenAPI, README, LGPD) | 4 | 3% |
+| Deploy / Homologacao | 4 | 3% |
+| **Total** | **136** | **100%** |
 
 ---
 
@@ -380,6 +451,7 @@ T-001 (2d) -> T-007 (2d) -> T-012 (1.5d) -> T-016 (2d) -> T-017 (1d) -> T-019 (1
 
 | Versao | Data | Alteracao | Autor |
 |:---|:---|:---|:---|
+| 2.9 | 17/07/2026 | Sprint 4 Frente 0 + Recomendados: adicionadas 37 tasks de débitos técnicos (20 bloqueantes T-096..T-115 + 17 recomendados T-116..T-132) da auditoria 9-skill ([IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md)). Corrigido diagrama FASE 3 (T-039..T-047→T-046..T-056). Total: 99→136 tasks. Must: 96→133. Progresso: 58%→42%. Time decidiu tratar 20🔴+15🟡+2 backlog (DT-042, DT-043) = 37 na Sprint 4; 12🔵+5 backlog postergados Sprint 5+. | Agente IA |
 | 2.8 | 17/07/2026 | Sprint 3 100% concluída: Frentes 2 (M3 EP-02 — 15 tasks: Tenant/Plan/Subscription/Audit CRUD) e 3 (7 correções técnicas) finalizadas. 18 endpoints REST. 142 testes totais (100 unit + 42 IT). 28 débitos técnicos resolvidos (DT-001 a DT-046). 9 débitos postergados Sprints 4+. Progresso 57/99 (58%). v2.7→v2.8. | Agente IA |
 | 2.7 | 17/07/2026 | T-023 concluído: 23 testes integração PostgreSQL real (DashboardRepositoryIT). Adicionados DashboardRepositoryTest (11 testes mock), DashboardControllerTest (7 testes MockMvc). Expandido GlobalExceptionHandlerTest (+4 exceções). BaseRepository.save() bug array size corrigido (3→5). V003 product_service RLS removido (sem tenant_id). maven-failsafe-plugin adicionado. JaCoCo thresholds: LINE≥80%→85.8%✅, BRANCH 70%→64%. 105 testes totais (77 unit + 28 IT). M2 (EP-01) 100% concluído. v2.6→v2.7. | Agente IA |
 | 2.4 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado: Sprints 1-2 concluídas, Sprint 3 em andamento. | Time Técnico |

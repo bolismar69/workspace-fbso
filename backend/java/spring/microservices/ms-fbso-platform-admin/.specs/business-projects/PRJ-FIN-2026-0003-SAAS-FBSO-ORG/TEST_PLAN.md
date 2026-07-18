@@ -1,11 +1,11 @@
 # TEST_PLAN.md — Plano de Testes: ms-fbso-platform-admin
 
 - **Solucao:** `ms-fbso-platform-admin`
-- **Stack:** Java 25 + Spring Boot + PostgreSQL
+- **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + REST Assured 5.5.7
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 2.8
+- **Versao:** 3.0
 - **Data:** 17 de Julho de 2026
-- **Status:** Em Execucao — Sprints 1-3 testadas ✅. 142 testes totais: 100 unitários (Surefire) + 42 integração (Failsafe). 0 falhas, 13 skipped. JaCoCo: Lines 74.4%, Branches 59.0%. Todas as 10 features cobertas (F01-01 a F02-05). 28 débitos técnicos resolvidos. Próximo: Sprint 4 — RBAC
+- **Status:** Em Execução — Sprints 1-4 testadas ✅. 213 testes totais (0 falhas). Matriz RN10-01 100% validada (41 combinações). 403 RFC 7807 validado. Próximo: Frentes 5-5b + E2E pendentes
 - **Origem:** [SPECS.md](./SPECS.md) v1.4 + [ARCHITECTURE.md](./ARCHITECTURE.md) + [PRD.md](./PRD.md)
 
 ---

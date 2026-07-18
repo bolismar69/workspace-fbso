@@ -42,11 +42,9 @@ public class TenantController {
     private static final Logger log = LoggerFactory.getLogger(TenantController.class);
 
     private final TenantService tenantService;
-    private final TenantRepository tenantRepo;
 
-    public TenantController(TenantService tenantService, TenantRepository tenantRepo) {
+    public TenantController(TenantService tenantService) {
         this.tenantService = tenantService;
-        this.tenantRepo = tenantRepo;
     }
 
     // ---- List (F01-02 herdado) ----
@@ -61,7 +59,7 @@ public class TenantController {
             @RequestParam(required = false) String plan,
             @RequestParam(required = false) String search) {
 
-        List<Tenant> tenants = tenantRepo.findAllPaginated(page, size, status, plan, search);
+        List<Tenant> tenants = tenantService.findAllPaginated(page, size, status, plan, search);
         List<TenantResponse> response = tenants.stream().map(TenantResponse::from).toList();
         return ResponseEntity.ok(response);
     }

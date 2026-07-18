@@ -57,9 +57,19 @@ public class TenantAwareDataSource extends DelegatingDataSource {
         String tenantId = TenantContext.getTenantIdQuietly();
         try {
             if (tenantId != null && !tenantId.isEmpty()) {
+                // DT-063: Validar UUID ANTES de usar a conexão para evitar connection leak
+                java.util.UUID parsedTenantId;
+                try {
+                    parsedTenantId = java.util.UUID.fromString(tenantId);
+                } catch (IllegalArgumentException e) {
+                    log.error("tenant_id inválido: '{}' — fechando conexão", tenantId);
+                    try { conn.close(); } catch (SQLException ignored) {}
+                    throw new TenantIsolationException(
+                            "tenant_id inválido: " + tenantId, e);
+                }
                 try (PreparedStatement pstmt = conn.prepareStatement(
                         "SET app.current_tenant_id = ?")) {
-                    pstmt.setObject(1, UUID.fromString(tenantId));
+                    pstmt.setObject(1, parsedTenantId);
                     pstmt.execute();
                 }
             } else {
@@ -70,6 +80,7 @@ public class TenantAwareDataSource extends DelegatingDataSource {
             }
         } catch (SQLException e) {
             log.error("Falha ao configurar app.current_tenant_id na conexão: {}", e.getMessage(), e);
+            try { conn.close(); } catch (SQLException ignored) {}
             throw new TenantIsolationException(
                     "Falha ao configurar isolamento multi-tenant na conexão", e);
         }

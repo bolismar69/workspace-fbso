@@ -1,17 +1,14 @@
 package com.fbso.platform.admin.security.aspect;
 
 import com.fbso.platform.admin.exception.PermissionDeniedException;
-import com.fbso.platform.admin.security.TenantContext;
 import com.fbso.platform.admin.security.annotation.RequiresPermission;
+import com.fbso.platform.admin.service.PermissionService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
 
 /**
  * Aspecto RBAC — intercepta métodos anotados com {@link RequiresPermission}
@@ -19,21 +16,17 @@ import java.util.Set;
  * <p>
  * Pipeline: JWT Filter → RbacAspect → Controller
  * <p>
- * Matriz de permissões (RN10-01):
- * <ul>
- *   <li>ADMIN_TENANT — acesso total (todos resources × actions)</li>
- *   <li>MANAGER_BU — edita BUs e Produtos da sua unidade</li>
- *   <li>OPERATOR_BU — apenas leitura de BUs e Produtos</li>
- *   <li>AUDITOR — apenas leitura de Auditoria</li>
- * </ul>
+ * <b>Sprint 4 (M4 — RBAC):</b> Matriz carregada do banco via
+ * {@link PermissionService} (tabelas {@code role_resource} +
+ * {@code resource_action}). Roles do usuário via {@code user_permission}
+ * (fonte primária), com fallback para JWT durante transição.
  * <p>
- * Na Fase 0, a matriz é simplificada. O carregamento completo do banco
- * (tabelas resource_action + role_resource) é implementado na Sprint 4 (M4 — RBAC).
- * <p>
- * // ponytail: matriz hardcoded até Sprint 4 — substituir por consulta ao banco com cache
+ * ADMIN_TENANT tem acesso implícito total — não requer registros em
+ * {@code user_permission}. Demais roles são verificadas contra a matriz
+ * carregada no startup e recarregável sob demanda.
  *
  * @see RequiresPermission
- * @see <a href="ARCHITECTURE.md#4.1">ARCHITECTURE.md §4.1</a>
+ * @see PermissionService
  */
 @Aspect
 @Component
@@ -41,23 +34,11 @@ public class RbacAspect {
 
     private static final Logger log = LoggerFactory.getLogger(RbacAspect.class);
 
-    /**
-     * Matriz simplificada de permissões (Fase 0).
-     * // ponytail: ceiling = Sprint 4 carrega do banco (RoleResource + ResourceAction)
-     */
-    private static final Set<String> ADMIN_ALL_ACCESS = Set.of("ADMIN_TENANT");
-    private static final Set<String> MANAGER_EDIT_RESOURCES = Set.of("BUSINESS_UNIT", "PRODUCT_SERVICE");
-    private static final Set<String> MANAGER_VIEW_RESOURCES = Set.of(
-            "BUSINESS_UNIT", "PRODUCT_SERVICE",
-            "TENANT", "PLAN", "SUBSCRIPTION", "DASHBOARD");
-    private static final Set<String> MANAGER_EDIT_ACTIONS = Set.of("view", "create", "edit");
-    private static final Set<String> MANAGER_VIEW_ACTIONS = Set.of("view");
-    private static final Set<String> OPERATOR_RESOURCES = Set.of(
-            "BUSINESS_UNIT", "PRODUCT_SERVICE",
-            "TENANT", "PLAN", "SUBSCRIPTION", "DASHBOARD");
-    private static final Set<String> OPERATOR_ACTIONS = Set.of("view");
-    private static final Set<String> AUDITOR_RESOURCES = Set.of("AUDIT");
-    private static final Set<String> AUDITOR_ACTIONS = Set.of("view");
+    private final PermissionService permissionService;
+
+    public RbacAspect(PermissionService permissionService) {
+        this.permissionService = permissionService;
+    }
 
     @Around("@annotation(requiresPermission)")
     public Object checkPermission(ProceedingJoinPoint joinPoint,
@@ -65,40 +46,15 @@ public class RbacAspect {
 
         String resource = requiresPermission.resource();
         String action = requiresPermission.action();
-        var roles = TenantContext.getRoles();
 
-        if (roles.isEmpty()) {
-            log.warn("RBAC: sem roles no contexto — acesso negado a {}:{}", resource, action);
-            throw new PermissionDeniedException();
+        try {
+            permissionService.checkPermission(resource, action);
+        } catch (PermissionDeniedException e) {
+            log.warn("RBAC: acesso negado — resource={}, action={}", resource, action);
+            throw e;
         }
 
-        // Admin tem acesso total
-        if (roles.stream().anyMatch(ADMIN_ALL_ACCESS::contains)) {
-            log.debug("RBAC: admin acessa {}:{}", resource, action);
-            return joinPoint.proceed();
-        }
-
-        // Verificar permissão por papel
-        boolean granted = roles.stream().anyMatch(role -> switch (role) {
-            case "MANAGER_BU" -> (MANAGER_EDIT_RESOURCES.contains(resource)
-                               && MANAGER_EDIT_ACTIONS.contains(action))
-                              || (MANAGER_VIEW_RESOURCES.contains(resource)
-                               && MANAGER_VIEW_ACTIONS.contains(action));
-            case "OPERATOR_BU" -> OPERATOR_RESOURCES.contains(resource)
-                              && OPERATOR_ACTIONS.contains(action);
-            case "AUDITOR"     -> AUDITOR_RESOURCES.contains(resource)
-                              && AUDITOR_ACTIONS.contains(action);
-            default -> false;
-        });
-
-        if (!granted) {
-            log.warn("RBAC: acesso negado — role={}, resource={}, action={}",
-                    roles, resource, action);
-            throw new PermissionDeniedException();
-        }
-
-        log.debug("RBAC: acesso permitido — role={}, resource={}, action={}",
-                roles, resource, action);
+        log.debug("RBAC: acesso permitido — resource={}, action={}", resource, action);
         return joinPoint.proceed();
     }
 }
