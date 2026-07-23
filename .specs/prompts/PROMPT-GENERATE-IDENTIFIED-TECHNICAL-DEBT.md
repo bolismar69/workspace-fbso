@@ -69,7 +69,7 @@ Ler se existirem:
     ├── 02-BUSINESS-REQUIREMENTS.md
     ├── 03-EPICS.md
     ├── 04-FEATURES.md
-    ├── 05-USER-STORYS.md
+    ├── 05-USER-STORIES.md
     └── DEFINITION_OF_DONE.md
 ```
 
@@ -780,7 +780,7 @@ Para cada débito que o time decidiu tratar na sprint atual:
    e. NUNCA inserir tasks no meio da numeração — sempre APPEND ao final
 
 3. Atualizar documentos na ordem correta (de cima para baixo):
-   a. Documentos de Negócio (BUSINESS-REQUIREMENTS, EPICS, FEATURES, USER-STORYS)
+   a. Documentos de Negócio (BUSINESS-REQUIREMENTS, EPICS, FEATURES, USER-STORIES)
       — se o débito introduzir novas restrições ou regras de negócio
    b. ARCHITECTURE.md — se houver mudança arquitetural (ADR, padrão, diagrama)
    c. PRD.md — se houver mudança de escopo, stack ou entidades

@@ -195,46 +195,46 @@ O orquestrador automatiza todo o pipeline abaixo: geração dos 5 artefatos → 
 
 | Nó | Agente | Prompt | Artefato Gerado | Status |
 |---|---|---|---|---|
-| `A_PRD` | Gerador de PRD | `PROMPT-GENERATE-PRD-ARTEFACT.md` | `PRD.md` | 🟢 Criado |
-| `A_ARCHITECT` | Gerador de Arquitetura | `PROMPT-GENERATE-ARCHITECTURE-ARTEFACT.md` | `ARCHITECTURE.md` | 🟢 Criado |
+| `A_PRD` | Gerador de PRD | `PROMPT-GENERATE-PRD-TECHNICAL_SOLUTION.md` | `PRD.md` | 🟢 Criado |
+| `A_ARCHITECT` | Gerador de Arquitetura | `PROMPT-GENERATE-ARCHITECTURE-TECHNICAL_SOLUTION.md` | `ARCHITECTURE.md` | 🟢 Criado |
 
 ### Fase 2.1 — GATE DE ALINHAMENTO DE ESCOPO
 
 | Nó | Agente | Prompt | Input | Output (se reprovado) | Status |
 |---|---|---|---|---|---|
-| `GE1` | Validador: Scope Creep no PRD.md | `PROMPT-GATE-PRD-SCOPE.md` | `PRD.md` + docs do projeto | — | 🟢 Criado |
+| `GE1` | Validador: Scope Creep no PRD.md | `PROMPT-GATE-PRD-TECHNICAL_SOLUTION.md` | `PRD.md` + docs do projeto | — | 🟢 Criado |
 | `GATE_PRD` | Decisão: PRD.md validado? | *(automático — veredito do GE1)* | — | — | — |
-| `GE2` | Gerador de Relatório de Falha (PRD) | *(mesmo prompt: PROMPT-GATE-PRD-SCOPE.md, passo 4)* | — | `PRD_SCOPE_FAIL_REPORT.md` | 🟢 Criado |
-| `A_PRD` | Corretor de PRD (pós-gate) | `PROMPT-FIX-PRD-FROM-GATE.md` | `PRD_SCOPE_FAIL_REPORT.md` | `PRD.md` (corrigido) | 🟢 Criado |
-| `GE3` | Validador: Scope Creep no ARCHITECTURE.md | `PROMPT-GATE-ARCHITECTURE-SCOPE.md` | `ARCHITECTURE.md` + `PRD.md` | — | 🟢 Criado |
+| `GE2` | Gerador de Relatório de Falha (PRD) | *(mesmo prompt: PROMPT-GATE-PRD-TECHNICAL_SOLUTION.md, passo 4)* | — | `PRD_SCOPE_FAIL_REPORT.md` | 🟢 Criado |
+| `A_PRD` | Corretor de PRD (pós-gate) | `PROMPT-FIX-PRD-TECHNICAL_SOLUTION.md` | `PRD_SCOPE_FAIL_REPORT.md` | `PRD.md` (corrigido) | 🟢 Criado |
+| `GE3` | Validador: Scope Creep no ARCHITECTURE.md | `PROMPT-GATE-ARCHITECTURE-TECHNICAL_SOLUTION.md` | `ARCHITECTURE.md` + `PRD.md` | — | 🟢 Criado |
 | `GATE_ARCHITECT` | Decisão: ARCHITECTURE.md validado? | *(automático — veredito do GE3)* | — | — | — |
-| `GE4` | Gerador de Relatório de Falha (ARCHITECTURE) | *(mesmo prompt: PROMPT-GATE-ARCHITECTURE-SCOPE.md, passo 4)* | — | `ARCHITECTURE_SCOPE_FAIL_REPORT.md` | 🟢 Criado |
-| `A_ARCHITECT` | Corretor de Arquitetura (pós-gate) | `PROMPT-FIX-ARCHITECTURE-FROM-GATE.md` | `ARCHITECTURE_SCOPE_FAIL_REPORT.md` | `ARCHITECTURE.md` (corrigido) | 🟢 Criado |
+| `GE4` | Gerador de Relatório de Falha (ARCHITECTURE) | *(mesmo prompt: PROMPT-GATE-ARCHITECTURE-TECHNICAL_SOLUTION.md, passo 4)* | — | `ARCHITECTURE_SCOPE_FAIL_REPORT.md` | 🟢 Criado |
+| `A_ARCHITECT` | Corretor de Arquitetura (pós-gate) | `PROMPT-FIX-ARCHITECTURE-TECHNICAL_SOLUTION.md` | `ARCHITECTURE_SCOPE_FAIL_REPORT.md` | `ARCHITECTURE.md` (corrigido) | 🟢 Criado |
 
 ### Fase 3 — ESPECIFICAÇÃO TÉCNICA
 
 | Nó | Agente | Prompt | Artefato Gerado | Status |
 |---|---|---|---|---|
-| `A_SPECS` | Gerador de Specs | `PROMPT-GENERATE-SPECS-ARTEFACT.md` | `SPECS.md` | 🟢 Criado |
-| `A_TASKS` | Gerador de Tarefas | `PROMPT-GENERATE-TASKS-ARTEFACT.md` | `TASKS.md` | 🟢 Criado |
-| `A_TEST_PLAN` | Gerador de Plano de Testes | `PROMPT-GENERATE-TEST_PLAN-ARTEFACT.md` | `TEST_PLAN.md` | 🟢 Criado |
+| `A_SPECS` | Gerador de Specs | `PROMPT-GENERATE-SPECS-TECHNICAL_SOLUTION.md` | `SPECS.md` | 🟢 Criado |
+| `A_TASKS` | Gerador de Tarefas | `PROMPT-GENERATE-TASKS-TECHNICAL_SOLUTION.md` | `TASKS.md` | 🟢 Criado |
+| `A_TEST_PLAN` | Gerador de Plano de Testes | `PROMPT-GENERATE-TEST_PLAN-TECHNICAL_SOLUTION.md` | `TEST_PLAN.md` | 🟢 Criado |
 
 ### Fase 3.1 — GATE DE VIABILIDADE E COMPLETUDE TÉCNICA
 
 | Nó | Agente | Prompt | Input | Output (se reprovado) | Status |
 |---|---|---|---|---|---|
-| `GT1` | Validador: SPECS.md | `PROMPT-GATE-SPECS-TECHNICAL.md` | `SPECS.md` + `PRD.md` + `ARCHITECTURE.md` | — | 🟢 Criado |
+| `GT1` | Validador: SPECS.md | `PROMPT-GATE-SPECS-TECHNICAL_SOLUTION.md` | `SPECS.md` + `PRD.md` + `ARCHITECTURE.md` | — | 🟢 Criado |
 | `GATE_SPECS` | Decisão: SPECS.md validado? | *(automático — veredito do GT1)* | — | — | — |
-| `GT1_1` | Gerador de Relatório de Falha (SPECS) | *(mesmo prompt: PROMPT-GATE-SPECS-TECHNICAL.md, passo 4)* | — | `TECHNICAL_SPECS_FAIL_REPORT.md` | 🟢 Criado |
-| `A_SPECS` | Corretor de Specs (pós-gate) | `PROMPT-FIX-SPECS-FROM-GATE.md` | `TECHNICAL_SPECS_FAIL_REPORT.md` | `SPECS.md` (corrigido) | 🟢 Criado |
-| `GT2` | Validador: TASKS.md | `PROMPT-GATE-TASKS-TECHNICAL.md` | `TASKS.md` + `SPECS.md` + `ARCHITECTURE.md` | — | 🟢 Criado |
+| `GT1_1` | Gerador de Relatório de Falha (SPECS) | *(mesmo prompt: PROMPT-GATE-SPECS-TECHNICAL_SOLUTION.md, passo 4)* | — | `TECHNICAL_SPECS_FAIL_REPORT.md` | 🟢 Criado |
+| `A_SPECS` | Corretor de Specs (pós-gate) | `PROMPT-FIX-SPECS-TECHNICAL_SOLUTION.md` | `TECHNICAL_SPECS_FAIL_REPORT.md` | `SPECS.md` (corrigido) | 🟢 Criado |
+| `GT2` | Validador: TASKS.md | `PROMPT-GATE-TASKS-TECHNICAL_SOLUTION.md` | `TASKS.md` + `SPECS.md` + `ARCHITECTURE.md` | — | 🟢 Criado |
 | `GATE_TASKS` | Decisão: TASKS.md validado? | *(automático — veredito do GT2)* | — | — | — |
-| `GT2_1` | Gerador de Relatório de Falha (TASKS) | *(mesmo prompt: PROMPT-GATE-TASKS-TECHNICAL.md, passo 4)* | — | `TECHNICAL_TASKS_FAIL_REPORT.md` | 🟢 Criado |
-| `A_TASKS` | Corretor de Tarefas (pós-gate) | `PROMPT-FIX-TASKS-FROM-GATE.md` | `TECHNICAL_TASKS_FAIL_REPORT.md` | `TASKS.md` (corrigido) | 🟢 Criado |
-| `GT3` | Validador: TEST_PLAN.md | `PROMPT-GATE-TEST_PLAN-TECHNICAL.md` | `TEST_PLAN.md` + `SPECS.md` + `TASKS.md` | — | 🟢 Criado |
+| `GT2_1` | Gerador de Relatório de Falha (TASKS) | *(mesmo prompt: PROMPT-GATE-TASKS-TECHNICAL_SOLUTION.md, passo 4)* | — | `TECHNICAL_TASKS_FAIL_REPORT.md` | 🟢 Criado |
+| `A_TASKS` | Corretor de Tarefas (pós-gate) | `PROMPT-FIX-TASKS-TECHNICAL_SOLUTION.md` | `TECHNICAL_TASKS_FAIL_REPORT.md` | `TASKS.md` (corrigido) | 🟢 Criado |
+| `GT3` | Validador: TEST_PLAN.md | `PROMPT-GATE-TEST_PLAN-TECHNICAL_SOLUTION.md` | `TEST_PLAN.md` + `SPECS.md` + `TASKS.md` | — | 🟢 Criado |
 | `GATE_TEST_PLAN` | Decisão: TEST_PLAN.md validado? | *(automático — veredito do GT3)* | — | — | — |
-| `GT3_1` | Gerador de Relatório de Falha (TEST_PLAN) | *(mesmo prompt: PROMPT-GATE-TEST_PLAN-TECHNICAL.md, passo 4)* | — | `TECHNICAL_TEST_PLAN_FAIL_REPORT.md` | 🟢 Criado |
-| `A_TEST_PLAN` | Corretor de Testes (pós-gate) | `PROMPT-FIX-TEST_PLAN-FROM-GATE.md` | `TECHNICAL_TEST_PLAN_FAIL_REPORT.md` | `TEST_PLAN.md` (corrigido) | 🟢 Criado |
+| `GT3_1` | Gerador de Relatório de Falha (TEST_PLAN) | *(mesmo prompt: PROMPT-GATE-TEST_PLAN-TECHNICAL_SOLUTION.md, passo 4)* | — | `TECHNICAL_TEST_PLAN_FAIL_REPORT.md` | 🟢 Criado |
+| `A_TEST_PLAN` | Corretor de Testes (pós-gate) | `PROMPT-FIX-TEST_PLAN-TECHNICAL_SOLUTION.md` | `TECHNICAL_TEST_PLAN_FAIL_REPORT.md` | `TEST_PLAN.md` (corrigido) | 🟢 Criado |
 
 ### Fase 4 — EXECUÇÃO
 
@@ -293,11 +293,11 @@ A tabela abaixo lista todos os artefatos gerados e consumidos ao longo do fluxo,
 
 | Artefato | Gerado por | Validado por | Corrigido por (se reprovado) |
 |---|---|---|---|
-| `PRD.md` | *(prompt a definir)* | `PROMPT-GATE-PRD-SCOPE.md` → `PRD_SCOPE_FAIL_REPORT.md` | `PROMPT-FIX-PRD-FROM-GATE.md` |
-| `ARCHITECTURE.md` | `PROMPT-GENERATE-ARCHITECTURE-ARTEFACT.md` | `PROMPT-GATE-ARCHITECTURE-SCOPE.md` → `ARCHITECTURE_SCOPE_FAIL_REPORT.md` | `PROMPT-FIX-ARCHITECTURE-FROM-GATE.md` |
-| `SPECS.md` | `PROMPT-GENERATE-SPECS-ARTEFACT.md` | `PROMPT-GATE-SPECS-TECHNICAL.md` → `TECHNICAL_SPECS_FAIL_REPORT.md` | `PROMPT-FIX-SPECS-FROM-GATE.md` |
-| `TASKS.md` | `PROMPT-GENERATE-TASKS-ARTEFACT.md` | `PROMPT-GATE-TASKS-TECHNICAL.md` → `TECHNICAL_TASKS_FAIL_REPORT.md` | `PROMPT-FIX-TASKS-FROM-GATE.md` |
-| `TEST_PLAN.md` | `PROMPT-GENERATE-TEST_PLAN-ARTEFACT.md` | `PROMPT-GATE-TEST_PLAN-TECHNICAL.md` → `TECHNICAL_TEST_PLAN_FAIL_REPORT.md` | `PROMPT-FIX-TEST_PLAN-FROM-GATE.md` |
+| `PRD.md` | *(prompt a definir)* | `PROMPT-GATE-PRD-TECHNICAL_SOLUTION.md` → `PRD_SCOPE_FAIL_REPORT.md` | `PROMPT-FIX-PRD-TECHNICAL_SOLUTION.md` |
+| `ARCHITECTURE.md` | `PROMPT-GENERATE-ARCHITECTURE-TECHNICAL_SOLUTION.md` | `PROMPT-GATE-ARCHITECTURE-TECHNICAL_SOLUTION.md` → `ARCHITECTURE_SCOPE_FAIL_REPORT.md` | `PROMPT-FIX-ARCHITECTURE-TECHNICAL_SOLUTION.md` |
+| `SPECS.md` | `PROMPT-GENERATE-SPECS-TECHNICAL_SOLUTION.md` | `PROMPT-GATE-SPECS-TECHNICAL_SOLUTION.md` → `TECHNICAL_SPECS_FAIL_REPORT.md` | `PROMPT-FIX-SPECS-TECHNICAL_SOLUTION.md` |
+| `TASKS.md` | `PROMPT-GENERATE-TASKS-TECHNICAL_SOLUTION.md` | `PROMPT-GATE-TASKS-TECHNICAL_SOLUTION.md` → `TECHNICAL_TASKS_FAIL_REPORT.md` | `PROMPT-FIX-TASKS-TECHNICAL_SOLUTION.md` |
+| `TEST_PLAN.md` | `PROMPT-GENERATE-TEST_PLAN-TECHNICAL_SOLUTION.md` | `PROMPT-GATE-TEST_PLAN-TECHNICAL_SOLUTION.md` → `TECHNICAL_TEST_PLAN_FAIL_REPORT.md` | `PROMPT-FIX-TEST_PLAN-TECHNICAL_SOLUTION.md` |
 
 ---
 
@@ -309,26 +309,26 @@ A tabela abaixo lista todos os artefatos gerados e consumidos ao longo do fluxo,
 ├── PROMPT-ORCHESTRATOR-GENERATE-ALL-ARTEFACTS.md ← 🚀 Orquestrador (ponto de entrada)
 │
 ├── 📁 Geração de Artefatos (Fases 2 e 3)
-│   ├── PROMPT-GENERATE-ARCHITECTURE-ARTEFACT.md
-│   ├── PROMPT-GENERATE-SPECS-ARTEFACT.md
-│   ├── PROMPT-GENERATE-TASKS-ARTEFACT.md
-│   └── PROMPT-GENERATE-TEST_PLAN-ARTEFACT.md
+│   ├── PROMPT-GENERATE-ARCHITECTURE-TECHNICAL_SOLUTION.md
+│   ├── PROMPT-GENERATE-SPECS-TECHNICAL_SOLUTION.md
+│   ├── PROMPT-GENERATE-TASKS-TECHNICAL_SOLUTION.md
+│   └── PROMPT-GENERATE-TEST_PLAN-TECHNICAL_SOLUTION.md
 │
 ├── 📁 GATE — Alinhamento de Escopo (Fase 2.1)
-│   ├── PROMPT-GATE-PRD-SCOPE.md
-│   └── PROMPT-GATE-ARCHITECTURE-SCOPE.md
+│   ├── PROMPT-GATE-PRD-TECHNICAL_SOLUTION.md
+│   └── PROMPT-GATE-ARCHITECTURE-TECHNICAL_SOLUTION.md
 │
 ├── 📁 GATE — Viabilidade Técnica (Fase 3.1)
-│   ├── PROMPT-GATE-SPECS-TECHNICAL.md
-│   ├── PROMPT-GATE-TASKS-TECHNICAL.md
-│   └── PROMPT-GATE-TEST_PLAN-TECHNICAL.md
+│   ├── PROMPT-GATE-SPECS-TECHNICAL_SOLUTION.md
+│   ├── PROMPT-GATE-TASKS-TECHNICAL_SOLUTION.md
+│   └── PROMPT-GATE-TEST_PLAN-TECHNICAL_SOLUTION.md
 │
 ├── 📁 FIX — Correção Pós-GATE
-│   ├── PROMPT-FIX-PRD-FROM-GATE.md
-│   ├── PROMPT-FIX-ARCHITECTURE-FROM-GATE.md
-│   ├── PROMPT-FIX-SPECS-FROM-GATE.md
-│   ├── PROMPT-FIX-TASKS-FROM-GATE.md
-│   └── PROMPT-FIX-TEST_PLAN-FROM-GATE.md
+│   ├── PROMPT-FIX-PRD-TECHNICAL_SOLUTION.md
+│   ├── PROMPT-FIX-ARCHITECTURE-TECHNICAL_SOLUTION.md
+│   ├── PROMPT-FIX-SPECS-TECHNICAL_SOLUTION.md
+│   ├── PROMPT-FIX-TASKS-TECHNICAL_SOLUTION.md
+│   └── PROMPT-FIX-TEST_PLAN-TECHNICAL_SOLUTION.md
 │
 ├── 📁 Execução e QA (Fases 4, 5, 6)
 │   ├── PROMPT-EXECUTE-TASK.md

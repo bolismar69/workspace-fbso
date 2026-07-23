@@ -94,6 +94,7 @@ Gerar o arquivo em:
 **Data:** {data atual}
 **Status:** {status — ex: "Em Definição", "Aprovado", "Fase 1 implementada"}
 **Tipo:** Resumo de Alto Nível — porta de entrada para a documentação de negócio completa
+**Situação impplementação:** {a ser preenchido pelos processos de desenvolvimento}
 
 > ⚠️ **Aviso de Leitura:** Este documento é um sumário executivo. Todas as especificações detalhadas,
 > regras de negócio, critérios de aceite e user stories completas residem nos documentos-fonte
@@ -310,7 +311,7 @@ Agente: [Executa Passo 1 → Passo 2 → Passo 3 → Passo 4]
 
 2. **Rastreabilidade é o requisito mais importante.** O GATE-PRD-SCOPE valida 5 dimensões, e 3 delas (D1: Aderência ao Project Charter, D2: Consistência com BRs, D3: Consistência com Épicos/Features) dependem de rastreabilidade precisa. A Seção 10 (Referências Cruzadas) é a evidência dessa rastreabilidade.
 
-3. **Estatísticas devem ser contadas, não estimadas.** A Seção 8 (Estatísticas do Projeto) deve conter contagens reais obtidas pela leitura dos documentos-fonte. Contar BRs no 02-BUSINESS-REQUIREMENTS.md, Features no 04-FEATURES.md, User Stories nos arquivos 05-USER-STORYS-*.md.
+3. **Estatísticas devem ser contadas, não estimadas.** A Seção 8 (Estatísticas do Projeto) deve conter contagens reais obtidas pela leitura dos documentos-fonte. Contar BRs no 02-BUSINESS-REQUIREMENTS.md, Features no 04-FEATURES.md, User Stories nos arquivos 05-USER-STORIES-*.md.
 
 4. **Os paths nos links devem ser relativos.** Usar paths relativos (ex: `../../../../../../../business-inputs/business-projects/...`) para que os links funcionem independente da máquina onde o código for clonado.
 

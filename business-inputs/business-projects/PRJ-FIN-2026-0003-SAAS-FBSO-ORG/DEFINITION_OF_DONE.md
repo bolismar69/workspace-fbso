@@ -88,7 +88,7 @@ Uma entrega do projeto (D1 a D7, conforme Project Charter) está **DONE** quando
 | # | Critério adicional de ENTREGA | Como verificar | Evidência |
 |---|-------------------------------|----------------|-----------|
 | E1 | Todas as features planejadas para a entrega estão DONE | Checklist contra o escopo da entrega no Project Charter | 100% das features concluídas |
-| E2 | Os critérios de homologação de negócio (UAT) descritos no BUSINESS-REQUIREMENTS.md para esta entrega foram satisfeitos | Execução dos cenários UAT descritos na Seção 6 do BRD | Cenários UAT executados e aprovados |
+| E2 | Os critérios de homologação de negócio (UAT) descritos no 02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md para esta entrega foram satisfeitos | Execução dos cenários UAT descritos na Seção 6 do BRD | Cenários UAT executados e aprovados |
 | E3 | Os KPIs da entrega (conforme MATRIZ-KPI.md) foram medidos e estão dentro da meta ou com plano de ação para desvios | Medição dos KPIs aplicáveis à entrega | Dashboard de KPIs atualizado |
 | E4 | O Sponsor (Diretoria FBSO.ORG) ou seu representante foi informado da conclusão da entrega e dos resultados dos KPIs | Comunicação formal ao Sponsor com sumário executivo | Status report executivo enviado e acknowledged |
 | E5 | A Matriz de Riscos do projeto (Project Charter, Seção 8) foi revisada: riscos mitigados foram fechados, novos riscos foram identificados | Revisão da matriz de riscos em reunião de governança | Matriz de riscos atualizada |

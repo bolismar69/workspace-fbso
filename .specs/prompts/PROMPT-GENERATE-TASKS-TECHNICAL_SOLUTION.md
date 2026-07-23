@@ -41,7 +41,7 @@ Verificar se existe: {SOLUTION_PATH}/.specs/business-projects/{PROJECT_NAME}/
             │     └── NENHUM → Ler documentos do projeto:
             │           ├── 01-PROJECT-CHARTER-*.md (entregas D1-D7, marcos M1-M7)
             │           ├── 04-FEATURES.md (18 features, 58 user stories)
-            │           ├── 05-USER-STORYS-*.md (critérios de aceitação)
+            │           ├── 05-USER-STORIES-*.md (critérios de aceitação)
             │           ├── TECHNICAL-PLAN.md (sequenciamento, fases)
             │           └── DEFINITION_OF_DONE.md (critérios de DONE)
             │
@@ -73,6 +73,7 @@ Gerar em: `{SOLUTION_PATH}/.specs/business-projects/{PROJECT_NAME}/TASKS.md`
 **Versão do TASKS:** {X.0}
 **Data:** {data atual}
 **Status:** {status}
+**Situação impplementação:** {a ser preenchido pelos processos de desenvolvimento}
 
 ## 1. Visão Geral
 - Total de tarefas, organizadas por marco (M2→M7)

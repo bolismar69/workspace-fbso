@@ -2,10 +2,11 @@
 
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
-- **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.8
-- **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-4 (Frentes 0-4) concluídas ✅. RbacAspect DB-backed via PermissionService com isAdmin() separado de getUserRoles(). Sem fallback JWT para roles de negócio. RLS com FORCE. JWT issuer validation ativa. 4 novas entities + V004 (seed RBAC) + V006 (FK). 213 testes (0 falhas). Sprint 5 Frente 0 concluída ✅. docker-compose.yml + realm-config.json criados.
+- **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
+- **Versão:** 2.9
+- **Data:** 21 de Julho de 2026
+- **Situação implementação:** Em Execução
+- **Status:** [STATUS: COMPLIANCE] — Validado via GATE-ARCHITECTURE-SCOPE em 21/07/2026. 5 dimensões validadas (1 APROVADO, 3 RESSALVAS, 1 REPROVADO corrigido). 8 NCs resolvidas.
 - **Origem:** [PRD.md](./PRD.md)
 - **Débitos Técnicos:** [Sprint 3](./sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) · [Sprint 4](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md) — 56 débitos catalogados (47 novos + 9 backlog)
 - **Escopo:** Estilo arquitetural + C4 L1-L3 + Design detalhado + C4 Deployment + ADRs
@@ -86,7 +87,8 @@ com.fbso.platform.admin/
 ├── config/
 │   ├── SecurityConfig.java              ← Spring Security + JWT
 │   ├── WebConfig.java                   ← CORS, Jackson
-│   └── DataSourceConfig.java            ← HikariCP pool
+│   ├── DataSourceConfig.java            ← HikariCP pool
+│   └── CacheConfig.java                 ← Caffeine Cache (TTL, políticas)
 │
 ├── controller/
 │   ├── TenantController.java            ← /api/v1/tenants
@@ -98,7 +100,8 @@ com.fbso.platform.admin/
 │   ├── ProductController.java           ← /api/v1/products
 │   ├── DashboardController.java         ← /api/v1/dashboard/admin, /client
 │   ├── OnboardingController.java        ← /api/v1/onboarding
-│   └── AuditController.java             ← /api/v1/audit
+│   ├── AuditController.java             ← /api/v1/audit
+│   └── ConfigController.java            ← /api/v1/tenants/me (App Switcher F04-04)
 │
 ├── dto/
 │   ├── request/
@@ -152,6 +155,12 @@ com.fbso.platform.admin/
 │   └── GlobalExceptionHandler.java      ← @ControllerAdvice — RFC 7807
 │
 ├── repository/
+│   ├── common/
+│   │   └── BaseRepository.java          ← Template methods + soft delete + tenant filter
+│   ├── rowmapper/
+│   │   ├── TenantRowMapper.java
+│   │   ├── PlanRowMapper.java
+│   │   └── ... (demais rowmappers)
 │   ├── TenantRepository.java
 │   ├── PlanRepository.java
 │   ├── SubscriptionRepository.java
@@ -362,8 +371,10 @@ flowchart TD
     service -->|"ok"| repo["<b>5. BaseRepository</b><br/>Adiciona AND tenant_id = ?<br/>Adiciona AND deleted_dt IS NULL<br/>Preenche created_by/updated_by"]
     repo -->|"JDBC"| rls["<b>6. PostgreSQL RLS</b><br/>FORCE tenant_id =<br/>current_setting('app.current_tenant_id')<br/>Recusa queries sem filtro"]
     rls --> audit["<b>7. AuditAspect</b><br/>Intercepta @Auditable<br/>Captura snapshot antes/depois<br/>Grava em audit_log (ASSÍNCRONO)"]
-    audit --> res["✅ HTTP Response (JSON)<br/>RFC 7807 em erros"]
+    audit --> res["✅ HTTP Response (JSON)<br/>RFC 7807 em erros<br/>Mensagens em PT-BR (i18n)"]
 ```
+
+> 🌐 **Internacionalização (i18n):** Mensagens de erro e validação em **PT-BR** via `messages_pt_BR.properties` (Spring MessageSource). Preparado para multi-idioma na Fase 1 conforme BR-NFR08 do PRD §6.7.
 
 ---
 
@@ -482,6 +493,39 @@ void tenantIsolation_allEndpoints() {
 
 ---
 
+### 5.4 Estratégia de Cache — Caffeine
+
+| Aspecto | Configuração |
+|:---|:---|
+| **Biblioteca** | Caffeine Cache (`spring-boot-starter-cache`) |
+| **Escopo** | Em processo (in-memory, por instância) |
+| **TTL padrão** | 5 minutos (`expireAfterWrite=5m`) |
+| **Tamanho máximo** | 10.000 entradas (`maximumSize=10000`) |
+| **Política de evicção** | LRU (Least Recently Used) |
+| **O que NÃO é cacheado** | Permissões RBAC (`@RequiresPermission` — consulta sempre em tempo real, RN11-03: "Sem cache TTL") |
+| **O que É cacheado** | Planos ativos, módulos de plano, catálogo de produtos (baixa mutabilidade), resultados de dashboard (agregados com TTL curto) |
+| **Invalidação** | `@CacheEvict` nos endpoints de criação/atualização/soft delete. Padrão: `allEntries = true` para listas |
+| **Health Check** | Cache metrics via Actuator (`/actuator/metrics/cache.*`) |
+
+```java
+@Configuration
+@EnableCaching
+public class CacheConfig {
+    @Bean
+    public CacheManager cacheManager() {
+        CaffeineCacheManager manager = new CaffeineCacheManager();
+        manager.setCaffeine(Caffeine.newBuilder()
+            .expireAfterWrite(5, java.util.concurrent.TimeUnit.MINUTES)
+            .maximumSize(10_000));
+        return manager;
+    }
+}
+```
+
+> 💡 **ADR implícito:** Cache local (Caffeine) em vez de cache distribuído (Redis). Justificativa: simplicidade operacional para Fase 0. Redis será reavaliado na Fase 1 se houver necessidade de invalidação entre instâncias (>3 em PRD).
+
+---
+
 ## 6. Design de Persistência
 
 ### 6.1 BaseRepository — Template com Soft Delete
@@ -596,6 +640,8 @@ public class GlobalExceptionHandler {
 
 ### 8.1 Pirâmide de Testes
 
+**Cobertura mínima:** 80% de cobertura de linha (JaCoCo) para código de negócio (`service/`, `repository/`, `security/aspect/`). DTOs, enums e classes de configuração são excluídos da métrica.
+
 ```mermaid
 flowchart TD
     e2e["<b>🔷 E2E</b><br/>Playwright<br/>Frontend + Backend integrados<br/><i>poucos testes, cenários críticos</i>"]
@@ -654,7 +700,13 @@ class TenantIsolationIntegrationTest {
 
 ## 9. Decisões de Design (ADRs Locais)
 
-> **Nota:** ADRs locais usam prefixo `ADR-Lxx`. O PRD.md §5.2 referencia estas mesmas decisões com prefixo `ADR-xx`. Mapeamento: ADR-01=ADR-L01, ADR-02=ADR-L02, ADR-04=ADR-L04, ADR-05=ADR-L05, ADR-06=ADR-L06, ADR-07=ADR-L07, ADR-08=ADR-L07. ADR-03 foi pulado (reservado para decisão futura).
+> **Nota:** ADRs locais usam prefixo `ADR-Lxx`. Os ADRs globais do projeto estão documentados no [TECHNICAL-PLAN.md](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-PLAN.md) §2.3 e no [ARCHITECTURE.md do projeto](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/ARCHITECTURE.md) §4. 
+> 
+> **Mapeamento Global → Local:** ADR-01 (Shared Database) → ADR-L07 (RLS) + TenantContext, ADR-02 (Java+Spring Boot) → stack, ADR-04 (Keycloak) → JwtAuthenticationFilter, ADR-05 (Soft Delete) → BaseRepository + BaseEntity, ADR-07 (JWT Stateless) → TenantContext ThreadLocal, ADR-08 (RLS) → ADR-L07.
+>
+> **ADRs exclusivamente locais:** ADR-L01 (JDBC Template), ADR-L02 (AOP cross-cutting), ADR-L03 (Auditoria assíncrona), ADR-L04 (RFC 7807), ADR-L05 (Índices parciais), ADR-L06 (Package-by-Layer). Estes não possuem ADR global correspondente — são decisões de implementação do microserviço.
+>
+> ADR-03 foi pulado (reservado para decisão futura).
 
 | ID | Decisão | Justificativa |
 |:---|:---|:---|
@@ -875,6 +927,7 @@ flowchart LR
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.9 | 21/07/2026 | **GATE-ARCHITECTURE-SCOPE COMPLIANCE:** Validação em 5 dimensões (1 APROVADO, 3 RESSALVAS, 1 REPROVADO corrigido). 8 NCs resolvidas: CacheConfig + rowmapper/ na estrutura (§2), ConfigController (F04-04 App Switcher) adicionado (§2), i18n/PT-BR documentado (§4), mapeamento ADRs globais↔locais corrigido (§9), Cache §5.4 — Caffeine com TTL/invalidação/escopo, JaCoCo 80% declarado (§8.1). Pendências externas: INTEGRATION-MAP.md (SMTP+Observabilidade) e business-inputs/ARCHITECTURE.md (package-by-domain→layer). Status: COMPLIANCE. | Agente GATE-ARCHITECTURE-SCOPE/IA |
 | 2.8 | 17/07/2026 | Sprint 5 Frente 0 concluida: docker-compose (Keycloak 26 + PG 17 + MailHog), realm-config.json (4 roles, 3 custom claims). SecurityConfig com 2 SecurityFilterChain beans (@Order). ADR-04: OAuth2 Client Authorization Code Flow documentado. Stack: Flyway 12.11.0, PG driver 42.7.11. | Agente IA |
 | 2.7 | 17/07/2026 | Sprint 5 planejada: stack atualizado (Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client). Novos pacotes planejados: auth/, onboarding/, dashboard/client/. ADR-04 expandido com Authorization Code Flow. Referência: [IDENTIFIED-TECHNICAL-DEBT-sprint-05](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md). | Agente IA |
 | 2.5 | 17/07/2026 | **Sprint 4 Frente 0 concluída:** RbacAspect DB-backed com PermissionService (matriz RN10-01 do banco, sem Sets hardcoded). RLS com FORCE ROW LEVEL SECURITY nas 4 tabelas (ADR-L07 atualizado). JWT issuer validation ativa. Caffeine Cache + REST Assured adicionados. Pipeline de segurança atualizado (§4). 4 novas entities (User, ResourceAction, RoleResource, BusinessUnit). Migrations V004 (seed RBAC) + V006 (FK). [Detalhes](sprints/sprint-04-rbac/SPRINT-4-EXECUTION-REPORT-Frente-0.md) | Agente IA |

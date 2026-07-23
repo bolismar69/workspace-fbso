@@ -12,7 +12,7 @@
 Este projeto segue a cadeia de desdobramento de negócios:
 
 ```
-[Estratégico] PROJECT-CHARTER  →  [Escopo] REQUIREMENTS  →  [Macro-Escopo] EPICS  →  [Funcional] FEATURES  →  [Execução] USER-STORYS
+[Estratégico] PROJECT-CHARTER  →  [Escopo] REQUIREMENTS  →  [Macro-Escopo] EPICS  →  [Funcional] FEATURES  →  [Execução] USER-STORIES
 ```
 
 Cada nível referencia explicitamente o nível anterior via marcadores `[INDEX]`, garantindo rastreabilidade completa da diretriz estratégica até o critério de aceite.
@@ -32,9 +32,9 @@ flowchart TD
     classDef features fill:#4A5568,stroke:#2D3748,stroke-width:1px,color:#FFF;
 
     %% Nós Principais
-    PC[01-PROJECT-CHARTER.md<br>Termo de Abertura do Projeto]:::corporativo
-    REQ[02-BUSINESS-REQUIREMENTS.md<br>12 Requisitos de Negócio + 8 NFRs]:::corporativo
-    EPICS[03-EPICS.md<br>4 Épicos]:::corporativo
+    PC[01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md<br>Termo de Abertura do Projeto]:::corporativo
+    REQ[02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md<br>12 Requisitos de Negócio + 8 NFRs]:::corporativo
+    EPICS[03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md<br>4 Épicos]:::corporativo
 
     %% Épicos
     E1[EP-01: Portal Administrativo Interno]:::entrega1
@@ -109,31 +109,32 @@ flowchart TD
 
 | Documento | Descrição | Status |
 |:---|:---|:---|
-| [01-PROJECT-CHARTER-FBSO-PLATFORM.md](./01-PROJECT-CHARTER-FBSO-PLATFORM.md) | Termo de Abertura do Projeto — Versão 1.0 (Visão de Negócios Pura / Alta Gestão). 7 entregas (D1-D7), 7 marcos (M1-M7), 8 stakeholders. | ✅ Aprovado |
+| [01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](./01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | Termo de Abertura do Projeto — Versão 1.0 (Visão de Negócios Pura / Alta Gestão). 7 entregas (D1-D7), 7 marcos (M1-M7), 8 stakeholders. | ✅ Aprovado |
 
 ### 3.2 Nível de Escopo — Requisitos
 
 | Documento | Descrição | Status |
 |:---|:---|:---|
-| [02-BUSINESS-REQUIREMENTS.md](./02-BUSINESS-REQUIREMENTS.md) | 10 Requisitos Funcionais de Negócio (BR-A01 a BR-B05) em 2 Blocos + 8 Requisitos Não-Funcionais (BR-NFR01 a BR-NFR08) | ✅ Aprovado |
+| [02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](./02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 10 Requisitos Funcionais de Negócio (BR-A01 a BR-B05) em 2 Blocos + 8 Requisitos Não-Funcionais (BR-NFR01 a BR-NFR08) | ✅ Aprovado |
 
 ### 3.3 Nível Macro-Escopo — Épicos
 
 | Documento | Descrição | Épicos | Status |
 |:---|:---|:---|:---|
-| [03-EPICS.md](./03-EPICS.md) | 4 Épicos: Portal Administrativo, Gestão de Clientes e Assinaturas, Governança de Acessos, Experiência do Cliente e Autoatendimento | EP-01 a EP-04 | ✅ Aprovado |
+| [03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](./03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 4 Épicos: Portal Administrativo, Gestão de Clientes e Assinaturas, Governança de Acessos, Experiência do Cliente e Autoatendimento | EP-01 a EP-04 | ✅ Aprovado |
 
 ### 3.4 Nível Funcional — Features
 
 | Documento | Descrição | Features | Status |
 |:---|:---|:---|:---|
-| [04-FEATURES.md](./04-FEATURES.md) | 18 Features (3 EP-01 + 5 EP-02 + 4 EP-03 + 6 EP-04) com 58 User Stories e Regras de Negócio | ✅ Aprovado |
+| [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](./04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 18 Features (3 EP-01 + 5 EP-02 + 4 EP-03 + 6 EP-04) com 58 User Stories e Regras de Negócio | ✅ Aprovado |
 
 ### 3.5 Nível de Governança e Métricas
 
 | Documento | Descrição | Status |
 |:---|:---|:---|
 | [MATRIZ-KPI.md](./MATRIZ-KPI.md) | 12 KPIs em 4 dimensões: Adoção e Autonomia (A), Operação e Governança (O), Satisfação e Qualidade (S), Prontidão para o Futuro (P) | ✅ Atualizado |
+| [05-MATRIZ-RASTREABILIDADE-RTM.md](./05-MATRIZ-RASTREABILIDADE-RTM.md) | Matriz de rastreabilidade completa: 7 entregas (D1-D7) → 4 épicos → 18 features → 18 user stories. Cobertura 100%, 0 órfãos. | ✅ Atualizado |
 | [DEFINITION_OF_DONE.md](./DEFINITION_OF_DONE.md) | DoD com 3 níveis: User Story (12 critérios), Feature (5 critérios), Entrega (6 critérios) — visão de negócios | ✅ Atualizado |
 | [STAKEHOLDER-MAP.md](./STAKEHOLDER-MAP.md) | Mapa de stakeholders (8 partes interessadas), matriz RACI por entrega (D1-D7), canais de comunicação e escalation path | ✅ Atualizado |
 | [GLOSSARY.md](./GLOSSARY.md) | Termos específicos do projeto: conceitos da plataforma, entidades de negócio, módulos, perfis de acesso, fases, métricas | ✅ Atualizado |
@@ -152,24 +153,24 @@ flowchart TD
 
 | Documento | Feature | Épico | US | Data-Alvo | Status |
 |:---|:---|:---|:---:|:---|:---|
-| [05-USER-STORYS-01-1-DASHBOARD-METRICAS-OPERACIONAIS.md](./05-USER-STORYS-01-1-DASHBOARD-METRICAS-OPERACIONAIS.md) | F01-01 — Dashboard de Métricas Operacionais | EP-01 | 3 | 15/08/2026 | ✅ Pronto |
-| [05-USER-STORYS-01-2-VISAO-CONTAS-FILTROS.md](./05-USER-STORYS-01-2-VISAO-CONTAS-FILTROS.md) | F01-02 — Visão de Contas com Filtros | EP-01 | 2 | 15/08/2026 | ✅ Pronto |
-| [05-USER-STORYS-01-3-ALERTAS-INDICADORES-ATENCAO.md](./05-USER-STORYS-01-3-ALERTAS-INDICADORES-ATENCAO.md) | F01-03 — Alertas e Indicadores de Atenção | EP-01 | 2 | 15/08/2026 | ✅ Pronto |
-| [05-USER-STORYS-02-1-CADASTRO-ATIVACAO-CONTAS-CLIENTES.md](./05-USER-STORYS-02-1-CADASTRO-ATIVACAO-CONTAS-CLIENTES.md) | F02-01 — Cadastro e Ativação de Contas | EP-02 | 4 | 31/08/2026 | ✅ Pronto |
-| [05-USER-STORYS-02-2-GESTAO-STATUS-TENANT.md](./05-USER-STORYS-02-2-GESTAO-STATUS-TENANT.md) | F02-02 — Gestão de Status do Tenant | EP-02 | 3 | 31/08/2026 | ✅ Pronto |
-| [05-USER-STORYS-02-3-CONFIGURACAO-PLANOS-COMERCIAIS.md](./05-USER-STORYS-02-3-CONFIGURACAO-PLANOS-COMERCIAIS.md) | F02-03 — Configuração de Planos Comerciais | EP-02 | 4 | 31/08/2026 | ✅ Pronto |
-| [05-USER-STORYS-02-4-VINCULACAO-GESTAO-ASSINATURAS.md](./05-USER-STORYS-02-4-VINCULACAO-GESTAO-ASSINATURAS.md) | F02-04 — Vinculação e Gestão de Assinaturas | EP-02 | 3 | 31/08/2026 | ✅ Pronto |
-| [05-USER-STORYS-02-5-HISTORICO-AUDITORIA-ADMINISTRATIVA.md](./05-USER-STORYS-02-5-HISTORICO-AUDITORIA-ADMINISTRATIVA.md) | F02-05 — Histórico de Auditoria | EP-02 | 2 | 31/08/2026 | ✅ Pronto |
-| [05-USER-STORYS-03-1-CADASTRO-CONVITE-USUARIOS.md](./05-USER-STORYS-03-1-CADASTRO-CONVITE-USUARIOS.md) | F03-01 — Cadastro e Convite de Usuários | EP-03 | 3 | 15/09/2026 | ✅ Pronto |
-| [05-USER-STORYS-03-2-DEFINICAO-PAPEIS-PERMISSOES-RBAC.md](./05-USER-STORYS-03-2-DEFINICAO-PAPEIS-PERMISSOES-RBAC.md) | F03-02 — Definição de Papéis e Permissões (RBAC) | EP-03 | 4 | 15/09/2026 | ✅ Pronto |
-| [05-USER-STORYS-03-3-VINCULACAO-USUARIO-UNIDADE-MODULO.md](./05-USER-STORYS-03-3-VINCULACAO-USUARIO-UNIDADE-MODULO.md) | F03-03 — Vinculação Usuário × Unidade × Módulo | EP-03 | 3 | 15/09/2026 | ✅ Pronto |
-| [05-USER-STORYS-03-4-CONTROLE-VISIBILIDADE-MENUS-ACOES.md](./05-USER-STORYS-03-4-CONTROLE-VISIBILIDADE-MENUS-ACOES.md) | F03-04 — Controle de Visibilidade de Menus e Ações | EP-03 | 3 | 15/09/2026 | ✅ Pronto |
-| [05-USER-STORYS-04-1-AUTENTICACAO-RECUPERACAO-SENHA.md](./05-USER-STORYS-04-1-AUTENTICACAO-RECUPERACAO-SENHA.md) | F04-01 — Autenticação e Recuperação de Senha | EP-04 | 3 | 30/09/2026 | ✅ Pronto |
-| [05-USER-STORYS-04-2-ONBOARDING-GUIADO-PRIMEIRO-ACESSO.md](./05-USER-STORYS-04-2-ONBOARDING-GUIADO-PRIMEIRO-ACESSO.md) | F04-02 — Onboarding Guiado de Primeiro Acesso | EP-04 | 5 | 30/09/2026 | ✅ Pronto |
-| [05-USER-STORYS-04-3-DASHBOARD-CLIENTE.md](./05-USER-STORYS-04-3-DASHBOARD-CLIENTE.md) | F04-03 — Dashboard do Cliente | EP-04 | 2 | 30/09/2026 | ✅ Pronto |
-| [05-USER-STORYS-04-4-APP-SWITCHER-SELETOR-MODULOS.md](./05-USER-STORYS-04-4-APP-SWITCHER-SELETOR-MODULOS.md) | F04-04 — App Switcher (Seletor de Módulos) | EP-04 | 3 | 30/09/2026 | ✅ Pronto |
-| [05-USER-STORYS-04-5-GESTAO-UNIDADES-NEGOCIO.md](./05-USER-STORYS-04-5-GESTAO-UNIDADES-NEGOCIO.md) | F04-05 — Gestão de Unidades de Negócio | EP-04 | 5 | 15/10/2026 | ✅ Pronto |
-| [05-USER-STORYS-04-6-CATALOGO-PRODUTOS-SERVICOS.md](./05-USER-STORYS-04-6-CATALOGO-PRODUTOS-SERVICOS.md) | F04-06 — Catálogo de Produtos e Serviços | EP-04 | 4 | 15/10/2026 | ✅ Pronto |
+| [05-USER-STORIES-01-1-DASHBOARD-METRICAS-OPERACIONAIS.md](./user-stories/05-USER-STORIES-01-1-DASHBOARD-METRICAS-OPERACIONAIS.md) | F01-01 — Dashboard de Métricas Operacionais | EP-01 | 3 | 15/08/2026 | ✅ Pronto |
+| [05-USER-STORIES-01-2-VISAO-CONTAS-FILTROS.md](./user-stories/05-USER-STORIES-01-2-VISAO-CONTAS-FILTROS.md) | F01-02 — Visão de Contas com Filtros | EP-01 | 2 | 15/08/2026 | ✅ Pronto |
+| [05-USER-STORIES-01-3-ALERTAS-INDICADORES-ATENCAO.md](./user-stories/05-USER-STORIES-01-3-ALERTAS-INDICADORES-ATENCAO.md) | F01-03 — Alertas e Indicadores de Atenção | EP-01 | 2 | 15/08/2026 | ✅ Pronto |
+| [05-USER-STORIES-02-1-CADASTRO-ATIVACAO-CONTAS-CLIENTES.md](./user-stories/05-USER-STORIES-02-1-CADASTRO-ATIVACAO-CONTAS-CLIENTES.md) | F02-01 — Cadastro e Ativação de Contas | EP-02 | 4 | 31/08/2026 | ✅ Pronto |
+| [05-USER-STORIES-02-2-GESTAO-STATUS-TENANT.md](./user-stories/05-USER-STORIES-02-2-GESTAO-STATUS-TENANT.md) | F02-02 — Gestão de Status do Tenant | EP-02 | 3 | 31/08/2026 | ✅ Pronto |
+| [05-USER-STORIES-02-3-CONFIGURACAO-PLANOS-COMERCIAIS.md](./user-stories/05-USER-STORIES-02-3-CONFIGURACAO-PLANOS-COMERCIAIS.md) | F02-03 — Configuração de Planos Comerciais | EP-02 | 4 | 31/08/2026 | ✅ Pronto |
+| [05-USER-STORIES-02-4-VINCULACAO-GESTAO-ASSINATURAS.md](./user-stories/05-USER-STORIES-02-4-VINCULACAO-GESTAO-ASSINATURAS.md) | F02-04 — Vinculação e Gestão de Assinaturas | EP-02 | 3 | 31/08/2026 | ✅ Pronto |
+| [05-USER-STORIES-02-5-HISTORICO-AUDITORIA-ADMINISTRATIVA.md](./user-stories/05-USER-STORIES-02-5-HISTORICO-AUDITORIA-ADMINISTRATIVA.md) | F02-05 — Histórico de Auditoria | EP-02 | 2 | 31/08/2026 | ✅ Pronto |
+| [05-USER-STORIES-03-1-CADASTRO-CONVITE-USUARIOS.md](./user-stories/05-USER-STORIES-03-1-CADASTRO-CONVITE-USUARIOS.md) | F03-01 — Cadastro e Convite de Usuários | EP-03 | 3 | 15/09/2026 | ✅ Pronto |
+| [05-USER-STORIES-03-2-DEFINICAO-PAPEIS-PERMISSOES-RBAC.md](./user-stories/05-USER-STORIES-03-2-DEFINICAO-PAPEIS-PERMISSOES-RBAC.md) | F03-02 — Definição de Papéis e Permissões (RBAC) | EP-03 | 4 | 15/09/2026 | ✅ Pronto |
+| [05-USER-STORIES-03-3-VINCULACAO-USUARIO-UNIDADE-MODULO.md](./user-stories/05-USER-STORIES-03-3-VINCULACAO-USUARIO-UNIDADE-MODULO.md) | F03-03 — Vinculação Usuário × Unidade × Módulo | EP-03 | 3 | 15/09/2026 | ✅ Pronto |
+| [05-USER-STORIES-03-4-CONTROLE-VISIBILIDADE-MENUS-ACOES.md](./user-stories/05-USER-STORIES-03-4-CONTROLE-VISIBILIDADE-MENUS-ACOES.md) | F03-04 — Controle de Visibilidade de Menus e Ações | EP-03 | 3 | 15/09/2026 | ✅ Pronto |
+| [05-USER-STORIES-04-1-AUTENTICACAO-RECUPERACAO-SENHA.md](./user-stories/05-USER-STORIES-04-1-AUTENTICACAO-RECUPERACAO-SENHA.md) | F04-01 — Autenticação e Recuperação de Senha | EP-04 | 3 | 30/09/2026 | ✅ Pronto |
+| [05-USER-STORIES-04-2-ONBOARDING-GUIADO-PRIMEIRO-ACESSO.md](./user-stories/05-USER-STORIES-04-2-ONBOARDING-GUIADO-PRIMEIRO-ACESSO.md) | F04-02 — Onboarding Guiado de Primeiro Acesso | EP-04 | 5 | 30/09/2026 | ✅ Pronto |
+| [05-USER-STORIES-04-3-DASHBOARD-CLIENTE.md](./user-stories/05-USER-STORIES-04-3-DASHBOARD-CLIENTE.md) | F04-03 — Dashboard do Cliente | EP-04 | 2 | 30/09/2026 | ✅ Pronto |
+| [05-USER-STORIES-04-4-APP-SWITCHER-SELETOR-MODULOS.md](./user-stories/05-USER-STORIES-04-4-APP-SWITCHER-SELETOR-MODULOS.md) | F04-04 — App Switcher (Seletor de Módulos) | EP-04 | 3 | 30/09/2026 | ✅ Pronto |
+| [05-USER-STORIES-04-5-GESTAO-UNIDADES-NEGOCIO.md](./user-stories/05-USER-STORIES-04-5-GESTAO-UNIDADES-NEGOCIO.md) | F04-05 — Gestão de Unidades de Negócio | EP-04 | 5 | 15/10/2026 | ✅ Pronto |
+| [05-USER-STORIES-04-6-CATALOGO-PRODUTOS-SERVICOS.md](./user-stories/05-USER-STORIES-04-6-CATALOGO-PRODUTOS-SERVICOS.md) | F04-06 — Catálogo de Produtos e Serviços | EP-04 | 4 | 15/10/2026 | ✅ Pronto |
 
 ---
 

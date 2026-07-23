@@ -213,7 +213,7 @@ Se o veredito for **REPROVADO** ou **RESSALVA**, gerar o relatório:
 
 4. **Revalidação obrigatória.** Após correção do PRD.md, este gate DEVE ser reexecutado para garantir que as não-conformidades foram resolvidas e que novas não foram introduzidas.
 
-5. **Independência do validador.** O agente GATE não corrige o PRD.md — ele apenas valida e reporta. A correção é responsabilidade do Agente PRD (via PROMPT-FIX-PRD-FROM-GATE.md).
+5. **Independência do validador.** O agente GATE não corrige o PRD.md — ele apenas valida e reporta. A correção é responsabilidade do Agente PRD (via PROMPT-FIX-PRD-TECHNICAL_SOLUTION.md).
 
 ---
 

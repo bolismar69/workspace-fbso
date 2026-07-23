@@ -381,6 +381,18 @@ Implemente as tarefas da **Sprint {SPRINT_NUMBER} — {SPRINT_NAME}** seguindo o
     > - URLs, portas e credenciais devem ser **explícitas** (não usar placeholders)
     > - Se a ação exigir uma ordem específica, **numerar** os passos
 
+    ## 7. Provenientes de Testes de Validação de Qualidade:
+
+    | Task | Mensagem exata | Suspeita | Proposta solução |
+    |:-----|:---------------|:---------|:----------------:|
+    | <se estiver associada a uma task> | <mensagem exata do erro/falha> | Suspeita do motivo (limitação arquitetural, ambiguidade na SPECS.md, conflito de dependências, etc.) | Propostas adicionais de solução (se houver) |
+
+    ## 8. Provenientes de Code Review:
+
+    | Task | Mensagem exata | Suspeita | Proposta solução | Skills |
+    |:-----|:---------------|:---------|:-----------------|-------:|
+    | <se estiver associada a uma task> | <mensagem exata do erro/falha> | <Suspeita do motivo (limitação arquitetural, ambiguidade na SPECS.md, conflito de dependências, etc.)> | <Propostas adicionais de solução (se houver)> | <Skills que identificaram a falha> |
+
     ## Rodapé
     [Indicação de geração por IA, data/hora]
     ```
@@ -562,7 +574,7 @@ Se algum teste falhar durante a execução:
     SE houver findings de QUALQUER skill da Fase 7:
     
       ├── 21.1 GERAR o relatório consolidado:
-      │       {SPRINT_DIR}/PONYTAIL-REPORT-ADJUST-SPRINT-{SPRINT_NUMBER}.md
+      │       {SPRINT_DIR}/SPRINT-CODE-REVIEW-{nome-da-fase}.md
       │
       ├── 21.2 CONSOLIDAR os achados das sete auditorias no relatório,
       │       agrupando por arquivo e priorizando por severidade
@@ -574,10 +586,10 @@ Se algum teste falhar durante a execução:
       └── PULAR para a Fase 8 (Pós-implementação — Sanity Check)
     ```
 
-    #### Estrutura do `PONYTAIL-REPORT-ADJUST-SPRINT-{N}.md`
+    #### Estrutura do `SPRINT-CODE-REVIEW-{nome-da-fase}.md`
 
     ```markdown
-    # PONYTAIL-REPORT-ADJUST-SPRINT-{N} — Relatório de Ajustes Pós-Code Review
+    # SPRINT-CODE-REVIEW-{nome-da-fase}.md — Relatório de Ajustes Pós-Code Review
 
     [Header: solução, projeto, sprint, stack detectada, data da revisão]
 
@@ -677,7 +689,7 @@ Se algum teste falhar durante a execução:
 22. **Executar ajustes a partir do relatório:**
 
     ```
-    PARA cada achado no PONYTAIL-REPORT-ADJUST-SPRINT-{N}.md, na ordem do plano (§9):
+    PARA cada achado no SPRINT-CODE-REVIEW-{nome-da-fase}.md, na ordem do plano (§9):
         │
         ├── 1. APLICAR a correção recomendada no código-fonte
         ├── 2. MARCAR o achado como concluído no relatório (§10)

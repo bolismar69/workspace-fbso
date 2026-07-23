@@ -51,7 +51,7 @@ Verificar se existe: {SOLUTION_PATH}/.specs/business-projects/{PROJECT_NAME}/
             │           ├── 02-BUSINESS-REQUIREMENTS.md (BRs funcionais, NFRs)
             │           ├── 03-EPICS.md (épicos, jornadas, personas)
             │           ├── 04-FEATURES.md (features, user stories, regras de negócio)
-            │           ├── 05-USER-STORYS-*.md (critérios de aceitação detalhados)
+            │           ├── 05-USER-STORIES-*.md (critérios de aceitação detalhados)
             │           ├── TECHNICAL-PLAN.md (stack, ERD, decisões técnicas)
             │           ├── ARCHITECTURE.md (C4, ADRs, pipeline de segurança)
             │           ├── API-CONTRACTS.md (contratos de API — para backend)
@@ -98,6 +98,7 @@ Gerar o arquivo em:
 **Versão do SPECS:** {X.0}
 **Data:** {data atual}
 **Status:** {status}
+**Situação impplementação:** {a ser preenchido pelos processos de desenvolvimento}
 
 ## 1. Visão Geral da Solução
 - Parágrafo descrevendo o propósito da solução no contexto do projeto

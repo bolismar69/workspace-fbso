@@ -36,7 +36,7 @@ Verificar: {SOLUTION_PATH}/.specs/business-projects/{PROJECT_NAME}/
     │
     └── SIM →
             ├── Ler PRD.md + SPECS.md + ARCHITECTURE.md (se existirem)
-            ├── Fallback: docs do projeto (FEATURES, USER-STORYS, DEFINITION_OF_DONE)
+            ├── Fallback: docs do projeto (FEATURES, USER-STORIES, DEFINITION_OF_DONE)
             │
             └── TEST_PLAN.md existe?
                   ├── SIM + SCOPE=full → Regenerar
