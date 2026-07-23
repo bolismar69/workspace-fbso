@@ -62,6 +62,9 @@ public class SecurityConfig {
     @Value("${app.cors.allowed-origins:http://localhost:3000,https://app.fbso.org}")
     private String allowedOrigins;
 
+    @Value("${app.rate-limit.trusted-proxy-ips:127.0.0.1,0:0:0:0:0:0:0:1}")
+    private String trustedProxyIpsCsv;
+
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
                           ObjectMapper objectMapper) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
@@ -179,7 +182,10 @@ public class SecurityConfig {
 
     @Bean
     public RateLimitFilter rateLimitFilter() {
-        return new RateLimitFilter(objectMapper);
+        List<String> trustedProxyIps = trustedProxyIpsCsv.isBlank()
+                ? List.of()
+                : Arrays.asList(trustedProxyIpsCsv.split(","));
+        return new RateLimitFilter(objectMapper, trustedProxyIps);
     }
 
     /**

@@ -3,10 +3,26 @@
 - **Sprint:** 6 de 7
 - **Origem:** [TEST_PLAN.md](../../TEST_PLAN.md) §3.17 a §3.18 + §4.2
 - **Features:** F04-05 a F04-06 (2 features)
-- **Total de cenários:** 17
+- **Status:** 🔄 Em Execução — Frente 0 concluída ✅ (4/4). 261 testes totais (0 failures, +34 CnpjValidator). Code review: 7 skills, 12 findings, HIGH-1 corrigido.
+- **Total de cenários:** 17 (features) + 4 (multi-tenant) + 3 (isolamento sprint) + 45 (CnpjValidator F0) = 69 total
 
 ---
 
+
+## 0. Frente 0 — Testes Concluídos ✅ | 23/07/2026
+
+| ID | Descrição | Nível | Resultado |
+|:---|:---|:---|:---:|
+| TC-F0-CNPJ-001 | CNPJs numéricos válidos (5) | Unit | ✅ 5/5 |
+| TC-F0-CNPJ-002 | CNPJs alfanuméricos válidos (11 — IN RFB 2.119/2022) | Unit | ✅ 11/11 |
+| TC-F0-CNPJ-003 | CNPJs numéricos inválidos (6) | Unit | ✅ 6/6 |
+| TC-F0-CNPJ-004 | CNPJs alfanuméricos inválidos (5) | Unit | ✅ 5/5 |
+| TC-F0-CNPJ-005 | Entradas nulas/vazias (5) | Unit | ✅ 5/5 |
+| TC-F0-CNPJ-006 | calculaDV — pesos e dígitos (6) | Unit | ✅ 6/6 |
+| TC-F0-CNPJ-007 | strip — remoção de formatação (3) | Unit | ✅ 3/3 |
+| TC-F0-CNPJ-008 | format — formatação com máscara (4) | Unit | ✅ 4/4 |
+
+**CnpjValidatorTest:** 45/45 ✅. Algoritmo unificado `(int) char - (int) '0'` suporta numérico e alfanumérico (IN RFB 2.119/2022, Jul/2026).
 
 ## 1. F04-05: Unidades de Negócio (9 cenários)
 
@@ -59,13 +75,15 @@
 
 ## 📊 Resumo
 
-| Nível | Cenários |
-|:---|:---:|
-| Unit | 7 |
-| Integração | 9 |
-| E2E | 2 |
-| Segurança | 5 |
-| **Total** | **23** |
+| Nível | Frente 0 ✅ | Features ⬜ | Total |
+|:---|:---:|:---:|:---:|
+| Unit | 45 (CnpjValidator) | 7 | 52 |
+| Integração | — | 9 | 9 |
+| E2E | — | 2 | 2 |
+| Segurança | — | 5 | 5 |
+| **Total** | **45** | **23** | **68** |
+
+**Testes totais no projeto:** 261 (0 failures, 1 pre-existing error DT-136)
 
 ---
 
@@ -84,4 +102,4 @@
 
 ---
 
-🤖 *Extraído de TEST_PLAN.md v2.0. O isolamento multi-tenant (T-077) é o diferencial desta sprint.*
+🤖 *Extraído de TEST_PLAN.md v3.3. Frente 0 concluída em 23/07/2026: 45/45 CnpjValidator. O isolamento multi-tenant (T-077) é o diferencial desta sprint.*

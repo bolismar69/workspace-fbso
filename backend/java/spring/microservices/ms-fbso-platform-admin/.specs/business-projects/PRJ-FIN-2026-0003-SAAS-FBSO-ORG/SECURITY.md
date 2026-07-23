@@ -3,9 +3,9 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + Spring Security + Keycloak
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.1
-- **Data:** 21 de Julho de 2026
-- **Situação implementação:** Em Execução
+- **Versão:** 1.3
+- **Data:** 23 de Julho de 2026
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). Sprint 6 Frente 0 concluída ✅ (4/4 — BusinessUnit, ProductService, CnpjValidator, validateBusinessUnitTenant). 26 endpoints REST. 4 features F04-01 a F04-04 entregues. 261 testes (0 failures). Correções de segurança aplicadas: URL injection ×2 (AuthService), IDOR resetPassword com Caffeine tokens, UUID validation em inputs, IDOR cross-tenant em assignRole.
 - **Status:** [STATUS: COMPLIANCE] — Validado via GATE-SECURITY-SCOPE em 21/07/2026. 5 dimensões validadas (1 APROVADO, 4 RESSALVAS). 5 NCs corrigidas.
 - **Origem:** [PRD.md](./PRD.md) + [ARCHITECTURE.md](./ARCHITECTURE.md) + [GLOBAL-SECURITY.md](../../../../../../.specs/security/GLOBAL-SECURITY.md)
 - **Referência Normativa:** [GLOBAL-SECURITY.md](../../../../../../.specs/security/GLOBAL-SECURITY.md) — Regras de Ouro e Checklist SDD
@@ -494,6 +494,8 @@ Conforme GLOBAL-SECURITY.md: reportar vulnerabilidades para **org-fbso@gmail.com
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.3 | 23/07/2026 | **Sprint 6 Frente 0 concluída:** validateBusinessUnitTenant() — IDOR cross-tenant bloqueado no assignRole() via TenantIsolationException. CnpjValidator — algoritmo unificado numérico+alfanumérico (IN RFB 2.119/2022) com 45 testes. BusinessUnit.java alinhada ao schema (16 campos). ProductService.java entity criada. 261 testes (0 failures). Code review: 7 skills, 12 findings. | Agente IA |
+| 1.2 | 23/07/2026 | **Sprint 5 Frentes 1-3a concluídas:** AuthService — correção URL injection ×2 (UUID validation + URLEncoder nos inputs de login/reset). ResetPassword — IDOR mitigado com tokens Caffeine (1h TTL, single-use, tenant-scoped). Rate limiting implementado (RateLimitFilter, 5 tentativas→15min bloqueio). AuthMe endpoint stateless. Status atualizado no header. | Agente IA |
 | 1.1 | 21/07/2026 | **GATE-SECURITY-SCOPE COMPLIANCE:** Validação em 5 dimensões (1 APROVADO, 4 RESSALVAS). 5 NCs corrigidas: §1.4 pipeline unificado (fluxo 8 etapas), §3.6 estratégia de cache Caffeine (TTL/invalidação/escopo), §4.1 algoritmos criptografia (AES-256-XTS/GCM + logs), §4.2 TLS 1.2+ PG + mTLS postergado, §11.5 Security ADRs (6 decisões com contexto/alternativas/justificativa). Status: COMPLIANCE. | Agente GATE-SECURITY-SCOPE/IA |
 | 1.0 | 21/07/2026 | Criação inicial: 12 seções — visão geral, threat model STRIDE, autenticação/autorização (JWT+RBAC+RLS), proteção de dados (TLS+bcrypt+LGPD), segurança de API (rate limit+CORS+Bean Validation), OWASP Top 10, SCA (Dependabot+SLSA), pipeline DevSecOps (SAST+Secret Scanning), infraestrutura (WAF+Vault+hardening), checklist SDD (GLOBAL-SECURITY.md), resposta a incidentes, changelog. Status: aguardando GATE. | Agente Arquiteto de Segurança/IA |
 

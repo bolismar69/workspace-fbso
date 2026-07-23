@@ -96,7 +96,7 @@ class OnboardingServiceTest {
         @DisplayName("deve avançar para STEP2_DONE com CNPJ válido")
         void shouldAdvanceWithValidCnpj() {
             tenant.setOnboardingStep(OnboardingService.STEP1_DONE);
-            var req = new OnboardingStep2Request("11222333444455", "SIMPLES_NACIONAL");
+            var req = new OnboardingStep2Request("11222333000181", "SIMPLES_NACIONAL");
             var result = service.completeStep2(tenantId, req);
             assertThat(result.currentStep()).isEqualTo(OnboardingService.STEP2_DONE);
             assertThat(result.progressPercent()).isEqualTo(50);

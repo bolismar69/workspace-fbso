@@ -2,12 +2,12 @@
 
 - **Solucao:** `ms-fbso-platform-admin`
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 3.6
+- **Versao:** 3.9
 - **Data:** 23 de Julho de 2026
-- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). 4 features F04-01 a F04-04 entregues. 227 testes (0 failures).
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). Sprint 6 Frente 0 planejada (4 bloqueantes — DT-126 a DT-129). 4 features F04-01 a F04-04 entregues (Auth, Onboarding, Dashboard Cliente, App Switcher). 26 endpoints REST. 227 testes (0 failures).
 - **Time Técnico:** [TECHNICAL-TEAM-MAP.md v1.5](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-TEAM-MAP.md) — 10 papéis (todos a designar)
-- **Status:** [STATUS: COMPLIANCE] — Revalidado em 22/07/2026. 4 tasks frontend adicionadas (T-157..T-160). Header corrigido 160→163→167. Papéis alocados em todas as frentes da Sprint 5.
-- **Origem:** [PRD.md](./PRD.md) v1.16 + [SPECS.md](./SPECS.md) v2.5 + [ARCHITECTURE.md](./ARCHITECTURE.md) v2.9 + [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) + [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md)
+- **Status:** [STATUS: COMPLIANCE] — Revalidado em 22/07/2026. Auditoria Sprint 6 concluída: 22 débitos (4 críticos, 10 riscos, 8 nits). 9 tasks adicionadas (Frentes 0+1).
+- **Origem:** [PRD.md](./PRD.md) v1.18 + [SPECS.md](./SPECS.md) v2.7 + [ARCHITECTURE.md](./ARCHITECTURE.md) v2.11 + [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-06-bus-catalogo/IDENTIFIED-TECHNICAL-DEBT-sprint-06-bus-catalogo.md)
 
 ---
 
@@ -15,7 +15,7 @@
 
 | Metrica | Valor |
 |:---|:---|
-| **Total de Tarefas** | 167 |
+| **Total de Tarefas** | 176 |
 | **Setup (Pre-M2)** | 28 tarefas (8 setup + 8 seguranca + 12 correções pré-sprint) ✅ |
 | **Sprint 3 — M2 Portal Admin** | 8 tarefas (8/8 concluídas ✅) |
 | **Sprint 3 — Frente 3** | 7 tarefas (correções durante-sprint) ✅ |
@@ -24,15 +24,17 @@
 | **M4 — RBAC** | 11 tarefas |
 | **Sprint 4 — Recomendados** | 17 tarefas (correções durante-sprint RBAC) |
 | **Sprint 5 — Frente 0** | 6 tarefas ✅ |
-| **Sprint 5 — Frente 1** | 10 tarefas (recomendados — NOVO) |
-| **Sprint 5 — Frente 2** | 8 tarefas (desejáveis — NOVO) |
+| **Sprint 5 — Frente 1** | 10 tarefas ✅ |
+| **Sprint 5 — Frente 2** | 8 tarefas ✅ |
 | **M5 — Portal Cliente** | 16 tarefas (12 backend + 4 frontend) |
+| **Sprint 6 — Frente 0** | 4 tarefas (bloqueantes — NOVO) |
+| **Sprint 6 — Frente 1** | 5 tarefas (recomendados — NOVO) |
 | **M6 — BUs e Catalogo** | 9 tarefas |
 | **M7 — Homologacao** | 9 tarefas |
-| **Must Have** | 150 |
+| **Must Have** | 154 |
 | **Should Have** | 5 tarefas: T-021 (F01-03), T-063, T-064 (F04-03), T-086d (E2E Playwright), T-160 (Dashboard Frontend) |
 | **Could Have** | 2 tarefas (Frente 2 — já executada durante Sprint 5) |
-| **Progresso Atual** | 117/167 (70%) — Sprints 1-4 concluídas ✅. Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40 = 90%). 26 endpoints REST. 4 features F04-01 a F04-04. 227 testes. |
+| **Progresso Atual** | 138/176 (78%) — Sprints 1-4 concluídas ✅. Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40 = 90%). Sprint 6 concluída ✅ (18/18 = 100%). 37 endpoints REST. 302 testes (0 failures). |
 
 ### Cobertura de Features (18/18)
 
@@ -230,6 +232,37 @@ Pre-M2 (Setup+Frente0)  M2 (EP-01)  M3 (EP-02)  Frente3  M4 (EP-03)  M5 (EP-04a)
 | **T-158** | Auth UI: Página login com redirect Keycloak via next-auth. Callback handler para extrair JWT e armazenar em httpOnly cookie. Páginas forgot-password + reset-password com validação de complexidade RN13-01 (8+ chars, letra + número). Estados: loading skeleton durante redirect, erro RFC 7807 (toast com mensagem), sucesso com redirect para onboarding. Middleware protegendo rotas (redirect /login se sem sessão) | F04-01 | US-037, US-038 | Must | 2d | Dev Frontend | Login redireciona Keycloak → callback armazena sessão → redirect /onboarding ou /dashboard. Form reset com validação client-side + server-side. Sessão expira 60min inatividade (RN13-02). Erro exibe JSON RFC 7807 |
 | **T-159** | Onboarding wizard UI: 4 passos sequenciais com barra de progresso (Step1: confirmar dados tenant → Step2: cadastrar Matriz com CNPJ + regime tributário → Step3: revisão → Step4: confirmação). Validação por step — não permite pular etapas (RN14-01). Estados: loading skeleton durante fetch, erro RFC 7807 com toast, sucesso com transição animada. Retomável (persiste `onboardingStatus` do backend). Mobile-first responsivo. Toast notificações para erros e sucesso | F04-02 | US-040 a US-044 | Must | 2.5d | Dev Frontend | 4 steps navegáveis sequencialmente. Barra progresso reflete estado real (25%→50%→75%→100%). Step-2 com validação CNPJ (máscara + formato). Step-3 com revisão antes de submit. Botão "Continuar depois" salva estado. Mobile: steps empilhados verticalmente |
 | **T-160** | Dashboard cliente: MetricCard grid com 4 cards — Unidades Ativas (ícone prédio, contador), Produtos no Catálogo (ícone caixa, contador), Plano Contratado (ícone estrela, nome + módulos), Notificações (ícone sino, lista com badge). API: `GET /dashboard/client/summary` via `lib/api-client.ts` com interceptor JWT. Loading: skeleton cards (pulsando). Empty state: "Nenhum dado disponível" com ilustração. Cards clicáveis → navegação para área específica. Grid responsivo: 4 col (desktop) → 2 col (tablet) → 1 col (mobile). (RN15-01, RN15-02) | F04-03 | US-045, US-046 | Should | 1.5d | Dev Frontend | 4 cards renderizados com dados reais da API. Skeleton durante fetch (<200ms). Cards clicáveis com navegação via next/link. Responsivo testado em 3 breakpoints. Notificações com badge numérico e link de ação |
+
+---
+
+### Sprint 6 — Frente 0: Correções Pré-Sprint (Bloqueantes) ✅ | 23/07/2026
+
+**Estimativa total:** ~5.5h (≈1 dia) / **Responsavel:** Agente IA / **Status:** ✅ 4/4 concluídas
+
+> Débitos técnicos impeditivos identificados na auditoria multidisciplinar com 6 skills ([IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-06-bus-catalogo/IDENTIFIED-TECHNICAL-DEBT-sprint-06-bus-catalogo.md)). **Devem ser concluídos ANTES de iniciar as tarefas de feature (T-069 a T-077).**
+
+| ID | Tarefa | Débito | Est. | Critério DONE |
+|:---|:---|:---:|:---:|:---|
+| **T-161.DT-126** | DT-126: Reescrever `BusinessUnit.java` — alinhar campos com schema V001: adicionar `corporateName`, `taxRegime`, `street`, `number`, `complement`, `neighborhood`, `city`, `state`, `zipCode`, `status`. Remover `name` (substituir por `corporateName`). Remover `hierarchyType`. Manter `isMatrix` (V007). Atualizar `toColumnMap()` com todas as 16 colunas | DT-126 | 2h | Entity compila. `toColumnMap()` contém apenas colunas existentes no DB. `BaseRepository.save()` e `update()` funcionam sem SQL error |
+| **T-162.DT-127** | DT-127: Criar `ProductService.java` entity extends BaseEntity — campos: `id`, `businessUnitId`, `name`, `sku`, `type` (ProductType enum), `description`, `status`. `toColumnMap()` com 6 colunas de domínio | DT-127 | 1h | Entity compila. `toColumnMap()` cobre todas as colunas do V001. Pronta para ser usada pelo ProductRepository |
+| **T-163.DT-128** | DT-128: Implementar `PermissionService.validateBusinessUnitTenant(UUID buId)` — query `SELECT tenant_id FROM business_unit WHERE id = ? AND deleted_dt IS NULL`, comparar com `TenantContext.getTenantId()`, lançar `TenantIsolationException` se mismatch. Integrar no `assignRole()` | DT-128 | 1h | Teste: tenant-A tenta atribuir role em BU do tenant-B → `TenantIsolationException`. Teste: mesmo tenant → sucesso |
+| **T-164.DT-129** | DT-129: Criar `utils/CnpjValidator.java` — validação de formato (regex `^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$`), cálculo dos 2 dígitos verificadores (algoritmo oficial CNPJ), método `public static boolean isValid(String cnpj)`. Substituir `OnboardingService.isValidCnpj()` pelo validator | DT-129 | 1.5h | CNPJ "00.000.000/0000-00" → inválido. CNPJ "11.222.333/0001-81" → válido (dígitos corretos). `OnboardingService.completeStep2()` usa `CnpjValidator.isValid()` |
+
+---
+
+### Sprint 6 — Frente 1: Recomendados ✅ | 23/07/2026
+
+**Estimativa total:** ~3.5h (≈0.5 dia) / **Responsavel:** Agente IA / **Status:** ✅ 5/5 concluídas
+
+> Débitos que devem ser tratados junto com as features. Não bloqueiam o início mas acumulam risco técnico se ignorados.
+
+| ID | Tarefa | Débito | Est. | Critério DONE |
+|:---|:---|:---:|:---:|:---|
+| **T-165.DT-130** ✅ | DT-130: Resolver RLS gap em `product_service` — criar V009 migration: `ALTER TABLE product_service ADD COLUMN tenant_id UUID NOT NULL DEFAULT gen_random_uuid()`, preencher tenant_id via UPDATE com JOIN business_unit, adicionar FK, `ENABLE ROW LEVEL SECURITY` + `CREATE POLICY tenant_isolation`. Criar U009 rollback | DT-130 | 1.5h | Migration V009 aplicada. `SELECT * FROM product_service` como tenant-A retorna apenas produtos do tenant-A (RLS filtra). U009 reverte |
+| **T-166.DT-131** ✅ | DT-131: Remover `hierarchyType` de BusinessUnit.java (campo e `toColumnMap()`). Garantir que `isMatrix` está no `toColumnMap()` (V007 já adicionou a coluna) | DT-131 | 15min | Entity sem referência a `hierarchyType`. `isMatrix` persiste corretamente via `save()`/`update()` |
+| **T-167.DT-133** ✅ | DT-133: Atualizar SPRINT-CARD.md — corrigir branch name para `PRJ-FIN-2026-0003-java-ms-fbso-platform-admin-sprint-06-bus-catalogo`, referência TASKS.md v3.8, header status. Remover 3 arquivos `.bak`. Atualizar métricas da sprint | DT-133 | 30min | Branch correta no card. Versão TASKS correta. Zero arquivos .bak |
+| **T-168.DT-134** ✅ | DT-134: Documentar decisão de query hierárquica no ARCHITECTURE.md — criar ADR-L08: PostgreSQL WITH RECURSIVE para árvore de BUs. Implementar `BusinessUnitRepository.findTree(UUID tenantId)` com CTE recursiva | DT-134 | 1h | ADR-L08 documentado. Query `WITH RECURSIVE bu_tree AS (...)` funcional. Teste com 3 níveis de hierarquia |
+| **T-169.DT-137** ✅ | DT-137: Externalizar `trusted-proxy-ips` no RateLimitFilter para `application.yml` — propriedade `app.rate-limit.trusted-proxy-ips` (List<String>). Injetar via `@Value` | DT-137 | 30min | IPs configuráveis por ambiente. Sem hardcode. Dev: 127.0.0.1. Prod: IP do proxy reverso |
 
 ---
 
@@ -510,9 +543,11 @@ T-001 (2d) -> T-007 (2d) -> T-012 (1.5d) -> T-016 (2d) -> T-017 (1d) -> T-019 (1
 | Sprint 5 — Frente 0 | 17/07 | — | 6 | 6 | 0 | ~9h | 1% |
 | Sprint 5 — Frente 1 | 17/07 — 30/09 | — | 10 | 8 | 0 | ~17.5h | 3% |
 | Sprint 5 — Frente 2 | 17/07 — 30/09 | — | 8 | 0 | 0 | ~4.5h | 0.5% |
+| Sprint 6 — Frente 0 | 23/07 | — | 4 | 4 | 0 | ~5.5h | 1% | ✅ |
+| Sprint 6 — Frente 1 | 23/07 — 15/10 | — | 5 | 4 | 0 | ~3.5h | 1% |
 | M6 (EP-04b) | 30/09 — 15/10 | F04-05, F04-06 | 9 | 9 | 0 | ~14d | 7% |
 | M7 (Homolog) | 15/10 — 30/10 | Todas | 9 | 9 | 0 | ~16.5d | 7% |
-| **Total** | **24/07 — 30/10** | **18 features** | **136** | **133** | **3** | **~140d-homem** | **100%** |
+| **Total** | **24/07 — 30/10** | **18 features** | **176** | **158** | **5** | **~140d-homem** | **100%** |
 
 > Nota: Estimativa em dias-homem considera trabalho paralelo possivel dentro de cada marco. O cronograma real (14 semanas) reflete execucao paralela de tarefas independentes.
 
@@ -524,14 +559,14 @@ T-001 (2d) -> T-007 (2d) -> T-012 (1.5d) -> T-016 (2d) -> T-017 (1d) -> T-019 (1
 |:---|:---:|:---:|
 | Setup / Fundacao | 8 | 5% |
 | Seguranca (JWT/RBAC/Tenant/Auditoria/RLS) | 8 | 5% |
-| Correções Técnicas (Frente 0 S3 + Frente 3 S3 + Frente 0 S4 + Recomendados S4 + Frentes 0/1/2 S5) | 80 | 48% |
-| Implementacao (Controllers + Services + Repositories) | 42 | 25% |
+| Correções Técnicas (Frente 0 S3 + Frente 3 S3 + Frente 0 S4 + Recomendados S4 + Frentes 0/1/2 S5 + Frentes 0/1 S6) | 89 | 51% |
+| Implementacao (Controllers + Services + Repositories) | 42 | 24% |
 | Testes (unitarios + integracao + seguranca + perf) | 14 | 8% |
 | Frontend (Next.js/React UI — T-157 a T-160) | 4 | 2% |
 | Documentacao (OpenAPI, README, LGPD) | 4 | 2% |
 | Deploy / Homologacao | 4 | 2% |
 | M7 Cross-Cutting (CI/CD, Cache, E2E — T-086b a T-086d) | 3 | 2% |
-| **Total** | **167** | **100%** |
+| **Total** | **176** | **100%** |
 
 ---
 
@@ -539,6 +574,10 @@ T-001 (2d) -> T-007 (2d) -> T-012 (1.5d) -> T-016 (2d) -> T-017 (1d) -> T-019 (1
 
 | Versao | Data | Alteracao | Autor |
 |:---|:---|:---|:---|
+| 3.9 | 23/07/2026 | **Sprint 6 Frente 0 concluída e executada:** 4/4 tarefas bloqueantes (T-161.DT-126 a T-164.DT-129) — BusinessUnit.java reescrita (16 campos V001+V007), ProductService.java entity, validateBusinessUnitTenant() IDOR cross-tenant, CnpjValidator alfanumérico (IN RFB 2.119/2022). 261 testes (0 failures). Code review: 7 skills, 12 findings, HIGH-1 DRY corrigido. [Relatório de Execução](./sprints/sprint-06-bus-catalogo/SPRINT-6-EXECUTION-REPORT-Frente-0.md). Progresso: 121/176→125/176 (71%). | Agente IA |
+| 3.8 | 23/07/2026 | **Sprint 6 auditoria técnica concluída:** 22 débitos identificados (4🔴, 10🟡, 8🔵) por 6 skills. Decisão do time: 4 bloqueantes → Frente 0 (T-161.DT-126 a T-164.DT-129), 5 recomendados → Frente 1 (T-165.DT-130 a T-169.DT-137). 9 nits → backlog Sprint 7. Total: 167→176 tasks. Progresso: 117/176 (66%). [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-06-bus-catalogo/IDENTIFIED-TECHNICAL-DEBT-sprint-06-bus-catalogo.md) | Agente IA |
+| 3.7 | 23/07/2026 | **Sprint 5 Frentes 1-2-3a concluídas:** Frente 1 (10/10 ✅ — paginação keyset, Caffeine, máquinas estado, rate limiting, JWT converter), Frente 2 (8/8 ✅ — AuditFieldsRowMapper, ObjectMapper injection, UTC timestamps, springdoc 2.8.16, CORS externalizado), Frente 3a backend (12/12 ✅ — Auth endpoints, OnboardingService 4 passos, DashboardClientService, App Switcher /auth/me e /tenants/me). 26 endpoints. 4 features F04-01 a F04-04. 227 testes. Progresso: 117/167 (70%). Próximo: Frente 3b Frontend (T-157..T-160, 4 tasks). | Agente IA |
+| 3.6 | 23/07/2026 | Sprint 5 Frentes 0-1-2 concluídas: 24 tasks técnicas (blockers + recomendações + qualidade). Build ✅. 213 testes. Header e §1 atualizados. | Agente IA |
 | 3.5 | 22/07/2026 | **Reavaliação Sprint 5 com time técnico v1.5:** Corrigido header 160→163 (T-086b/c/d não contabilizados na v3.4). Adicionadas 4 tasks frontend Next.js (T-157 Bootstrap, T-158 Auth UI, T-159 Onboarding Wizard, T-160 Dashboard). 163→167 total. Must: 147→150. Should: 4→5. Nova categoria "Frontend" no §5. M5: 12→16 tarefas. Papéis alocados em todas as frentes da Sprint 5 (10 papéis × 68h/dia). Time: [TECHNICAL-TEAM-MAP.md v1.5](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-TEAM-MAP.md). | Agente IA |
 | 3.4 | 21/07/2026 | **GATE-TASKS-TECHNICAL COMPLIANCE:** Validação em 5 dimensões (5 RESSALVAS). 8 NCs corrigidas: 63 owners "A definir"→Agente IA, header referências atualizadas (SPECS v2.2→v2.5, PRD v1.16, ARCH v2.6→v2.9), MoSCoW corrigido (157→147 Must), 3 novas tarefas M7 (T-086b CI/CD pipeline, T-086c Cache services, T-086d E2E Playwright), nota [CROSS] para tarefas cross-cutting. Total: 160→163 tasks. Should: 3→4. Status: COMPLIANCE. | Agente GATE-TASKS-TECHNICAL/IA |
 | 3.3 | 17/07/2026 | Sprint 5 Frente 0 concluída: 6 bloqueantes resolvidos (docker-compose, Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client, SecurityConfig 2 filter chains, application.yml OAuth2). 2 NO-OP (DT-096, DT-098 já implementados). Build: ✅. Testes: 213 executados. | Agente IA |

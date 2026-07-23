@@ -3,6 +3,7 @@ package com.fbso.platform.admin.service;
 import com.fbso.platform.admin.dto.request.OnboardingStep1Request;
 import com.fbso.platform.admin.dto.request.OnboardingStep2Request;
 import com.fbso.platform.admin.dto.request.OnboardingStep3Request;
+import com.fbso.platform.admin.utils.CnpjValidator;
 import com.fbso.platform.admin.dto.response.OnboardingStatusResponse;
 import com.fbso.platform.admin.entity.Tenant;
 import com.fbso.platform.admin.enums.TenantStatus;
@@ -61,7 +62,7 @@ public class OnboardingService {
     public OnboardingStatusResponse completeStep2(UUID tenantId, OnboardingStep2Request request) {
         Tenant tenant = findTenant(tenantId);
         requireStep(tenant, STEP1_DONE, "Step 2");
-        if (!isValidCnpj(request.cnpj())) {
+        if (!CnpjValidator.isValid(request.cnpj())) {
             throw new BusinessException("CNPJ_INVALIDO", "CNPJ inválido. Verifique e tente novamente.");
         }
         tenant.setOnboardingStep(STEP2_DONE);
@@ -129,11 +130,5 @@ public class OnboardingService {
         };
         return OnboardingStatusResponse.of(step, completed, progress,
             tenant.getStatus() != null ? tenant.getStatus().name() : null);
-    }
-
-    private boolean isValidCnpj(String cnpj) {
-        if (cnpj == null) return false;
-        String digits = cnpj.replaceAll("[^0-9]", "");
-        return digits.length() == 14;
     }
 }

@@ -2,8 +2,9 @@
 
 - **Microservico:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine 3.2.4 + Keycloak 26
-- **Versao:** 1.0
-- **Data:** 20 de Julho de 2026
+- **Versao:** 1.2
+- **Data:** 23 de Julho de 2026
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). Sprint 6 Frente 0 concluída ✅ (4/4 — BusinessUnit, ProductService, CnpjValidator alfanumérico IN RFB 2.119/2022). 26 endpoints REST. 4 features F04-01 a F04-04 entregues. 261 testes (0 failures).
 - **Objetivo:** Guia rapido para agentes de desenvolvimento. Compacto, escaneavel, comandos exatos.
 
 ---
@@ -76,7 +77,7 @@ com.fbso.platform.admin/
 ├── security/aspect/                       # RbacAspect, AuditAspect
 ├── service/                               # 9 services + EmailServiceImpl
 ├── common/                                # BaseEntity, Address
-└── utils/                                 # JwtUtils
+└── utils/                                 # JwtUtils, CnpjValidator
 ```
 
 **Detalhes:** Ver ARCHITECTURE.md Secao 2
@@ -403,7 +404,7 @@ chore(deps): bump postgresql driver 42.7.10 para 42.7.11
 
 ---
 
-## 9. Endpoints Implementados (18/37)
+## 9. Endpoints Implementados (26/37)
 
 ### Dashboard Admin (5)
 - `GET /api/v1/dashboard/admin/summary`
@@ -412,10 +413,11 @@ chore(deps): bump postgresql driver 42.7.10 para 42.7.11
 - `GET /api/v1/dashboard/admin/accounts-by-plan`
 - `GET /api/v1/dashboard/admin/alerts`
 
-### Tenants (3)
+### Tenants (4)
 - `GET /api/v1/tenants?page=&size=&search=`
 - `GET /api/v1/tenants/{id}`
 - `POST /api/v1/tenants`
+- `GET /api/v1/tenants/me` (App Switcher — F04-04)
 
 ### Planos (4)
 - `GET /api/v1/plans`
@@ -434,6 +436,21 @@ chore(deps): bump postgresql driver 42.7.10 para 42.7.11
 - `GET /api/v1/users`
 - `POST /api/v1/users`
 
+### Auth — Portal Cliente (4) 🆕 Sprint 5
+- `POST /api/v1/auth/login` (proxy Keycloak)
+- `POST /api/v1/auth/forgot-password`
+- `POST /api/v1/auth/reset-password`
+- `GET /api/v1/auth/me` (usuário logado + módulos)
+
+### Onboarding (4) 🆕 Sprint 5
+- `GET /api/v1/onboarding/status`
+- `PATCH /api/v1/onboarding/step-1`
+- `POST /api/v1/onboarding/step-2`
+- `POST /api/v1/onboarding/complete`
+
+### Dashboard Cliente (1) 🆕 Sprint 5
+- `GET /api/v1/dashboard/client/summary?module_id=`
+
 ### Health (1)
 - `GET /actuator/health`
 
@@ -448,8 +465,9 @@ chore(deps): bump postgresql driver 42.7.10 para 42.7.11
 | **PRD.md** | Requisitos de negocio, user stories, RNs | 587 linhas |
 | **ARCHITECTURE.md** | C4, design detalhado, ADRs, pipeline seguranca | 892 linhas |
 | **SPECS.md** | Contrato API, 37 endpoints, 51 RNs, validacoes | 439 linhas |
-| **TASKS.md** | Plano de tarefas, 160 tasks, criterios DONE | 531 linhas |
+| **TASKS.md** | Plano de tarefas, 176 tasks, criterios DONE | 558 linhas |
 | **TEST_PLAN.md** | 176 cenarios, piramide de testes, seguranca | 418+ linhas |
+| **SECURITY.md** | Threat model STRIDE, OWASP Top 10, pipeline DevSecOps | ~500 linhas |
 | **TECHNICAL-REFERENCE.md** | Este documento (guia rapido) | ~300 linhas |
 
 ### Quanto consultar cada documento
@@ -464,3 +482,14 @@ chore(deps): bump postgresql driver 42.7.10 para 42.7.11
 | O que implementar em uma task especifica | TASKS.md |
 | Cenarios de teste para uma feature | TEST_PLAN.md |
 | Requisitos do produto | PRD.md |
+| Plano de seguranca e threat model | SECURITY.md |
+
+---
+
+## 11. Registro de Alterações
+
+| Versão | Data | Alteração | Autor |
+|:---|:---|:---|:---|
+| 1.2 | 23/07/2026 | **Sprint 6 Frente 0 concluída:** BusinessUnit.java + ProductService.java entities. CnpjValidator com algoritmo unificado (IN RFB 2.119/2022). validateBusinessUnitTenant() IDOR cross-tenant. 261 testes (0 failures). 22 débitos catalogados. Referências atualizadas (TASKS v3.9, SPECS v2.8, TEST_PLAN v3.4, ARCH v2.12, SECURITY v1.3). | Agente IA |
+| 1.1 | 23/07/2026 | **Sprint 5 Frentes 1-3a concluídas:** Endpoints 18→26 (Auth + Onboarding + Dashboard Cliente + App Switcher). Stack confirmado: Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client. Referências atualizadas (TASKS v3.7, SPECS v2.7, SECURITY v1.2). 227 testes. | Agente IA |
+| 1.0 | 20/07/2026 | Criação inicial: setup local, padrões de código, pipeline de segurança, 18 endpoints, convenções git, variáveis de ambiente | Agente IA |
