@@ -34,7 +34,7 @@
 | **Must Have** | 154 |
 | **Should Have** | 5 tarefas: T-021 (F01-03), T-063, T-064 (F04-03), T-086d (E2E Playwright), T-160 (Dashboard Frontend) |
 | **Could Have** | 2 tarefas (Frente 2 — já executada durante Sprint 5) |
-| **Progresso Atual** | 129/176 (73%) — Sprints 1-4 concluídas ✅. Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40 = 90%). Sprint 6 Frentes 0+1 concluídas ✅ (9/18 = 50%). 26 endpoints REST. 288 testes (0 failures). |
+| **Progresso Atual** | 138/176 (78%) — Sprints 1-4 concluídas ✅. Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40 = 90%). Sprint 6 concluída ✅ (18/18 = 100%). 37 endpoints REST. 302 testes (0 failures). |
 
 ### Cobertura de Features (18/18)
 

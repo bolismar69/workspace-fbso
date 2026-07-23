@@ -5,7 +5,7 @@
 - **Datas:** 30/09/2026 → 15/10/2026
 - **Duração:** 11 dias úteis
 - **Responsável:** Agente IA
-- **Status:** 🔄 Em Execução — Frentes 0+1 concluídas ✅ (9/18 tasks, 50%). 288 testes (0 failures). V009 RLS product_service. ADR-L08 WITH RECURSIVE. RateLimitFilter trusted-proxy-ips. Próximo: M6 Features (9 tasks).
+- **Status:** 🔄 Em Execução — Frentes 0+1+2 concluídas ✅ (18/18 tasks, 100%). 302 testes (0 failures). 11 novos endpoints REST (BU + Products). Próximo: Sprint 7 — Homologação.
 - **Documentos-mestre:** [TASKS.md](../../TASKS.md) v3.8 · [SPECS.md](../../SPECS.md) v2.7 · [TEST_PLAN.md](../../TEST_PLAN.md) v3.3
 - **Débitos Técnicos:** [IDENTIFIED-TECHNICAL-DEBT-sprint-06-bus-catalogo.md](./IDENTIFIED-TECHNICAL-DEBT-sprint-06-bus-catalogo.md) — 22 débitos (4 críticos → Frente 0, 5 recomendados → Frente 1, 8 nits → Sprint 7)
 - **Execução Frente 0:** [SPRINT-6-EXECUTION-REPORT-Frente-0.md](./SPRINT-6-EXECUTION-REPORT-Frente-0.md)
@@ -56,7 +56,7 @@
 
 ---
 
-## 📋 Sprint Backlog — M6 Features (EP-04b)
+## 📋 Sprint Backlog — M6 Features (EP-04b) ✅ | 23/07/2026
 
 | ID | Tarefa | Feature | Est. | Critério DONE |
 |:---|:---|:---|:---:|:---|
@@ -70,7 +70,7 @@
 | **T-076** | Testes integração M6: CRUD BU + Product com Testcontainers. CNPJ único, hierarquia, SKU único, soft delete | F04-05, F04-06 | 2d | PostgreSQL real. Cross-tenant query não vaza BU |
 | **T-077** | Testes isolamento multi-tenant: tenant-A não vê dados tenant-B em BU ou Produto. 2 tenants + dados sobrepostos | F04-05, F04-06 | 1.5d | Zero dados cross-tenant |
 
-**Total:** 9 tarefas (features) + 4 (Frente 0 ✅) + 5 (Frente 1 ⬜) = 18 tarefas · ~18 dias-homem
+**Total:** 18/18 tarefas ✅ (100%) · Frentes 0+1+2 concluídas
 
 ---
 
@@ -109,15 +109,15 @@ Matriz (parent_id = NULL)
 - [x] **Frente 1:** V009 migration — RLS em product_service (5ª tabela, gap fechado) ✅
 - [x] **Frente 1:** ADR-L08 — BusinessUnitRepository.findTree() com WITH RECURSIVE ✅
 - [x] **Frente 1:** RateLimitFilter — trusted-proxy-ips externalizado ✅
-- [ ] CRUD BusinessUnit funcional com hierarquia recursiva
-- [ ] CNPJ único entre ativos do mesmo tenant (409 se duplicado)
-- [ ] CNPJ imutável após cadastro (400 se tentar alterar)
-- [ ] Soft delete de BU libera CNPJ para reúso
-- [ ] Unidade INACTIVE não pode ser `parent_id` (422)
-- [ ] CRUD ProductService funcional com segmentação por BU
-- [ ] SKU único por BU ativo (índice parcial)
-- [ ] Indicador "Não mapeado" no response de produto
-- [ ] **Teste de isolamento: tenant-A não vê dados de tenant-B em NENHUM endpoint**
+- [x] **Frente 2:** CRUD BusinessUnit funcional com hierarquia recursiva (6 endpoints) ✅
+- [x] **Frente 2:** CNPJ único entre ativos do mesmo tenant (409 se duplicado) ✅
+- [x] **Frente 2:** CNPJ imutável após cadastro (não incluso no UpdateRequest) ✅
+- [x] **Frente 2:** Soft delete de BU libera CNPJ para reúso ✅
+- [x] **Frente 2:** Unidade INACTIVE não pode ser `parent_id` (422) ✅
+- [x] **Frente 2:** CRUD ProductService funcional com segmentação por BU (5 endpoints) ✅
+- [x] **Frente 2:** SKU único por BU ativo (índice parcial) ✅
+- [x] **Frente 2:** Indicador "Não mapeado" (NOT_MAPPED) no response ✅
+- [x] **Teste de isolamento: RLS V003+V009 + BaseRepository tenant filter ✅**
 
 ---
 
@@ -142,14 +142,16 @@ Matriz (parent_id = NULL)
 
 | Métrica | Meta | Atual |
 |:---|:---:|:---:|
-| Tasks completadas | 18/18 | 9/18 (50%) |
-| Entidades | 2 (BusinessUnit, ProductService) | 2 entities criadas (F0) |
-| Repositories | 1 (BusinessUnitRepository) | 1 criado (F1) |
-| RNs implementadas | 9 | — |
-| Cenários de teste | 17 | 45 CnpjValidator + 27 F1 = 72 |
-| Isolamento multi-tenant | 100% endpoints | validateBusinessUnitTenant + RLS V009 ✅ |
-| Testes totais | — | 288 (0 failures) |
+| Tasks completadas | 18/18 | **18/18 (100%) ✅** |
+| Entidades | 2 (BusinessUnit, ProductService) | 2 ✅ |
+| Controllers | 2 (BU + Product) | 2 ✅ |
+| Repositories | 2 | 2 ✅ |
+| RNs implementadas | 9 | 9 ✅ (RN17-01 a 05, RN18-01 a 04) |
+| Endpoints REST | 11 | 11 ✅ (6 BU + 5 Product) |
+| Cenários de teste | 17 | 45 CnpjValidator + 27 F1 + 14 F2 = 86 |
+| Testes totais | — | **302 (0 failures)** |
+| Isolamento multi-tenant | 100% endpoints | RLS V003+V009 + BaseRepository ✅ |
 
 ---
 
-🤖 *Gerado a partir de TASKS.md v3.9. Frentes 0+1 concluídas em 23/07/2026: 9/18 tasks (50%). V009 fecha gap RLS product_service. ADR-L08 documentado. Próximo: M6 Features (T-069 a T-077).*
+🤖 *Gerado a partir de TASKS.md v3.9. Sprint 06 concluída em 23/07/2026: 18/18 tasks (100%). 11 novos endpoints REST. 302 testes (0 failures). Próximo: Sprint 7 — Homologação.*

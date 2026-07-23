@@ -90,9 +90,9 @@ SEMANA  1  2  3  4  5  6  7  8  9 10 11 12 13 14
 | **FASE 4** | Sprint 5 — Portal Cliente | M5 (EP-04a) | T-157 a T-160 | 4 | F04-01 a F04-04 | EP-04 | ⬜ Não iniciada | 0/4 (0%) | — |
 | **FASE 5** | Sprint 6 — Frente 0 | Pre-M6 Bloqueantes | T-161.DT-126 a T-164.DT-129 | 4 | — | — | ✅ Concluída | 4/4 (100%) | 23/07/2026 |
 | **FASE 5** | Sprint 6 — Frente 1 | Pre-M6 Recomendados | T-165.DT-130 a T-169.DT-137 | 5 | — | — | ✅ Concluída | 5/5 (100%) | 23/07/2026 |
-| **FASE 5** | Sprint 6 — BUs e Catálogo | M6 (EP-04b) | T-069 a T-077 | 9 | F04-05, F04-06 | EP-04 | ⬜ Não iniciada | 0/9 (0%) | — |
+| **FASE 5** | Sprint 6 — Frente 2 | M6 (EP-04b) | T-069 a T-077 | 9 | F04-05, F04-06 | EP-04 | ✅ Concluída | 9/9 (100%) | 23/07/2026 |
 | **FASE 6** | Sprint 7 — Homologação | M7 (Homologação) | T-071 a T-079 | 9 | Todas (18) | Todos | ⬜ Não iniciada | 0/9 (0%) | — |
-| **TOTAL** | **7 sprints** | **7 marcos** | **176 tasks** | **176** | **18 features** | **4 épicos** | **3 sprints concluídos + Sprint 4/5/6 em andamento** | **129/176 (73%)** | **23/07/2026** |
+| **TOTAL** | **7 sprints** | **7 marcos** | **176 tasks** | **176** | **18 features** | **4 épicos** | **4 sprints concluídos + Sprint 4/5 em andamento** | **138/176 (78%)** | **23/07/2026** |
 
 ### Legenda
 
@@ -113,9 +113,9 @@ SEMANA  1  2  3  4  5  6  7  8  9 10 11 12 13 14
 | Sprint 3 — Portal Admin | ✅ Concluída | 16/07/2026 | 17/07/2026 | ✅ Aprovada |
 | Sprint 4 — RBAC | 🔄 Em andamento | 17/07/2026 | — | Frentes 0-4 concluídas (31/48 tasks, 65%) |
 | Sprint 5 — Portal Cliente | 🔄 Em andamento | 23/07/2026 | — | Frentes 0-1-2-3a concluídas (36/40 tasks, 90%) |
-| Sprint 6 — BUs e Catálogo | 🔄 Em andamento | 23/07/2026 | — | Frentes 0+1 concluídas (9/18 tasks, 50%) |
+| Sprint 6 — BUs e Catálogo | ✅ Concluída | 23/07/2026 | 23/07/2026 | 18/18 tasks (100%) ✅ |
 | Sprint 7 — Homologação | ⬜ Não iniciada | — | — | — |
 
 ---
 
-🤖 *Artefatos de sprint gerados a partir de TASKS.md v3.9, TEST_PLAN.md v3.4, SPECS.md v2.8 e PRD.md v1.19. Sprint 3 concluída em 17/07/2026: 42/42 (100%). Sprint 4/5 em andamento: Frentes 0-4 (31/48) + Frentes 0-1-2-3a (36/40). Sprint 6 Frentes 0+1 concluídas (9/18 = 50%). 3 sprints concluídos + 3 em andamento. 129/176 (73%). 288 testes (0 failures).*
+🤖 *Artefatos de sprint gerados a partir de TASKS.md v3.9, TEST_PLAN.md v3.4, SPECS.md v2.8 e PRD.md v1.19. Sprint 3 concluída: 42/42 (100%). Sprint 6 concluída: 18/18 (100%). Sprints 4/5 em andamento: Frentes 0-4 (31/48) + Frentes 0-1-2-3a (36/40). 4 sprints concluídos + 2 em andamento. 138/176 (78%). 302 testes (0 failures). 37 endpoints REST.*
