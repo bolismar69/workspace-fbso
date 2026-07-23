@@ -3,9 +3,9 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.10
+- **Versão:** 2.11
 - **Data:** 23 de Julho de 2026
-- **Situação implementação:** Em Execução
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). 26 endpoints REST. 4 features F04-01 a F04-04 entregues (Auth, Onboarding, Dashboard Cliente, App Switcher). 227 testes (0 failures). Stack: Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client.
 - **Status:** [STATUS: COMPLIANCE] — Validado via GATE-ARCHITECTURE-SCOPE em 21/07/2026. 5 dimensões validadas (1 APROVADO, 3 RESSALVAS, 1 REPROVADO corrigido). 8 NCs resolvidas.
 - **Origem:** [PRD.md](./PRD.md)
 - **Débitos Técnicos:** [Sprint 3](./sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) · [Sprint 4](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md) — 56 débitos catalogados (47 novos + 9 backlog)
@@ -1003,6 +1003,7 @@ flowchart LR
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.11 | 23/07/2026 | **Sprint 5 Frentes 1-2-3a concluídas:** Frente 1 (10 tasks técnicas — keyset pagination, Caffeine, máquinas de estado, rate limiting, JWT converter), Frente 2 (8 tasks qualidade — AuditFieldsRowMapper, ObjectMapper injection, UTC timestamps, springdoc 2.8.16, CORS externalizado), Frente 3a (12 tasks backend Portal Cliente — Auth, Onboarding, Dashboard Cliente, App Switcher). 26 endpoints. 4 features entregues. 227 testes. Security: URL injection fix ×2, IDOR fix com Caffeine reset tokens. Status atualizado no header. | Agente IA |
 | 2.10 | 23/07/2026 | Sprint 5 Frente 1: Adicionado §8 Máquinas de Estado (TenantStatus + Onboarding) com diagramas Mermaid. Renumeradas seções §8→§12. Documentadas 8 transições TenantStatus + 6 edge cases onboarding. Stack: Flyway 12.11.0, PG driver 42.7.11, Caffeine 3.2.4. | Agente IA |
 | 2.9 | 21/07/2026 | **GATE-ARCHITECTURE-SCOPE COMPLIANCE:** Validação em 5 dimensões (1 APROVADO, 3 RESSALVAS, 1 REPROVADO corrigido). 8 NCs resolvidas: CacheConfig + rowmapper/ na estrutura (§2), ConfigController (F04-04 App Switcher) adicionado (§2), i18n/PT-BR documentado (§4), mapeamento ADRs globais↔locais corrigido (§9), Cache §5.4 — Caffeine com TTL/invalidação/escopo, JaCoCo 80% declarado (§8.1). Pendências externas: INTEGRATION-MAP.md (SMTP+Observabilidade) e business-inputs/ARCHITECTURE.md (package-by-domain→layer). Status: COMPLIANCE. | Agente GATE-ARCHITECTURE-SCOPE/IA |
 | 2.8 | 17/07/2026 | Sprint 5 Frente 0 concluida: docker-compose (Keycloak 26 + PG 17 + MailHog), realm-config.json (4 roles, 3 custom claims). SecurityConfig com 2 SecurityFilterChain beans (@Order). ADR-04: OAuth2 Client Authorization Code Flow documentado. Stack: Flyway 12.11.0, PG driver 42.7.11. | Agente IA |

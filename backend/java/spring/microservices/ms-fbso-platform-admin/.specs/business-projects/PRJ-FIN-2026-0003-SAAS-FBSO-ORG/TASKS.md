@@ -2,9 +2,9 @@
 
 - **Solucao:** `ms-fbso-platform-admin`
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 3.6
+- **Versao:** 3.7
 - **Data:** 23 de Julho de 2026
-- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). 4 features F04-01 a F04-04 entregues. 227 testes (0 failures).
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). 4 features F04-01 a F04-04 entregues (Auth, Onboarding, Dashboard Cliente, App Switcher). 26 endpoints REST. 227 testes (0 failures).
 - **Time Técnico:** [TECHNICAL-TEAM-MAP.md v1.5](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-TEAM-MAP.md) — 10 papéis (todos a designar)
 - **Status:** [STATUS: COMPLIANCE] — Revalidado em 22/07/2026. 4 tasks frontend adicionadas (T-157..T-160). Header corrigido 160→163→167. Papéis alocados em todas as frentes da Sprint 5.
 - **Origem:** [PRD.md](./PRD.md) v1.16 + [SPECS.md](./SPECS.md) v2.5 + [ARCHITECTURE.md](./ARCHITECTURE.md) v2.9 + [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) + [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md)
@@ -539,6 +539,8 @@ T-001 (2d) -> T-007 (2d) -> T-012 (1.5d) -> T-016 (2d) -> T-017 (1d) -> T-019 (1
 
 | Versao | Data | Alteracao | Autor |
 |:---|:---|:---|:---|
+| 3.7 | 23/07/2026 | **Sprint 5 Frentes 1-2-3a concluídas:** Frente 1 (10/10 ✅ — paginação keyset, Caffeine, máquinas estado, rate limiting, JWT converter), Frente 2 (8/8 ✅ — AuditFieldsRowMapper, ObjectMapper injection, UTC timestamps, springdoc 2.8.16, CORS externalizado), Frente 3a backend (12/12 ✅ — Auth endpoints, OnboardingService 4 passos, DashboardClientService, App Switcher /auth/me e /tenants/me). 26 endpoints. 4 features F04-01 a F04-04. 227 testes. Progresso: 117/167 (70%). Próximo: Frente 3b Frontend (T-157..T-160, 4 tasks). | Agente IA |
+| 3.6 | 23/07/2026 | Sprint 5 Frentes 0-1-2 concluídas: 24 tasks técnicas (blockers + recomendações + qualidade). Build ✅. 213 testes. Header e §1 atualizados. | Agente IA |
 | 3.5 | 22/07/2026 | **Reavaliação Sprint 5 com time técnico v1.5:** Corrigido header 160→163 (T-086b/c/d não contabilizados na v3.4). Adicionadas 4 tasks frontend Next.js (T-157 Bootstrap, T-158 Auth UI, T-159 Onboarding Wizard, T-160 Dashboard). 163→167 total. Must: 147→150. Should: 4→5. Nova categoria "Frontend" no §5. M5: 12→16 tarefas. Papéis alocados em todas as frentes da Sprint 5 (10 papéis × 68h/dia). Time: [TECHNICAL-TEAM-MAP.md v1.5](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-TEAM-MAP.md). | Agente IA |
 | 3.4 | 21/07/2026 | **GATE-TASKS-TECHNICAL COMPLIANCE:** Validação em 5 dimensões (5 RESSALVAS). 8 NCs corrigidas: 63 owners "A definir"→Agente IA, header referências atualizadas (SPECS v2.2→v2.5, PRD v1.16, ARCH v2.6→v2.9), MoSCoW corrigido (157→147 Must), 3 novas tarefas M7 (T-086b CI/CD pipeline, T-086c Cache services, T-086d E2E Playwright), nota [CROSS] para tarefas cross-cutting. Total: 160→163 tasks. Should: 3→4. Status: COMPLIANCE. | Agente GATE-TASKS-TECHNICAL/IA |
 | 3.3 | 17/07/2026 | Sprint 5 Frente 0 concluída: 6 bloqueantes resolvidos (docker-compose, Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client, SecurityConfig 2 filter chains, application.yml OAuth2). 2 NO-OP (DT-096, DT-098 já implementados). Build: ✅. Testes: 213 executados. | Agente IA |

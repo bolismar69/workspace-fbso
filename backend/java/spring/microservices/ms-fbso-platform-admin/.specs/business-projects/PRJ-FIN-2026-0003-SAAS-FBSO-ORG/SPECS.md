@@ -4,10 +4,10 @@
 - **Tipo:** Backend
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.6
+- **Versão:** 2.7
 - **Data:** 23 de Julho de 2026
-- **Situação implementação:** Em Execução — Sprints 1-4 concluídas ✅. Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40 tasks, 90%). 26 endpoints REST. 4 features F04-01 a F04-04 entregues. 227 testes (0 failures).
-- **Próximo:** Sprint 5 Frente 3b (Frontend — 4 tarefas) ou Sprint 6 — BUs e Catálogo (EP-04b).
+- **Situação implementação:** Em Execução — Sprints 1-4 concluídas ✅. Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40 tasks, 90%). 26 endpoints REST. 4 features F04-01 a F04-04 entregues (Auth, Onboarding, Dashboard Cliente, App Switcher). 227 testes (0 failures).
+- **Próximo:** Sprint 5 Frente 3b (Frontend — 4 tarefas: T-157..T-160) ou Sprint 6 — BUs e Catálogo (EP-04b).
 - **Status:** [STATUS: COMPLIANCE] — Validado via GATE-SPECS-TECHNICAL em 21/07/2026. 6 dimensões validadas (3 APROVADO, 3 RESSALVAS). 6 NCs corrigidas.
 - **Origem:** [PRD.md](./PRD.md) + [ARCHITECTURE.md](./ARCHITECTURE.md)
 
@@ -439,6 +439,8 @@ CREATE TABLE audit_log (
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.7 | 23/07/2026 | **Sprint 5 Frentes 1-2-3a concluídas:** Status e header atualizados. 4 features F04-01 a F04-04 detalhadas (Auth, Onboarding, Dashboard Cliente, App Switcher). Próximo: Frente 3b (Frontend T-157..T-160) ou Sprint 6. | Agente IA |
+| 2.6 | 23/07/2026 | Sprint 5 Frente 1 concluída: 10 tasks técnicas (keyset pagination, Caffeine, máquinas de estado TenantStatus+Onboarding, rate limiting, JWT converter, migration V007). Header atualizado. | Agente IA |
 | 2.5 | 21/07/2026 | **GATE-SPECS-TECHNICAL COMPLIANCE:** Validação em 6 dimensões (3 APROVADO, 3 RESSALVAS). 6 NCs corrigidas: §3.4 catálogo consolidado de casos de borda (concorrência, falha infra, idempotência, rate limit, payload), §4.1 endpoint App Switcher (`/api/v1/tenants/me`), §8.1 dependências SMTP + Observabilidade, §7 critérios com DoD checkpoints (F1-F3, V1, A1-A2) + evidências automatizadas (REST Assured asserts). Status: COMPLIANCE. | Agente GATE-SPECS-TECHNICAL/IA |
 | 2.4 | 17/07/2026 | Sprint 5 Frente 0 concluida: ambiente dev dockerizado (Keycloak 26 + PG 17 + MailHog). Stack atualizado (Flyway 12.11.0, PG driver 42.7.11). OAuth2 Client configurado para Authorization Code Flow. | Agente IA |
 | 2.3 | 17/07/2026 | Sprint 5 planejada: auditoria 9-skill identificou 42 débitos. 24 débitos + 12 features = 36 tarefas em 4 frentes. Referência ao [IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md). | Agente IA |

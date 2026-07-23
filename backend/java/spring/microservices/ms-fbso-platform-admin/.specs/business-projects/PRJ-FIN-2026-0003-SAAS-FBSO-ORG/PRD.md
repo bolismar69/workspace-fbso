@@ -3,9 +3,9 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.17
+- **Versão:** 1.18
 - **Data:** 23 de Julho de 2026
-- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1 concluídas ✅ (16/40 tasks)
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). 4 features F04-01 a F04-04 entregues (Auth, Onboarding, Dashboard Cliente, App Switcher). 26 endpoints REST. 227 testes (0 failures).
 - **Status:** [STATUS: COMPLIANCE] — Validado via GATE-PRD-SCOPE em 21/07/2026. 5 dimensões validadas (4 RESSALVAS, 1 APROVADO). 6 NCs corrigidas.
 
 ---
@@ -63,11 +63,12 @@ A **FBSO Platform** é o futuro SaaS multi-produto da FBSO.ORG. Nesta **Fase 0**
 | Artefato | Localização | Status |
 |:---|:---|:---|
 | **PRD.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/PRD.md` | ✅ Este documento |
-| **SPECS.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/SPECS.md` | ✅ Criado (v1.4) |
-| **TASKS.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TASKS.md` | ✅ Criado (v2.2) |
-| **TEST_PLAN.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TEST_PLAN.md` | ✅ Criado (v2.2) |
-| **ARCHITECTURE.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/ARCHITECTURE.md` | ✅ Criado (v1.2) |
-| **API YAML** | `.specs/api/fbso-platform-api.yaml` | ⬜ A criar |
+| **SPECS.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/SPECS.md` | ✅ Criado (v2.7) |
+| **TASKS.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TASKS.md` | ✅ Criado (v3.7) |
+| **TEST_PLAN.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TEST_PLAN.md` | ✅ Criado (v3.3) |
+| **ARCHITECTURE.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/ARCHITECTURE.md` | ✅ Criado (v2.11) |
+| **SECURITY.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/SECURITY.md` | ✅ Criado (v1.2) |
+| **TECHNICAL-REFERENCE.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-REFERENCE.md` | ✅ Criado (v1.1) |
 
 ---
 
@@ -609,6 +610,8 @@ git checkout -b hotfix/sprint-NN-<descricao> <merge-commit-hash>
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.18 | 23/07/2026 | **Atualização status Sprint 5:** Frentes 0-1-2-3a concluídas (36/40, 90%). 4 features F04-01 a F04-04 entregues. 26 endpoints REST. 227 testes. Atualizadas versões dos artefatos em §3.3 (SPECS v2.7, TASKS v3.7, TEST_PLAN v3.3, ARCH v2.11, SECURITY v1.2, TECH-REF v1.1). | Agente IA |
+| 1.17 | 22/07/2026 | Sprint 5 Frentes 0-1-3 iniciadas: docker-compose (Keycloak+PG+MailHog), realm-config.json (4 roles, 3 claims), Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client, SecurityConfig 2 filter chains, 10 recomendações técnicas (Frente 1). Status: 16/40. | Agente IA |
 | 1.16 | 21/07/2026 | **GATE-PRD-SCOPE COMPLIANCE:** Validação em 5 dimensões (4 RESSALVAS, 1 APROVADO). 6 NCs corrigidas: BR-B05 Must Have (§4.6), out-of-scope expandido (§2), F04-03 classificação clarificada (§4.6), matriz de dependências (§4.7), premissas A1-A6 (§4.8), RN08-01/RN08-02 adicionadas (§6.6). Status: COMPLIANCE. | Agente GATE-PRD-SCOPE/IA |
 | 1.15 | 17/07/2026 | Sprint 5 Frente 0 concluida: docker-compose (Keycloak+PG+MailHog), Flyway 10→12.11.0, PG driver→42.7.11 (CVE fix), OAuth2 Client adicionado, SecurityConfig refatorado com 2 filter chains. 2 NO-OP (DT-096/DT-098 ja implementados). Build ✅, 213 testes. | Agente IA |
 | 1.14 | 17/07/2026 | Sprint 5 planejada: auditoria técnica com 9 skills identificou 42 débitos ([IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md)). Time decidiu tratar 24 débitos na Sprint 5 em 3 frentes (6🔴 Frente 0 pré-sprint + 10🟡 Frente 1 + 8🔵 Frente 2) + 12 tarefas de features (Frente 3). 16 débitos postergados Sprints 6-7. Stack atualizado: Flyway 12.11.0, PostgreSQL driver 42.7.11, spring-boot-starter-oauth2-client adicionado. | Agente IA |
