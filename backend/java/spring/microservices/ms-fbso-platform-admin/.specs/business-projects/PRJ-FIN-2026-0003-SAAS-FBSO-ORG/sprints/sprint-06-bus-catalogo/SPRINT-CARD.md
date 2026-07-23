@@ -9,10 +9,10 @@
 
 ---
 
-> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `feature/sprint-06-bus-catalogo`. Antes de começar, execute:
+> 🚫 **BRANCH OBRIGATÓRIA:** Toda implementação deste sprint DEVE usar exclusivamente a branch `PRJ-FIN-2026-0003-java-ms-fbso-platform-admin-sprint-06-bus-catalogo`. Antes de começar, execute:
 > ```bash
-> git checkout feature/sprint-06-bus-catalogo
-> git branch --show-current  # deve exibir: feature/sprint-06-bus-catalogo
+> git checkout PRJ-FIN-2026-0003-java-ms-fbso-platform-admin-sprint-06-bus-catalogo
+> git branch --show-current  # deve exibir: PRJ-FIN-2026-0003-java-ms-fbso-platform-admin-sprint-06-bus-catalogo
 > ```
 > 📖 Detalhes completos: [PRD.md §8.4](../../PRD.md#84-estratégia-de-branching--uma-branch-por-sprint)
 

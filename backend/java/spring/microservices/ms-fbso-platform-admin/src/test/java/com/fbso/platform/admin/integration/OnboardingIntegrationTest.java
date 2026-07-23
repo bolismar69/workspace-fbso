@@ -53,7 +53,7 @@ class OnboardingIntegrationTest extends BaseIntegrationTest {
 
         // Step 2
         var step2 = onboardingService.completeStep2(tenantId,
-            new com.fbso.platform.admin.dto.request.OnboardingStep2Request("11222333444455", "SIMPLES_NACIONAL"));
+            new com.fbso.platform.admin.dto.request.OnboardingStep2Request("11222333000181", "SIMPLES_NACIONAL"));
         assertThat(step2.currentStep()).isEqualTo(OnboardingService.STEP2_DONE);
         assertThat(step2.progressPercent()).isEqualTo(50);
 

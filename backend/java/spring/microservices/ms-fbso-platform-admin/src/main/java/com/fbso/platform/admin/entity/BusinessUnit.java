@@ -14,22 +14,37 @@ import java.util.UUID;
  *
  * <h3>Hierarquia</h3>
  * <ul>
- *   <li>{@code parent_id = NULL} → Matriz (raiz da hierarquia)</li>
- *   <li>{@code parent_id != NULL} → Filial</li>
+ *   <li>{@code parentId = null} → Matriz (raiz da hierarquia)</li>
+ *   <li>{@code parentId != null} → Filial</li>
+ *   <li>{@code isMatrix = true} → flag explícita de Matriz (V007)</li>
  * </ul>
  *
- * <p><b>Nota:</b> Entity mínima criada na Sprint 4 para referência no
- * {@code UserPermission}. Flag {@code isMatrix} adicionada na Sprint 5 (DT-107/T-142).
- * O CRUD completo será implementado na Sprint 6 (M6).</p>
+ * <h3>Campos de Endereço</h3>
+ * <p>Embedded diretamente na tabela (street, number, complement,
+ * neighborhood, city, state, zipCode). O Value Object {@code Address.java}
+ * existe no classpath mas não é utilizado por esta entidade.</p>
+ *
+ * <p><b>DT-126 (Sprint 6):</b> Entity reescrita para alinhar 100% com o
+ * schema V001. Removidos: {@code name} (→ corporateName), {@code hierarchyType}
+ * (sem coluna no DB). Adicionados: corporateName, taxRegime, street, number,
+ * complement, neighborhood, city, state, zipCode, status.</p>
  */
 public class BusinessUnit extends BaseEntity {
 
     private UUID id;
     private UUID tenantId;
-    private String name;
-    private String cnpj;
-    private String hierarchyType;
     private UUID parentId;
+    private String cnpj;
+    private String corporateName;
+    private String taxRegime;
+    private String street;
+    private String number;
+    private String complement;
+    private String neighborhood;
+    private String city;
+    private String state;
+    private String zipCode;
+    private String status;
     private boolean isMatrix;
 
     public BusinessUnit() {
@@ -46,12 +61,12 @@ public class BusinessUnit extends BaseEntity {
         this.tenantId = tenantId;
     }
 
-    public String getName() {
-        return name;
+    public UUID getParentId() {
+        return parentId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setParentId(UUID parentId) {
+        this.parentId = parentId;
     }
 
     public String getCnpj() {
@@ -62,20 +77,84 @@ public class BusinessUnit extends BaseEntity {
         this.cnpj = cnpj;
     }
 
-    public String getHierarchyType() {
-        return hierarchyType;
+    public String getCorporateName() {
+        return corporateName;
     }
 
-    public void setHierarchyType(String hierarchyType) {
-        this.hierarchyType = hierarchyType;
+    public void setCorporateName(String corporateName) {
+        this.corporateName = corporateName;
     }
 
-    public UUID getParentId() {
-        return parentId;
+    public String getTaxRegime() {
+        return taxRegime;
     }
 
-    public void setParentId(UUID parentId) {
-        this.parentId = parentId;
+    public void setTaxRegime(String taxRegime) {
+        this.taxRegime = taxRegime;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getComplement() {
+        return complement;
+    }
+
+    public void setComplement(String complement) {
+        this.complement = complement;
+    }
+
+    public String getNeighborhood() {
+        return neighborhood;
+    }
+
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public boolean isMatrix() {
@@ -98,20 +177,36 @@ public class BusinessUnit extends BaseEntity {
         this.id = id;
     }
 
+    /**
+     * Mapeia as colunas de domínio para INSERT/UPDATE no BaseRepository.
+     * Colunas de auditoria (created_dt, updated_dt, created_by, updated_by,
+     * deleted_dt, deleted_by) são gerenciadas automaticamente pelo BaseRepository.
+     *
+     * @return mapa ordenado coluna → valor (apenas colunas de domínio)
+     */
     @Override
     public Map<String, Object> toColumnMap() {
         Map<String, Object> columns = new LinkedHashMap<>();
         columns.put("tenant_id", tenantId);
-        columns.put("name", name);
-        columns.put("cnpj", cnpj);
-        columns.put("hierarchy_type", hierarchyType);
         columns.put("parent_id", parentId);
+        columns.put("cnpj", cnpj);
+        columns.put("corporate_name", corporateName);
+        columns.put("tax_regime", taxRegime);
+        columns.put("street", street);
+        columns.put("number", number);
+        columns.put("complement", complement);
+        columns.put("neighborhood", neighborhood);
+        columns.put("city", city);
+        columns.put("state", state);
+        columns.put("zip_code", zipCode);
+        columns.put("status", status);
         columns.put("is_matrix", isMatrix);
         return columns;
     }
 
     @Override
     public String toString() {
-        return "BusinessUnit{id=" + id + ", name='" + name + '\'' + ", cnpj='" + cnpj + "'}";
+        return "BusinessUnit{id=" + id + ", corporateName='" + corporateName
+                + "', cnpj='" + cnpj + "', isMatrix=" + isMatrix + "}";
     }
 }

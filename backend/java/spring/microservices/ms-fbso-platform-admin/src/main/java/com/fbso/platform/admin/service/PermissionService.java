@@ -5,6 +5,7 @@ import com.fbso.platform.admin.dto.response.PermissionResponse;
 import com.fbso.platform.admin.entity.UserPermission;
 import com.fbso.platform.admin.enums.Role;
 import com.fbso.platform.admin.exception.PermissionDeniedException;
+import com.fbso.platform.admin.exception.TenantIsolationException;
 import com.fbso.platform.admin.exception.UserNotFoundException;
 import com.fbso.platform.admin.repository.PermissionRepository;
 import com.fbso.platform.admin.repository.UserRepository;
@@ -214,8 +215,7 @@ public class PermissionService {
      */
     public void assignRole(UUID userId, UUID businessUnitId, String role) {
         validateUserTenant(userId);
-        // TODO Frente 3/Sprint 6: validateBusinessUnitTenant(businessUnitId)
-        //   quando BusinessUnitRepository for criado
+        validateBusinessUnitTenant(businessUnitId);
         permissionRepo.assign(userId, businessUnitId, role);
         log.info("Role atribuído: userId={}, buId={}, role={}", userId, businessUnitId, role);
     }
@@ -310,5 +310,40 @@ public class PermissionService {
                 throw new UserNotFoundException(userId);
             }
         });
+    }
+
+    /**
+     * Valida que a Business Unit pertence ao tenant do contexto atual.
+     *
+     * <p><b>DT-128 (Sprint 6):</b> Implementado para fechar o gap de IDOR
+     * cross-tenant no {@link #assignRole}. Impede que um ADMIN_TENANT
+     * atribua papel em uma BU de outro tenant.</p>
+     *
+     * <p>Usa {@link JdbcTemplate} diretamente porque {@code BusinessUnitRepository}
+     * ainda não existe — será criado nas tasks M6 (T-069).</p>
+     *
+     * @param businessUnitId ID da Business Unit a validar
+     * @throws TenantIsolationException se a BU pertencer a outro tenant
+     */
+    private void validateBusinessUnitTenant(UUID businessUnitId) {
+        UUID tenantId = TenantContext.getTenantId();
+        String sql = """
+            SELECT tenant_id FROM fbso_platform.business_unit
+            WHERE id = ? AND deleted_dt IS NULL
+            """;
+        List<UUID> result = jdbc.query(sql,
+                (rs, rowNum) -> rs.getObject("tenant_id", UUID.class),
+                businessUnitId);
+        if (result.isEmpty()) {
+            log.warn("Tentativa de assign em BU inexistente ou deletada: buId={}", businessUnitId);
+            throw new TenantIsolationException("Business Unit não encontrada: " + businessUnitId);
+        }
+        UUID buTenantId = result.get(0);
+        if (!tenantId.equals(buTenantId)) {
+            log.warn("Tentativa de assign cross-tenant bloqueada: buId={}, buTenant={}, ctxTenant={}",
+                    businessUnitId, buTenantId, tenantId);
+            throw new TenantIsolationException(
+                    "Business Unit " + businessUnitId + " não pertence ao tenant atual");
+        }
     }
 }
