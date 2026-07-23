@@ -4,8 +4,11 @@
 - **Marco:** M6 (EP-04b)
 - **Datas:** 30/09/2026 → 15/10/2026
 - **Duração:** 11 dias úteis
-- **Responsável:** A definir
-- **Documentos-mestre:** [TASKS.md](../../TASKS.md) · [SPECS.md](../../SPECS.md)
+- **Responsável:** Agente IA
+- **Status:** 🔄 Em Execução — Frentes 0+1 concluídas ✅ (9/18 tasks, 50%). 288 testes (0 failures). V009 RLS product_service. ADR-L08 WITH RECURSIVE. RateLimitFilter trusted-proxy-ips. Próximo: M6 Features (9 tasks).
+- **Documentos-mestre:** [TASKS.md](../../TASKS.md) v3.8 · [SPECS.md](../../SPECS.md) v2.7 · [TEST_PLAN.md](../../TEST_PLAN.md) v3.3
+- **Débitos Técnicos:** [IDENTIFIED-TECHNICAL-DEBT-sprint-06-bus-catalogo.md](./IDENTIFIED-TECHNICAL-DEBT-sprint-06-bus-catalogo.md) — 22 débitos (4 críticos → Frente 0, 5 recomendados → Frente 1, 8 nits → Sprint 7)
+- **Execução Frente 0:** [SPRINT-6-EXECUTION-REPORT-Frente-0.md](./SPRINT-6-EXECUTION-REPORT-Frente-0.md)
 
 ---
 
@@ -22,7 +25,38 @@
 
 ---
 
-## 📋 Sprint Backlog
+## 📋 Frente 0 — Correções Pré-Sprint (Bloqueantes) ✅ | 23/07/2026
+
+> **Status:** ✅ 4/4 concluídas. [Relatório de Execução](./SPRINT-6-EXECUTION-REPORT-Frente-0.md)
+
+| ID | Tarefa | Débito | Est. | Critério DONE | Status |
+|:---|:---|:---:|:---:|:---|:---:|
+| **T-161.DT-126** | Reescrever `BusinessUnit.java` — alinhar 16 campos com schema V001+V007 | DT-126 | 2h | Entity compila. `toColumnMap()` com 16 colunas | ✅ |
+| **T-162.DT-127** | Criar `ProductService.java` entity — 6 colunas de domínio | DT-127 | 1h | Entity compila. Pronta para ProductRepository | ✅ |
+| **T-163.DT-128** | Implementar `validateBusinessUnitTenant()` no PermissionService | DT-128 | 1h | IDOR cross-tenant bloqueado. TenantIsolationException | ✅ |
+| **T-164.DT-129** | Criar `CnpjValidator.java` — algoritmo unificado numérico+alfanumérico (IN RFB 2.119/2022) | DT-129 | 1.5h | 45 testes. 11 CNPJs reais validados. OnboardingService atualizado | ✅ |
+
+**Entregáveis F0:** 3 arquivos criados (ProductService.java, CnpjValidator.java, CnpjValidatorTest.java) + 6 modificados. 261 testes (0 failures). Code review: 7 skills, 12 findings, HIGH-1 DRY corrigido.
+
+---
+
+## 📋 Frente 1 — Recomendados ✅ | 23/07/2026
+
+> **Status:** ✅ 5/5 concluídas. [Relatório de Execução](./SPRINT-6-EXECUTION-REPORT-Frente-1.md)
+
+| ID | Tarefa | Débito | Est. | Critério DONE | Status |
+|:---|:---|:---:|:---:|:---|:---:|
+| **T-165.DT-130** | Criar V009 migration: RLS em `product_service` (tenant_id + POLICY) | DT-130 | 1.5h | RLS filtra product_service por tenant | ✅ |
+| **T-166.DT-131** | Remover `hierarchyType` de BusinessUnit.java | DT-131 | 15min | Entity sem referência a hierarchyType (já removido na F0) | ✅ |
+| **T-167.DT-133** | Atualizar SPRINT-CARD.md — branch name, métricas, .bak cleanup | DT-133 | 30min | Concluído na sessão de docs | ✅ |
+| **T-168.DT-134** | ADR-L08: Query hierárquica PostgreSQL WITH RECURSIVE + BusinessUnitRepository | DT-134 | 1h | ADR documentado. CTE funcional. 5 testes. | ✅ |
+| **T-169.DT-137** | Externalizar `trusted-proxy-ips` no RateLimitFilter | DT-137 | 30min | IPs configuráveis por ambiente. 6 testes. | ✅ |
+
+**Entregáveis F1:** 10 arquivos criados, 6 modificados. 288 testes (0 failures). ADR-L08 documentado. V009 fecha gap RLS.
+
+---
+
+## 📋 Sprint Backlog — M6 Features (EP-04b)
 
 | ID | Tarefa | Feature | Est. | Critério DONE |
 |:---|:---|:---|:---:|:---|
@@ -36,7 +70,7 @@
 | **T-076** | Testes integração M6: CRUD BU + Product com Testcontainers. CNPJ único, hierarquia, SKU único, soft delete | F04-05, F04-06 | 2d | PostgreSQL real. Cross-tenant query não vaza BU |
 | **T-077** | Testes isolamento multi-tenant: tenant-A não vê dados tenant-B em BU ou Produto. 2 tenants + dados sobrepostos | F04-05, F04-06 | 1.5d | Zero dados cross-tenant |
 
-**Total:** 9 tarefas · ~14 dias-homem
+**Total:** 9 tarefas (features) + 4 (Frente 0 ✅) + 5 (Frente 1 ⬜) = 18 tarefas · ~18 dias-homem
 
 ---
 
@@ -68,6 +102,13 @@ Matriz (parent_id = NULL)
 
 ## ✅ Definition of Done (Sprint-Level)
 
+- [x] **Frente 0:** BusinessUnit.java alinhada com V001+V007 (16 campos) ✅
+- [x] **Frente 0:** ProductService.java entity criada ✅
+- [x] **Frente 0:** validateBusinessUnitTenant() — IDOR cross-tenant bloqueado ✅
+- [x] **Frente 0:** CnpjValidator — algoritmo unificado CNPJ alfanumérico (IN RFB 2.119/2022) ✅
+- [x] **Frente 1:** V009 migration — RLS em product_service (5ª tabela, gap fechado) ✅
+- [x] **Frente 1:** ADR-L08 — BusinessUnitRepository.findTree() com WITH RECURSIVE ✅
+- [x] **Frente 1:** RateLimitFilter — trusted-proxy-ips externalizado ✅
 - [ ] CRUD BusinessUnit funcional com hierarquia recursiva
 - [ ] CNPJ único entre ativos do mesmo tenant (409 se duplicado)
 - [ ] CNPJ imutável após cadastro (400 se tentar alterar)
@@ -99,14 +140,16 @@ Matriz (parent_id = NULL)
 
 ## 📊 Métricas da Sprint
 
-| Métrica | Meta |
-|:---|:---:|
-| Tasks completadas | 9/9 |
-| Entidades | 2 (BusinessUnit, ProductService) |
-| RNs implementadas | 9 |
-| Cenários de teste | 17 |
-| Isolamento multi-tenant | 100% endpoints |
+| Métrica | Meta | Atual |
+|:---|:---:|:---:|
+| Tasks completadas | 18/18 | 9/18 (50%) |
+| Entidades | 2 (BusinessUnit, ProductService) | 2 entities criadas (F0) |
+| Repositories | 1 (BusinessUnitRepository) | 1 criado (F1) |
+| RNs implementadas | 9 | — |
+| Cenários de teste | 17 | 45 CnpjValidator + 27 F1 = 72 |
+| Isolamento multi-tenant | 100% endpoints | validateBusinessUnitTenant + RLS V009 ✅ |
+| Testes totais | — | 288 (0 failures) |
 
 ---
 
-🤖 *Gerado a partir de TASKS.md v2.0. O isolamento multi-tenant (T-070) é o teste mais crítico desta sprint.*
+🤖 *Gerado a partir de TASKS.md v3.9. Frentes 0+1 concluídas em 23/07/2026: 9/18 tasks (50%). V009 fecha gap RLS product_service. ADR-L08 documentado. Próximo: M6 Features (T-069 a T-077).*

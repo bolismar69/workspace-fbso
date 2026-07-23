@@ -3,9 +3,9 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.11
+- **Versão:** 2.12
 - **Data:** 23 de Julho de 2026
-- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). 26 endpoints REST. 4 features F04-01 a F04-04 entregues (Auth, Onboarding, Dashboard Cliente, App Switcher). 227 testes (0 failures). Stack: Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client.
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). Sprint 6 Frente 0 concluída ✅ (4/4 — BusinessUnit V001+V007, ProductService entity, CnpjValidator alfanumérico IN RFB 2.119/2022). 26 endpoints REST. 4 features F04-01 a F04-04 entregues (Auth, Onboarding, Dashboard Cliente, App Switcher). 261 testes (0 failures). Stack: Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client.
 - **Status:** [STATUS: COMPLIANCE] — Validado via GATE-ARCHITECTURE-SCOPE em 21/07/2026. 5 dimensões validadas (1 APROVADO, 3 RESSALVAS, 1 REPROVADO corrigido). 8 NCs resolvidas.
 - **Origem:** [PRD.md](./PRD.md)
 - **Débitos Técnicos:** [Sprint 3](./sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) · [Sprint 4](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md) — 56 débitos catalogados (47 novos + 9 backlog)
@@ -442,17 +442,17 @@ O isolamento entre tenants é a falha mais catastrófica possível em um SaaS. A
 
 #### Camada 1: PostgreSQL Row-Level Security (Preventiva — Banco)
 
-**Migration V003** — Ativa RLS em 5 tabelas críticas com `tenant_id` (Fase 0). Demais tabelas receberão RLS nas fases seguintes (M2-M6).
+**Migration V003** — Ativa RLS em 4 tabelas críticas com `tenant_id` (Fase 0). **Migration V009 (Sprint 6 F1):** estende RLS para `product_service` (5ª tabela) — adiciona coluna `tenant_id`, preenche via JOIN com `business_unit`, FORCE RLS. Demais tabelas sem necessidade de RLS (globais/compartilhadas).
 
 ```sql
 -- Tabelas com RLS ativado na Fase 0 (dados multi-tenant)
 ALTER TABLE fbso_platform.subscription ENABLE ROW LEVEL SECURITY;
 ALTER TABLE fbso_platform."user" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE fbso_platform.business_unit ENABLE ROW LEVEL SECURITY;
-ALTER TABLE fbso_platform.product_service ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fbso_platform.product_service ENABLE ROW LEVEL SECURITY;  -- Adicionado via V009 (Sprint 6 F1)
 ALTER TABLE fbso_platform.audit_log ENABLE ROW LEVEL SECURITY;
 
--- Tabelas SEM RLS na Fase 0 (acesso cross-tenant ou sem tenant_id):
+-- Tabelas SEM RLS (acesso cross-tenant ou sem tenant_id):
 -- tenant (Admin FBSO cross-tenant), plan, plan_module, resource_action,
 -- role_resource (tabelas de domínio/sem tenant_id), user_permission (FK para user)
 
@@ -793,6 +793,7 @@ class TenantIsolationIntegrationTest {
 | **ADR-L05** | Índices únicos parciais (PostgreSQL) | Permite reúso de CNPJ/e-mail após soft delete. Sem triggers complexos |
 | **ADR-L06** | Package-by-Layer tradicional | Simplicidade > pureza arquitetural. Time reduzido, prazo curto. Reavaliar na Fase 1 |
 | **ADR-L07** | PostgreSQL Row-Level Security (RLS) | Defesa em profundidade — camada 1 de 3 para isolamento multi-tenant. Garantia no nível do banco: impossível burlar via aplicação. Substitui o TenantIsolationAspect AOP (removido — redundante e frágil). TenantAwareDataSource agora lança `TenantIsolationException` em falha (DT-006, Sprint 3) |
+| **ADR-L08** | PostgreSQL WITH RECURSIVE para queries hierárquicas em business_unit | Performance O(n) em vez de O(n²) com N+1 queries. Única query, transacionalmente consistente. Sem limite de profundidade (RN17-04). PostgreSQL otimiza CTE com índices em parent_id. Implementado em `BusinessUnitRepository.findTree()`. Alternativas rejeitadas: carregar todas BUs + montar árvore em memória (não escala), múltiplas queries N+1 (degradação com árvores profundas). DT-134 (Sprint 6 F1) |
 
 ---
 
@@ -1003,6 +1004,7 @@ flowchart LR
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.12 | 23/07/2026 | **Sprint 6 Frente 0 concluída:** 4/4 bloqueantes resolvidos — BusinessUnit.java reescrita (16 campos V001+V007), ProductService.java entity criada, validateBusinessUnitTenant() IDOR cross-tenant, CnpjValidator alfanumérico (IN RFB 2.119/2022). 261 testes (0 failures). 22 débitos catalogados. Status atualizado no header. Próximo: Frente 1 (5 tasks) ou M6 Features (9 tasks). | Agente IA |
 | 2.11 | 23/07/2026 | **Sprint 5 Frentes 1-2-3a concluídas:** Frente 1 (10 tasks técnicas — keyset pagination, Caffeine, máquinas de estado, rate limiting, JWT converter), Frente 2 (8 tasks qualidade — AuditFieldsRowMapper, ObjectMapper injection, UTC timestamps, springdoc 2.8.16, CORS externalizado), Frente 3a (12 tasks backend Portal Cliente — Auth, Onboarding, Dashboard Cliente, App Switcher). 26 endpoints. 4 features entregues. 227 testes. Security: URL injection fix ×2, IDOR fix com Caffeine reset tokens. Status atualizado no header. | Agente IA |
 | 2.10 | 23/07/2026 | Sprint 5 Frente 1: Adicionado §8 Máquinas de Estado (TenantStatus + Onboarding) com diagramas Mermaid. Renumeradas seções §8→§12. Documentadas 8 transições TenantStatus + 6 edge cases onboarding. Stack: Flyway 12.11.0, PG driver 42.7.11, Caffeine 3.2.4. | Agente IA |
 | 2.9 | 21/07/2026 | **GATE-ARCHITECTURE-SCOPE COMPLIANCE:** Validação em 5 dimensões (1 APROVADO, 3 RESSALVAS, 1 REPROVADO corrigido). 8 NCs resolvidas: CacheConfig + rowmapper/ na estrutura (§2), ConfigController (F04-04 App Switcher) adicionado (§2), i18n/PT-BR documentado (§4), mapeamento ADRs globais↔locais corrigido (§9), Cache §5.4 — Caffeine com TTL/invalidação/escopo, JaCoCo 80% declarado (§8.1). Pendências externas: INTEGRATION-MAP.md (SMTP+Observabilidade) e business-inputs/ARCHITECTURE.md (package-by-domain→layer). Status: COMPLIANCE. | Agente GATE-ARCHITECTURE-SCOPE/IA |

@@ -3,9 +3,9 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.18
+- **Versão:** 1.19
 - **Data:** 23 de Julho de 2026
-- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). 4 features F04-01 a F04-04 entregues (Auth, Onboarding, Dashboard Cliente, App Switcher). 26 endpoints REST. 227 testes (0 failures).
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). Sprint 6 Frente 0 concluída ✅ (4/4 bloqueantes — BusinessUnit, ProductService, CnpjValidator alfanumérico IN RFB 2.119/2022, validateBusinessUnitTenant). 4 features F04-01 a F04-04 entregues (Auth, Onboarding, Dashboard Cliente, App Switcher). 26 endpoints REST. 261 testes (0 failures).
 - **Status:** [STATUS: COMPLIANCE] — Validado via GATE-PRD-SCOPE em 21/07/2026. 5 dimensões validadas (4 RESSALVAS, 1 APROVADO). 6 NCs corrigidas.
 
 ---
@@ -63,12 +63,12 @@ A **FBSO Platform** é o futuro SaaS multi-produto da FBSO.ORG. Nesta **Fase 0**
 | Artefato | Localização | Status |
 |:---|:---|:---|
 | **PRD.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/PRD.md` | ✅ Este documento |
-| **SPECS.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/SPECS.md` | ✅ Criado (v2.7) |
-| **TASKS.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TASKS.md` | ✅ Criado (v3.7) |
-| **TEST_PLAN.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TEST_PLAN.md` | ✅ Criado (v3.3) |
-| **ARCHITECTURE.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/ARCHITECTURE.md` | ✅ Criado (v2.11) |
-| **SECURITY.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/SECURITY.md` | ✅ Criado (v1.2) |
-| **TECHNICAL-REFERENCE.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-REFERENCE.md` | ✅ Criado (v1.1) |
+| **SPECS.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/SPECS.md` | ✅ Criado (v2.8) |
+| **TASKS.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TASKS.md` | ✅ Criado (v3.9) |
+| **TEST_PLAN.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TEST_PLAN.md` | ✅ Criado (v3.4) |
+| **ARCHITECTURE.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/ARCHITECTURE.md` | ✅ Criado (v2.12) |
+| **SECURITY.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/SECURITY.md` | ✅ Criado (v1.3) |
+| **TECHNICAL-REFERENCE.md** | `.specs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-REFERENCE.md` | ✅ Criado (v1.2) |
 
 ---
 
@@ -610,6 +610,7 @@ git checkout -b hotfix/sprint-NN-<descricao> <merge-commit-hash>
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.19 | 23/07/2026 | **Sprint 6 Frente 0 concluída:** 4/4 tarefas bloqueantes (BusinessUnit.java reescrita V001+V007, ProductService.java entity, validateBusinessUnitTenant() IDOR cross-tenant, CnpjValidator alfanumérico IN RFB 2.119/2022). 261 testes (0 failures). Code review: 7 skills, 12 findings, HIGH-1 DRY corrigido. 22 débitos catalogados ([IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-06-bus-catalogo/IDENTIFIED-TECHNICAL-DEBT-sprint-06-bus-catalogo.md)). Status atualizado no header. | Agente IA |
 | 1.18 | 23/07/2026 | **Atualização status Sprint 5:** Frentes 0-1-2-3a concluídas (36/40, 90%). 4 features F04-01 a F04-04 entregues. 26 endpoints REST. 227 testes. Atualizadas versões dos artefatos em §3.3 (SPECS v2.7, TASKS v3.7, TEST_PLAN v3.3, ARCH v2.11, SECURITY v1.2, TECH-REF v1.1). | Agente IA |
 | 1.17 | 22/07/2026 | Sprint 5 Frentes 0-1-3 iniciadas: docker-compose (Keycloak+PG+MailHog), realm-config.json (4 roles, 3 claims), Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client, SecurityConfig 2 filter chains, 10 recomendações técnicas (Frente 1). Status: 16/40. | Agente IA |
 | 1.16 | 21/07/2026 | **GATE-PRD-SCOPE COMPLIANCE:** Validação em 5 dimensões (4 RESSALVAS, 1 APROVADO). 6 NCs corrigidas: BR-B05 Must Have (§4.6), out-of-scope expandido (§2), F04-03 classificação clarificada (§4.6), matriz de dependências (§4.7), premissas A1-A6 (§4.8), RN08-01/RN08-02 adicionadas (§6.6). Status: COMPLIANCE. | Agente GATE-PRD-SCOPE/IA |

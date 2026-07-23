@@ -13,17 +13,20 @@ import java.util.UUID;
  * <p>Mapeia a tabela {@code fbso_platform.product_service} (V001).</p>
  *
  * <h3>Isolamento Multi-Tenant</h3>
- * <p>Esta tabela NÃO possui coluna {@code tenant_id} própria.
- * O isolamento entre tenants é feito via JOIN com
- * {@code business_unit.tenant_id}. O repositório deve usar
- * {@code hasTenantColumn=false} e filtrar manualmente.</p>
+ * <p>A partir da V009 (DT-130, Sprint 6 Frente 1), esta tabela possui
+ * coluna {@code tenant_id} própria com RLS ativo ({@code FORCE ROW LEVEL
+ * SECURITY}). O {@code tenant_id} é desnormalizado de
+ * {@code business_unit.tenant_id} e mantido em sincronia.</p>
  *
- * <p><b>DT-127 (Sprint 6):</b> Entity criada — tabela existia desde V001
+ * <p><b>DT-127 (Sprint 6 F0):</b> Entity criada — tabela existia desde V001
  * mas não havia classe Java correspondente.</p>
+ * <p><b>DT-130 (Sprint 6 F1):</b> Campo {@code tenantId} adicionado —
+ * V009 migration + RLS.</p>
  */
 public class ProductService extends BaseEntity {
 
     private UUID id;
+    private UUID tenantId;
     private UUID businessUnitId;
     private String name;
     private String sku;
@@ -38,6 +41,14 @@ public class ProductService extends BaseEntity {
     }
 
     // -- Getters / Setters --
+
+    public UUID getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
+    }
 
     public UUID getBusinessUnitId() {
         return businessUnitId;
@@ -108,6 +119,7 @@ public class ProductService extends BaseEntity {
     @Override
     public Map<String, Object> toColumnMap() {
         Map<String, Object> columns = new LinkedHashMap<>();
+        columns.put("tenant_id", tenantId);
         columns.put("business_unit_id", businessUnitId);
         columns.put("name", name);
         columns.put("sku", sku);

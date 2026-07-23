@@ -2,9 +2,9 @@
 
 - **Microservico:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine 3.2.4 + Keycloak 26
-- **Versao:** 1.1
+- **Versao:** 1.2
 - **Data:** 23 de Julho de 2026
-- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). 26 endpoints REST. 4 features F04-01 a F04-04 entregues. 227 testes (0 failures).
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). Sprint 6 Frente 0 concluída ✅ (4/4 — BusinessUnit, ProductService, CnpjValidator alfanumérico IN RFB 2.119/2022). 26 endpoints REST. 4 features F04-01 a F04-04 entregues. 261 testes (0 failures).
 - **Objetivo:** Guia rapido para agentes de desenvolvimento. Compacto, escaneavel, comandos exatos.
 
 ---
@@ -77,7 +77,7 @@ com.fbso.platform.admin/
 ├── security/aspect/                       # RbacAspect, AuditAspect
 ├── service/                               # 9 services + EmailServiceImpl
 ├── common/                                # BaseEntity, Address
-└── utils/                                 # JwtUtils
+└── utils/                                 # JwtUtils, CnpjValidator
 ```
 
 **Detalhes:** Ver ARCHITECTURE.md Secao 2
@@ -465,7 +465,7 @@ chore(deps): bump postgresql driver 42.7.10 para 42.7.11
 | **PRD.md** | Requisitos de negocio, user stories, RNs | 587 linhas |
 | **ARCHITECTURE.md** | C4, design detalhado, ADRs, pipeline seguranca | 892 linhas |
 | **SPECS.md** | Contrato API, 37 endpoints, 51 RNs, validacoes | 439 linhas |
-| **TASKS.md** | Plano de tarefas, 167 tasks, criterios DONE | 558 linhas |
+| **TASKS.md** | Plano de tarefas, 176 tasks, criterios DONE | 558 linhas |
 | **TEST_PLAN.md** | 176 cenarios, piramide de testes, seguranca | 418+ linhas |
 | **SECURITY.md** | Threat model STRIDE, OWASP Top 10, pipeline DevSecOps | ~500 linhas |
 | **TECHNICAL-REFERENCE.md** | Este documento (guia rapido) | ~300 linhas |
@@ -490,5 +490,6 @@ chore(deps): bump postgresql driver 42.7.10 para 42.7.11
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.2 | 23/07/2026 | **Sprint 6 Frente 0 concluída:** BusinessUnit.java + ProductService.java entities. CnpjValidator com algoritmo unificado (IN RFB 2.119/2022). validateBusinessUnitTenant() IDOR cross-tenant. 261 testes (0 failures). 22 débitos catalogados. Referências atualizadas (TASKS v3.9, SPECS v2.8, TEST_PLAN v3.4, ARCH v2.12, SECURITY v1.3). | Agente IA |
 | 1.1 | 23/07/2026 | **Sprint 5 Frentes 1-3a concluídas:** Endpoints 18→26 (Auth + Onboarding + Dashboard Cliente + App Switcher). Stack confirmado: Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client. Referências atualizadas (TASKS v3.7, SPECS v2.7, SECURITY v1.2). 227 testes. | Agente IA |
 | 1.0 | 20/07/2026 | Criação inicial: setup local, padrões de código, pipeline de segurança, 18 endpoints, convenções git, variáveis de ambiente | Agente IA |

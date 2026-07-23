@@ -2,7 +2,7 @@
 
 - **Solucao:** `ms-fbso-platform-admin`
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 3.8
+- **Versao:** 3.9
 - **Data:** 23 de Julho de 2026
 - **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). Sprint 6 Frente 0 planejada (4 bloqueantes — DT-126 a DT-129). 4 features F04-01 a F04-04 entregues (Auth, Onboarding, Dashboard Cliente, App Switcher). 26 endpoints REST. 227 testes (0 failures).
 - **Time Técnico:** [TECHNICAL-TEAM-MAP.md v1.5](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-TEAM-MAP.md) — 10 papéis (todos a designar)
@@ -34,7 +34,7 @@
 | **Must Have** | 154 |
 | **Should Have** | 5 tarefas: T-021 (F01-03), T-063, T-064 (F04-03), T-086d (E2E Playwright), T-160 (Dashboard Frontend) |
 | **Could Have** | 2 tarefas (Frente 2 — já executada durante Sprint 5) |
-| **Progresso Atual** | 121/176 (69%) — Sprints 1-4 concluídas ✅. Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40 = 90%). Sprint 6 Frente 0 concluída ✅ (4/4). 26 endpoints REST. 261 testes. |
+| **Progresso Atual** | 129/176 (73%) — Sprints 1-4 concluídas ✅. Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40 = 90%). Sprint 6 Frentes 0+1 concluídas ✅ (9/18 = 50%). 26 endpoints REST. 288 testes (0 failures). |
 
 ### Cobertura de Features (18/18)
 
@@ -250,19 +250,19 @@ Pre-M2 (Setup+Frente0)  M2 (EP-01)  M3 (EP-02)  Frente3  M4 (EP-03)  M5 (EP-04a)
 
 ---
 
-### Sprint 6 — Frente 1: Recomendados ⬜ | 23/07/2026
+### Sprint 6 — Frente 1: Recomendados ✅ | 23/07/2026
 
-**Estimativa total:** ~3.5h (≈0.5 dia) / **Responsavel:** A definir / **Status:** ⬜ 0/5 concluídas
+**Estimativa total:** ~3.5h (≈0.5 dia) / **Responsavel:** Agente IA / **Status:** ✅ 5/5 concluídas
 
 > Débitos que devem ser tratados junto com as features. Não bloqueiam o início mas acumulam risco técnico se ignorados.
 
 | ID | Tarefa | Débito | Est. | Critério DONE |
 |:---|:---|:---:|:---:|:---|
-| **T-165.DT-130** | DT-130: Resolver RLS gap em `product_service` — criar V009 migration: `ALTER TABLE product_service ADD COLUMN tenant_id UUID NOT NULL DEFAULT gen_random_uuid()`, preencher tenant_id via UPDATE com JOIN business_unit, adicionar FK, `ENABLE ROW LEVEL SECURITY` + `CREATE POLICY tenant_isolation`. Criar U009 rollback | DT-130 | 1.5h | Migration V009 aplicada. `SELECT * FROM product_service` como tenant-A retorna apenas produtos do tenant-A (RLS filtra). U009 reverte |
-| **T-166.DT-131** | DT-131: Remover `hierarchyType` de BusinessUnit.java (campo e `toColumnMap()`). Garantir que `isMatrix` está no `toColumnMap()` (V007 já adicionou a coluna) | DT-131 | 15min | Entity sem referência a `hierarchyType`. `isMatrix` persiste corretamente via `save()`/`update()` |
-| **T-167.DT-133** | DT-133: Atualizar SPRINT-CARD.md — corrigir branch name para `PRJ-FIN-2026-0003-java-ms-fbso-platform-admin-sprint-06-bus-catalogo`, referência TASKS.md v3.8, header status. Remover 3 arquivos `.bak`. Atualizar métricas da sprint | DT-133 | 30min | Branch correta no card. Versão TASKS correta. Zero arquivos .bak |
-| **T-168.DT-134** | DT-134: Documentar decisão de query hierárquica no ARCHITECTURE.md — criar ADR-L08: PostgreSQL WITH RECURSIVE para árvore de BUs. Implementar `BusinessUnitRepository.findTree(UUID tenantId)` com CTE recursiva | DT-134 | 1h | ADR-L08 documentado. Query `WITH RECURSIVE bu_tree AS (...)` funcional. Teste com 3 níveis de hierarquia |
-| **T-169.DT-137** | DT-137: Externalizar `trusted-proxy-ips` no RateLimitFilter para `application.yml` — propriedade `app.rate-limit.trusted-proxy-ips` (List<String>). Injetar via `@Value` | DT-137 | 30min | IPs configuráveis por ambiente. Sem hardcode. Dev: 127.0.0.1. Prod: IP do proxy reverso |
+| **T-165.DT-130** ✅ | DT-130: Resolver RLS gap em `product_service` — criar V009 migration: `ALTER TABLE product_service ADD COLUMN tenant_id UUID NOT NULL DEFAULT gen_random_uuid()`, preencher tenant_id via UPDATE com JOIN business_unit, adicionar FK, `ENABLE ROW LEVEL SECURITY` + `CREATE POLICY tenant_isolation`. Criar U009 rollback | DT-130 | 1.5h | Migration V009 aplicada. `SELECT * FROM product_service` como tenant-A retorna apenas produtos do tenant-A (RLS filtra). U009 reverte |
+| **T-166.DT-131** ✅ | DT-131: Remover `hierarchyType` de BusinessUnit.java (campo e `toColumnMap()`). Garantir que `isMatrix` está no `toColumnMap()` (V007 já adicionou a coluna) | DT-131 | 15min | Entity sem referência a `hierarchyType`. `isMatrix` persiste corretamente via `save()`/`update()` |
+| **T-167.DT-133** ✅ | DT-133: Atualizar SPRINT-CARD.md — corrigir branch name para `PRJ-FIN-2026-0003-java-ms-fbso-platform-admin-sprint-06-bus-catalogo`, referência TASKS.md v3.8, header status. Remover 3 arquivos `.bak`. Atualizar métricas da sprint | DT-133 | 30min | Branch correta no card. Versão TASKS correta. Zero arquivos .bak |
+| **T-168.DT-134** ✅ | DT-134: Documentar decisão de query hierárquica no ARCHITECTURE.md — criar ADR-L08: PostgreSQL WITH RECURSIVE para árvore de BUs. Implementar `BusinessUnitRepository.findTree(UUID tenantId)` com CTE recursiva | DT-134 | 1h | ADR-L08 documentado. Query `WITH RECURSIVE bu_tree AS (...)` funcional. Teste com 3 níveis de hierarquia |
+| **T-169.DT-137** ✅ | DT-137: Externalizar `trusted-proxy-ips` no RateLimitFilter para `application.yml` — propriedade `app.rate-limit.trusted-proxy-ips` (List<String>). Injetar via `@Value` | DT-137 | 30min | IPs configuráveis por ambiente. Sem hardcode. Dev: 127.0.0.1. Prod: IP do proxy reverso |
 
 ---
 
@@ -574,6 +574,7 @@ T-001 (2d) -> T-007 (2d) -> T-012 (1.5d) -> T-016 (2d) -> T-017 (1d) -> T-019 (1
 
 | Versao | Data | Alteracao | Autor |
 |:---|:---|:---|:---|
+| 3.9 | 23/07/2026 | **Sprint 6 Frente 0 concluída e executada:** 4/4 tarefas bloqueantes (T-161.DT-126 a T-164.DT-129) — BusinessUnit.java reescrita (16 campos V001+V007), ProductService.java entity, validateBusinessUnitTenant() IDOR cross-tenant, CnpjValidator alfanumérico (IN RFB 2.119/2022). 261 testes (0 failures). Code review: 7 skills, 12 findings, HIGH-1 DRY corrigido. [Relatório de Execução](./sprints/sprint-06-bus-catalogo/SPRINT-6-EXECUTION-REPORT-Frente-0.md). Progresso: 121/176→125/176 (71%). | Agente IA |
 | 3.8 | 23/07/2026 | **Sprint 6 auditoria técnica concluída:** 22 débitos identificados (4🔴, 10🟡, 8🔵) por 6 skills. Decisão do time: 4 bloqueantes → Frente 0 (T-161.DT-126 a T-164.DT-129), 5 recomendados → Frente 1 (T-165.DT-130 a T-169.DT-137). 9 nits → backlog Sprint 7. Total: 167→176 tasks. Progresso: 117/176 (66%). [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-06-bus-catalogo/IDENTIFIED-TECHNICAL-DEBT-sprint-06-bus-catalogo.md) | Agente IA |
 | 3.7 | 23/07/2026 | **Sprint 5 Frentes 1-2-3a concluídas:** Frente 1 (10/10 ✅ — paginação keyset, Caffeine, máquinas estado, rate limiting, JWT converter), Frente 2 (8/8 ✅ — AuditFieldsRowMapper, ObjectMapper injection, UTC timestamps, springdoc 2.8.16, CORS externalizado), Frente 3a backend (12/12 ✅ — Auth endpoints, OnboardingService 4 passos, DashboardClientService, App Switcher /auth/me e /tenants/me). 26 endpoints. 4 features F04-01 a F04-04. 227 testes. Progresso: 117/167 (70%). Próximo: Frente 3b Frontend (T-157..T-160, 4 tasks). | Agente IA |
 | 3.6 | 23/07/2026 | Sprint 5 Frentes 0-1-2 concluídas: 24 tasks técnicas (blockers + recomendações + qualidade). Build ✅. 213 testes. Header e §1 atualizados. | Agente IA |

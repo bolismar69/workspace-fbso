@@ -103,3 +103,5 @@ logging:
 app:
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,https://app.fbso.org}
+  rate-limit:
+    trusted-proxy-ips: ${RATE_LIMIT_TRUSTED_PROXY_IPS:127.0.0.1,0:0:0:0:0:0:0:1}

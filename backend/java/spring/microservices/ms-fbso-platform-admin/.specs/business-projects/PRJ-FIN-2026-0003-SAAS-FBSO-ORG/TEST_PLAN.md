@@ -3,9 +3,9 @@
 - **Solucao:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + REST Assured 5.5.7
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 3.3
+- **Versao:** 3.4
 - **Data:** 23 de Julho de 2026
-- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). 227 testes (0 failures). 26 endpoints REST. 4 features F04-01 a F04-04 entregues.
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). Sprint 6 Frente 0 concluída ✅ (4/4). 261 testes (0 failures, +34 CnpjValidator). 26 endpoints REST. 4 features F04-01 a F04-04 entregues.
 - **Status:** [STATUS: COMPLIANCE] — Validado via GATE-TEST_PLAN-TECHNICAL em 21/07/2026. 6 dimensões validadas (2 APROVADO, 4 RESSALVAS). 8 NCs corrigidas.
 - **Origem:** [SPECS.md](./SPECS.md) v2.5 + [ARCHITECTURE.md](./ARCHITECTURE.md) v2.9 + [PRD.md](./PRD.md) v1.16 + [SECURITY.md](./SECURITY.md) v1.1
 
@@ -748,6 +748,7 @@ Alem da [DoD do projeto](../../../../../../../../business-inputs/business-projec
 
 | Versao | Data | Alteracao | Autor |
 |:---|:---|:---|:---|
+| 3.4 | 23/07/2026 | **Sprint 6 Frente 0 concluída:** 261 testes totais (0 failures, +34 CnpjValidatorTest). CnpjValidator: algoritmo unificado numérico+alfanumérico (IN RFB 2.119/2022), 45 testes (11 CNPJs reais, 6 alfanuméricos). Header atualizado. | Agente IA |
 | 3.3 | 23/07/2026 | **Sprint 5 Frentes 1-2-3a concluídas:** 227 testes totais (0 failures, +14 novos — OnboardingServiceTest, DashboardClientServiceTest, OnboardingControllerTest, OnboardingIntegrationTest). 4 features Portal Cliente testadas. Header atualizado com status detalhado. Próximo: Frente 3b Frontend ou Sprint 6. | Agente IA |
 | 3.2 | 23/07/2026 | Sprint 5 Frentes 0-1-2 concluídas: 213 testes (0 failures). Build ✅. Header atualizado. | Agente IA |
 | 3.1 | 21/07/2026 | **GATE-TEST_PLAN-TECHNICAL COMPLIANCE:** Validação em 6 dimensões (2 APROVADO, 4 RESSALVAS). 8 NCs corrigidas: pirâmide declarada ajustada (40/30/12/18%), JaCoCo unificado 80/70%, 126 cenários "Planejado"→"Aprovado" (213 testes passando), 4 failover SMOKE tests (Keycloak+PG+liveness+readiness), header referências atualizadas (SPECS v2.5, ARCH v2.9, PRD v1.16, SECURITY v1.1). Status: COMPLIANCE. | Agente GATE-TEST_PLAN-TECHNICAL/IA |

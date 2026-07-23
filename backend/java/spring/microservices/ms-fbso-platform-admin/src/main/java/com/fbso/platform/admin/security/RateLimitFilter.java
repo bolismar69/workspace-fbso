@@ -17,6 +17,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Rate limiting para tentativas de login — Filter + Caffeine Cache.
@@ -29,6 +31,10 @@ import java.time.Instant;
  * Filter é mais idiomático no Spring Security para preocupações de
  * infraestrutura. Caffeine é local (por instância) — adequado para
  * Fase 0 single-instance. Trigger para Redis: {@code INSTANCE_COUNT > 1}.
+ * <p>
+ * <b>DT-137 (Sprint 6 F1):</b> trusted-proxy-ips externalizado para
+ * {@code application.yml}. Quando a requisição vem de um proxy confiável,
+ * o IP real do cliente é extraído do header {@code X-Forwarded-For}.
  *
  * @see <a href="ARCHITECTURE.md#4">ARCHITECTURE.md §4 — Pipeline de Segurança</a>
  */
@@ -41,13 +47,17 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
     private final Cache<String, RateLimitEntry> cache;
     private final ObjectMapper objectMapper;
+    private final List<String> trustedProxyIps;
 
-    public RateLimitFilter(ObjectMapper objectMapper) {
+    public RateLimitFilter(ObjectMapper objectMapper, List<String> trustedProxyIps) {
         this.cache = Caffeine.newBuilder()
                 .expireAfterWrite(BLOCK_DURATION)
                 .maximumSize(10_000)
                 .build();
         this.objectMapper = objectMapper;
+        this.trustedProxyIps = trustedProxyIps != null
+                ? Collections.unmodifiableList(trustedProxyIps)
+                : Collections.emptyList();
     }
 
     @Override
@@ -124,15 +134,31 @@ public class RateLimitFilter extends OncePerRequestFilter {
     }
 
     /**
-     * Extrai a chave de rate limiting: IP remoto da requisição.
+     * Extrai a chave de rate limiting: IP real do cliente.
      * <p>
-     * Nota: X-Forwarded-For NÃO é utilizado por risco de spoofing.
-     * Quando houver proxy reverso confiável (ex: Nginx com set_real_ip_from),
-     * usar o IP do proxy configurado em application.yml.
-     * // ponytail: externalizar trusted-proxy-ips para application.yml na Sprint 6
+     * Se a requisição vem de um proxy reverso confiável (configurado em
+     * {@code app.rate-limit.trusted-proxy-ips}), extrai o IP real do
+     * cliente do header {@code X-Forwarded-For}. Caso contrário, usa
+     * {@code request.getRemoteAddr()} diretamente.
+     * <p>
+     * <b>Security:</b> Apenas proxies na lista de confiáveis têm seu
+     * {@code X-Forwarded-For} aceito — mitigação contra IP spoofing.
+     * <p>
+     * <b>DT-137 (Sprint 6 F1):</b> trusted-proxy-ips externalizado.
      */
     private String extractKey(HttpServletRequest request) {
-        return request.getRemoteAddr();
+        String remoteAddr = request.getRemoteAddr();
+        if (trustedProxyIps.contains(remoteAddr)) {
+            String forwardedFor = request.getHeader("X-Forwarded-For");
+            if (forwardedFor != null && !forwardedFor.isBlank()) {
+                // X-Forwarded-For: client, proxy1, proxy2 — primeiro é o cliente
+                String clientIp = forwardedFor.split(",")[0].trim();
+                log.debug("Rate limit: usando X-Forwarded-For={} (proxy confiável {})",
+                        clientIp, remoteAddr);
+                return clientIp;
+            }
+        }
+        return remoteAddr;
     }
 
     // -- Inner class --

@@ -4,9 +4,19 @@
 - **Data da Review:** 15/10/2026
 - **Participantes:** Time Técnico, Tech Lead, **Product Owner** 🎯
 - **Features:** 2 (F04-05, F04-06)
+- **Status:** 🔄 Em Execução — Frente 0 concluída ✅ (4/4). 261 testes (0 failures). CnpjValidator com algoritmo alfanumérico (IN RFB 2.119/2022).
+- **Débitos Técnicos:** [IDENTIFIED-TECHNICAL-DEBT-sprint-06-bus-catalogo.md](./IDENTIFIED-TECHNICAL-DEBT-sprint-06-bus-catalogo.md) — 22 débitos (4🔴→F0 ✅, 5🟡→F1, 8🔵→Sprint 7)
+- **Execução F0:** [SPRINT-6-EXECUTION-REPORT-Frente-0.md](./SPRINT-6-EXECUTION-REPORT-Frente-0.md)
 
 ---
 
+## ✅ Frente 0 — Correções Pré-Sprint (Concluída)
+
+- [x] **BusinessUnit.java** reescrita com 16 campos (V001+V007) — `corporateName`, `taxRegime`, endereço completo, `status`
+- [x] **ProductService.java** entity criada — 6 colunas de domínio, `ProductType` enum
+- [x] **validateBusinessUnitTenant()** — bloqueia IDOR cross-tenant no `assignRole()` do PermissionService
+- [x] **CnpjValidator** — algoritmo unificado numérico+alfanumérico (IN RFB 2.119/2022). 45 testes. 11 CNPJs reais validados (6 alfanuméricos)
+- [x] **Code Review:** 7 skills, 12 findings, HIGH-1 DRY corrigido
 
 ## 🎯 O Que Demonstrar
 
