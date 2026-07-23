@@ -552,7 +552,7 @@ Este documento define os contratos de API entre o **Frontend** (React/Next.js) e
 
 ## 5. Mapeamento RBAC × Endpoints
 
-Matriz de permissões por papel (conforme RN10-01 do [FEATURES.md](./04-FEATURES.md)):
+Matriz de permissões por papel (conforme RN10-01 do [FEATURES.md](./04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)):
 
 | Recurso | Admin FBSO | Admin Tenant | Manager BU | Operator BU | Auditor |
 |:---|:---:|:---:|:---:|:---:|:---:|

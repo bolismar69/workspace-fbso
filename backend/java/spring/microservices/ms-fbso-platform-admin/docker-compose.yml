@@ -1,0 +1,93 @@
+# =============================================================================
+# ms-fbso-platform-admin — Ambiente de Desenvolvimento Local
+# =============================================================================
+# Uso:
+#   docker compose up -d          # Iniciar todos os serviços
+#   docker compose down           # Parar todos os serviços
+#   docker compose down -v        # Parar e remover volumes (reset completo)
+#   docker compose logs -f <svc>  # Logs de um serviço específico
+# =============================================================================
+# Serviços:
+#   postgres   → PostgreSQL 17 (porta 5432)
+#   keycloak   → Keycloak 26 OIDC (porta 8081)
+#   mailhog    → Captura de emails dev (SMTP 1025, UI 8025)
+# =============================================================================
+
+services:
+
+  # ── PostgreSQL 17 ────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:17-alpine
+    container_name: fbso-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: fbso_platform
+      POSTGRES_USER: fbso_admin
+      POSTGRES_PASSWORD: fbso_admin
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fbso_admin -d fbso_platform"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fbso-network
+
+  # ── Keycloak 26 (OIDC Identity Provider) ──────────────────────────────────
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    container_name: fbso-keycloak
+    restart: unless-stopped
+    command:
+      - start-dev
+      - --import-realm
+      - --http-port=8080
+      - --proxy-headers=xforwarded
+    ports:
+      - "8081:8080"
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/fbso_platform
+      KC_DB_USERNAME: fbso_admin
+      KC_DB_PASSWORD: fbso_admin
+      KC_DB_SCHEMA: keycloak
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+    volumes:
+      - ./keycloak/realm-config.json:/opt/keycloak/data/import/realm-config.json:ro
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && head -1 <&3 | grep -q '200'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - fbso-network
+
+  # ── MailHog (SMTP Capture para Dev) ──────────────────────────────────────
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: fbso-mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI
+    networks:
+      - fbso-network
+
+# ── Volumes e Network ──────────────────────────────────────────────────────
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  fbso-network:
+    driver: bridge

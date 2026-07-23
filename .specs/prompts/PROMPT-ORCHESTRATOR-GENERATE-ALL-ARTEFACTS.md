@@ -49,10 +49,10 @@ INICIALIZAR:
 
 ### Passo 1.1 — Gerar PRD.md
 
-**Delegar para:** `PROMPT-GENERATE-PRD-ARTEFACT.md`
+**Delegar para:** `PROMPT-GENERATE-PRD-TECHNICAL_SOLUTION.md`
 
 ```
-INVOCAR o prompt PROMPT-GENERATE-PRD-ARTEFACT.md com os parâmetros:
+INVOCAR o prompt PROMPT-GENERATE-PRD-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}, SCOPE=full
 
 VERIFICAR saída:
@@ -64,10 +64,10 @@ VERIFICAR saída:
 
 ### Passo 1.2 — Gerar ARCHITECTURE.md
 
-**Delegar para:** `PROMPT-GENERATE-ARCHITECTURE-ARTEFACT.md`
+**Delegar para:** `PROMPT-GENERATE-ARCHITECTURE-TECHNICAL_SOLUTION.md`
 
 ```
-INVOCAR o prompt PROMPT-GENERATE-ARCHITECTURE-ARTEFACT.md com os parâmetros:
+INVOCAR o prompt PROMPT-GENERATE-ARCHITECTURE-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}, SCOPE=full
 
 PRÉ-CONDIÇÃO: PRD.md deve existir (gerado no passo 1.1)
@@ -85,10 +85,10 @@ VERIFICAR saída:
 
 ### Passo 1.3 — Validar PRD.md (Gate de Escopo)
 
-**Delegar para:** `PROMPT-GATE-PRD-SCOPE.md`
+**Delegar para:** `PROMPT-GATE-PRD-TECHNICAL_SOLUTION.md`
 
 ```
-INVOCAR o prompt PROMPT-GATE-PRD-SCOPE.md com os parâmetros:
+INVOCAR o prompt PROMPT-GATE-PRD-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}
 
 VERIFICAR veredito:
@@ -101,7 +101,7 @@ VERIFICAR veredito:
 
 ### Passo 1.4 — Corrigir PRD.md (pós-gate)
 
-**Delegar para:** `PROMPT-FIX-PRD-FROM-GATE.md`
+**Delegar para:** `PROMPT-FIX-PRD-TECHNICAL_SOLUTION.md`
 
 ```
 INCREMENTAR loop_count
@@ -109,7 +109,7 @@ INCREMENTAR loop_count
 SE loop_count > max_loops:
     → ABORTAR com relatório de estouro de loops (Passo 3.0)
 
-INVOCAR o prompt PROMPT-FIX-PRD-FROM-GATE.md com os parâmetros:
+INVOCAR o prompt PROMPT-FIX-PRD-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}
 
 VERIFICAR correção:
@@ -126,10 +126,10 @@ VERIFICAR correção:
 
 ### Passo 1.5 — Validar ARCHITECTURE.md (Gate de Escopo)
 
-**Delegar para:** `PROMPT-GATE-ARCHITECTURE-SCOPE.md`
+**Delegar para:** `PROMPT-GATE-ARCHITECTURE-TECHNICAL_SOLUTION.md`
 
 ```
-INVOCAR o prompt PROMPT-GATE-ARCHITECTURE-SCOPE.md com os parâmetros:
+INVOCAR o prompt PROMPT-GATE-ARCHITECTURE-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}
 
 PRÉ-CONDIÇÃO: PRD.md deve estar validado (Passo 1.3 com APROVADO ou RESSALVA)
@@ -144,7 +144,7 @@ VERIFICAR veredito:
 
 ### Passo 1.5.1 — Corrigir ARCHITECTURE.md (pós-gate)
 
-**Delegar para:** `PROMPT-FIX-ARCHITECTURE-FROM-GATE.md`
+**Delegar para:** `PROMPT-FIX-ARCHITECTURE-TECHNICAL_SOLUTION.md`
 
 ```
 INCREMENTAR loop_count
@@ -152,7 +152,7 @@ INCREMENTAR loop_count
 SE loop_count > max_loops:
     → ABORTAR com relatório de estouro de loops (Passo 3.0)
 
-INVOCAR o prompt PROMPT-FIX-ARCHITECTURE-FROM-GATE.md com os parâmetros:
+INVOCAR o prompt PROMPT-FIX-ARCHITECTURE-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}
 
 VERIFICAR correção:
@@ -179,10 +179,10 @@ Se qualquer artefato REPROVADO após max_loops → ABORTAR (Passo 3.0)
 
 ### Passo 2.1 — Gerar SPECS.md
 
-**Delegar para:** `PROMPT-GENERATE-SPECS-ARTEFACT.md`
+**Delegar para:** `PROMPT-GENERATE-SPECS-TECHNICAL_SOLUTION.md`
 
 ```
-INVOCAR o prompt PROMPT-GENERATE-SPECS-ARTEFACT.md com os parâmetros:
+INVOCAR o prompt PROMPT-GENERATE-SPECS-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}, SCOPE=full
 
 PRÉ-CONDIÇÕES: PRD.md e ARCHITECTURE.md validados (FASE 1 concluída)
@@ -196,10 +196,10 @@ VERIFICAR saída:
 
 ### Passo 2.2 — Gerar TASKS.md
 
-**Delegar para:** `PROMPT-GENERATE-TASKS-ARTEFACT.md`
+**Delegar para:** `PROMPT-GENERATE-TASKS-TECHNICAL_SOLUTION.md`
 
 ```
-INVOCAR o prompt PROMPT-GENERATE-TASKS-ARTEFACT.md com os parâmetros:
+INVOCAR o prompt PROMPT-GENERATE-TASKS-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}
 
 PRÉ-CONDIÇÃO: SPECS.md deve existir (gerado no passo 2.1)
@@ -213,10 +213,10 @@ VERIFICAR saída:
 
 ### Passo 2.3 — Gerar TEST_PLAN.md
 
-**Delegar para:** `PROMPT-GENERATE-TEST_PLAN-ARTEFACT.md`
+**Delegar para:** `PROMPT-GENERATE-TEST_PLAN-TECHNICAL_SOLUTION.md`
 
 ```
-INVOCAR o prompt PROMPT-GENERATE-TEST_PLAN-ARTEFACT.md com os parâmetros:
+INVOCAR o prompt PROMPT-GENERATE-TEST_PLAN-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}
 
 PRÉ-CONDIÇÃO: TASKS.md deve existir (gerado no passo 2.2)
@@ -234,10 +234,10 @@ VERIFICAR saída:
 
 ### Passo 2.4 — Validar SPECS.md (Gate Técnico)
 
-**Delegar para:** `PROMPT-GATE-SPECS-TECHNICAL.md`
+**Delegar para:** `PROMPT-GATE-SPECS-TECHNICAL_SOLUTION.md`
 
 ```
-INVOCAR o prompt PROMPT-GATE-SPECS-TECHNICAL.md com os parâmetros:
+INVOCAR o prompt PROMPT-GATE-SPECS-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}
 
 PRÉ-CONDIÇÃO: PRD.md e ARCHITECTURE.md devem existir (inputs do gate)
@@ -252,7 +252,7 @@ VERIFICAR veredito:
 
 ### Passo 2.5 — Corrigir SPECS.md (pós-gate)
 
-**Delegar para:** `PROMPT-FIX-SPECS-FROM-GATE.md`
+**Delegar para:** `PROMPT-FIX-SPECS-TECHNICAL_SOLUTION.md`
 
 ```
 INCREMENTAR loop_count
@@ -260,7 +260,7 @@ INCREMENTAR loop_count
 SE loop_count > max_loops:
     → ABORTAR com relatório de estouro de loops (Passo 3.0)
 
-INVOCAR o prompt PROMPT-FIX-SPECS-FROM-GATE.md com os parâmetros:
+INVOCAR o prompt PROMPT-FIX-SPECS-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}
 
 VERIFICAR correção:
@@ -279,10 +279,10 @@ VERIFICAR correção:
 
 ### Passo 2.6 — Validar TASKS.md (Gate Técnico)
 
-**Delegar para:** `PROMPT-GATE-TASKS-TECHNICAL.md`
+**Delegar para:** `PROMPT-GATE-TASKS-TECHNICAL_SOLUTION.md`
 
 ```
-INVOCAR o prompt PROMPT-GATE-TASKS-TECHNICAL.md com os parâmetros:
+INVOCAR o prompt PROMPT-GATE-TASKS-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}
 
 PRÉ-CONDIÇÃO: SPECS.md deve estar validado (Passo 2.4 com APROVADO ou RESSALVA)
@@ -297,7 +297,7 @@ VERIFICAR veredito:
 
 ### Passo 2.7 — Corrigir TASKS.md (pós-gate)
 
-**Delegar para:** `PROMPT-FIX-TASKS-FROM-GATE.md`
+**Delegar para:** `PROMPT-FIX-TASKS-TECHNICAL_SOLUTION.md`
 
 ```
 INCREMENTAR loop_count
@@ -305,7 +305,7 @@ INCREMENTAR loop_count
 SE loop_count > max_loops:
     → ABORTAR com relatório de estouro de loops (Passo 3.0)
 
-INVOCAR o prompt PROMPT-FIX-TASKS-FROM-GATE.md com os parâmetros:
+INVOCAR o prompt PROMPT-FIX-TASKS-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}
 
 VERIFICAR correção:
@@ -318,10 +318,10 @@ VERIFICAR correção:
 
 ### Passo 2.8 — Validar TEST_PLAN.md (Gate Técnico)
 
-**Delegar para:** `PROMPT-GATE-TEST_PLAN-TECHNICAL.md`
+**Delegar para:** `PROMPT-GATE-TEST_PLAN-TECHNICAL_SOLUTION.md`
 
 ```
-INVOCAR o prompt PROMPT-GATE-TEST_PLAN-TECHNICAL.md com os parâmetros:
+INVOCAR o prompt PROMPT-GATE-TEST_PLAN-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}
 
 PRÉ-CONDIÇÃO: TASKS.md deve estar validado (Passo 2.6 com APROVADO ou RESSALVA)
@@ -336,7 +336,7 @@ VERIFICAR veredito:
 
 ### Passo 2.8.1 — Corrigir TEST_PLAN.md (pós-gate)
 
-**Delegar para:** `PROMPT-FIX-TEST_PLAN-FROM-GATE.md`
+**Delegar para:** `PROMPT-FIX-TEST_PLAN-TECHNICAL_SOLUTION.md`
 
 ```
 INCREMENTAR loop_count
@@ -344,7 +344,7 @@ INCREMENTAR loop_count
 SE loop_count > max_loops:
     → ABORTAR com relatório de estouro de loops (Passo 3.0)
 
-INVOCAR o prompt PROMPT-FIX-TEST_PLAN-FROM-GATE.md com os parâmetros:
+INVOCAR o prompt PROMPT-FIX-TEST_PLAN-TECHNICAL_SOLUTION.md com os parâmetros:
     {SOLUTION_PATH}, {PROJECT_PATH}, {PROJECT_NAME}, {SOLUTION_NAME}
 
 VERIFICAR correção:
@@ -511,21 +511,21 @@ Conteúdo:
 
 | Passo | Ação | Prompt Delegado |
 |---|---|---|
-| 1.1 | Gerar PRD.md | `PROMPT-GENERATE-PRD-ARTEFACT.md` |
-| 1.2 | Gerar ARCHITECTURE.md | `PROMPT-GENERATE-ARCHITECTURE-ARTEFACT.md` |
-| 1.3 | Validar PRD.md (Gate Escopo) | `PROMPT-GATE-PRD-SCOPE.md` |
-| 1.4 | Corrigir PRD.md | `PROMPT-FIX-PRD-FROM-GATE.md` |
-| 1.5 | Validar ARCHITECTURE.md (Gate Escopo) | `PROMPT-GATE-ARCHITECTURE-SCOPE.md` |
-| 1.5.1 | Corrigir ARCHITECTURE.md | `PROMPT-FIX-ARCHITECTURE-FROM-GATE.md` |
-| 2.1 | Gerar SPECS.md | `PROMPT-GENERATE-SPECS-ARTEFACT.md` |
-| 2.2 | Gerar TASKS.md | `PROMPT-GENERATE-TASKS-ARTEFACT.md` |
-| 2.3 | Gerar TEST_PLAN.md | `PROMPT-GENERATE-TEST_PLAN-ARTEFACT.md` |
-| 2.4 | Validar SPECS.md (Gate Técnico) | `PROMPT-GATE-SPECS-TECHNICAL.md` |
-| 2.5 | Corrigir SPECS.md | `PROMPT-FIX-SPECS-FROM-GATE.md` |
-| 2.6 | Validar TASKS.md (Gate Técnico) | `PROMPT-GATE-TASKS-TECHNICAL.md` |
-| 2.7 | Corrigir TASKS.md | `PROMPT-FIX-TASKS-FROM-GATE.md` |
-| 2.8 | Validar TEST_PLAN.md (Gate Técnico) | `PROMPT-GATE-TEST_PLAN-TECHNICAL.md` |
-| 2.8.1 | Corrigir TEST_PLAN.md | `PROMPT-FIX-TEST_PLAN-FROM-GATE.md` |
+| 1.1 | Gerar PRD.md | `PROMPT-GENERATE-PRD-TECHNICAL_SOLUTION.md` |
+| 1.2 | Gerar ARCHITECTURE.md | `PROMPT-GENERATE-ARCHITECTURE-TECHNICAL_SOLUTION.md` |
+| 1.3 | Validar PRD.md (Gate Escopo) | `PROMPT-GATE-PRD-TECHNICAL_SOLUTION.md` |
+| 1.4 | Corrigir PRD.md | `PROMPT-FIX-PRD-TECHNICAL_SOLUTION.md` |
+| 1.5 | Validar ARCHITECTURE.md (Gate Escopo) | `PROMPT-GATE-ARCHITECTURE-TECHNICAL_SOLUTION.md` |
+| 1.5.1 | Corrigir ARCHITECTURE.md | `PROMPT-FIX-ARCHITECTURE-TECHNICAL_SOLUTION.md` |
+| 2.1 | Gerar SPECS.md | `PROMPT-GENERATE-SPECS-TECHNICAL_SOLUTION.md` |
+| 2.2 | Gerar TASKS.md | `PROMPT-GENERATE-TASKS-TECHNICAL_SOLUTION.md` |
+| 2.3 | Gerar TEST_PLAN.md | `PROMPT-GENERATE-TEST_PLAN-TECHNICAL_SOLUTION.md` |
+| 2.4 | Validar SPECS.md (Gate Técnico) | `PROMPT-GATE-SPECS-TECHNICAL_SOLUTION.md` |
+| 2.5 | Corrigir SPECS.md | `PROMPT-FIX-SPECS-TECHNICAL_SOLUTION.md` |
+| 2.6 | Validar TASKS.md (Gate Técnico) | `PROMPT-GATE-TASKS-TECHNICAL_SOLUTION.md` |
+| 2.7 | Corrigir TASKS.md | `PROMPT-FIX-TASKS-TECHNICAL_SOLUTION.md` |
+| 2.8 | Validar TEST_PLAN.md (Gate Técnico) | `PROMPT-GATE-TEST_PLAN-TECHNICAL_SOLUTION.md` |
+| 2.8.1 | Corrigir TEST_PLAN.md | `PROMPT-FIX-TEST_PLAN-TECHNICAL_SOLUTION.md` |
 | 3.0 | Relatório de Abort | *(gerado pelo próprio orquestrador)* |
 | 4.0 | Relatório de Sucesso | *(gerado pelo próprio orquestrador)* |
 

@@ -1,7 +1,7 @@
 # SPRINT-3-EXECUTION-REPORT-UNIFIED.md — Relatório Unificado de Execução: Sprint 3
 
 - **Solução:** `ms-fbso-platform-admin`
-- **Projeto:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
+- **Projeto:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
 - **Sprint:** 3 de 7 — Portal Admin + Contas e Planos
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + JDBC Template + Flyway + Testcontainers
 - **Datas:** 16–17/07/2026

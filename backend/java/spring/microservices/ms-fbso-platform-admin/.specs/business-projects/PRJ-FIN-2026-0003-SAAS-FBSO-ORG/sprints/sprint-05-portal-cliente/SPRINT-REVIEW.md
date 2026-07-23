@@ -4,9 +4,20 @@
 - **Data da Review:** 30/09/2026
 - **Participantes:** Time Técnico, Tech Lead, **Product Owner** 🎯
 - **Features:** 4 (F04-01 a F04-04)
+- **Progresso:** Frente 0 ✅ (7/7 — 17/07/2026). Próximo: Frente 1 (10 tarefas)
 
 ---
 
+## 🏗️ Infraestrutura (Frente 0) ✅ CONCLUÍDA
+
+- [x] **docker-compose.yml:** PostgreSQL 17 + Keycloak 26 + MailHog — `docker compose up -d` funcional
+- [x] **Keycloak realm:** `fbso-platform` com 4 roles (ADMIN_TENANT, MANAGER_BU, OPERATOR_BU, AUDITOR), client `fbso-platform-admin` (Auth Code + PKCE), 3 custom claims (tenant_id, business_unit_ids, modules)
+- [x] **Dependências:** Flyway 10.22.0→12.11.0, PostgreSQL driver 42.7.10→42.7.11 (CVE-2026-42198 fix), OAuth2 Client adicionado
+- [x] **SecurityConfig:** 2 SecurityFilterChain beans — OAuth2 Login (@Order(1)) + API Resource Server (@Order(2))
+- [x] **application.yml:** Client registration + provider Keycloak configurados. Portas alinhadas com docker-compose (8081)
+- [x] **Build:** ✅ `mvn compile` + `mvn test` (213 testes, 0 falhas)
+
+---
 
 ## 🎯 O Que Demonstrar
 

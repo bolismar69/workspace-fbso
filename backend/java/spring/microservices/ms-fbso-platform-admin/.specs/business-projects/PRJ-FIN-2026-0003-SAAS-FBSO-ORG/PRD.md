@@ -2,10 +2,11 @@
 
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
-- **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.13
-- **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-4 (Frentes 0-4) concluídas ✅. 88/136 tarefas (65%). Próximo: Sprint 4 Frentes 5-5b (17 tarefas pendentes)
+- **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
+- **Versão:** 1.17
+- **Data:** 23 de Julho de 2026
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1 concluídas ✅ (16/40 tasks)
+- **Status:** [STATUS: COMPLIANCE] — Validado via GATE-PRD-SCOPE em 21/07/2026. 5 dimensões validadas (4 RESSALVAS, 1 APROVADO). 6 NCs corrigidas.
 
 ---
 
@@ -28,6 +29,8 @@ A **FBSO Platform** é o futuro SaaS multi-produto da FBSO.ORG. Nesta **Fase 0**
 - ❌ **Tributali-Engine** — cálculos fiscais, IBS/CBS, Split Payment — isso virá em fase futura
 - ❌ **Storekeeper Portal** — PDV, estoque, frente de caixa — fase futura
 - ❌ **Gateway de pagamento** — processamento financeiro real — fase futura
+- ❌ **Integrações Externas** — ERPs (Totvs, SAP, Omie), sistemas bancários e de arrecadação — fase futura
+- ❌ **Comercialização de Produtos Finais** — venda direta de produtos/serviços ao consumidor final — fora do escopo do Core
 
 ---
 
@@ -37,22 +40,23 @@ A **FBSO Platform** é o futuro SaaS multi-produto da FBSO.ORG. Nesta **Fase 0**
 
 | Documento | Caminho Relativo | O que contém |
 |:---|:---|:---|
-| **Project Charter** | [`01-PROJECT-CHARTER-FBSO-PLATFORM.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/01-PROJECT-CHARTER-FBSO-PLATFORM.md) | Escopo, entregas D1-D7, marcos M1-M7, riscos, stakeholders |
-| **Business Requirements** | [`02-BUSINESS-REQUIREMENTS.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/02-BUSINESS-REQUIREMENTS.md) | 10 BRs funcionais, 8 NFRs |
-| **Épicos** | [`03-EPICS.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/03-EPICS.md) | EP-01 a EP-04 com objetivos e jornadas |
-| **Features** | [`04-FEATURES.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES.md) | 18 features, 58 user stories, 18 regras de negócio |
-| **User Stories** | [`05-USER-STORYS-*.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/) | 18 arquivos com critérios de aceitação detalhados |
+| **Project Charter** | [`01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | Escopo, entregas D1-D7, marcos M1-M7, riscos, stakeholders |
+| **Business Requirements** | [`02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 10 BRs funcionais, 8 NFRs |
+| **Épicos** | [`03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | EP-01 a EP-04 com objetivos e jornadas |
+| **Features** | [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 18 features, 58 user stories, 18 regras de negócio |
+| **User Stories** | [`05-USER-STORIES-*.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/user-stories/) | 18 arquivos com critérios de aceitação detalhados |
+| **Matriz RTM** | [`05-MATRIZ-RASTREABILIDADE-RTM.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/05-MATRIZ-RASTREABILIDADE-RTM.md) | Rastreabilidade D1-D7 → EP-01 a EP-04 → 18 features → 18 US |
 
 ### 3.2 Documentos Técnicos Transversais
 
 | Documento | Caminho Relativo | O que contém |
 |:---|:---|:---|
-| **Technical Plan** | [`TECHNICAL-PLAN.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-PLAN.md) | Stack, ERD, cenários de organização, sequenciamento |
-| **Architecture** | [`ARCHITECTURE.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/ARCHITECTURE.md) | Diagramas C4, 7 ADRs, fluxo de auth, estrutura de pacotes |
-| **Integration Map** | [`INTEGRATION-MAP.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/INTEGRATION-MAP.md) | 8 integrações, fluxos de dados, Docker Compose |
-| **API Contracts** | [`API-CONTRACTS.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/API-CONTRACTS.md) | 11 recursos REST, schemas JSON, matriz RBAC × endpoints |
-| **Definition of Done** | [`DEFINITION_OF_DONE.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/DEFINITION_OF_DONE.md) | Critérios de DONE para US, Feature e Entrega |
-| **Technical Team Map** | [`TECHNICAL-TEAM-MAP.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-TEAM-MAP.md) | Estrutura de times e competências |
+| **Technical Plan** | [`TECHNICAL-PLAN.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-PLAN.md) | Stack, ERD, cenários de organização, sequenciamento |
+| **Architecture** | [`ARCHITECTURE.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/ARCHITECTURE.md) | Diagramas C4, 7 ADRs, fluxo de auth, estrutura de pacotes |
+| **Integration Map** | [`INTEGRATION-MAP.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/INTEGRATION-MAP.md) | 8 integrações, fluxos de dados, Docker Compose |
+| **API Contracts** | [`API-CONTRACTS.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/API-CONTRACTS.md) | 11 recursos REST, schemas JSON, matriz RBAC × endpoints |
+| **Definition of Done** | [`DEFINITION_OF_DONE.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/DEFINITION_OF_DONE.md) | Critérios de DONE para US, Feature e Entrega |
+| **Technical Team Map** | [`TECHNICAL-TEAM-MAP.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-TEAM-MAP.md) | Estrutura de times e competências |
 
 ### 3.3 Artefatos Locais (deste microserviço)
 
@@ -108,7 +112,7 @@ A **FBSO Platform** é o futuro SaaS multi-produto da FBSO.ORG. Nesta **Fase 0**
 
 ### 4.4 Matriz de Rastreabilidade (BR → Feature → US → Entrega → API)
 
-> **Origem:** [BRD §6.1](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/02-BUSINESS-REQUIREMENTS.md), [FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES.md), [EPICS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/03-EPICS.md)
+> **Origem:** [BRD §6.1](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [04-FEATURES](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [03-EPICS](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 | BR | Feature | User Stories | Entrega | Pacote Java | API Resource |
 |:---|:---|:---|:---|:---|:---|
@@ -164,11 +168,45 @@ A **FBSO Platform** é o futuro SaaS multi-produto da FBSO.ORG. Nesta **Fase 0**
 | BR-A03 | Configuração de Planos Comerciais | EP-02 | F02-03 | Must Have |
 | BR-A04 | Vinculação de Assinaturas | EP-02 | F02-04 | Must Have |
 | BR-A05 | Gestão de Usuários e Permissões | EP-03 | F03-01 a F03-04 | Must Have |
-| BR-B01 | Portal do Cliente com Autenticação | EP-04 | F04-01, F04-03 | Must Have |
+| BR-B01 | Portal do Cliente com Autenticação | EP-04 | F04-01, F04-03 (¹) | Must Have |
+
+> ¹ **F04-03 (Dashboard do Cliente):** Classificada como **Should Have** no nível de feature (conforme RTM — item bônus, sem entrega obrigatória no Charter). Incluída em BR-B01 para cobertura completa da jornada do cliente, mas sua implementação pode ser postergada sem bloquear D5.
 | BR-B02 | Onboarding Guiado | EP-04 | F04-02 | Must Have |
 | BR-B03 | App Switcher | EP-04 | F04-04 | Must Have |
 | BR-B04 | Unidades de Negócio | EP-04 | F04-05 | Must Have |
-| BR-B05 | Catálogo de Produtos/Serviços | EP-04 | F04-06 | Should Have |
+| BR-B05 | Catálogo de Produtos/Serviços | EP-04 | F04-06 | Must Have |
+
+---
+
+### 4.7 Matriz de Dependências entre Features
+
+| Feature | Depende de | Motivo |
+|:---|:---|:---|
+| F02-01 (Cadastro Contas) | F01-01 (Dashboard) | Métricas do dashboard alimentadas pelos tenants cadastrados |
+| F02-03 (Planos) | F02-01 (Cadastro Contas) | Planos configurados antes da ativação de tenants |
+| F02-04 (Assinaturas) | F02-01 (Cadastro Contas), F02-03 (Planos) | Assinatura vincula tenant a plano — ambos devem existir |
+| F03-01 (Convite Usuários) | F02-01 (Cadastro Contas) | Usuários pertencem a tenants ativos |
+| F03-02 (Permissões RBAC) | F03-01 (Convite Usuários) | Permissões atribuídas a usuários já cadastrados |
+| F04-01 (Autenticação) | F02-01 (Cadastro Contas) | Login exige tenant ativo |
+| F04-02 (Onboarding) | F04-01 (Autenticação) | Primeiro acesso ocorre após autenticação |
+| F04-04 (App Switcher) | F02-03 (Planos), F03-02 (Permissões) | Módulos exibidos = interseção plano × permissões |
+| F04-05 (Unidades Negócio) | F02-01 (Cadastro Contas) | BUs pertencem a tenant; primeira BU = Matriz no onboarding |
+| F04-06 (Catálogo) | F04-05 (Unidades Negócio) | Produtos vinculados a uma BU |
+
+### 4.8 Premissas
+
+> **Origem:** [Project Charter §9.1](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) e [BRD §7](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
+
+| ID | Premissa | Impacto no Microserviço |
+|:---|:---|:---|
+| A1 | Time técnico com competência em Java + Spring Boot | Autonomia para decisões de implementação dentro dos ADRs |
+| A2 | Contratos de interface congelados no M2 (15/08/2026) | APIs definidas até M2 não sofrerão breaking changes sem renegociação |
+| A3 | Stakeholders disponíveis para validação a cada sprint | Feedback de negócio disponível no prazo máximo de 3 dias úteis |
+| A4 | Early adopters para validação do Portal do Cliente | Ambiente de homologação com tenants reais para testes de aceitação |
+| A5 | Cronograma da Reforma Tributária estável até 10/2026 | Fase Tributali-Engine permanece como escopo futuro; sem antecipação |
+| A6 | Modelo de negócios (planos com módulos ativáveis) estável | Estrutura Plan/Module/Subscription não sofrerá refatoração estrutural |
+
+> ⚠️ **Regra de governança:** Se qualquer premissa A1-A6 for invalidada, o PRD.md deve ser revalidado e os impactos em ARCHITECTURE.md, SPECS.md, TASKS.md e TEST_PLAN.md avaliados (efeito cascata).
 
 ---
 
@@ -275,7 +313,7 @@ com.fbso.platform.admin/
 
 ### 6.6 Regras de Negócio Aplicáveis
 
-> **Origem:** [FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES.md) — 18 regras de negócio (RN01-01 a RN18-04)
+> **Origem:** [04-FEATURES](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — 18 regras de negócio (RN01-01 a RN18-04)
 
 As regras de negócio abaixo são a fonte da verdade para validações, transições de estado e restrições. **Toda RN deve ser implementada e testada.**
 
@@ -312,6 +350,8 @@ As regras de negócio abaixo são a fonte da verdade para validações, transiç
 | RN07-01 | Apenas 1 assinatura ativa por tenant | F02-04 | Constraint única parcial: `tenant_id WHERE status = 'ACTIVE' AND deleted_dt IS NULL` |
 | RN07-02 | Upgrade/downgrade sem janela sem assinatura | F02-04 | Transação atômica: finalizar anterior + criar nova no mesmo batch |
 | RN07-03 | Data de término opcional (vigência contínua) | F02-04 | Campo `end_date` nullable |
+| RN08-01 | Auditoria cobre 100% das ações administrativas | F02-05 | `AuditEntityListener` intercepta create/update/delete; §6.4 |
+| RN08-02 | Registros de auditoria são imutáveis (append-only) | F02-05 | Tabela `audit_entry` sem operações de UPDATE/DELETE; apenas INSERT e SELECT |
 
 #### Domínio: Usuários e RBAC (EP-03)
 
@@ -360,7 +400,7 @@ As regras de negócio abaixo são a fonte da verdade para validações, transiç
 
 ### 6.7 Cobertura de Requisitos Não-Funcionais (NFRs)
 
-> **Origem:** [BRD §6.2](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/02-BUSINESS-REQUIREMENTS.md)
+> **Origem:** [BRD §6.2](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 | NFR | Categoria | Requisito | Responsabilidade | Como o Backend Atende |
 |:---|:---|:---|:---|:---|
@@ -412,7 +452,7 @@ As regras de negócio abaixo são a fonte da verdade para validações, transiç
 
 ### 7.2 Definição de Pronto (DoD Local)
 
-Além da [DoD do projeto](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/DEFINITION_OF_DONE.md) (12 critérios de User Story, 5 de Feature, 6 de Entrega), este microserviço adiciona:
+Além da [DoD do projeto](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/DEFINITION_OF_DONE.md) (12 critérios de User Story, 5 de Feature, 6 de Entrega), este microserviço adiciona:
 
 - [ ] Cobertura de testes ≥ 80% (JaCoCo)
 - [ ] Nenhum warning do Checkstyle
@@ -423,8 +463,8 @@ Além da [DoD do projeto](../../../../../../../business-inputs/business-projects
 - [ ] Dockerfile Native Image build funcional
 
 > **Critérios de Aceite por User Story:** Os critérios de aceite detalhados de cada uma das 58 user stories estão documentados em:
-> - [`04-FEATURES.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES.md) — coluna "Critérios de Aceitação" nas tabelas de user stories
-> - [`05-USER-STORYS-*.md`](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/) — 18 arquivos com especificações detalhadas
+> - [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — coluna "Critérios de Aceitação" nas tabelas de user stories
+> - [`05-USER-STORIES-*.md`](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/user-stories/) — 18 arquivos com especificações detalhadas
 > - A matriz de rastreabilidade (§4.4) vincula cada US à sua feature, entrega e API resource
 > - O DoD do projeto (§3 — DoD de USER STORY, §4 — DoD de FEATURE, §5 — DoD de ENTREGA) aplica-se cumulativamente
 
@@ -489,7 +529,7 @@ curl http://localhost:8081/api/v1/dashboard/admin/summary \
 | Sprint 1–2 | `feature/java-fbso-platform-admin` | Setup + Segurança | ✅ Mergeada e deletada |
 | Sprint 3 | `feature/sprint-03-portal-admin` | M2+M3 — Portal Admin + Contas/Planos | ✅ Mergeada e deletada |
 | Sprint 4 | `PRJ-FIN-2026-0003-java-ms-fbso-platform-admin-sprint-04-rbac` | M4 — RBAC | 🔄 Ativa (Frente 0 ✅) |
-| Sprint 5 | `feature/sprint-05-portal-cliente` | M5 — Portal Cliente | ⬜ Pendente |
+| Sprint 5 | `feature/sprint-05-portal-cliente` | M5 — Portal Cliente | ⬜ Planejada — 4 frentes definidas |
 | Sprint 6 | `feature/sprint-06-bus-catalogo` | M6 — BUs e Catálogo | ⬜ Pendente |
 | Sprint 7 | `feature/sprint-07-homologacao` | M7 — Homologação | ⬜ Pendente |
 
@@ -554,12 +594,12 @@ git checkout -b hotfix/sprint-NN-<descricao> <merge-commit-hash>
 | Ordem | Documento | Tempo estimado |
 |:---|:---|:---:|
 | 1º | Este PRD.md | 10 min |
-| 2º | [Project Charter](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/01-PROJECT-CHARTER-FBSO-PLATFORM.md) — Seções 1, 2, 3, 4, 7 | 15 min |
-| 3º | [API-CONTRACTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/API-CONTRACTS.md) | 20 min |
-| 4º | [ARCHITECTURE.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/ARCHITECTURE.md) | 20 min |
-| 5º | [INTEGRATION-MAP.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/INTEGRATION-MAP.md) | 15 min |
-| 6º | [04-FEATURES.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES.md) — Foco nas features do épico que for implementar | 30 min |
-| 7º | [05-USER-STORYS-*.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/) — User stories do épico atual | 20 min |
+| 2º | [Project Charter](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Seções 1, 2, 3, 4, 7 | 15 min |
+| 3º | [API-CONTRACTS.md](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/API-CONTRACTS.md) | 20 min |
+| 4º | [ARCHITECTURE.md](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/ARCHITECTURE.md) | 20 min |
+| 5º | [INTEGRATION-MAP.md](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/INTEGRATION-MAP.md) | 15 min |
+| 6º | [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Foco nas features do épico que for implementar | 30 min |
+| 7º | [05-USER-STORIES-*.md](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/) — User stories do épico atual | 20 min |
 
 **Total para onboard completo:** ~2 horas
 
@@ -569,6 +609,9 @@ git checkout -b hotfix/sprint-NN-<descricao> <merge-commit-hash>
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 1.16 | 21/07/2026 | **GATE-PRD-SCOPE COMPLIANCE:** Validação em 5 dimensões (4 RESSALVAS, 1 APROVADO). 6 NCs corrigidas: BR-B05 Must Have (§4.6), out-of-scope expandido (§2), F04-03 classificação clarificada (§4.6), matriz de dependências (§4.7), premissas A1-A6 (§4.8), RN08-01/RN08-02 adicionadas (§6.6). Status: COMPLIANCE. | Agente GATE-PRD-SCOPE/IA |
+| 1.15 | 17/07/2026 | Sprint 5 Frente 0 concluida: docker-compose (Keycloak+PG+MailHog), Flyway 10→12.11.0, PG driver→42.7.11 (CVE fix), OAuth2 Client adicionado, SecurityConfig refatorado com 2 filter chains. 2 NO-OP (DT-096/DT-098 ja implementados). Build ✅, 213 testes. | Agente IA |
+| 1.14 | 17/07/2026 | Sprint 5 planejada: auditoria técnica com 9 skills identificou 42 débitos ([IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md)). Time decidiu tratar 24 débitos na Sprint 5 em 3 frentes (6🔴 Frente 0 pré-sprint + 10🟡 Frente 1 + 8🔵 Frente 2) + 12 tarefas de features (Frente 3). 16 débitos postergados Sprints 6-7. Stack atualizado: Flyway 12.11.0, PostgreSQL driver 42.7.11, spring-boot-starter-oauth2-client adicionado. | Agente IA |
 | 1.12 | 17/07/2026 | **Sprint 4 Frente 0 concluída:** Stack atualizado (Caffeine Cache, REST Assured). §5.3 Estrutura de pacotes reflete código real (entity/, aspect/, enums/). §6.1 Migrations: V004 (seed RBAC) + V006 (FK). §6.2 RBAC reescrito: DB-backed via PermissionService + ResourceAction/RoleResource (não JWT). ADR-08 com FORCE ROW LEVEL SECURITY. §8.4 Branch status: Sprint 3 mergeada, Sprint 4 ativa. [Detalhes](sprints/sprint-04-rbac/SPRINT-4-EXECUTION-REPORT-Frente-0.md) | Agente IA |
 | 1.8 | 16/07/2026 | Atualização de stack (Spring Boot 3.5.14, Jackson 2.21.4 — CVE-2026-22733/CVE-2026-22731 auth bypass CVSS 8.2). Adicionada referência a débitos técnicos da Sprint 3 ([IDENTIFIED-TECHNICAL-DEBT](sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) — auditoria com 7 skills). | Time Técnico |
 | 1.5 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Execução". | Time Técnico |

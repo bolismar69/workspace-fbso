@@ -3,10 +3,12 @@
 - **Solução:** `ms-fbso-platform-admin`
 - **Tipo:** Backend
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache
-- **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.2
-- **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-4 concluídas ✅ (Frentes 0-4). 18 endpoints REST. 213 testes. 21 RNs implementadas. RBAC DB-backed com matriz RN10-01 100% validada. Próximo: Sprint 4 Frentes 5-5b (correções recomendadas)
+- **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
+- **Versão:** 2.6
+- **Data:** 23 de Julho de 2026
+- **Situação implementação:** Em Execução — Sprints 1-4 concluídas ✅. Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40 tasks, 90%). 26 endpoints REST. 4 features F04-01 a F04-04 entregues. 227 testes (0 failures).
+- **Próximo:** Sprint 5 Frente 3b (Frontend — 4 tarefas) ou Sprint 6 — BUs e Catálogo (EP-04b).
+- **Status:** [STATUS: COMPLIANCE] — Validado via GATE-SPECS-TECHNICAL em 21/07/2026. 6 dimensões validadas (3 APROVADO, 3 RESSALVAS). 6 NCs corrigidas.
 - **Origem:** [PRD.md](./PRD.md) + [ARCHITECTURE.md](./ARCHITECTURE.md)
 
 ---
@@ -39,7 +41,7 @@ O `ms-fbso-platform-admin` é o **backend do Core Administrativo da FBSO Platfor
 | M2 | 15/08/2026 | D1 — Portal Admin | 🔄 5 endpoints `GET /dashboard/admin/*` implementados (17/07/2026). 50 testes |
 | M3 | 31/08/2026 | D2, D3 — Contas e Planos | ⬜ Pendente — CRUD `/tenants`, `/plans`, `/subscriptions`, `/audit` |
 | M4 | 15/09/2026 | D4 — RBAC | CRUD `/users`, `/permissions` |
-| M5 | 30/09/2026 | D5 — Portal Cliente | `/onboarding`, `/dashboard/client` |
+| M5 | 30/09/2026 | D5 — Portal Cliente (4 frentes, 36 tarefas) | `/onboarding`, `/dashboard/client` |
 | M6 | 15/10/2026 | D6, D7 — BUs e Catálogo | CRUD `/business-units`, `/products` |
 | M7 | 30/10/2026 | Homologação | Todos os 11 recursos |
 
@@ -176,6 +178,25 @@ O `ms-fbso-platform-admin` é o **backend do Core Administrativo da FBSO Platfor
 
 **Cobertura total: 51/51 RNs mapeadas (100%).** 20 RNs em §3.1 (formato completo), 31 RNs cobertas via §4.2, §6.1, §7, ARCHITECTURE ou delegadas.
 
+### 3.4 Catálogo Consolidado de Casos de Borda
+
+| Categoria | Caso de Borda | Comportamento Esperado | Onde Especificado |
+|:---|:---|:---|:---|
+| **Concorrência** | Duas requisições simultâneas de suspensão do mesmo tenant | Segunda requisição retorna 409 Conflict (status já alterado) | §4.1, RN05-01 |
+| **Concorrência** | Criação simultânea de tenant com mesmo CNPJ | Uma cria com sucesso, outra retorna 409 (constraint única parcial) | §4.2, §6.1 |
+| **Falha Infra** | Keycloak indisponível durante validação JWT | `JwtAuthenticationFilter` retorna 503 Service Unavailable (não 401) | ARCHITECTURE §4 |
+| **Falha Infra** | PostgreSQL timeout (>30s) | HikariCP connection timeout → 503; health check marca DOWN | §5 (BR-NFR01), ARCHITECTURE §6 |
+| **Falha Infra** | SMTP indisponível ao enviar convite | Erro logado como WARN; tenant criado no banco; convite pendente de reenvio manual via `POST /tenants/{id}/resend-invite` | RN09-01, §4.1 |
+| **Idempotência** | POST duplicado de criação de tenant (mesmo payload) | Primeiro: 201; segundo: 409 Conflict (name_corporate duplicado) | §4.2 |
+| **Idempotência** | POST duplicado de criação de assinatura | Primeiro: 201; segundo: 409 (já existe assinatura ativa — RN07-01) | §4.2, RN07-01 |
+| **Rate Limit** | Cliente excede 100 req/min (IP não autenticado) | 429 Too Many Requests; header `Retry-After: 60` | §5.1, SECURITY §5.1 |
+| **Rate Limit** | Tenant excede 500 req/min | 429; header `Retry-After: 60` | SECURITY §5.1 |
+| **Tamanho Payload** | Request body > 1MB | 413 Payload Too Large (Spring `server.tomcat.max-http-form-post-size`) | ARCHITECTURE §7 |
+| **Dados Parciais** | PATCH com campos ausentes (não fornecidos) | Apenas campos fornecidos são atualizados (partial update); campos omitidos mantêm valor atual | §4.1 (PATCH semântica) |
+| **Dados Parciais** | PATCH com campos vazios (string "") vs null | "" → campo é limpo; null → campo mantém valor anterior | §4.2 |
+
+> 💡 Casos de borda de negócio (transições de estado, violações de RN) estão detalhados em §3.1 (coluna "Casos de Borda") e §4.2 (regras de validação). A tabela acima consolida os cenários de robustez e infraestrutura.
+
 ---
 
 ### 4.1 Endpoints REST
@@ -219,6 +240,7 @@ O `ms-fbso-platform-admin` é o **backend do Core Administrativo da FBSO Platfor
 | `POST` | `/api/v1/onboarding/complete` | Finalizar onboarding | Cliente autenticado | — | `OnboardingStatusResponse` | 200 | 400, 401, 403, 422, 500 |
 | `GET` | `/api/v1/dashboard/client/summary` | Dashboard do cliente | Cliente autenticado | `?module_id` | `DashboardClientResponse` | 200 | 401, 403, 500 |
 | `GET` | `/api/v1/audit` | Consultar auditoria | Admin FBSO / Auditor | `?start_date,end_date,action,entity_type,page,size` | `AuditEntryResponse[]` | 200 | 400, 401, 403, 500 |
+| `GET` | `/api/v1/tenants/me` | App Switcher — módulos do usuário | Cliente autenticado | — | `TenantMeResponse` (módulos, BU, permissões) | 200 | 401, 500 |
 
 ### 4.2 Regras de Validação por Endpoint
 
@@ -322,26 +344,26 @@ CREATE TABLE audit_log (
 
 ## 7. Critérios de Aceitação por Feature
 
-| Feature | Critério DONE | Evidência | Nível DoD |
-|:---|:---|:---|:---|
-| **F01-01** | Dashboard carrega em ≤3s. Indicadores clicáveis levam à lista filtrada. Período padrão: mês atual | Print do dashboard | F |
-| **F01-02** | Lista de contas exibe razão social, plano, status, data de criação. Paginação a cada 25 registros. Busca textual filtra em tempo real a partir de 3 caracteres | Print da lista com busca aplicada | F |
-| **F01-03** | Alertas de onboarding incompleto (>48h) e assinatura suspensa aparecem como cards coloridos no topo do dashboard. Cards são clicáveis e levam à lista filtrada | Print dos cards de alerta | F |
-| **F02-01** | Tenant criado → status PENDING. E-mail enviado. Link expira em 7 dias. Reenvio funcional | E-mail recebido + log | F |
-| **F02-02** | Transições de status respeitam RN05-01. Suspensão bloqueia acesso em ≤5min. Timeline de status funcional | Teste de cada transição | F |
-| **F02-03** | Plano criado disponível para assinatura. Edição gera nova versão. Desativação preserva assinantes | Lista de planos reflete versão atualizada após edição; assinantes existentes não são afetados por alteração de preço | F |
-| **F02-04** | Assinatura vinculada a plano ativo. Upgrade/downgrade finaliza assinatura anterior e cria nova. Apenas 1 assinatura ativa por tenant. Suspensão bloqueia módulos em ≤5min. Change-plan preserva preço contratado (locked_price) (TC-F02-04-010, DT-009) | Histórico de assinaturas do tenant com timeline | F |
-| **F02-05** | Auditoria registra 100% das ações admin (criação, edição, mudança de status, alteração de permissões). Registros imutáveis (sem UPDATE/DELETE). Filtros por período e tipo de ação funcionam. Auditoria @Async com tenant_id e user_id corretos (TC-F02-05-009, DT-002) | Log de auditoria com linha do tempo + tentativa de exclusão rejeitada (403) | F |
-| **F03-01** | Usuário convidado recebe e-mail com link. E-mail único por tenant. Admin não pode desativar a si mesmo. Lista de usuários exibe nome, e-mail, papel, status, unidades vinculadas | E-mail de convite + teste de autodesativação rejeitada (422) | F |
-| **F03-02** | Matriz RN10-01 aplicada. Admin vê tudo. Operador não edita. Auditor só lê | Teste de cada papel × endpoint | F |
-| **F03-03** | Vinculação usuário × unidade × módulo configurável. Admin tem acesso implícito a todas as unidades. Usuário sem unidade ou módulo não acessa o portal. Efeito imediato na próxima ação | Teste de acesso com e sem vinculação | F |
-| **F03-04** | Menu condicional ao papel. Acesso direto → 403 (amigável, sem detalhes técnicos) | Tentativa de URL proibida | F |
-| **F04-01** | Login com e-mail/senha funcional. Recuperação de senha envia link (expira 1h). Bloqueio temporário após 5 tentativas incorretas (15min) | Fluxo completo de login + recuperação + bloqueio | F |
-| **F04-02** | Onboarding 4 passos obrigatórios. Primeira BU = Matriz. Tenant → ACTIVE ao concluir. Barra de progresso visível. Não é possível pular etapas | Log de auditoria mostra transição PENDING_ONBOARDING→ACTIVE após conclusão do onboarding; TenantContext contém status ACTIVE | F |
-| **F04-03** | Dashboard do cliente exibe cards: Unidades Ativas, Produtos no Catálogo, Plano Contratado. Notificações e lembretes visíveis com link para ação | Print do dashboard do cliente | F |
-| **F04-04** | App Switcher exibe módulos disponíveis no plano e autorizados ao usuário. Troca de módulo atualiza menu lateral e conteúdo. Visível mesmo com 1 módulo (exibe nome do módulo ativo) | Print do App Switcher com módulos listados | F |
-| **F04-05** | Unidades hierárquicas. CNPJ único entre ativos. Soft delete libera reúso | Cadastro pós-soft-delete | F |
-| **F04-06** | Produto cadastrado vinculado à BU ativa. SKU único por BU. Indicador "Não mapeado" | Lista de produtos | F |
+| Feature | Critério DONE | Evidência (Manual + Automatizada) | Nível DoD | Checkpoints DoD |
+|:---|:---|:---|:---|:---|
+| **F01-01** | Dashboard carrega em ≤3s. Indicadores clicáveis levam à lista filtrada. Período padrão: mês atual | Print + `GET /dashboard/admin/summary` 200 + tempo resposta ≤3s (assert) | F | F1, F3, V1 |
+| **F01-02** | Lista de contas exibe razão social, plano, status, data de criação. Paginação a cada 25 registros. Busca textual filtra em tempo real a partir de 3 caracteres | Print + `GET /tenants?search=X&page=0&size=25` com assert no totalElements e conteúdo | F | F1, F3 |
+| **F01-03** | Alertas de onboarding incompleto (>48h) e assinatura suspensa aparecem como cards coloridos no topo do dashboard. Cards são clicáveis e levam à lista filtrada | Print + `GET /dashboard/admin/summary` com assert em alertas[].type e alertas[].link | F | F1, F3, V1 |
+| **F02-01** | Tenant criado → status PENDING. E-mail enviado. Link expira em 7 dias. Reenvio funcional | `POST /tenants` → 201, status=PENDING + log envio e-mail (MailHog) + `POST /tenants/{id}/resend-invite` → 200 | F | F1, F2, V1, A2 |
+| **F02-02** | Transições de status respeitam RN05-01. Suspensão bloqueia acesso em ≤5min. Timeline de status funcional | Teste automatizado de cada transição (REST Assured): PENDING→ACTIVE (200), ACTIVE→SUSPENDED (200), SUSPENDED→PENDING (422) | F | F1, F2, V1 |
+| **F02-03** | Plano criado disponível para assinatura. Edição gera nova versão. Desativação preserva assinantes | `POST /plans` → 201 → `GET /plans` contém novo plano → `PATCH /plans/{id}` (preço alterado) → assinantes existentes mantêm locked_price | F | F1, F2, V1 |
+| **F02-04** | Assinatura vinculada a plano ativo. Upgrade/downgrade finaliza anterior e cria nova. Apenas 1 ativa/tenant. Suspensão bloqueia módulos ≤5min (TC-F02-04-010, DT-009) | `POST /tenants/{tid}/subscriptions` → 201 → `POST /subscriptions/{id}/change-plan` → 200 (anterior finalizada) → `POST /subscriptions/{id}/suspend` → acesso bloqueado em ≤5min | F | F1, F2, F3, V1 |
+| **F02-05** | Auditoria registra 100% ações admin. Registros imutáveis. Filtros funcionam. @Async com tenant_id/user_id (TC-F02-05-009, DT-002) | `GET /audit?action=CREATE&start_date=X` com assert nas entradas + tentativa DELETE /audit → 403 (append-only) | F | F1, F3, V1, A1, A2 |
+| **F03-01** | Usuário convidado recebe e-mail. E-mail único/tenant. Admin não se autodesativa. Lista exibe nome/e-mail/papel/status/BUs | `POST /users` → 201 + e-mail (MailHog) + `POST /users/{id}/deactivate` autodesativação → 422 + `GET /users` com assert nos campos | F | F1, F2, V1, A2 |
+| **F03-02** | Matriz RN10-01 aplicada. Admin vê tudo. Operador não edita. Auditor só lê | Teste automatizado REST Assured: cada papel × cada endpoint (matriz), assert 200/403 conforme RN10-01 | F | F1, F3, V1, A1 |
+| **F03-03** | Vinculação usuário×unidade×módulo configurável. Admin acesso implícito a todas BUs. Sem vínculo → sem acesso | `PUT /users/{uid}/permissions` → 200 → `GET /users/{uid}/permissions` → assert correto → acesso negado (403) após remover vínculo | F | F1, F3, V1 |
+| **F03-04** | Menu condicional ao papel. Acesso direto → 403 (amigável, RFC 7807) | `GET /api/v1/admin-only-endpoint` como Operador → 403 + body RFC 7807 com title/detail PT-BR | F | F1, F3, V1 |
+| **F04-01** | Login funcional. Recuperação envia link (1h). Bloqueio após 5 tentativas (15min) | Fluxo Keycloak: auth code → token → refresh; lockout test (6 tentativas inválidas, 6ª bloqueada) | F | F1, F2, V1 |
+| **F04-02** | Onboarding 4 passos. 1ª BU=Matriz. Tenant→ACTIVE. Barra progresso. Sem pular etapas | `PATCH /onboarding/step-1` → 200 → `POST /onboarding/step-2` (cnpj,tax_regime) → 201 → `POST /onboarding/complete` → 200 + TenantContext.status=ACTIVE | F | F1, F2, F3, V1 |
+| **F04-03** | Dashboard cliente: Unidades Ativas, Produtos Catálogo, Plano Contratado. Notificações com link | Print + `GET /dashboard/client/summary?module_id=X` com assert em activeUnits, productCount, planName, notifications[] | F | F1, F3 |
+| **F04-04** | App Switcher: módulos do plano ∩ permissões. Troca atualiza menu. Visível com 1 módulo | Print + `GET /api/v1/tenants/me` com assert em modules[].name, modules[].active | F | F1, F3 |
+| **F04-05** | Unidades hierárquicas. CNPJ único/ativos. Soft delete libera reúso | `POST /business-units` (cnpj X) → 201 → `POST /business-units/{id}/deactivate` → 200 → `POST /business-units` (mesmo cnpj X) → 201 (soft delete liberou) | F | F1, F2, V1 |
+| **F04-06** | Produto vinculado à BU ativa. SKU único/BU. Indicador "Não mapeado" | `POST /products` com `business_unit_id` → 201 → `GET /products?bu_id=X` contém produto → fiscal_mapping_status = NOT_MAPPED | F | F1, F3, V1 |
 
 ---
 
@@ -351,9 +373,11 @@ CREATE TABLE audit_log (
 
 | Dependência | Tipo | Contrato |
 |:---|:---|:---|
-| **web_app-fbso-platform-portal** (Frontend) | Consome esta API | [API-CONTRACTS.md](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/API-CONTRACTS.md) |
+| **web_app-fbso-platform-portal** (Frontend) | Consome esta API | [API-CONTRACTS.md](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/API-CONTRACTS.md) |
 | **Keycloak** (IdP) | Provedor de autenticação | JWT RS256 — realms, clients, roles |
 | **PostgreSQL** | Banco de dados | JDBC — schema `fbso_platform` |
+| **SMTP/Email Service** | Envio de e-mails transacionais | SMTP (STARTTLS) — convites (RN09-01), ativação, notificações |
+| **Observabilidade** (OTel/Grafana) | Logs, métricas, tracing | Health checks + métricas via Actuator; logs JSON estruturados |
 | **RabbitMQ** (Futuro) | Mensageria para billing/split | Fora do escopo da Fase 0 |
 
 > **Integrações detalhadas:** Consulte [INTEGRATION-MAP.md](./INTEGRATION-MAP.md) para o diagrama completo de integrações, incluindo fluxo OIDC, sequência de chamadas e contratos de integração.
@@ -415,6 +439,9 @@ CREATE TABLE audit_log (
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.5 | 21/07/2026 | **GATE-SPECS-TECHNICAL COMPLIANCE:** Validação em 6 dimensões (3 APROVADO, 3 RESSALVAS). 6 NCs corrigidas: §3.4 catálogo consolidado de casos de borda (concorrência, falha infra, idempotência, rate limit, payload), §4.1 endpoint App Switcher (`/api/v1/tenants/me`), §8.1 dependências SMTP + Observabilidade, §7 critérios com DoD checkpoints (F1-F3, V1, A1-A2) + evidências automatizadas (REST Assured asserts). Status: COMPLIANCE. | Agente GATE-SPECS-TECHNICAL/IA |
+| 2.4 | 17/07/2026 | Sprint 5 Frente 0 concluida: ambiente dev dockerizado (Keycloak 26 + PG 17 + MailHog). Stack atualizado (Flyway 12.11.0, PG driver 42.7.11). OAuth2 Client configurado para Authorization Code Flow. | Agente IA |
+| 2.3 | 17/07/2026 | Sprint 5 planejada: auditoria 9-skill identificou 42 débitos. 24 débitos + 12 features = 36 tarefas em 4 frentes. Referência ao [IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md). | Agente IA |
 | 2.1 | 17/07/2026 | **Sprint 4 Frente 0 concluída:** Stack atualizado (Caffeine Cache). Glossário (§10): RBAC DB-backed, RLS com FORCE, novas migrations V004+V006. Status atualizado. Linha de status duplicada removida | Agente IA |
 | 1.7 | 16/07/2026 | v1.7 — RN06-02 e RN08-01 reforçadas, 2 novos cenários de teste (TC-F02-04-010, TC-F02-05-009), referência a débitos técnicos (IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) | Time Técnico |
 | 1.6 | 16/07/2026 | Sprint 3 iniciada (16/07/2026). Status atualizado para "Em Desenvolvimento". | Time Técnico |

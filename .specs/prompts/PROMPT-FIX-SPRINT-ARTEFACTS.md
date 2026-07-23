@@ -146,7 +146,7 @@ Em cada artefato modificado, adicionar entrada no registro de alterações (se o
 
 ## Observações
 
-1. **Documentos-mestre são IMUTÁVEIS neste fluxo.** Se uma NC revelar um erro no TASKS.md, TEST_PLAN.md ou SPECS.md, a correção NÃO deve ser feita aqui. Documente a descoberta no relatório de correção e siga o fluxo de correção do documento-mestre específico (`PROMPT-FIX-TASKS-FROM-GATE.md`, etc.).
+1. **Documentos-mestre são IMUTÁVEIS neste fluxo.** Se uma NC revelar um erro no TASKS.md, TEST_PLAN.md ou SPECS.md, a correção NÃO deve ser feita aqui. Documente a descoberta no relatório de correção e siga o fluxo de correção do documento-mestre específico (`PROMPT-FIX-TASKS-TECHNICAL_SOLUTION.md`, etc.).
 
 2. **Corrigir o artefato, não reescrevê-lo.** As correções devem ser cirúrgicas — alterar apenas o que o relatório de falha apontou. Não reescrever seções inteiras que não foram questionadas.
 

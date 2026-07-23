@@ -4,7 +4,7 @@
 - **Código:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Versão:** 1.0
 - **Atualizado:** 2026-07-13
-- **Objetivo:** Fonte única de verdade para a terminologia específica deste projeto. Este glossário complementa o Glossário de Termos de Negócio contido no Project Charter (01-PROJECT-CHARTER-FBSO-PLATFORM.md, Seção Glossário).
+- **Objetivo:** Fonte única de verdade para a terminologia específica deste projeto. Este glossário complementa o Glossário de Termos de Negócio contido no Project Charter (01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md, Seção Glossário).
 
 ---
 

@@ -34,7 +34,7 @@ public class Subscription extends BaseEntity {
 
     public Subscription() {
         super();
-        this.startDate = OffsetDateTime.now();
+        this.startDate = OffsetDateTime.now(java.time.ZoneOffset.UTC);
         this.status = "ACTIVE";
     }
 

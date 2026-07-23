@@ -73,6 +73,53 @@ public abstract class BaseRepository<T extends BaseEntity> {
         return results.isEmpty() ? Optional.empty() : Optional.of(results.get(0));
     }
 
+    // ---- Keyset Pagination (DT-023) ----
+
+    /**
+     * Busca registros ativos usando paginação keyset (cursor-based).
+     * <p>
+     * Mais eficiente que offset para grandes volumes (>10k registros):
+     * usa {@code WHERE id > :lastId} que aproveita o índice B-tree da PK
+     * em vez de pular linhas com OFFSET.
+     * <p>
+     * A coluna de ordenação é sanitizada via {@link #sanitizeColumn(String)}
+     * para prevenir SQL injection.
+     *
+     * @param lastId    ID do último registro da página anterior (null = primeira página)
+     * @param pageSize  tamanho da página (1-100)
+     * @param sortColumn coluna para ordenação (sanitizada)
+     * @return lista de registros da página
+     */
+    public List<T> findAllKeyset(UUID lastId, int pageSize, String sortColumn) {
+        if (pageSize < 1 || pageSize > 100) {
+            throw new IllegalArgumentException("pageSize deve estar entre 1 e 100");
+        }
+
+        String safeColumn = sanitizeColumn(sortColumn);
+        StringBuilder sql = new StringBuilder("SELECT * FROM fbso_platform.")
+                .append(tableName)
+                .append(" WHERE deleted_dt IS NULL")
+                .append(tenantClause());
+
+        if (lastId != null) {
+            sql.append(" AND id > ?");
+        }
+
+        sql.append(" ORDER BY ").append(safeColumn).append(" ASC")
+           .append(" LIMIT ?");
+
+        java.util.List<Object> paramList = new java.util.ArrayList<>();
+        if (lastId != null) {
+            paramList.add(lastId);
+        }
+        if (hasTenantColumn) {
+            paramList.add(TenantContext.getTenantId());
+        }
+        paramList.add(pageSize);
+
+        return jdbc.query(sql.toString(), rowMapper, paramList.toArray());
+    }
+
     /**
      * Conta total de registros ativos (para paginação).
      */
@@ -98,7 +145,7 @@ public abstract class BaseRepository<T extends BaseEntity> {
                    + tenantClause();
 
         // DT-029: buildParams() centraliza o branching hasTenantColumn
-        Object[] params = buildParams(OffsetDateTime.now(), deletedBy, id);
+        Object[] params = buildParams(OffsetDateTime.now(java.time.ZoneOffset.UTC), deletedBy, id);
 
         int updated = jdbc.update(sql, params);
         if (updated == 0) {
@@ -120,7 +167,7 @@ public abstract class BaseRepository<T extends BaseEntity> {
         Map<String, Object> columns = entity.toColumnMap();
         UUID id = entity.getId() != null ? entity.getId() : UUID.randomUUID();
         UUID currentUser = TenantContext.getUserIdQuietly();
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now(java.time.ZoneOffset.UTC);
 
         // build INSERT
         StringBuilder sql = new StringBuilder("INSERT INTO fbso_platform.")
@@ -175,7 +222,7 @@ public abstract class BaseRepository<T extends BaseEntity> {
         }
 
         UUID currentUser = TenantContext.getUserIdQuietly();
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now(java.time.ZoneOffset.UTC);
 
         // build UPDATE
         StringBuilder sql = new StringBuilder("UPDATE fbso_platform.")

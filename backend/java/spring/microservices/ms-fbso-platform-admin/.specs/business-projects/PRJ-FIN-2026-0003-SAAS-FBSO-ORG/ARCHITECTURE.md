@@ -2,10 +2,11 @@
 
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
-- **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.6
-- **Data:** 17 de Julho de 2026
-- **Status:** Em Execução — Sprints 1-4 (Frentes 0-4) concluídas ✅. RbacAspect DB-backed via PermissionService com isAdmin() separado de getUserRoles(). Sem fallback JWT para roles de negócio. RLS com FORCE. JWT issuer validation ativa. 4 novas entities + V004 (seed RBAC) + V006 (FK). 213 testes (0 falhas). Próximo: Sprint 4 Frentes 5-5b
+- **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
+- **Versão:** 2.10
+- **Data:** 23 de Julho de 2026
+- **Situação implementação:** Em Execução
+- **Status:** [STATUS: COMPLIANCE] — Validado via GATE-ARCHITECTURE-SCOPE em 21/07/2026. 5 dimensões validadas (1 APROVADO, 3 RESSALVAS, 1 REPROVADO corrigido). 8 NCs resolvidas.
 - **Origem:** [PRD.md](./PRD.md)
 - **Débitos Técnicos:** [Sprint 3](./sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) · [Sprint 4](./sprints/sprint-04-rbac/IDENTIFIED-TECHNICAL-DEBT-sprint-04-rbac.md) — 56 débitos catalogados (47 novos + 9 backlog)
 - **Escopo:** Estilo arquitetural + C4 L1-L3 + Design detalhado + C4 Deployment + ADRs
@@ -86,7 +87,8 @@ com.fbso.platform.admin/
 ├── config/
 │   ├── SecurityConfig.java              ← Spring Security + JWT
 │   ├── WebConfig.java                   ← CORS, Jackson
-│   └── DataSourceConfig.java            ← HikariCP pool
+│   ├── DataSourceConfig.java            ← HikariCP pool
+│   └── CacheConfig.java                 ← Caffeine Cache (TTL, políticas)
 │
 ├── controller/
 │   ├── TenantController.java            ← /api/v1/tenants
@@ -98,7 +100,8 @@ com.fbso.platform.admin/
 │   ├── ProductController.java           ← /api/v1/products
 │   ├── DashboardController.java         ← /api/v1/dashboard/admin, /client
 │   ├── OnboardingController.java        ← /api/v1/onboarding
-│   └── AuditController.java             ← /api/v1/audit
+│   ├── AuditController.java             ← /api/v1/audit
+│   └── ConfigController.java            ← /api/v1/tenants/me (App Switcher F04-04)
 │
 ├── dto/
 │   ├── request/
@@ -152,6 +155,12 @@ com.fbso.platform.admin/
 │   └── GlobalExceptionHandler.java      ← @ControllerAdvice — RFC 7807
 │
 ├── repository/
+│   ├── common/
+│   │   └── BaseRepository.java          ← Template methods + soft delete + tenant filter
+│   ├── rowmapper/
+│   │   ├── TenantRowMapper.java
+│   │   ├── PlanRowMapper.java
+│   │   └── ... (demais rowmappers)
 │   ├── TenantRepository.java
 │   ├── PlanRepository.java
 │   ├── SubscriptionRepository.java
@@ -362,8 +371,10 @@ flowchart TD
     service -->|"ok"| repo["<b>5. BaseRepository</b><br/>Adiciona AND tenant_id = ?<br/>Adiciona AND deleted_dt IS NULL<br/>Preenche created_by/updated_by"]
     repo -->|"JDBC"| rls["<b>6. PostgreSQL RLS</b><br/>FORCE tenant_id =<br/>current_setting('app.current_tenant_id')<br/>Recusa queries sem filtro"]
     rls --> audit["<b>7. AuditAspect</b><br/>Intercepta @Auditable<br/>Captura snapshot antes/depois<br/>Grava em audit_log (ASSÍNCRONO)"]
-    audit --> res["✅ HTTP Response (JSON)<br/>RFC 7807 em erros"]
+    audit --> res["✅ HTTP Response (JSON)<br/>RFC 7807 em erros<br/>Mensagens em PT-BR (i18n)"]
 ```
+
+> 🌐 **Internacionalização (i18n):** Mensagens de erro e validação em **PT-BR** via `messages_pt_BR.properties` (Spring MessageSource). Preparado para multi-idioma na Fase 1 conforme BR-NFR08 do PRD §6.7.
 
 ---
 
@@ -482,6 +493,39 @@ void tenantIsolation_allEndpoints() {
 
 ---
 
+### 5.4 Estratégia de Cache — Caffeine
+
+| Aspecto | Configuração |
+|:---|:---|
+| **Biblioteca** | Caffeine Cache (`spring-boot-starter-cache`) |
+| **Escopo** | Em processo (in-memory, por instância) |
+| **TTL padrão** | 5 minutos (`expireAfterWrite=5m`) |
+| **Tamanho máximo** | 10.000 entradas (`maximumSize=10000`) |
+| **Política de evicção** | LRU (Least Recently Used) |
+| **O que NÃO é cacheado** | Permissões RBAC (`@RequiresPermission` — consulta sempre em tempo real, RN11-03: "Sem cache TTL") |
+| **O que É cacheado** | Planos ativos, módulos de plano, catálogo de produtos (baixa mutabilidade), resultados de dashboard (agregados com TTL curto) |
+| **Invalidação** | `@CacheEvict` nos endpoints de criação/atualização/soft delete. Padrão: `allEntries = true` para listas |
+| **Health Check** | Cache metrics via Actuator (`/actuator/metrics/cache.*`) |
+
+```java
+@Configuration
+@EnableCaching
+public class CacheConfig {
+    @Bean
+    public CacheManager cacheManager() {
+        CaffeineCacheManager manager = new CaffeineCacheManager();
+        manager.setCaffeine(Caffeine.newBuilder()
+            .expireAfterWrite(5, java.util.concurrent.TimeUnit.MINUTES)
+            .maximumSize(10_000));
+        return manager;
+    }
+}
+```
+
+> 💡 **ADR implícito:** Cache local (Caffeine) em vez de cache distribuído (Redis). Justificativa: simplicidade operacional para Fase 0. Redis será reavaliado na Fase 1 se houver necessidade de invalidação entre instâncias (>3 em PRD).
+
+---
+
 ## 6. Design de Persistência
 
 ### 6.1 BaseRepository — Template com Soft Delete
@@ -592,9 +636,87 @@ public class GlobalExceptionHandler {
 
 ---
 
-## 8. Estratégia de Testes
+## 8. Máquinas de Estado (Sprint 5 — Portal do Cliente)
+
+> **Features:** F04-01 (Login), F04-02 (Onboarding) · **Tasks:** T-143.DT-108, T-145.DT-124 · **Data:** 23/07/2026
+>
+> As máquinas de estado abaixo formalizam as transições válidas para `TenantStatus` e para o fluxo de onboarding (4 passos). Elas são pré-requisitos de design para `OnboardingService` (T-060) e `TenantStateValidator`.
+
+### 8.1 TenantStatus — Ciclo de Vida do Tenant
+
+O enum `TenantStatus` rege o ciclo de vida de um tenant desde sua criação até o cancelamento. Transições fora das arestas documentadas abaixo devem ser rejeitadas com `InvalidStatusTransitionException`.
+
+```mermaid
+stateDiagram-v2
+    [*] --> PENDING_SETUP: Tenant criado (admin)
+    PENDING_SETUP --> PENDING_ONBOARDING: Setup inicial concluído
+    PENDING_ONBOARDING --> ACTIVE: Onboarding 4 passos concluídos (RN14-04)
+    PENDING_ONBOARDING --> SUSPENDED: Admin suspende durante onboarding
+    ACTIVE --> SUSPENDED: Admin suspende tenant ativo
+    SUSPENDED --> ACTIVE: Admin reativa tenant
+    ACTIVE --> CANCELED: Admin cancela tenant
+    SUSPENDED --> CANCELED: Admin cancela tenant suspenso
+    CANCELED --> [*]
+```
+
+**Transições inválidas (devem lançar `InvalidStatusTransitionException`):**
+
+| De | Para | Motivo |
+|:---|:---|:---|
+| PENDING_SETUP | ACTIVE | Onboarding obrigatório (RN14-04) |
+| PENDING_ONBOARDING | CANCELED | Deve passar por SUSPENDED primeiro |
+| ACTIVE | PENDING_ONBOARDING | Regressão de status não permitida |
+| CANCELED | *qualquer* | Cancelamento é terminal |
+| SUSPENDED | PENDING_ONBOARDING | Regressão não permitida |
+
+**Implementação (T-060):** `TenantStatus.canTransitionTo(TenantStatus target): boolean` — método no enum que valida arestas. `OnboardingService` chama este método antes de qualquer mudança de status. `TenantController` também valida transições manuais (ex: suspend, reactivate).
+
+### 8.2 Onboarding — Máquina de Estados dos 4 Passos
+
+O fluxo de onboarding (F04-02) é sequencial e retomável. Cada passo salva seu estado, permitindo que o tenant saia e retome de onde parou. A ordem é obrigatória (RN14-01).
+
+```mermaid
+stateDiagram-v2
+    [*] --> NOT_STARTED: Tenant criado (PENDING_ONBOARDING)
+    NOT_STARTED --> STEP1_DONE: Step 1 — Dados do Tenant
+    STEP1_DONE --> STEP2_DONE: Step 2 — CNPJ + 1ª BU Matriz (RN14-02)
+    STEP2_DONE --> STEP3_DONE: Step 3 — Configurações Fiscais
+    STEP3_DONE --> COMPLETED: Step 4 — Confirmação → ACTIVE (RN14-04)
+
+    note right of STEP1_DONE: Retomável: sai e volta
+    note right of STEP2_DONE: CNPJ validado via Receita Federal
+    note right of STEP3_DONE: Regime tributário + configs fiscais
+    note right of COMPLETED: Tenant → ACTIVE. Primeira BU = Matriz
+```
+
+**Edge Cases documentados (DT-124):**
+
+| # | Cenário | Comportamento Esperado |
+|:---:|:---|:---|
+| EC-1 | Tenant sai no meio do step 2 | Retoma step 2 (último passo incompleto) |
+| EC-2 | Step 2 falha (CNPJ inválido) | Permanece em STEP1_DONE com erro de validação |
+| EC-3 | Tentar acessar step 3 sem concluir step 2 | 422 — "Conclua o passo anterior primeiro" (RN14-01) |
+| EC-4 | Retomar onboarding após 30 dias de inatividade | Sem expiração na Fase 0 — onboarding retoma normalmente |
+| EC-5 | Admin tentar resetar onboarding de tenant ativo | 422 — "Tenant já concluiu o onboarding" |
+| EC-6 | Step 4 confirmado mas tenant tem dados inconsistentes | Rollback `@Transactional` — tenant volta para STEP3_DONE |
+
+**API de Onboarding (T-061):**
+
+| Endpoint | Estado Esperado | Próximo Estado |
+|:---|:---|:---|
+| `GET /onboarding/status` | Qualquer | — (consulta) |
+| `PATCH /onboarding/step-1` | NOT_STARTED | STEP1_DONE |
+| `POST /onboarding/step-2` | STEP1_DONE | STEP2_DONE |
+| `PATCH /onboarding/step-3` | STEP2_DONE | STEP3_DONE |
+| `POST /onboarding/complete` | STEP3_DONE | COMPLETED → ACTIVE |
+
+---
+
+## 9. Estratégia de Testes
 
 ### 8.1 Pirâmide de Testes
+
+**Cobertura mínima:** 80% de cobertura de linha (JaCoCo) para código de negócio (`service/`, `repository/`, `security/aspect/`). DTOs, enums e classes de configuração são excluídos da métrica.
 
 ```mermaid
 flowchart TD
@@ -652,23 +774,29 @@ class TenantIsolationIntegrationTest {
 
 ---
 
-## 9. Decisões de Design (ADRs Locais)
+## 10. Decisões de Design (ADRs Locais)
 
-> **Nota:** ADRs locais usam prefixo `ADR-Lxx`. O PRD.md §5.2 referencia estas mesmas decisões com prefixo `ADR-xx`. Mapeamento: ADR-01=ADR-L01, ADR-02=ADR-L02, ADR-04=ADR-L04, ADR-05=ADR-L05, ADR-06=ADR-L06, ADR-07=ADR-L07, ADR-08=ADR-L07. ADR-03 foi pulado (reservado para decisão futura).
+> **Nota:** ADRs locais usam prefixo `ADR-Lxx`. Os ADRs globais do projeto estão documentados no [TECHNICAL-PLAN.md](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-PLAN.md) §2.3 e no [ARCHITECTURE.md do projeto](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/ARCHITECTURE.md) §4. 
+> 
+> **Mapeamento Global → Local:** ADR-01 (Shared Database) → ADR-L07 (RLS) + TenantContext, ADR-02 (Java+Spring Boot) → stack, ADR-04 (Keycloak) → JwtAuthenticationFilter, ADR-05 (Soft Delete) → BaseRepository + BaseEntity, ADR-07 (JWT Stateless) → TenantContext ThreadLocal, ADR-08 (RLS) → ADR-L07.
+>
+> **ADRs exclusivamente locais:** ADR-L01 (JDBC Template), ADR-L02 (AOP cross-cutting), ADR-L03 (Auditoria assíncrona), ADR-L04 (RFC 7807), ADR-L05 (Índices parciais), ADR-L06 (Package-by-Layer). Estes não possuem ADR global correspondente — são decisões de implementação do microserviço.
+>
+> ADR-03 foi pulado (reservado para decisão futura).
 
 | ID | Decisão | Justificativa |
 |:---|:---|:---|
 | **ADR-L01** | JDBC Template (não JPA/Hibernate) | Controle total sobre SQL — essencial para Multi-Tenant e Soft Delete. Sem anotações mágicas. BaseRepository agora inclui `save(T)` e `update(T)` genéricos (DT-003, Sprint 3) |
 | **ADR-L02** | Aspectos AOP para cross-cutting | RBAC e Auditoria não poluem services e repositories. Zero risco de esquecimento humano. Tenant Isolation delegado ao PostgreSQL RLS (ADR-L07) |
 | **ADR-L03** | Auditoria assíncrona | Não bloqueia a operação principal. Trade-off: perda de registros em crash (aceitável para Fase 0) |
-| **ADR-L04** | RFC 7807 para erros | Padrão IETF. Frontend implementa tratamento genérico. Sem surpresas |
+| **ADR-L04** | RFC 7807 para erros | Padrão IETF. Frontend implementa tratamento genérico. OAuth2 Client (Authorization Code Flow) adicionado no Sprint 5 (DT-099). Sem surpresas |
 | **ADR-L05** | Índices únicos parciais (PostgreSQL) | Permite reúso de CNPJ/e-mail após soft delete. Sem triggers complexos |
 | **ADR-L06** | Package-by-Layer tradicional | Simplicidade > pureza arquitetural. Time reduzido, prazo curto. Reavaliar na Fase 1 |
 | **ADR-L07** | PostgreSQL Row-Level Security (RLS) | Defesa em profundidade — camada 1 de 3 para isolamento multi-tenant. Garantia no nível do banco: impossível burlar via aplicação. Substitui o TenantIsolationAspect AOP (removido — redundante e frágil). TenantAwareDataSource agora lança `TenantIsolationException` em falha (DT-006, Sprint 3) |
 
 ---
 
-## 10. C4 Deployment — Visão de Infraestrutura
+## 11. C4 Deployment — Visão de Infraestrutura
 
 > Esta seção documenta a visão de implantação (Deployment) do ms-fbso-platform-admin, cobrindo topologia por ambiente (DEV, HML, PRD), componentes de execução, segurança operacional e integração com observabilidade.
 
@@ -871,10 +999,14 @@ flowchart LR
 
 ---
 
-## 11. Registro de Alterações
+## 12. Registro de Alterações
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.10 | 23/07/2026 | Sprint 5 Frente 1: Adicionado §8 Máquinas de Estado (TenantStatus + Onboarding) com diagramas Mermaid. Renumeradas seções §8→§12. Documentadas 8 transições TenantStatus + 6 edge cases onboarding. Stack: Flyway 12.11.0, PG driver 42.7.11, Caffeine 3.2.4. | Agente IA |
+| 2.9 | 21/07/2026 | **GATE-ARCHITECTURE-SCOPE COMPLIANCE:** Validação em 5 dimensões (1 APROVADO, 3 RESSALVAS, 1 REPROVADO corrigido). 8 NCs resolvidas: CacheConfig + rowmapper/ na estrutura (§2), ConfigController (F04-04 App Switcher) adicionado (§2), i18n/PT-BR documentado (§4), mapeamento ADRs globais↔locais corrigido (§9), Cache §5.4 — Caffeine com TTL/invalidação/escopo, JaCoCo 80% declarado (§8.1). Pendências externas: INTEGRATION-MAP.md (SMTP+Observabilidade) e business-inputs/ARCHITECTURE.md (package-by-domain→layer). Status: COMPLIANCE. | Agente GATE-ARCHITECTURE-SCOPE/IA |
+| 2.8 | 17/07/2026 | Sprint 5 Frente 0 concluida: docker-compose (Keycloak 26 + PG 17 + MailHog), realm-config.json (4 roles, 3 custom claims). SecurityConfig com 2 SecurityFilterChain beans (@Order). ADR-04: OAuth2 Client Authorization Code Flow documentado. Stack: Flyway 12.11.0, PG driver 42.7.11. | Agente IA |
+| 2.7 | 17/07/2026 | Sprint 5 planejada: stack atualizado (Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client). Novos pacotes planejados: auth/, onboarding/, dashboard/client/. ADR-04 expandido com Authorization Code Flow. Referência: [IDENTIFIED-TECHNICAL-DEBT-sprint-05](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md). | Agente IA |
 | 2.5 | 17/07/2026 | **Sprint 4 Frente 0 concluída:** RbacAspect DB-backed com PermissionService (matriz RN10-01 do banco, sem Sets hardcoded). RLS com FORCE ROW LEVEL SECURITY nas 4 tabelas (ADR-L07 atualizado). JWT issuer validation ativa. Caffeine Cache + REST Assured adicionados. Pipeline de segurança atualizado (§4). 4 novas entities (User, ResourceAction, RoleResource, BusinessUnit). Migrations V004 (seed RBAC) + V006 (FK). [Detalhes](sprints/sprint-04-rbac/SPRINT-4-EXECUTION-REPORT-Frente-0.md) | Agente IA |
 | 2.1 | 16/07/2026 | BaseRepository.save/update (DT-003), TenantIsolationException no TenantAwareDataSource (DT-006), referência a débitos técnicos da Sprint 3 ([IDENTIFIED-TECHNICAL-DEBT](sprints/sprint-03-portal-admin/IDENTIFIED-TECHNICAL-DEBT-sprint-03-portal-admin.md) — auditoria com 7 skills). ADR-L01 e ADR-L07 atualizados. | Time Técnico |
 | 2.0 | 16/07/2026 | **Consolidação dos 3 documentos de arquitetura:** C4 L1-L3 (§3) e C4 Deployment (§10) integrados ao ARCHITECTURE.md. Diagramas ASCII convertidos para Mermaid: package-by-layer (§1.1), pipeline de segurança (§4), pirâmide de testes (§8.1). Seções renumeradas. Changelog unificado. Documentos `ARCHITECTURE-C4.md` e `ARCHITECTURE-C4-DEPLOYMENT.md` arquivados. | Arquiteto/IA |

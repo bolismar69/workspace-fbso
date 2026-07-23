@@ -1,7 +1,7 @@
 # SPRINT-3-EXECUTION-REPORT.md — Relatório de Execução: Sprint 3 — Frente 1 (M2)
 
 - **Solução:** `ms-fbso-platform-admin`
-- **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
+- **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
 - **Sprint:** 3 de 7 — Portal Admin + Contas e Planos
 - **Frente:** 1 — M2: Portal Admin (EP-01)
 - **Stack detectada:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Testcontainers + Flyway

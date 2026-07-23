@@ -23,12 +23,8 @@ public class SubscriptionRowMapper implements RowMapper<Subscription> {
         String lr = rs.getString("locked_recurrence");
         if (lr != null) s.setLockedRecurrence(lr);
 
-        s.setCreatedDt(rs.getObject("created_dt", java.time.OffsetDateTime.class));
-        s.setUpdatedDt(rs.getObject("updated_dt", java.time.OffsetDateTime.class));
-        s.setCreatedBy(rs.getObject("created_by", UUID.class));
-        s.setUpdatedBy(rs.getObject("updated_by", UUID.class));
-        s.setDeletedDt(rs.getObject("deleted_dt", java.time.OffsetDateTime.class));
-        s.setDeletedBy(rs.getObject("deleted_by", UUID.class));
+        // Campos de auditoria — delegado ao helper (DT-086)
+        AuditFieldsRowMapper.mapAuditFields(rs, s);
 
         return s;
     }

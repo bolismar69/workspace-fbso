@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "@1kalin/business-process-audit": {
+      "version": "1.0.0",
+      "installedAt": 1784646253581,
+      "ownerHandle": "1kalin"
+    },
+    "@bytesagain-lab/compliance": {
+      "version": "2.0.0",
+      "installedAt": 1784646289583,
+      "ownerHandle": "bytesagain-lab"
+    }
+  }
+}

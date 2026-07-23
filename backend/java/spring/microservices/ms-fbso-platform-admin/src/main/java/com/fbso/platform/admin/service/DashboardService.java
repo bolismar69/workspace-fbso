@@ -164,7 +164,7 @@ public class DashboardService {
      * Calcula a data de início com base no período.
      */
     private OffsetDateTime resolveSince(String period) {
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now(java.time.ZoneOffset.UTC);
         return switch (period) {
             case "7d" -> now.minusDays(7);
             case "30d" -> now.minusDays(30);

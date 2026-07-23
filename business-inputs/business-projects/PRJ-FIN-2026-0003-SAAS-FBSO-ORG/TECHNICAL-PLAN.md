@@ -27,11 +27,12 @@ O Core da FBSO Platform é composto por **duas frentes de desenvolvimento** prin
 
 | Documento | Conteúdo relevante para o time técnico |
 |:---|:---|
-| [01-PROJECT-CHARTER](./01-PROJECT-CHARTER-FBSO-PLATFORM.md) | Escopo, entregas D1-D7, marcos M1-M7, premissas e restrições |
-| [02-BUSINESS-REQUIREMENTS](./02-BUSINESS-REQUIREMENTS.md) | 10 BRs funcionais, 8 NFRs (disponibilidade, segurança, auditabilidade, etc.) |
-| [03-EPICS](./03-EPICS.md) | 4 épicos com jornadas de usuário e requisitos de negócio |
-| [04-FEATURES](./04-FEATURES.md) | 18 features, 58 user stories, 18 regras de negócio (RN01-01 a RN18-04) |
-| [05-USER-STORYS-*.md](./) | 18 arquivos de user stories com critérios de aceitação detalhados |
+| [01-PROJECT-CHARTER](./01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | Escopo, entregas D1-D7, marcos M1-M7, premissas e restrições |
+| [02-BRD](./02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 10 BRs funcionais, 8 NFRs (disponibilidade, segurança, auditabilidade, etc.) |
+| [03-EPICS](./03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 4 épicos com jornadas de usuário e requisitos de negócio |
+| [04-FEATURES](./04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 18 features, 58 user stories, 18 regras de negócio (RN01-01 a RN18-04) |
+| [05-USER-STORIES-*.md](./user-stories/) | 18 arquivos de user stories com critérios de aceitação detalhados |
+| [05-MATRIZ-RASTREABILIDADE-RTM](./05-MATRIZ-RASTREABILIDADE-RTM.md) | Matriz de rastreabilidade: D1-D7 → EP-01 a EP-04 → F01-01 a F04-06 → 18 US |
 | [MATRIZ-KPI](./MATRIZ-KPI.md) | 12 KPIs em 4 dimensões |
 | [DEFINITION_OF_DONE](./DEFINITION_OF_DONE.md) | DoD de User Story (12 critérios), Feature (5), Entrega (6) |
 
@@ -346,10 +347,11 @@ Fase 3: Go-Live
 | Artefato | Projeto de Negócio (PRJ-FIN-2026-0003) | Backend Java/Spring | Frontend React/Next.js |
 |:---|:---|:---|:---|
 | **PROJECT-CHARTER** | ✅ (já existe) | — | — |
-| **BUSINESS-REQUIREMENTS** | ✅ (já existe) | — | — |
+| **BRD** | ✅ (já existe) | — | — |
 | **EPICS** | ✅ (já existe) | — | — |
 | **FEATURES** | ✅ (já existe) | — | — |
-| **USER-STORYS** | ✅ (18 arquivos) | — | — |
+| **USER-STORIES** | ✅ (18 arquivos) | — | — |
+| **MATRIZ-RTM** | ✅ (já existe) | — | — |
 | **PLANO-TECNICO.md** | ✅ (este documento) | — | — |
 | **API-CONTRACTS.md** | ✅ (nível projeto — a criar) | 🔗 referencia | 🔗 referencia |
 | **INTEGRATION-MAP.md** | ✅ (nível projeto — a criar) | 🔗 referencia | 🔗 referencia |
@@ -375,11 +377,13 @@ workspace-fbso/
 ├── business-inputs/business-projects/
 │   └── PRJ-FIN-2026-0003-SAAS-FBSO-ORG/
 │       ├── README.md                         ← Índice geral
-│       ├── 01-PROJECT-CHARTER-*.md           ← Já existe
-│       ├── 02-BUSINESS-REQUIREMENTS.md       ← Já existe
-│       ├── 03-EPICS.md                       ← Já existe
-│       ├── 04-FEATURES.md                    ← Já existe
-│       ├── 05-USER-STORYS-*.md               ← 18 arquivos
+│       ├── 01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md           ← Já existe
+│       ├── 02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md       ← Já existe
+│       ├── 03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md                       ← Já existe
+│       ├── 04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md                    ← Já existe
+│       ├── user-stories/
+│       │   └── 05-USER-STORIES-*.md           ← 18 arquivos
+│       ├── 05-MATRIZ-RASTREABILIDADE-RTM.md   ← Já existe
 │       ├── DEFINITION_OF_DONE.md             ← Já existe
 │       ├── GLOSSARY.md                       ← Já existe
 │       ├── MATRIZ-KPI.md                     ← Já existe
@@ -503,7 +507,7 @@ workspace-fbso/
 Mudança de requisito de negócio
         │
         ▼
-[Projeto] FEATURES.md / USER-STORYS atualizado (PO + Analista de Negócios)
+[Projeto] FEATURES.md / USER-STORIES atualizado (PO + Analista de Negócios)
         │
         ▼
 [Projeto] API-CONTRACTS.md atualizado (Arquiteto + Tech Lead)

@@ -1,0 +1,162 @@
+{
+  "_comment": "DEV ONLY — Keycloak realm export para desenvolvimento local via docker-compose. Client secret 'changeme' é valor default de dev; em staging/produção o secret é injetado via KEYCLOAK_CLIENT_SECRET env var no application.yml.",
+  "id": "fbso-platform",
+  "realm": "fbso-platform",
+  "displayName": "FBSO Platform",
+  "enabled": true,
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "permanentLockout": false,
+  "maxFailureWaitSeconds": 900,
+  "minimumQuickLoginWaitSeconds": 60,
+  "waitIncrementSeconds": 60,
+  "failureFactor": 5,
+  "accessTokenLifespan": 3600,
+  "ssoSessionIdleTimeout": 3600,
+  "ssoSessionMaxLifespan": 36000,
+  "offlineSessionIdleTimeout": 2592000,
+  "accessCodeLifespan": 60,
+  "accessCodeLifespanUserAction": 300,
+  "accessCodeLifespanLogin": 1800,
+  "actionTokenGeneratedByAdminLifespan": 43200,
+  "actionTokenGeneratedByUserLifespan": 3600,
+  "internationalizationEnabled": true,
+  "supportedLocales": ["pt-BR", "en"],
+  "defaultLocale": "pt-BR",
+  "browserFlow": "browser",
+  "registrationFlow": "registration",
+  "directGrantFlow": "direct grant",
+  "resetCredentialsFlow": "reset credentials",
+  "roles": {
+    "realm": [
+      { "name": "ADMIN_TENANT", "description": "Administrador do Tenant — acesso total" },
+      { "name": "MANAGER_BU", "description": "Gerente de Unidade de Negócio — edita sua BU" },
+      { "name": "OPERATOR_BU", "description": "Operador — apenas leitura" },
+      { "name": "AUDITOR", "description": "Auditor — apenas leitura de auditoria" }
+    ]
+  },
+  "defaultRole": {
+    "name": "default-roles-fbso-platform",
+    "composite": true,
+    "clientRole": false
+  },
+  "clients": [
+    {
+      "id": "fbso-platform-admin",
+      "clientId": "fbso-platform-admin",
+      "name": "FBSO Platform Admin API",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "changeme",
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://localhost:8080/login/oauth2/code/keycloak",
+        "https://app.fbso.org/*"
+      ],
+      "webOrigins": ["http://localhost:3000", "https://app.fbso.org", "+"],
+      "bearerOnly": false,
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:3000/*##https://app.fbso.org/*",
+        "use.refresh.tokens": "true",
+        "backchannel.logout.session.required": "true",
+        "display.on.consent.screen": "false"
+      },
+      "fullScopeAllowed": true,
+      "defaultClientScopes": ["web-origins", "acr", "roles", "profile", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access"]
+    }
+  ],
+  "clientScopes": [
+    {
+      "name": "tenant_id",
+      "description": "Claim JWT: tenant_id do usuario",
+      "protocol": "openid-connect",
+      "attributes": { "include.in.token.scope": "true", "display.on.consent.screen": "true" },
+      "protocolMappers": [
+        {
+          "name": "tenant_id-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "tenant_id",
+            "claim.name": "tenant_id",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    },
+    {
+      "name": "business_unit_ids",
+      "description": "Claim JWT: lista de business_unit_ids do usuario",
+      "protocol": "openid-connect",
+      "attributes": { "include.in.token.scope": "true", "display.on.consent.screen": "true" },
+      "protocolMappers": [
+        {
+          "name": "business_unit_ids-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "business_unit_ids",
+            "claim.name": "business_unit_ids",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "jsonType.label": "String",
+            "multivalued": "true"
+          }
+        }
+      ]
+    },
+    {
+      "name": "modules",
+      "description": "Claim JWT: lista de modulos do usuario",
+      "protocol": "openid-connect",
+      "attributes": { "include.in.token.scope": "true", "display.on.consent.screen": "true" },
+      "protocolMappers": [
+        {
+          "name": "modules-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "modules",
+            "claim.name": "modules",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "jsonType.label": "String",
+            "multivalued": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "defaultDefaultClientScopes": ["role_list", "profile", "email", "tenant_id", "business_unit_ids", "modules"],
+  "defaultOptionalClientScopes": ["offline_access", "address", "phone"],
+  "browserSecurityHeaders": {
+    "xContentTypeOptions": "nosniff",
+    "xRobotsTag": "none",
+    "xFrameOptions": "SAMEORIGIN",
+    "xXSSProtection": "1; mode=block",
+    "strictTransportSecurity": "max-age=31536000; includeSubDomains"
+  },
+  "passwordPolicy": "length(8) and digits(1) and specialChars(1)",
+  "keycloakVersion": "26.0.0",
+  "requiredCredentials": ["password"],
+  "requiredActions": [
+    { "alias": "UPDATE_PASSWORD", "name": "Update Password", "providerId": "UPDATE_PASSWORD", "enabled": true, "defaultAction": false, "priority": 20, "config": {} }
+  ]
+}
