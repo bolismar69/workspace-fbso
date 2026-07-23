@@ -26,12 +26,8 @@ public class PlanRowMapper implements RowMapper<Plan> {
         p.setStatus(rs.getString("status"));
         p.setVersion(rs.getInt("version"));
 
-        p.setCreatedDt(rs.getObject("created_dt", java.time.OffsetDateTime.class));
-        p.setUpdatedDt(rs.getObject("updated_dt", java.time.OffsetDateTime.class));
-        p.setCreatedBy(rs.getObject("created_by", UUID.class));
-        p.setUpdatedBy(rs.getObject("updated_by", UUID.class));
-        p.setDeletedDt(rs.getObject("deleted_dt", java.time.OffsetDateTime.class));
-        p.setDeletedBy(rs.getObject("deleted_by", UUID.class));
+        // Campos de auditoria — delegado ao helper (DT-086)
+        AuditFieldsRowMapper.mapAuditFields(rs, p);
 
         return p;
     }

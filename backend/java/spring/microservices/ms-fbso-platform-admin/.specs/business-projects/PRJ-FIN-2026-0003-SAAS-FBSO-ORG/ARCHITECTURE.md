@@ -3,8 +3,8 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.9
-- **Data:** 21 de Julho de 2026
+- **Versão:** 2.10
+- **Data:** 23 de Julho de 2026
 - **Situação implementação:** Em Execução
 - **Status:** [STATUS: COMPLIANCE] — Validado via GATE-ARCHITECTURE-SCOPE em 21/07/2026. 5 dimensões validadas (1 APROVADO, 3 RESSALVAS, 1 REPROVADO corrigido). 8 NCs resolvidas.
 - **Origem:** [PRD.md](./PRD.md)
@@ -636,7 +636,83 @@ public class GlobalExceptionHandler {
 
 ---
 
-## 8. Estratégia de Testes
+## 8. Máquinas de Estado (Sprint 5 — Portal do Cliente)
+
+> **Features:** F04-01 (Login), F04-02 (Onboarding) · **Tasks:** T-143.DT-108, T-145.DT-124 · **Data:** 23/07/2026
+>
+> As máquinas de estado abaixo formalizam as transições válidas para `TenantStatus` e para o fluxo de onboarding (4 passos). Elas são pré-requisitos de design para `OnboardingService` (T-060) e `TenantStateValidator`.
+
+### 8.1 TenantStatus — Ciclo de Vida do Tenant
+
+O enum `TenantStatus` rege o ciclo de vida de um tenant desde sua criação até o cancelamento. Transições fora das arestas documentadas abaixo devem ser rejeitadas com `InvalidStatusTransitionException`.
+
+```mermaid
+stateDiagram-v2
+    [*] --> PENDING_SETUP: Tenant criado (admin)
+    PENDING_SETUP --> PENDING_ONBOARDING: Setup inicial concluído
+    PENDING_ONBOARDING --> ACTIVE: Onboarding 4 passos concluídos (RN14-04)
+    PENDING_ONBOARDING --> SUSPENDED: Admin suspende durante onboarding
+    ACTIVE --> SUSPENDED: Admin suspende tenant ativo
+    SUSPENDED --> ACTIVE: Admin reativa tenant
+    ACTIVE --> CANCELED: Admin cancela tenant
+    SUSPENDED --> CANCELED: Admin cancela tenant suspenso
+    CANCELED --> [*]
+```
+
+**Transições inválidas (devem lançar `InvalidStatusTransitionException`):**
+
+| De | Para | Motivo |
+|:---|:---|:---|
+| PENDING_SETUP | ACTIVE | Onboarding obrigatório (RN14-04) |
+| PENDING_ONBOARDING | CANCELED | Deve passar por SUSPENDED primeiro |
+| ACTIVE | PENDING_ONBOARDING | Regressão de status não permitida |
+| CANCELED | *qualquer* | Cancelamento é terminal |
+| SUSPENDED | PENDING_ONBOARDING | Regressão não permitida |
+
+**Implementação (T-060):** `TenantStatus.canTransitionTo(TenantStatus target): boolean` — método no enum que valida arestas. `OnboardingService` chama este método antes de qualquer mudança de status. `TenantController` também valida transições manuais (ex: suspend, reactivate).
+
+### 8.2 Onboarding — Máquina de Estados dos 4 Passos
+
+O fluxo de onboarding (F04-02) é sequencial e retomável. Cada passo salva seu estado, permitindo que o tenant saia e retome de onde parou. A ordem é obrigatória (RN14-01).
+
+```mermaid
+stateDiagram-v2
+    [*] --> NOT_STARTED: Tenant criado (PENDING_ONBOARDING)
+    NOT_STARTED --> STEP1_DONE: Step 1 — Dados do Tenant
+    STEP1_DONE --> STEP2_DONE: Step 2 — CNPJ + 1ª BU Matriz (RN14-02)
+    STEP2_DONE --> STEP3_DONE: Step 3 — Configurações Fiscais
+    STEP3_DONE --> COMPLETED: Step 4 — Confirmação → ACTIVE (RN14-04)
+
+    note right of STEP1_DONE: Retomável: sai e volta
+    note right of STEP2_DONE: CNPJ validado via Receita Federal
+    note right of STEP3_DONE: Regime tributário + configs fiscais
+    note right of COMPLETED: Tenant → ACTIVE. Primeira BU = Matriz
+```
+
+**Edge Cases documentados (DT-124):**
+
+| # | Cenário | Comportamento Esperado |
+|:---:|:---|:---|
+| EC-1 | Tenant sai no meio do step 2 | Retoma step 2 (último passo incompleto) |
+| EC-2 | Step 2 falha (CNPJ inválido) | Permanece em STEP1_DONE com erro de validação |
+| EC-3 | Tentar acessar step 3 sem concluir step 2 | 422 — "Conclua o passo anterior primeiro" (RN14-01) |
+| EC-4 | Retomar onboarding após 30 dias de inatividade | Sem expiração na Fase 0 — onboarding retoma normalmente |
+| EC-5 | Admin tentar resetar onboarding de tenant ativo | 422 — "Tenant já concluiu o onboarding" |
+| EC-6 | Step 4 confirmado mas tenant tem dados inconsistentes | Rollback `@Transactional` — tenant volta para STEP3_DONE |
+
+**API de Onboarding (T-061):**
+
+| Endpoint | Estado Esperado | Próximo Estado |
+|:---|:---|:---|
+| `GET /onboarding/status` | Qualquer | — (consulta) |
+| `PATCH /onboarding/step-1` | NOT_STARTED | STEP1_DONE |
+| `POST /onboarding/step-2` | STEP1_DONE | STEP2_DONE |
+| `PATCH /onboarding/step-3` | STEP2_DONE | STEP3_DONE |
+| `POST /onboarding/complete` | STEP3_DONE | COMPLETED → ACTIVE |
+
+---
+
+## 9. Estratégia de Testes
 
 ### 8.1 Pirâmide de Testes
 
@@ -698,7 +774,7 @@ class TenantIsolationIntegrationTest {
 
 ---
 
-## 9. Decisões de Design (ADRs Locais)
+## 10. Decisões de Design (ADRs Locais)
 
 > **Nota:** ADRs locais usam prefixo `ADR-Lxx`. Os ADRs globais do projeto estão documentados no [TECHNICAL-PLAN.md](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-PLAN.md) §2.3 e no [ARCHITECTURE.md do projeto](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/ARCHITECTURE.md) §4. 
 > 
@@ -720,7 +796,7 @@ class TenantIsolationIntegrationTest {
 
 ---
 
-## 10. C4 Deployment — Visão de Infraestrutura
+## 11. C4 Deployment — Visão de Infraestrutura
 
 > Esta seção documenta a visão de implantação (Deployment) do ms-fbso-platform-admin, cobrindo topologia por ambiente (DEV, HML, PRD), componentes de execução, segurança operacional e integração com observabilidade.
 
@@ -923,10 +999,11 @@ flowchart LR
 
 ---
 
-## 11. Registro de Alterações
+## 12. Registro de Alterações
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.10 | 23/07/2026 | Sprint 5 Frente 1: Adicionado §8 Máquinas de Estado (TenantStatus + Onboarding) com diagramas Mermaid. Renumeradas seções §8→§12. Documentadas 8 transições TenantStatus + 6 edge cases onboarding. Stack: Flyway 12.11.0, PG driver 42.7.11, Caffeine 3.2.4. | Agente IA |
 | 2.9 | 21/07/2026 | **GATE-ARCHITECTURE-SCOPE COMPLIANCE:** Validação em 5 dimensões (1 APROVADO, 3 RESSALVAS, 1 REPROVADO corrigido). 8 NCs resolvidas: CacheConfig + rowmapper/ na estrutura (§2), ConfigController (F04-04 App Switcher) adicionado (§2), i18n/PT-BR documentado (§4), mapeamento ADRs globais↔locais corrigido (§9), Cache §5.4 — Caffeine com TTL/invalidação/escopo, JaCoCo 80% declarado (§8.1). Pendências externas: INTEGRATION-MAP.md (SMTP+Observabilidade) e business-inputs/ARCHITECTURE.md (package-by-domain→layer). Status: COMPLIANCE. | Agente GATE-ARCHITECTURE-SCOPE/IA |
 | 2.8 | 17/07/2026 | Sprint 5 Frente 0 concluida: docker-compose (Keycloak 26 + PG 17 + MailHog), realm-config.json (4 roles, 3 custom claims). SecurityConfig com 2 SecurityFilterChain beans (@Order). ADR-04: OAuth2 Client Authorization Code Flow documentado. Stack: Flyway 12.11.0, PG driver 42.7.11. | Agente IA |
 | 2.7 | 17/07/2026 | Sprint 5 planejada: stack atualizado (Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client). Novos pacotes planejados: auth/, onboarding/, dashboard/client/. ADR-04 expandido com Authorization Code Flow. Referência: [IDENTIFIED-TECHNICAL-DEBT-sprint-05](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md). | Agente IA |

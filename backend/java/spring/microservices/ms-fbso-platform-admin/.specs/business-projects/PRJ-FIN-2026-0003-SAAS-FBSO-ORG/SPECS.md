@@ -4,9 +4,10 @@
 - **Tipo:** Backend
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 2.5
-- **Data:** 21 de Julho de 2026
-- **Situação implementação:** Em Execução — Sprints 1-4 concluídas ✅ (Frentes 0-4). Sprint 5 Frente 0 concluída ✅. 18 endpoints REST. 213 testes. 21 RNs implementadas. RBAC DB-backed com matriz RN10-01 100% validada. Sprint 5 Frente 0: docker-compose dev (Keycloak 26 + PG 17 + MailHog), Flyway 10→12.11.0, PG driver→42.7.11, +OAuth2 Client. 95/160 tarefas (59%).
+- **Versão:** 2.6
+- **Data:** 23 de Julho de 2026
+- **Situação implementação:** Em Execução — Sprints 1-4 concluídas ✅. Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40 tasks, 90%). 26 endpoints REST. 4 features F04-01 a F04-04 entregues. 227 testes (0 failures).
+- **Próximo:** Sprint 5 Frente 3b (Frontend — 4 tarefas) ou Sprint 6 — BUs e Catálogo (EP-04b).
 - **Status:** [STATUS: COMPLIANCE] — Validado via GATE-SPECS-TECHNICAL em 21/07/2026. 6 dimensões validadas (3 APROVADO, 3 RESSALVAS). 6 NCs corrigidas.
 - **Origem:** [PRD.md](./PRD.md) + [ARCHITECTURE.md](./ARCHITECTURE.md)
 

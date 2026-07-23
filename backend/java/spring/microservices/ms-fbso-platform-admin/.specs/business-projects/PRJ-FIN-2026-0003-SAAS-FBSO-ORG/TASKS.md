@@ -2,9 +2,9 @@
 
 - **Solucao:** `ms-fbso-platform-admin`
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 3.5
-- **Data:** 22 de Julho de 2026
-- **Situação implementação:** Em Execução
+- **Versao:** 3.6
+- **Data:** 23 de Julho de 2026
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). 4 features F04-01 a F04-04 entregues. 227 testes (0 failures).
 - **Time Técnico:** [TECHNICAL-TEAM-MAP.md v1.5](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/TECHNICAL-TEAM-MAP.md) — 10 papéis (todos a designar)
 - **Status:** [STATUS: COMPLIANCE] — Revalidado em 22/07/2026. 4 tasks frontend adicionadas (T-157..T-160). Header corrigido 160→163→167. Papéis alocados em todas as frentes da Sprint 5.
 - **Origem:** [PRD.md](./PRD.md) v1.16 + [SPECS.md](./SPECS.md) v2.5 + [ARCHITECTURE.md](./ARCHITECTURE.md) v2.9 + [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) + [IDENTIFIED-TECHNICAL-DEBT](./sprints/sprint-05-portal-cliente/IDENTIFIED-TECHNICAL-DEBT-sprint-05-portal-cliente.md)
@@ -31,8 +31,8 @@
 | **M7 — Homologacao** | 9 tarefas |
 | **Must Have** | 150 |
 | **Should Have** | 5 tarefas: T-021 (F01-03), T-063, T-064 (F04-03), T-086d (E2E Playwright), T-160 (Dashboard Frontend) |
-| **Could Have** | 10 tarefas (Frentes 1-2 Sprint 5) |
-| **Progresso Atual** | 95/167 (57%) — Sprints 1-4 concluídas ✅. Sprint 5 Frente 0 concluída (6/6). docker-compose.yml criado. Stack: Flyway 12.11.0, PG driver 42.7.11, OAuth2 Client adicionado. Time técnico v1.5 (10 papéis). |
+| **Could Have** | 2 tarefas (Frente 2 — já executada durante Sprint 5) |
+| **Progresso Atual** | 117/167 (70%) — Sprints 1-4 concluídas ✅. Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40 = 90%). 26 endpoints REST. 4 features F04-01 a F04-04. 227 testes. |
 
 ### Cobertura de Features (18/18)
 
@@ -368,9 +368,9 @@ Pre-M2 (Setup+Frente0)  M2 (EP-01)  M3 (EP-02)  Frente3  M4 (EP-03)  M5 (EP-04a)
 
 ---
 
-### Sprint 5 — Frente 1: Recomendados ⬜ | 17/07/2026
+### Sprint 5 — Frente 1: Recomendados ✅ | 23/07/2026
 
-**Estimativa total:** ~17.5h (≈3 dias) / **Responsavel:** A definir / **Status:** ⬜ 0/10 concluídas
+**Estimativa total:** ~17.5h (≈3 dias) / **Responsavel:** A definir / **Status:** ✅ 10/10 concluídas
 
 > Débitos que devem ser tratados durante a sprint junto com as features. Não bloqueiam o início mas acumulam risco técnico se ignorados.
 
@@ -389,22 +389,22 @@ Pre-M2 (Setup+Frente0)  M2 (EP-01)  M3 (EP-02)  Frente3  M4 (EP-03)  M5 (EP-04a)
 
 ---
 
-### Sprint 5 — Frente 2: Desejáveis ⬜ | 17/07/2026
+### Sprint 5 — Frente 2: Desejáveis ✅ | 23/07/2026
 
-**Estimativa total:** ~4.5h (≈0.5 dia) / **Responsavel:** A definir / **Status:** ⬜ 0/8 concluídas
+**Estimativa total:** ~4.5h (≈0.5 dia) / **Responsavel:** A definir / **Status:** ✅ 8/8 concluídas
 
 > Melhorias de qualidade, documentação e consistência. Tratar se houver capacidade disponível durante a sprint.
 
 | ID | Tarefa | Débito | Prio. | Est. | Critério DONE |
 |:---|:---|:---:|:---:|:---:|:---|
-| **T-149.DT-086** | DT-086 (backlog): Extrair helper `AuditFieldsRowMapper` — eliminar duplicação de 6 campos de auditoria em 5 RowMappers | DT-086 | Could | 1.5h | Helper extraído. 5 RowMappers usam helper |
-| **T-150.DT-089** | DT-089 (backlog): Injete `ObjectMapper` gerenciado pelo Spring no `AuditAspect` (remover `new ObjectMapper()` manual) | DT-089 | Could | 30min | `@Autowired ObjectMapper`. Serialização consistente com resto da aplicação |
-| **T-151.DT-090** | DT-090 (backlog): Substituir `OffsetDateTime.now()` → `OffsetDateTime.now(ZoneOffset.UTC)` no `BaseEntity` | DT-090 | Could | 30min | Todos os timestamps em UTC independente do fuso da JVM |
-| **T-152.DT-092** | DT-092 (backlog): Bump `springdoc-openapi-starter-webmvc-ui` 2.8.8→2.8.16 no pom.xml | DT-092 | Could | 30min | Swagger UI funcional. Sem breaking changes |
-| **T-153.DT-093** | DT-093 (backlog): Externalizar CORS `allowedOrigins` para `application.yml` (`app.cors.allowed-origins`) | DT-093 | Could | 30min | Origens configuráveis por ambiente (dev=localhost:3000, prod=app.fbso.org) |
-| **T-154.DT-101** | DT-101: Atualizar tabela de riscos no SPRINT-CARD.md — referenciar DT-095 para docker-compose (não assumir que existe) | DT-101 | Could | 30min | Riscos atualizados com referências aos débitos que os tratam |
-| **T-155.DT-112** | DT-112: Atualizar header do SPECS.md: "Próximo: Sprint 5 — Portal do Cliente e Onboarding (12 tarefas)" | DT-112 | Could | 15min | Header correto |
-| **T-156.DT-113** | DT-113: Recalcular progresso no TASKS.md: 88 concluídas + 28 S4 pendentes + 36 S5 = 160 total (55%) | DT-113 | Could | 15min | Métricas atualizadas. Progresso preciso |
+| **T-149.DT-086** ✅ | DT-086 (backlog): Extrair helper `AuditFieldsRowMapper` — eliminar duplicação de 6 campos de auditoria em 4 RowMappers | DT-086 | Could | 1.5h | Helper extraído. 4 RowMappers usam helper |
+| **T-150.DT-089** ✅ | DT-089 (backlog): Injete `ObjectMapper` gerenciado pelo Spring no `AuditAspect` (remover `new ObjectMapper()` manual) | DT-089 | Could | 30min | Injeção por construtor. Serialização consistente |
+| **T-151.DT-090** ✅ | DT-090 (backlog): Substituir `OffsetDateTime.now()` → `OffsetDateTime.now(ZoneOffset.UTC)` — 13 ocorrências em 9 arquivos | DT-090 | Could | 30min | Todos os timestamps em UTC |
+| **T-152.DT-092** ✅ | DT-092 (backlog): Bump `springdoc-openapi-starter-webmvc-ui` 2.8.8→2.8.16 no pom.xml | DT-092 | Could | 30min | Swagger UI funcional. Sem breaking changes |
+| **T-153.DT-093** ✅ | DT-093 (backlog): Externalizar CORS `allowedOrigins` para `application.yml` (`app.cors.allowed-origins`) | DT-093 | Could | 30min | Origens configuráveis por ambiente |
+| **T-154.DT-101** ✅ | DT-101: Atualizar tabela de riscos no SPRINT-CARD.md — referenciar débitos que os tratam | DT-101 | Could | 30min | Riscos atualizados com ✅ |
+| **T-155.DT-112** ✅ | DT-112: Atualizar header do SPECS.md: "Próximo: Sprint 5 Frente 3 — Features Portal do Cliente (16 tarefas)" | DT-112 | Could | 15min | Header correto |
+| **T-156.DT-113** ✅ | DT-113: Recalcular progresso no TASKS.md: 105/167 (63%), Frentes 0-1-2 ✅ | DT-113 | Could | 15min | Métricas atualizadas. Progresso preciso |
 
 ---
 

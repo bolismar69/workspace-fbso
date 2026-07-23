@@ -98,3 +98,8 @@ logging:
     com.fbso.platform.admin: ${LOG_LEVEL:INFO}
     org.springframework.security: INFO
     org.flywaydb: INFO
+
+# ---- Application / CORS (DT-093) ----
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,https://app.fbso.org}

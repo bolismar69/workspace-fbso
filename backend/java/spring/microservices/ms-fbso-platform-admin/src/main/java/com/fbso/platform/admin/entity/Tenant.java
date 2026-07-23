@@ -30,6 +30,7 @@ public class Tenant extends BaseEntity {
     private String nameFantasy;
     private TenantSegment segment;
     private TenantStatus status;
+    private String onboardingStep;
 
     public Tenant() {
         super();
@@ -69,6 +70,14 @@ public class Tenant extends BaseEntity {
         this.status = status;
     }
 
+    public String getOnboardingStep() {
+        return onboardingStep;
+    }
+
+    public void setOnboardingStep(String onboardingStep) {
+        this.onboardingStep = onboardingStep;
+    }
+
     // -- Métodos de infraestrutura (BaseRepository) --
 
     @Override
@@ -88,6 +97,7 @@ public class Tenant extends BaseEntity {
         columns.put("name_fantasy", nameFantasy);
         columns.put("segment", segment != null ? segment.name() : null);
         columns.put("status", status != null ? status.name() : null);
+        columns.put("onboarding_step", onboardingStep);
         return columns;
     }
 

@@ -19,7 +19,8 @@ import java.util.UUID;
  * </ul>
  *
  * <p><b>Nota:</b> Entity mínima criada na Sprint 4 para referência no
- * {@code UserPermission}. O CRUD completo será implementado na Sprint 6 (M6).</p>
+ * {@code UserPermission}. Flag {@code isMatrix} adicionada na Sprint 5 (DT-107/T-142).
+ * O CRUD completo será implementado na Sprint 6 (M6).</p>
  */
 public class BusinessUnit extends BaseEntity {
 
@@ -29,6 +30,7 @@ public class BusinessUnit extends BaseEntity {
     private String cnpj;
     private String hierarchyType;
     private UUID parentId;
+    private boolean isMatrix;
 
     public BusinessUnit() {
         super();
@@ -76,6 +78,14 @@ public class BusinessUnit extends BaseEntity {
         this.parentId = parentId;
     }
 
+    public boolean isMatrix() {
+        return isMatrix;
+    }
+
+    public void setMatrix(boolean matrix) {
+        isMatrix = matrix;
+    }
+
     // -- Métodos de infraestrutura (BaseRepository) --
 
     @Override
@@ -96,6 +106,7 @@ public class BusinessUnit extends BaseEntity {
         columns.put("cnpj", cnpj);
         columns.put("hierarchy_type", hierarchyType);
         columns.put("parent_id", parentId);
+        columns.put("is_matrix", isMatrix);
         return columns;
     }
 

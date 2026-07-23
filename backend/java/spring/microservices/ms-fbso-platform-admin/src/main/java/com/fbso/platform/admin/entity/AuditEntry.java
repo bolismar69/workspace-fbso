@@ -28,7 +28,7 @@ public class AuditEntry extends BaseEntity {
 
     public AuditEntry() {
         super();
-        this.timestamp = OffsetDateTime.now();
+        this.timestamp = OffsetDateTime.now(java.time.ZoneOffset.UTC);
     }
 
     // -- Getters / Setters --

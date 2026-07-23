@@ -1,6 +1,9 @@
 package com.fbso.platform.admin.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fbso.platform.admin.security.FbsoJwtAuthenticationConverter;
 import com.fbso.platform.admin.security.JwtAuthenticationFilter;
+import com.fbso.platform.admin.security.RateLimitFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -47,6 +51,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final ObjectMapper objectMapper;
 
     @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     private String jwkSetUri;
@@ -54,8 +59,13 @@ public class SecurityConfig {
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private String issuerUri;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+    @Value("${app.cors.allowed-origins:http://localhost:3000,https://app.fbso.org}")
+    private String allowedOrigins;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
+                          ObjectMapper objectMapper) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -96,9 +106,19 @@ public class SecurityConfig {
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
             // ---- JWT Resource Server (Keycloak RS256) ----
+            // O FbsoJwtAuthenticationConverter extrai claims customizadas
+            // (tenant_id, roles, business_unit_ids, modules) durante a
+            // decodificação do Resource Server, eliminando dupla decodificação
+            // (DT-076/DT-102).
             .oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(jwt -> jwt.decoder(jwtDecoder()))
+                .jwt(jwt -> jwt
+                    .decoder(jwtDecoder())
+                    .jwtAuthenticationConverter(fbsoJwtAuthenticationConverter())
+                )
             )
+
+            // ---- Rate limiting (antes da autenticação) ----
+            .addFilterBefore(rateLimitFilter(), JwtAuthenticationFilter.class)
 
             // ---- Injetar filtro customizado ANTES do UsernamePasswordAuthenticationFilter ----
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -143,15 +163,32 @@ public class SecurityConfig {
     }
 
     /**
+     * Rate limiting para tentativas de login (5 tentativas → 15min bloqueio).
+     * <p>
+     * Usa Caffeine Cache local. Single-instance na Fase 0.
+     * Migrar para Redis quando {@code INSTANCE_COUNT > 1}.
+     */
+    /**
+     * Converter JWT customizado — extrai claims (tenant_id, roles, BU ids, modules)
+     * durante a decodificação do Resource Server. Elimina dupla decodificação.
+     */
+    @Bean
+    public FbsoJwtAuthenticationConverter fbsoJwtAuthenticationConverter() {
+        return new FbsoJwtAuthenticationConverter();
+    }
+
+    @Bean
+    public RateLimitFilter rateLimitFilter() {
+        return new RateLimitFilter(objectMapper);
+    }
+
+    /**
      * Configuração CORS — apenas a origem do frontend pode chamar a API.
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
-            "http://localhost:3000",   // dev frontend
-            "https://app.fbso.org"     // prod frontend
-        ));
+        configuration.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
         configuration.setAllowCredentials(true);

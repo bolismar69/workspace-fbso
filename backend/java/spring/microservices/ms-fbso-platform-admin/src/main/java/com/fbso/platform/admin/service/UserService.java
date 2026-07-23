@@ -64,7 +64,7 @@ public class UserService {
         user.setEmail(request.email());
         user.setStatus(UserStatus.INVITE_PENDING);
         // RN09-01: convite expira em 7 dias
-        user.setInvitedDt(OffsetDateTime.now());
+        user.setInvitedDt(OffsetDateTime.now(java.time.ZoneOffset.UTC));
 
         userRepo.save(user);
         log.info("Usuário convidado: id={}, email={}, tenant={}",

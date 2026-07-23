@@ -73,7 +73,7 @@ public class SubscriptionService {
         sub.setTenantId(tenantId);
         sub.setPlanId(planId);
         sub.setStatus("ACTIVE");
-        sub.setStartDate(OffsetDateTime.now());
+        sub.setStartDate(OffsetDateTime.now(java.time.ZoneOffset.UTC));
         // DT-009: travar preço e recorrência no momento da assinatura
         sub.setLockedPrice(plan.getPrice());
         sub.setLockedRecurrence(plan.getRecurrence() != null ? plan.getRecurrence().name() : null);
@@ -104,7 +104,7 @@ public class SubscriptionService {
                     "Plano " + newPlan.getName() + " não está ativo (status=" + newPlan.getStatus() + ")");
         }
 
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now(java.time.ZoneOffset.UTC);
 
         // Finalizar assinatura atual (RN07-02: sem gap)
         current.setEndDate(now);

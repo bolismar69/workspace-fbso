@@ -30,8 +30,8 @@ public abstract class BaseEntity {
     private UUID deletedBy;
 
     protected BaseEntity() {
-        this.createdDt = OffsetDateTime.now();
-        this.updatedDt = OffsetDateTime.now();
+        this.createdDt = OffsetDateTime.now(java.time.ZoneOffset.UTC);
+        this.updatedDt = OffsetDateTime.now(java.time.ZoneOffset.UTC);
     }
 
     public OffsetDateTime getCreatedDt() {
@@ -114,7 +114,7 @@ public abstract class BaseEntity {
      * @param deletedBy UUID do usuário que executou a exclusão
      */
     public void markAsDeleted(UUID deletedBy) {
-        this.deletedDt = OffsetDateTime.now();
+        this.deletedDt = OffsetDateTime.now(java.time.ZoneOffset.UTC);
         this.deletedBy = deletedBy;
     }
 }

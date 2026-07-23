@@ -3,9 +3,9 @@
 - **Microserviço:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + Caffeine Cache + REST Assured
 - **Projeto de Negócio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versão:** 1.16
-- **Data:** 21 de Julho de 2026
-- **Situação implementação:** Em Execucao
+- **Versão:** 1.17
+- **Data:** 23 de Julho de 2026
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1 concluídas ✅ (16/40 tasks)
 - **Status:** [STATUS: COMPLIANCE] — Validado via GATE-PRD-SCOPE em 21/07/2026. 5 dimensões validadas (4 RESSALVAS, 1 APROVADO). 6 NCs corrigidas.
 
 ---

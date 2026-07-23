@@ -37,14 +37,15 @@ import java.util.UUID;
 public class AuditAspect {
 
     private static final Logger log = LoggerFactory.getLogger(AuditAspect.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final JdbcTemplate jdbc;
     private final TaskExecutor taskExecutor;
+    private final ObjectMapper objectMapper;
 
-    public AuditAspect(JdbcTemplate jdbc, TaskExecutor taskExecutor) {
+    public AuditAspect(JdbcTemplate jdbc, TaskExecutor taskExecutor, ObjectMapper objectMapper) {
         this.jdbc = jdbc;
         this.taskExecutor = taskExecutor;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -116,7 +117,7 @@ public class AuditAspect {
                 """;
 
             jdbc.update(sql,
-                    OffsetDateTime.now(),
+                    OffsetDateTime.now(java.time.ZoneOffset.UTC),
                     tenantId,
                     action,
                     entityType,

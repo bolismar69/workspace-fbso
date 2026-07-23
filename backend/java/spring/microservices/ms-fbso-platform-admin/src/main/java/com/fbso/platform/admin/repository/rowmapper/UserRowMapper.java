@@ -26,13 +26,8 @@ public class UserRowMapper implements RowMapper<User> {
             u.setStatus(UserStatus.valueOf(statusStr));
         }
         u.setInvitedDt(rs.getObject("invited_dt", java.time.OffsetDateTime.class));
-        // Auditoria
-        u.setCreatedDt(rs.getObject("created_dt", java.time.OffsetDateTime.class));
-        u.setUpdatedDt(rs.getObject("updated_dt", java.time.OffsetDateTime.class));
-        u.setCreatedBy(rs.getObject("created_by", UUID.class));
-        u.setUpdatedBy(rs.getObject("updated_by", UUID.class));
-        u.setDeletedDt(rs.getObject("deleted_dt", java.time.OffsetDateTime.class));
-        u.setDeletedBy(rs.getObject("deleted_by", UUID.class));
+        // Campos de auditoria — delegado ao helper (DT-086)
+        AuditFieldsRowMapper.mapAuditFields(rs, u);
         return u;
     }
 }

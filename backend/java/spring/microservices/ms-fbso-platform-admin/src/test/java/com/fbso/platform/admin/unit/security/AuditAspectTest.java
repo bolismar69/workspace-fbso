@@ -1,5 +1,6 @@
 package com.fbso.platform.admin.unit.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fbso.platform.admin.security.TenantContext;
 import com.fbso.platform.admin.security.annotation.Auditable;
 import com.fbso.platform.admin.security.aspect.AuditAspect;
@@ -43,6 +44,8 @@ class AuditAspectTest {
     @Mock private ProceedingJoinPoint joinPoint;
     @Mock private MethodSignature methodSignature;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     private AuditAspect aspect;
 
     private static final UUID TENANT_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
@@ -50,7 +53,7 @@ class AuditAspectTest {
 
     @BeforeEach
     void setUp() {
-        aspect = new AuditAspect(jdbc, taskExecutor);
+        aspect = new AuditAspect(jdbc, taskExecutor, objectMapper);
         TenantContext.set(TENANT_ID, USER_ID, List.of("ADMIN_TENANT"), List.of(), List.of());
 
         // Faz o TaskExecutor executar sincronamente nos testes

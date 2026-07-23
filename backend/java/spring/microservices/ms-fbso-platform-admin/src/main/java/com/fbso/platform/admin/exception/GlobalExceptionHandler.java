@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -170,6 +171,21 @@ public class GlobalExceptionHandler {
         log.debug("Erro de validação: {} campos", fieldErrors.size());
         return ResponseEntity.badRequest().body(
                 ErrorResponse.validation("Erro de validação", fieldErrors)
+        );
+    }
+
+    // ---- 401 — Autenticação (Token inválido/expirado/ausente) ----
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex) {
+        log.warn("Falha de autenticação: {}", ex.getMessage());
+        return ResponseEntity.status(401).body(
+                ErrorResponse.of(
+                        "https://api.fbso.org/errors/unauthorized",
+                        "Token de acesso inválido ou expirado",
+                        401,
+                        "O token de acesso fornecido é inválido, expirou ou não foi informado."
+                )
         );
     }
 

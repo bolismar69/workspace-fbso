@@ -3,12 +3,12 @@
 - **Sprint:** 5 de 7
 - **Origem:** [TEST_PLAN.md](../../TEST_PLAN.md) §3.13 a §3.16
 - **Features:** F04-01 a F04-04 (4 features)
-- **Total de cenários:** 28 (9 F04-01 + 10 F04-02 + 5 F04-03 + 4 F04-04)
+- **Total de cenários:** 33 (11 F04-01 + 11 F04-02 + 7 F04-03 + 4 F04-04)
 
 ---
 
 
-## 1. F04-01: Login e Autenticação (9 cenários)
+## 1. F04-01: Login e Autenticação (11 cenários)
 
 | ID | Descrição | Nível | Ref. TEST_PLAN |
 |:---|:---|:---|:---|
@@ -21,8 +21,10 @@
 | TC-F04-01-007 | JWT sem tenant_id → 401 | Segurança | §3.13 |
 | TC-F04-01-008 | JWT com role inexistente → 401 | Segurança | §3.13 |
 | TC-F04-01-009 | Brute force: rate limiting 429 | Segurança | §3.13 |
+| **TC-F04-01-010** 🆕 | **Sessão 60min inatividade → 401 (RN13-02)** | **Integração** | §3.13 |
+| **TC-F04-01-011** 🆕 | **Validação complexidade senha: 7 chars, 8 s/ número, 8 válida (RN13-01)** | **Unit** | §3.13 |
 
-## 2. F04-02: Onboarding Guiado (10 cenários)
+## 2. F04-02: Onboarding Guiado (11 cenários)
 
 | ID | Descrição | Nível | Ref. TEST_PLAN |
 |:---|:---|:---|:---|
@@ -36,8 +38,9 @@
 | TC-F04-02-008 | POST /complete antes dos passos → 422 | Integração | §3.14 |
 | TC-F04-02-009 | E2E: Fluxo completo 4 passos | E2E | §3.14 |
 | TC-F04-02-010 | Burlar onboarding via API → 403 | Segurança | §3.14 |
+| **TC-F04-02-011** 🆕 | **Passo 3: sucesso, falha (falta CNPJ step 2), retomada pós-interrupção** | **Integração** | §3.14 |
 
-## 3. F04-03: Dashboard do Cliente (5 cenários)
+## 3. F04-03: Dashboard do Cliente (7 cenários)
 
 | ID | Descrição | Nível | Ref. TEST_PLAN |
 |:---|:---|:---|:---|
@@ -46,6 +49,8 @@
 | TC-F04-03-003 | GET /dashboard/client/summary → 200 | Integração | §3.15 |
 | TC-F04-03-004 | Isolamento: dashboard não vaza dados outro tenant | Integração | §3.15 |
 | TC-F04-03-005 | E2E: Cliente vê dashboard pós-onboarding | E2E | §3.15 |
+| **TC-F04-03-006** 🆕 | **Segurança: cliente tenant A não acessa dashboard tenant B via troca de tenant_id** | **Segurança** | §3.15 |
+| **TC-F04-03-007** 🆕 | **Segurança: GET /dashboard/client/summary sem token → 401** | **Segurança** | §3.15 |
 
 ## 4. F04-04: App Switcher (4 cenários)
 
@@ -62,11 +67,11 @@
 
 | Nível | Cenários |
 |:---|:---:|
-| Unit | 8 |
-| Integração | 11 |
+| Unit | 9 |
+| Integração | 13 |
 | E2E | 5 |
-| Segurança | 4 |
-| **Total** | **28** |
+| Segurança | 6 |
+| **Total** | **33** |
 
 ---
 

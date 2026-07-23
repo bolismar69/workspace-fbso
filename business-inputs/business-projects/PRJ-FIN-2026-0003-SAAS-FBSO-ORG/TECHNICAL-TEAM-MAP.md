@@ -23,16 +23,16 @@ As colunas **Nome** e **Contato** devem ser preenchidas tão logo os profissiona
 
 | Papel                             | Nível | Data Inicial | Data Final | Horas/dia | Dias da semana | Nome     | Contato |
 |-----------------------------------|-------|--------------|------------|-----------|----------------|----------|---------|
-| Tech Lead / Líder Técnico         | ★★★   |              |            | 8         | 1,2,3,4,5      | `<TODO>` | `<TODO>` |
-| Desenvolvedor Full-Stack          | ★★★   |              |            | 8         | 1,2,3,4,5      | `<TODO>` | `<TODO>` |
-| Desenvolvedor Frontend            | ★★★   |              |            | 8         | 1,2,3,4,5      | `<TODO>` | `<TODO>` |
-| Desenvolvedor Backend             | ★★★   |              |            | 8         | 1,2,3,4,5      | `<TODO>` | `<TODO>` |
-| QA / Test Engineer                | ★★★   |              |            | 8         | 1,2,3,4,5      | `<TODO>` | `<TODO>` |
-| Analista de Homologação (Negócio) | ★★★   |              |            | 8         | 1,2,3,4,5      | `<TODO>` | `<TODO>` |
-| Desenvolvedor Banco de Dados      | ★★★   |              |            | 8         | 1,2,3,4,5      | `<TODO>` | `<TODO>` |
-| Arquiteto de Solução              | ★★★   |              |            | 4         | 1,2,3,4,5      | `<TODO>` | `<TODO>` |
-| DevOps Engineer                   | ★★★   |              |            | 4         | 1,2,3,4,5      | `<TODO>` | `<TODO>` |
-| Especialista IAM / Keycloak       | ★★★   |              |            | 4         | 1,2,3,4,5      | `<TODO>` | `<TODO>` |
+| Tech Lead / Líder Técnico         | ★★★   |              |            | 8         | 1,2,3,4,5      | FRANCISCO OLIVEIRA | francisco.oliveira.fbso.org@gmail.com |
+| Desenvolvedor Full-Stack          | ★★★   |              |            | 8         | 1,2,3,4,5      | BOLISMAR OLIVEIRA | bolismar.oliveira.fbso.org@gmail.com |
+| Desenvolvedor Frontend            | ★★★   | 01/11/2026   |            | 8         | 1,2,3,4,5      | TOM SANTOS | tom.santos.fbso.org@gmail.com |
+| Desenvolvedor Backend             | ★★★   |              |            | 8         | 1,2,3,4,5      | MARIA MADALENA | maria.madalena.fbso.org@gmail.com |
+| QA / Test Engineer                | ★★★   |              |            | 8         | 1,2,3,4,5      | FELIPE CANEDAS | felipe.canedas.fbso.org@gmail.com |
+| Analista de Homologação (Negócio) | ★★★   |              |            | 8         | 1,2,3,4,5      | MAURO HANASHIRO | mauro.hanashiro.fbso.org@gmail.com |
+| Desenvolvedor Banco de Dados      | ★★★   |              |            | 8         | 1,2,3,4,5      | CARLOS CALDAS | carlos.caldas.fbso.org@gmail.com |
+| Arquiteto de Solução              | ★★★   |              |            | 4         | 1,2,3,4,5      | BRUNO GRATTO | bruno.gratto.fbso.org@gmail.com |
+| DevOps Engineer                   | ★★★   |              |            | 4         | 1,2,3,4,5      | DAVI SILVA | davi.silva.fbso.org@gmail.com |
+| Especialista IAM / Keycloak       | ★★★   |              |            | 8         | 1,2,3,4,5      | GERTRUDES PAIVA | gertrudes.paiva.fbso.org@gmail.com |
 
 ---
 

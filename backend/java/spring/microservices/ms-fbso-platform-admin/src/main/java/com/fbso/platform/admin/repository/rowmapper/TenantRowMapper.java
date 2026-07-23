@@ -34,13 +34,10 @@ public class TenantRowMapper implements RowMapper<Tenant> {
             t.setStatus(TenantStatus.valueOf(statusStr));
         }
 
-        // Campos de auditoria (BaseEntity)
-        t.setCreatedDt(rs.getObject("created_dt", java.time.OffsetDateTime.class));
-        t.setUpdatedDt(rs.getObject("updated_dt", java.time.OffsetDateTime.class));
-        t.setCreatedBy(rs.getObject("created_by", UUID.class));
-        t.setUpdatedBy(rs.getObject("updated_by", UUID.class));
-        t.setDeletedDt(rs.getObject("deleted_dt", java.time.OffsetDateTime.class));
-        t.setDeletedBy(rs.getObject("deleted_by", UUID.class));
+        t.setOnboardingStep(rs.getString("onboarding_step"));
+
+        // Campos de auditoria (BaseEntity) — delegado ao helper (DT-086)
+        AuditFieldsRowMapper.mapAuditFields(rs, t);
 
         return t;
     }

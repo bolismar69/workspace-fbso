@@ -3,9 +3,9 @@
 - **Solucao:** `ms-fbso-platform-admin`
 - **Stack:** Java 25 + Spring Boot 3.5.14 + PostgreSQL 17 + REST Assured 5.5.7
 - **Projeto de Negocio:** [PRJ-FIN-2026-0003-SAAS-FBSO-ORG](../../../../../../../../business-inputs/business-projects/PRJ-FIN-2026-0003-SAAS-FBSO-ORG/)
-- **Versao:** 3.1
-- **Data:** 21 de Julho de 2026
-- **Situação implementação:** Em Execução
+- **Versao:** 3.2
+- **Data:** 23 de Julho de 2026
+- **Situação implementação:** Em Execução — Sprint 5 Frentes 0-1-2-3a concluídas ✅ (36/40, 90%). 227 testes. 26 endpoints REST.
 - **Status:** [STATUS: COMPLIANCE] — Validado via GATE-TEST_PLAN-TECHNICAL em 21/07/2026. 6 dimensões validadas (2 APROVADO, 4 RESSALVAS). 8 NCs corrigidas.
 - **Origem:** [SPECS.md](./SPECS.md) v2.5 + [ARCHITECTURE.md](./ARCHITECTURE.md) v2.9 + [PRD.md](./PRD.md) v1.16 + [SECURITY.md](./SECURITY.md) v1.1
 
