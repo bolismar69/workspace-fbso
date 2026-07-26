@@ -150,31 +150,31 @@ A FBSO Platform foi concebida como uma **Suíte Multi-Produto** operando no mode
 
 #### Bloco A: Operações Internas
 
-**BR-A01: Dashboard Administrativo**
+**BR-01: Dashboard Administrativo**
 - **Requisito:** O sistema deve apresentar um painel de controle para o time FBSO.ORG com métricas operacionais do SaaS
 - **Valor de Negócio:** Visibilidade em tempo real da operação; tomada de decisão baseada em dados
 - **Prioridade:** Must Have
 - **Critério de Aceitação:** Dashboard exibe contas ativas, distribuição por plano, status de tenants e permite filtro por período
 
-**BR-A02: Ativação e Gestão de Contas de Clientes**
+**BR-02: Ativação e Gestão de Contas de Clientes**
 - **Requisito:** O time administrativo deve conseguir ativar, suspender e reativar contas de clientes (Tenants)
 - **Valor de Negócio:** Controle operacional sobre a base de clientes; gestão de inadimplência
 - **Prioridade:** Must Have
 - **Critério de Aceitação:** Ação de ativação/suspensão concluída em até 3 cliques; registro de auditoria gerado automaticamente
 
-**BR-A03: Configuração de Planos Comerciais**
+**BR-03: Configuração de Planos Comerciais**
 - **Requisito:** O time de produto deve cadastrar e configurar planos comerciais, definindo nome, valor, recorrência e quais módulos cada plano libera
 - **Valor de Negócio:** Flexibilidade para criar e ajustar ofertas comerciais sem depender de desenvolvimento
 - **Prioridade:** Must Have
 - **Critério de Aceitação:** Plano cadastrado fica disponível para vinculação a clientes em tempo real
 
-**BR-A04: Vinculação de Assinaturas**
+**BR-04: Vinculação de Assinaturas**
 - **Requisito:** Cada cliente deve ser vinculado a um plano, com data de início, vigência e status
 - **Valor de Negócio:** Base para faturamento futuro e controle de acesso a módulos
 - **Prioridade:** Must Have
 - **Critério de Aceitação:** Cliente com assinatura ativa acessa o portal; cliente com assinatura suspensa tem acesso bloqueado
 
-**BR-A05: Gestão de Usuários e Permissões**
+**BR-05: Gestão de Usuários e Permissões**
 - **Requisito:** O administrador do tenant deve convidar usuários, atribuir papéis (MVP: Admin, Gerente, Operador — papel "Auditor" previsto para fase futura) e restringir acesso por Unidade de Negócio
 - **Valor de Negócio:** Segurança; isolamento de dados entre filiais; conformidade com governança corporativa
 - **Prioridade:** Must Have
@@ -182,31 +182,31 @@ A FBSO Platform foi concebida como uma **Suíte Multi-Produto** operando no mode
 
 #### Bloco B: Experiência do Cliente
 
-**BR-B01: Portal do Cliente com Autenticação**
+**BR-06: Portal do Cliente com Autenticação**
 - **Requisito:** O cliente deve acessar um portal próprio após autenticação segura, visualizando dashboard, perfil e menus adaptados ao seu plano
 - **Valor de Negócio:** Experiência profissional; percepção de produto completo; base para autoatendimento
 - **Prioridade:** Must Have
 - **Critério de Aceitação:** Login funcional; menus renderizados conforme permissões do usuário
 
-**BR-B02: Onboarding Guiado de Primeiro Acesso**
+**BR-07: Onboarding Guiado de Primeiro Acesso**
 - **Requisito:** No primeiro acesso, o cliente deve ser conduzido por um fluxo passo a passo: validação de dados, criação da primeira Unidade de Negócio e boas-vindas ao portal
 - **Valor de Negócio:** Redução de atrito na ativação; diminuição de chamados de suporte; primeira experiência positiva
 - **Prioridade:** Must Have
 - **Critério de Aceitação:** ≥ 80% dos clientes concluem o fluxo sem intervenção do time FBSO.ORG
 
-**BR-B03: App Switcher (Seletor de Aplicativos)**
+**BR-08: App Switcher (Seletor de Aplicativos)**
 - **Requisito:** O portal deve exibir um seletor que permita ao usuário alternar entre os módulos disponíveis no seu plano
 - **Valor de Negócio:** Fundação para o modelo multi-produto; experiência de suíte integrada; preparação para cross-selling
 - **Prioridade:** Must Have
 - **Critério de Aceitação:** App Switcher visível no topo do portal; menus laterais se adaptam ao módulo selecionado
 
-**BR-B04: Cadastro de Unidades de Negócio**
+**BR-09: Cadastro de Unidades de Negócio**
 - **Requisito:** O cliente deve cadastrar múltiplos CNPJs/filiais, com estrutura hierárquica (Matriz/Filial), regime tributário e dados cadastrais
 - **Valor de Negócio:** Base para operação multi-company dos módulos futuros; pré-requisito para Tributali-Engine e Storekeeper
 - **Prioridade:** Must Have
 - **Critério de Aceitação:** CNPJs duplicados detectados e bloqueados para o mesmo tenant ativo; hierarquia Matriz/Filial visível na interface
 
-**BR-B05: Catálogo de Produtos/Serviços**
+**BR-10: Catálogo de Produtos/Serviços**
 - **Requisito:** O cliente deve cadastrar itens do seu portfólio comercial com nome, SKU, tipo (Produto, Serviço) e status
 - **Valor de Negócio:** Prepara a base de dados para o futuro mapeamento fiscal; reduz esforço na ativação do Tributali-Engine
 - **Prioridade:** Must Have
