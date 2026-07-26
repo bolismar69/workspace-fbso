@@ -1,11 +1,12 @@
-# Mapa do Time Técnico — Resumo de Capacidade de Trabalho
+# Mapa do Time Técnico — Capacidade de Trabalho
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
-- **Versão:** 1.5
+- **Versão:** 2.0
 - **Data de Criação:** 13 de Julho de 2026
-- **Última Atualização:** 22 de Julho de 2026 (adição de Tech Lead — gap analysis operacional: liderança técnica diária)
+- **Última Atualização:** 25 de Julho de 2026 (migração para technical-definitions como TEAM-CAPACITY)
 - **Status:** ⚠️ TODO — Aguardando definição dos integrantes técnicos que executarão as soluções
+- **Origem:** Migrado de `TECHNICAL-TEAM-MAP.md` (versão 1.5) — o documento original permanece na raiz do projeto como referência de negócio
 
 ---
 
@@ -59,7 +60,7 @@ As colunas **Nome** e **Contato** devem ser preenchidas tão logo os profissiona
 | **Nível** | Proficiência esperada: ★★★ Senior/Especialista/Avançado/Autônomo, ★★☆ Pleno/Intermediário/Produtivo, ★☆☆ Junior/Básico/Assistido |
 | **Capacidade semana** | Cada posição representa as horas possiveis de trabalhar em cada dia da semana: 1a-Segunda, 2a-Terça, 3a-Quarta, 4a-Quinta, 5a-Sexta, 6a-Sábado, 7a-Domingo |
 
-> **Nota sobre papéis em carga parcial (4h/dia):** Arquiteto, DevOps e Especialista IAM/Keycloak atuam com dedicação parcial pois seu foco é concentrado em fases específicas: mais intenso em F0 (Fundação/Setup) e reduzido em F1-F2 (desenvolvimento), conforme definido no [PROJECT-TEAM-MAP.md](./PROJECT-TEAM-MAP.md).
+> **Nota sobre papéis em carga parcial (4h/dia):** Arquiteto, DevOps e Especialista IAM/Keycloak atuam com dedicação parcial pois seu foco é concentrado em fases específicas: mais intenso em F0 (Fundação/Setup) e reduzido em F1-F2 (desenvolvimento), conforme definido no [PROJECT-TEAM-MAP.md](../PROJECT-TEAM-MAP.md).
 
 ---
 
@@ -77,11 +78,11 @@ As colunas **Nome** e **Contato** devem ser preenchidas tão logo os profissiona
 | 22/07/2026 | Refatoração (v1.3) — Documento reduzido ao escopo da seção 7.4 (time técnico executor). Adicionados Arquiteto de Solução e DevOps Engineer (oriundos das seções 5.1 e 5.2 do PROJECT-TEAM-MAP.md) com carga de 4h/dia. | Time de Negócios |
 | 22/07/2026 | Gap analysis (v1.4) — Adicionado Especialista IAM/Keycloak (4h/dia) para cobrir Keycloak 26 como plataforma IAM dedicada. Nota de carga parcial estendida para incluir o novo perfil. | Time de Negócios |
 | 22/07/2026 | Gap analysis operacional (v1.5) — Adicionado Tech Lead / Líder Técnico (8h/dia) como perfil dedicado de liderança técnica diária (code review, mentoria, decisões técnicas, gestão de dívida técnica). Papel já era referenciado no documento mas não estava formalizado na tabela. | Time de Negócios |
+| 25/07/2026 | Migração (v2.0) — Documento migrado para `technical-definitions/` como `PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md`. Versão original preservada em `TECHNICAL-TEAM-MAP.md` na raiz do projeto. | Time de Arquitetura |
 
 ---
 
 > ⚠️ **TODO:** Este documento depende de decisões organizacionais sobre contratação e alocação de recursos técnicos. Enquanto o time não for definido, o risco R2 do Project Charter ("Equipe reduzida não consegue entregar no prazo esperado") permanece com severidade Crítica.
 
 ---
-🤖 *Documentação gerada de forma automatizada pelo Agente: Analista de Negócios/Claude.*
-🔍 *Refatorado em 22/07/2026 — escopo reduzido para contemplar exclusivamente a tabela de capacidade do time técnico executor (§7.4).*
+🤖 *Documentação gerada de forma automatizada pelo Agente: Analista de Negócios/Claude. Migrado para technical-definitions em 25/07/2026.*

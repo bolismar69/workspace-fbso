@@ -25,7 +25,7 @@
 
 ### KPI A3: Taxa de Abandono de Onboarding
 
-* **Objetivo de Negócio:** Identificar barreiras no fluxo de ativação que fazem o cliente desistir antes de concluir (Vinculado ao requisito BR-B03 do BRD) [INDEX].
+* **Objetivo de Negócio:** Identificar barreiras no fluxo de ativação que fazem o cliente desistir antes de concluir (Vinculado ao requisito BR-08 do BRD) [INDEX].
 * **Fórmula de Cálculo:** (Número de clientes que iniciaram mas não concluíram o onboarding em 7 dias / Total de clientes que iniciaram o onboarding) × 100
 * **Meta Recomendada:** ≤ 15% de abandono.
 * **Frequência de Reporte:** Mensal.
@@ -42,7 +42,7 @@
 
 ### KPI O2: Cobertura de Trilha de Auditoria Administrativa
 
-* **Objetivo de Negócio:** Garantir que 100% das ações administrativas possuam registro completo de auditoria (Vinculado aos requisitos BR-A02, BR-A04, BR-A05 do BRD) [INDEX].
+* **Objetivo de Negócio:** Garantir que 100% das ações administrativas possuam registro completo de auditoria (Vinculado aos requisitos BR-02, BR-04, BR-05 do BRD) [INDEX].
 * **Fórmula de Cálculo:** (Número de ações administrativas com registro completo de auditoria / Total de ações administrativas realizadas) × 100
 * **Meta Recomendada:** 100% — toda ação de ativação, suspensão, alteração de plano e mudança de permissão deve gerar trilha automaticamente.
 * **Frequência de Reporte:** Mensal (auditoria amostral).
@@ -56,7 +56,7 @@
 
 ### KPI O4: Tempo de Bloqueio de Acesso
 
-* **Objetivo de Negócio:** Medir a eficácia da suspensão de acesso — quanto tempo entre a decisão administrativa e o bloqueio efetivo do usuário (Vinculado ao requisito BR-A02 do BRD) [INDEX].
+* **Objetivo de Negócio:** Medir a eficácia da suspensão de acesso — quanto tempo entre a decisão administrativa e o bloqueio efetivo do usuário (Vinculado ao requisito BR-02 do BRD) [INDEX].
 * **Fórmula de Cálculo:** Tempo médio (em minutos) entre a alteração de status do tenant para "Suspenso" e o bloqueio efetivo do último usuário logado.
 * **Meta Recomendada:** ≤ 5 minutos.
 * **Frequência de Reporte:** Por evento, com sumário mensal.
@@ -132,4 +132,4 @@
 
 ---
 🤖 *Documentação gerada de forma automatizada pelo Agente: Analista de Negócios/Claude. Foram utilizados os skills: finance-metrics-quickref, agile-ba-practices.*
-🔍 *Revisado pelo skill caveman-review em 15/07/2026. Ajustes aplicados: S1 unificado para NPS (sem conflito com Likert), referência BRD corrigida (BR-B03), dashboard template completo com 10 KPIs, metodologia S3 detalhada.*
+🔍 *Revisado pelo skill caveman-review em 15/07/2026. Ajustes aplicados: S1 unificado para NPS (sem conflito com Likert), referência BRD corrigida (BR-08), dashboard template completo com 10 KPIs, metodologia S3 detalhada.*

@@ -115,7 +115,7 @@ flowchart TD
 
 | Documento | Descrição | Status |
 |:---|:---|:---|
-| [02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](./02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 10 Requisitos Funcionais de Negócio (BR-A01 a BR-B05) em 2 Blocos + 8 Requisitos Não-Funcionais (BR-NFR01 a BR-NFR08) | ✅ Aprovado |
+| [02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](./02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 10 Requisitos Funcionais de Negócio (BR-01 a BR-10) em 2 Blocos + 8 Requisitos Não-Funcionais (BR-NFR01 a BR-NFR08) | ✅ Aprovado |
 
 ### 3.3 Nível Macro-Escopo — Épicos
 
