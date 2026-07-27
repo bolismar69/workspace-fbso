@@ -1,12 +1,12 @@
 # User Stories: Vinculação Usuário × Unidade de Negócio × Módulo
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F03-03 — Vinculação Usuário × Unidade × Módulo
-- **Épico:** EP-03 — Governança de Acessos e Permissões
+- **Feature:** FEAT-EP-0003-0003 — Vinculação Usuário × Unidade × Módulo
+- **Épico:** EP-0003 — Governança de Acessos e Permissões
 - **Prioridade:** Must Have
 - **Data-Alvo:** 15/09/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -51,9 +51,9 @@ Permitir controle granular de acesso, definindo exatamente quais unidades de neg
 
 | ID | Regra |
 |----|-------|
-| **RN11-01** | Um usuário deve ter pelo menos uma Unidade de Negócio vinculada para acessar o portal (exceto Admin do Tenant, que tem acesso implícito a todas) |
-| **RN11-02** | Um usuário deve ter pelo menos um módulo vinculado para acessar o portal |
-| **RN11-03** | A lista de módulos disponíveis para vinculação é determinada pelos módulos incluídos no plano contratado pelo tenant |
+| **RN-FEAT-EP-0003-0003-0001** | Um usuário deve ter pelo menos uma Unidade de Negócio vinculada para acessar o portal (exceto Admin do Tenant, que tem acesso implícito a todas) |
+| **RN-FEAT-EP-0003-0003-0002** | Um usuário deve ter pelo menos um módulo vinculado para acessar o portal |
+| **RN-FEAT-EP-0003-0003-0003** | A lista de módulos disponíveis para vinculação é determinada pelos módulos incluídos no plano contratado pelo tenant |
 
 ---
 

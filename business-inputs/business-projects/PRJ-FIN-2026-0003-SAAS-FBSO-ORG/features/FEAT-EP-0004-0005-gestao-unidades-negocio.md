@@ -1,8 +1,8 @@
-# FEATURE - EP-0004-0005: Gestão de Unidades de Negócio
+# FEATURE - FEAT-EP-0004-0005: Gestão de Unidades de Negócio
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0004-0005 — Gestão de Unidades de Negócio |
+| **Feature** | FEAT-EP-0004-0005 — Gestão de Unidades de Negócio |
 | **Épico** | [EP-0004 — Experiência do Cliente e Autoatendimento](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) | **Anterior:** [EP-0004-0004 — App Switcher](../FEATURE-EP-0004-0004-app-switcher-seletor-modulos.md) | **Próximo:** [EP-0004-0006 — Catálogo](../FEATURE-EP-0004-0006-catalogo-produtos-servicos.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) | **Anterior:** [FEAT-EP-0004-0004 — App Switcher](../FEAT-EP-0004-0004-app-switcher-seletor-modulos.md) | **Próximo:** [FEAT-EP-0004-0006 — Catálogo](../FEAT-EP-0004-0006-catalogo-produtos-servicos.md)
 
 **Requisitos BRD Vinculados:** [BR-09](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Cadastro de Unidades de Negócio
 
@@ -46,7 +46,7 @@ Permitir que o cliente cadastre e gerencie suas filiais e CNPJs de forma autôno
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-09** | Cadastro de Unidades de Negócio | [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) / J2: Cadastro de filiais | **EP-0004-0005** — Gestão de Unidades de Negócio |
+| **BR-09** | Cadastro de Unidades de Negócio | [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) / J2: Cadastro de filiais | **FEAT-EP-0004-0005** — Gestão de Unidades de Negócio |
 
 ---
 

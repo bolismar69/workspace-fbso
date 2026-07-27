@@ -1,8 +1,8 @@
-# FEATURE - EP-0004-0002: Onboarding Guiado de Primeiro Acesso
+# FEATURE - FEAT-EP-0004-0002: Onboarding Guiado de Primeiro Acesso
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0004-0002 — Onboarding Guiado de Primeiro Acesso |
+| **Feature** | FEAT-EP-0004-0002 — Onboarding Guiado de Primeiro Acesso |
 | **Épico** | [EP-0004 — Experiência do Cliente e Autoatendimento](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) | **Anterior:** [EP-0004-0001 — Autenticação](../FEATURE-EP-0004-0001-autenticacao-recuperacao-senha.md) | **Próximo:** [EP-0004-0003 — Dashboard do Cliente](../FEATURE-EP-0004-0003-dashboard-cliente.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) | **Anterior:** [FEAT-EP-0004-0001 — Autenticação](../FEAT-EP-0004-0001-autenticacao-recuperacao-senha.md) | **Próximo:** [FEAT-EP-0004-0003 — Dashboard do Cliente](../FEAT-EP-0004-0003-dashboard-cliente.md)
 
 **Requisitos BRD Vinculados:** [BR-06](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) (Portal do Cliente), [BR-07](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) (Onboarding Guiado)
 
@@ -45,8 +45,8 @@ Conduzir o cliente por um fluxo simples e guiado no primeiro acesso, garantindo 
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-06** | Portal do Cliente com Autenticação | [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) / J1: Primeiro acesso e onboarding | **EP-0004-0002** — Onboarding Guiado |
-| **BR-07** | Onboarding Guiado de Primeiro Acesso | [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) / J1: Primeiro acesso e onboarding | **EP-0004-0002** — Onboarding Guiado |
+| **BR-06** | Portal do Cliente com Autenticação | [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) / J1: Primeiro acesso e onboarding | **FEAT-EP-0004-0002** — Onboarding Guiado |
+| **BR-07** | Onboarding Guiado de Primeiro Acesso | [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) / J1: Primeiro acesso e onboarding | **FEAT-EP-0004-0002** — Onboarding Guiado |
 
 ---
 

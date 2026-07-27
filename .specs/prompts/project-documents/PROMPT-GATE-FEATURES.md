@@ -7,7 +7,7 @@ Atue como um Gestor de Governança de Escopo e Engenheiro de Requisitos Sênior.
 ### O QUE VOCÊ VAI RECEBER COMO INPUT:
 1. O arquivo **03-EPICS-{PROJECT_ID_NAME}.md** original (Validado e Congelado pelo Humano na Fase 3).
 2. O arquivo índice **04-FEATURES-{PROJECT_ID_NAME}.md** recém-gerado pela IA.
-3. A pasta **features/** contendo os arquivos individuais `FEATURE-EP-{EEEE}-{NNNN}-{nome}.md` para cada feature.
+3. A pasta **features/** contendo os arquivos individuais `FEAT-EP-{EEEE}-{NNNN}-{nome}.md` para cada feature.
 
 ---
 
@@ -23,8 +23,8 @@ Você deve cruzar o documento de Features (índice + arquivos individuais) com o
 #### Novas Dimensões de Auditoria Modular (v3.0):
 5. **Integridade da Estrutura Modular:**
    - Verificar que a pasta `features/` existe e contém exatamente N arquivos (um por feature listada no índice).
-   - Verificar que os nomes dos arquivos seguem o padrão `FEATURE-EP-{EEEE}-{NNNN}-{nome-slugificado}.md`.
-   - Verificar que os códigos das features usam formato `EP-{EEEE}-{NNNN}` (8 dígitos + hífen).
+   - Verificar que os nomes dos arquivos seguem o padrão `FEAT-EP-{EEEE}-{NNNN}-{nome-slugificado}.md`.
+   - Verificar que os códigos das features usam formato `FEAT-EP-{EEEE}-{NNNN}` (8 dígitos + hífen).
 6. **Validação de Links Cruzados:**
    - Verificar que todos os links no índice para arquivos individuais estão ativos e apontam para arquivos existentes.
    - Verificar que cada arquivo individual contém link de volta para o índice e para o épico associado.
@@ -50,11 +50,11 @@ Retorne exatamente o bloco abaixo:
   - **O que foi gerado:** [Descrever o desvio]
   - **O que os Épicos/BRD determinavam:** [Descrever a regra de origem]
   - **Impacto no produto:** [O risco operacional]
-  - **Arquivo afetado:** `features/FEATURE-FP...md` ou `04-FEATURES-...md` (indicar qual)
+  - **Arquivo afetado:** `features/FEAT-EP...md` ou `04-FEATURES-...md` (indicar qual)
 
 ##### 🔗 Problemas de Integridade Modular (se aplicável):
 - **[ID-MOD-F01] - [Link Quebrado / Arquivo Faltante / Inconsistência]**
-  - **Descrição:** [Link no índice aponta para arquivo inexistente, ou feature sem link para épico, ou código fora do formato EP-0001-0001]
+  - **Descrição:** [Link no índice aponta para arquivo inexistente, ou feature sem link para épico, ou código fora do formato FEAT-EP-0001-0001]
   - **Arquivo(s) afetado(s):** [Caminho do arquivo]
 
 ##### ❓ Perguntas de Alinhamento para o Usuário:
@@ -73,7 +73,7 @@ Retorne exatamente o bloco abaixo, acionando a Validação Soberana Humana:
 ### 🛑 STATUS DO GATE: [PRÉ-COMPLIANCE INTERNO - AGUARDANDO VALIDAÇÃO HUMANA DE FEATURES]
 
 - **DOCUMENTO ÍNDICE:** `04-FEATURES-{PROJECT_ID_NAME}.md` gerado e estruturado conforme as regras.
-- **ARQUIVOS INDIVIDUAIS:** `features/FEATURE-EP-{EEEE}-{NNNN}-{nome}.md` — N arquivos gerados, um por feature, com user stories, regras de negócio e matriz de rastreabilidade.
+- **ARQUIVOS INDIVIDUAIS:** `features/FEAT-EP-{EEEE}-{NNNN}-{nome}.md` — N arquivos gerados, um por feature, com user stories, regras de negócio e matriz de rastreabilidade.
 - **AUDITORIA DA IA:** Alinhamento de granularidade verificado com sucesso. Rastreabilidade vertical em conformidade estrita. Estrutura modular íntegra: links cruzados ativos, matrizes BRD×Épico/Jornada×Feature presentes no índice e em cada arquivo individual. Zero anomalias operacionais detectadas pela IA.
 - **DIRETRIZ:** Peço que leia a estrutura de Funcionalidades (índice e arquivos individuais), suas Regras de Negócio e User Stories para verificar se eles refletem o comportamento esperado do produto.
 

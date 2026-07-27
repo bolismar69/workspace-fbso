@@ -1,12 +1,12 @@
 # User Stories: Catálogo de Produtos e Serviços
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F04-06 — Catálogo de Produtos e Serviços
-- **Épico:** EP-04 — Experiência do Cliente e Autoatendimento
+- **Feature:** FEAT-EP-0004-0006 — Catálogo de Produtos e Serviços
+- **Épico:** EP-0004 — Experiência do Cliente e Autoatendimento
 - **Prioridade:** Must Have
 - **Data-Alvo:** 15/10/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -60,10 +60,10 @@ Permitir que o cliente cadastre e gerencie seu portfólio comercial (produtos e 
 
 | ID | Regra |
 |----|-------|
-| **RN18-01** | Catálogo é segmentado por Unidade de Negócio — cada unidade tem seu próprio catálogo |
-| **RN18-02** | SKU é opcional, mas se informado deve ser único por Unidade de Negócio |
-| **RN18-03** | Indicador de "Mapeamento Fiscal" nesta fase exibe "Não mapeado" para todos os itens (placeholder para integração futura com Tributali-Engine) |
-| **RN18-04** | Exclusão de produtos segue política de soft delete (desativação lógica, não remoção física) |
+| **RN-FEAT-EP-0004-0006-0001** | Catálogo é segmentado por Unidade de Negócio — cada unidade tem seu próprio catálogo |
+| **RN-FEAT-EP-0004-0006-0002** | SKU é opcional, mas se informado deve ser único por Unidade de Negócio |
+| **RN-FEAT-EP-0004-0006-0003** | Indicador de "Mapeamento Fiscal" nesta fase exibe "Não mapeado" para todos os itens (placeholder para integração futura com Tributali-Engine) |
+| **RN-FEAT-EP-0004-0006-0004** | Exclusão de produtos segue política de desativação lógica, não remoção física |
 
 ---
 

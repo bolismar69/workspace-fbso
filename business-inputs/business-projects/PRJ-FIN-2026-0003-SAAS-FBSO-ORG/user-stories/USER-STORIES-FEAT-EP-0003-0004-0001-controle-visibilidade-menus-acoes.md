@@ -1,12 +1,12 @@
 # User Stories: Controle de Visibilidade de Menus e Ações
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F03-04 — Controle de Visibilidade de Menus e Ações
-- **Épico:** EP-03 — Governança de Acessos e Permissões
+- **Feature:** FEAT-EP-0003-0004 — Controle de Visibilidade de Menus e Ações
+- **Épico:** EP-0003 — Governança de Acessos e Permissões
 - **Prioridade:** Must Have
 - **Data-Alvo:** 15/09/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -52,8 +52,8 @@ Garantir que a interface do portal se adapte dinamicamente às permissões do us
 
 | ID | Regra |
 |----|-------|
-| **RN12-01** | Ocultação de menu é a primeira camada (UX); o bloqueio por permissão no acesso direto é a camada de segurança — ambas devem ser implementadas |
-| **RN12-02** | Usuários veem o nome do módulo ativo no topo do portal, ao lado do logo da FBSO Platform |
+| **RN-FEAT-EP-0003-0004-0001** | Ocultação de menu é a primeira camada (UX); o bloqueio por permissão no acesso direto é a camada de segurança — ambas devem ser implementadas |
+| **RN-FEAT-EP-0003-0004-0002** | Usuários veem o nome do módulo ativo no topo do portal, ao lado do logo da FBSO Platform |
 
 ---
 

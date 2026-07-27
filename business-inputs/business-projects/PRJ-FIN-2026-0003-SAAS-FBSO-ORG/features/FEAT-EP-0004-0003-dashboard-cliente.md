@@ -1,8 +1,8 @@
-# FEATURE - EP-0004-0003: Dashboard do Cliente
+# FEATURE - FEAT-EP-0004-0003: Dashboard do Cliente
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0004-0003 — Dashboard do Cliente |
+| **Feature** | FEAT-EP-0004-0003 — Dashboard do Cliente |
 | **Épico** | [EP-0004 — Experiência do Cliente e Autoatendimento](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) | **Anterior:** [EP-0004-0002 — Onboarding](../FEATURE-EP-0004-0002-onboarding-guiado-primeiro-acesso.md) | **Próximo:** [EP-0004-0004 — App Switcher](../FEATURE-EP-0004-0004-app-switcher-seletor-modulos.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) | **Anterior:** [FEAT-EP-0004-0002 — Onboarding](../FEAT-EP-0004-0002-onboarding-guiado-primeiro-acesso.md) | **Próximo:** [FEAT-EP-0004-0004 — App Switcher](../FEAT-EP-0004-0004-app-switcher-seletor-modulos.md)
 
 **Requisitos BRD Vinculados:** [BR-06](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Portal do Cliente
 
@@ -40,7 +40,7 @@ Oferecer ao cliente uma tela inicial com visão geral de sua conta e acessos rá
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-06** | Portal do Cliente com Autenticação | [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) / J1: Primeiro acesso e onboarding | **EP-0004-0003** — Dashboard do Cliente |
+| **BR-06** | Portal do Cliente com Autenticação | [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) / J1: Primeiro acesso e onboarding | **FEAT-EP-0004-0003** — Dashboard do Cliente |
 
 ---
 

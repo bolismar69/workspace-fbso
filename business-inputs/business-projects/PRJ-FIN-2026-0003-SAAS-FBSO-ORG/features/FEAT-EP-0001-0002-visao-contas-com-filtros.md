@@ -1,8 +1,8 @@
-# FEATURE - EP-0001-0002: Visão de Contas com Filtros
+# FEATURE - FEAT-EP-0001-0002: Visão de Contas com Filtros
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0001-0002 — Visão de Contas com Filtros |
+| **Feature** | FEAT-EP-0001-0002 — Visão de Contas com Filtros |
 | **Épico** | [EP-0001 — Portal Administrativo Interno](../epics/EP-0001-portal-administrativo-interno.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) | **Anterior:** [EP-0001-0001 — Dashboard](../FEATURE-EP-0001-0001-dashboard-metricas-operacionais.md) | **Próximo:** [EP-0001-0003 — Alertas](../FEATURE-EP-0001-0003-alertas-indicadores-atencao.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) | **Anterior:** [FEAT-EP-0001-0001 — Dashboard](../FEAT-EP-0001-0001-dashboard-metricas-operacionais.md) | **Próximo:** [FEAT-EP-0001-0003 — Alertas](../FEAT-EP-0001-0003-alertas-indicadores-atencao.md)
 
 **Requisitos BRD Vinculados:** [BR-01](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Dashboard Administrativo
 
@@ -40,7 +40,7 @@ Permitir que o time administrativo localize rapidamente qualquer conta de client
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-01** | Dashboard Administrativo | [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) / J1: Acompanhamento diário da operação | **EP-0001-0002** — Visão de Contas com Filtros |
+| **BR-01** | Dashboard Administrativo | [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) / J1: Acompanhamento diário da operação | **FEAT-EP-0001-0002** — Visão de Contas com Filtros |
 
 ---
 

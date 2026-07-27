@@ -1,12 +1,12 @@
 # User Stories: Histórico de Auditoria Administrativa
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F02-05 — Histórico de Auditoria Administrativa
-- **Épico:** EP-02 — Gestão de Clientes e Assinaturas
+- **Feature:** FEAT-EP-0002-0005 — Histórico de Auditoria Administrativa
+- **Épico:** EP-0002 — Gestão de Clientes e Assinaturas
 - **Prioridade:** Must Have
 - **Data-Alvo:** 31/08/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -32,7 +32,7 @@ Registrar todas as ações administrativas realizadas pelo time interno, garanti
 **Como** Administrador FBSO, **quero** filtrar o histórico de auditoria por período e por tipo de ação **para** localizar eventos específicos. (Papel 'Auditor' previsto para fase futura — nesta fase, Administrador FBSO consulta o histórico de auditoria.)
 
 **Critérios de Aceitação:**
-- Filtros disponíveis: período (data inicial e final), tipo de ação (criação, edição, alteração de status, mudança de plano, alteração de permissões — cobertura completa conforme RN08-01)
+- Filtros disponíveis: período (data inicial e final), tipo de ação (criação, edição, alteração de status, mudança de plano, alteração de permissões — cobertura completa conforme RN-FEAT-EP-0002-0005-0001)
 - Resultados ordenados do mais recente para o mais antigo
 
 ---
@@ -41,8 +41,8 @@ Registrar todas as ações administrativas realizadas pelo time interno, garanti
 
 | ID | Regra |
 |----|-------|
-| **RN08-01** | Auditoria cobre 100% das ações administrativas (criação, edição, alteração de status, mudança de plano, alteração de permissões) |
-| **RN08-02** | Registros de auditoria são imutáveis — não podem ser editados ou excluídos por nenhum usuário |
+| **RN-FEAT-EP-0002-0005-0001** | Auditoria cobre 100% das ações administrativas (criação, edição, alteração de status, mudança de plano, alteração de permissões) |
+| **RN-FEAT-EP-0002-0005-0002** | Registros de auditoria são imutáveis — não podem ser editados ou excluídos por nenhum usuário |
 
 ---
 

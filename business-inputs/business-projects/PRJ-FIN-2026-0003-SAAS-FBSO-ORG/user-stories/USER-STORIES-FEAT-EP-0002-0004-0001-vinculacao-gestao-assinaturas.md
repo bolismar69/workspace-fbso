@@ -1,12 +1,12 @@
 # User Stories: Vinculação e Gestão de Assinaturas
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F02-04 — Vinculação e Gestão de Assinaturas
-- **Épico:** EP-02 — Gestão de Clientes e Assinaturas
+- **Feature:** FEAT-EP-0002-0004 — Vinculação e Gestão de Assinaturas
+- **Épico:** EP-0002 — Gestão de Clientes e Assinaturas
 - **Prioridade:** Must Have
 - **Data-Alvo:** 31/08/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -32,7 +32,7 @@ Vincular clientes a planos com controle de vigência, permitindo upgrade/downgra
 **Como** Administrador FBSO, **quero** realizar upgrade ou downgrade de plano de um cliente, mantendo o histórico da assinatura anterior. (Na prática, funcionalidade será utilizada pelo Líder Comercial — perfil de stakeholder, não papel RBAC do sistema.)
 
 **Critérios de Aceitação:**
-- Ao trocar de plano, assinatura anterior é finalizada com data de término = data atual. Nova assinatura é criada com data de início = data atual (mesmo dia), garantindo que o tenant não fique sem assinatura ativa durante a transição (RN07-02).
+- Ao trocar de plano, assinatura anterior é finalizada com data de término = data atual. Nova assinatura é criada com data de início = data atual (mesmo dia), garantindo que o tenant não fique sem assinatura ativa durante a transição (RN-FEAT-EP-0002-0004-0002).
 - Histórico exibe todas as assinaturas do cliente em ordem cronológica
 
 ### US-021 — Suspensão de Assinatura com Bloqueio de Módulos
@@ -50,10 +50,10 @@ Vincular clientes a planos com controle de vigência, permitindo upgrade/downgra
 
 | ID | Regra |
 |----|-------|
-| **RN07-01** | Um tenant pode ter apenas uma assinatura ativa por vez |
-| **RN07-02** | Upgrade/downgrade não pode deixar o tenant sem assinatura ativa durante a transição |
-| **RN07-03** | Data de término de assinatura é opcional (planos sem data de término = vigência contínua) |
-| **RN07-04** | Quando o Tenant está Suspenso, o acesso aos módulos é bloqueado independentemente do status da Assinatura. Quando a Assinatura está Suspensa e o Tenant está Ativo, o acesso aos módulos é bloqueado. Ambos devem estar ativos para liberação de acesso. |
+| **RN-FEAT-EP-0002-0004-0001** | Um tenant pode ter apenas uma assinatura ativa por vez |
+| **RN-FEAT-EP-0002-0004-0002** | Upgrade/downgrade não pode deixar o tenant sem assinatura ativa durante a transição |
+| **RN-FEAT-EP-0002-0004-0003** | Data de término de assinatura é opcional (planos sem data de término = vigência contínua) |
+| **RN-FEAT-EP-0002-0004-0004** | Quando o Tenant está Suspenso, o acesso aos módulos é bloqueado independentemente do status da Assinatura. Quando a Assinatura está Suspensa e o Tenant está Ativo, o acesso aos módulos é bloqueado. Ambos devem estar ativos para liberação de acesso. |
 
 ---
 

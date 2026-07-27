@@ -1,12 +1,12 @@
 # User Stories: Alertas e Indicadores de Atenção
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F01-03 — Alertas e Indicadores de Atenção
-- **Épico:** EP-01 — Portal Administrativo Interno
+- **Feature:** FEAT-EP-0001-0003 — Alertas e Indicadores de Atenção
+- **Épico:** EP-0001 — Portal Administrativo Interno
 - **Prioridade:** Should Have
 - **Data-Alvo:** 15/08/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -43,9 +43,9 @@ Destacar proativamente situações que exigem ação do time administrativo, evi
 
 | ID | Regra |
 |----|-------|
-| **RN03-01** | Alerta de "onboarding incompleto" dispara após 48 horas da criação da conta |
-| **RN03-02** | Alertas são visíveis para todos os usuários do time interno; não há personalização por usuário nesta fase |
-| **RN03-03** | Classificação de alertas por cor: Amarelo (atenção) = onboarding incompleto há mais de 48h. Vermelho (crítico) = assinatura suspensa, conta suspensa. Esta classificação é fixa nesta fase. |
+| **RN-FEAT-EP-0001-0003-0001** | Alerta de "onboarding incompleto" dispara após 48 horas da criação da conta |
+| **RN-FEAT-EP-0001-0003-0002** | Alertas são visíveis para todos os usuários do time interno; não há personalização por usuário nesta fase |
+| **RN-FEAT-EP-0001-0003-0003** | Classificação de alertas por cor: Amarelo (atenção) = onboarding incompleto há mais de 48h. Vermelho (crítico) = assinatura suspensa, conta suspensa. Esta classificação é fixa nesta fase. |
 
 ---
 

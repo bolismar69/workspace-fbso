@@ -1,8 +1,8 @@
-# FEATURE - EP-0003-0003: Vinculação Usuário × Unidade de Negócio × Módulo
+# FEATURE - FEAT-EP-0003-0003: Vinculação Usuário × Unidade de Negócio × Módulo
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0003-0003 — Vinculação Usuário × Unidade de Negócio × Módulo |
+| **Feature** | FEAT-EP-0003-0003 — Vinculação Usuário × Unidade de Negócio × Módulo |
 | **Épico** | [EP-0003 — Governança de Acessos e Permissões](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0003](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) | **Anterior:** [EP-0003-0002 — RBAC](../FEATURE-EP-0003-0002-definicao-papeis-permissoes-rbac.md) | **Próximo:** [EP-0003-0004 — Controle de Visibilidade](../FEATURE-EP-0003-0004-controle-visibilidade-menus-acoes.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0003](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) | **Anterior:** [FEAT-EP-0003-0002 — RBAC](../FEAT-EP-0003-0002-definicao-papeis-permissoes-rbac.md) | **Próximo:** [FEAT-EP-0003-0004 — Controle de Visibilidade](../FEAT-EP-0003-0004-controle-visibilidade-menus-acoes.md)
 
 **Requisitos BRD Vinculados:** [BR-05](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Gestão de Usuários e Permissões
 
@@ -42,7 +42,7 @@ Permitir controle granular de acesso, definindo exatamente quais unidades de neg
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-05** | Gestão de Usuários e Permissões | [EP-0003](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) / J1: Convite de novo usuário · J2: Restrição de acesso entre filiais | **EP-0003-0003** — Vinculação Usuário × Unidade × Módulo |
+| **BR-05** | Gestão de Usuários e Permissões | [EP-0003](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) / J1: Convite de novo usuário · J2: Restrição de acesso entre filiais | **FEAT-EP-0003-0003** — Vinculação Usuário × Unidade × Módulo |
 
 ---
 

@@ -1,8 +1,8 @@
-# FEATURE - EP-0001-0003: Alertas e Indicadores de Atenção
+# FEATURE - FEAT-EP-0001-0003: Alertas e Indicadores de Atenção
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0001-0003 — Alertas e Indicadores de Atenção |
+| **Feature** | FEAT-EP-0001-0003 — Alertas e Indicadores de Atenção |
 | **Épico** | [EP-0001 — Portal Administrativo Interno](../epics/EP-0001-portal-administrativo-interno.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) | **Anterior:** [EP-0001-0002 — Visão de Contas](../FEATURE-EP-0001-0002-visao-contas-com-filtros.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) | **Anterior:** [FEAT-EP-0001-0002 — Visão de Contas](../FEAT-EP-0001-0002-visao-contas-com-filtros.md)
 
 **Requisitos BRD Vinculados:** [BR-01](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Dashboard Administrativo
 
@@ -40,7 +40,7 @@ Destacar proativamente situações que exigem ação do time administrativo, evi
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-01** | Dashboard Administrativo | [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) / J1: Acompanhamento diário da operação | **EP-0001-0003** — Alertas e Indicadores de Atenção |
+| **BR-01** | Dashboard Administrativo | [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) / J1: Acompanhamento diário da operação | **FEAT-EP-0001-0003** — Alertas e Indicadores de Atenção |
 
 ---
 

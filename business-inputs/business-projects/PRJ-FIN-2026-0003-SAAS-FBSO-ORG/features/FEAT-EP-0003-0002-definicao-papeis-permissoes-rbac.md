@@ -1,8 +1,8 @@
-# FEATURE - EP-0003-0002: Definição de Papéis e Permissões (RBAC)
+# FEATURE - FEAT-EP-0003-0002: Definição de Papéis e Permissões (RBAC)
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0003-0002 — Definição de Papéis e Permissões (RBAC) |
+| **Feature** | FEAT-EP-0003-0002 — Definição de Papéis e Permissões (RBAC) |
 | **Épico** | [EP-0003 — Governança de Acessos e Permissões](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0003](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) | **Anterior:** [EP-0003-0001 — Cadastro e Convite](../FEATURE-EP-0003-0001-cadastro-convite-usuarios.md) | **Próximo:** [EP-0003-0003 — Vinculação Usuário×Unidade×Módulo](../FEATURE-EP-0003-0003-vinculacao-usuario-unidade-modulo.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0003](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) | **Anterior:** [FEAT-EP-0003-0001 — Cadastro e Convite](../FEAT-EP-0003-0001-cadastro-convite-usuarios.md) | **Próximo:** [FEAT-EP-0003-0003 — Vinculação Usuário×Unidade×Módulo](../FEAT-EP-0003-0003-vinculacao-usuario-unidade-modulo.md)
 
 **Requisitos BRD Vinculados:** [BR-05](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Gestão de Usuários e Permissões
 
@@ -52,7 +52,7 @@ Estabelecer os papéis padrão da plataforma com conjuntos de permissões bem de
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-05** | Gestão de Usuários e Permissões | [EP-0003](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) / J1: Convite de novo usuário | **EP-0003-0002** — Definição de Papéis e Permissões (RBAC) |
+| **BR-05** | Gestão de Usuários e Permissões | [EP-0003](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) / J1: Convite de novo usuário | **FEAT-EP-0003-0002** — Definição de Papéis e Permissões (RBAC) |
 
 ---
 

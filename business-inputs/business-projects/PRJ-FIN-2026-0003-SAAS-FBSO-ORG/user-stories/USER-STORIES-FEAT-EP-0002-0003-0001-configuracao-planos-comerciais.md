@@ -1,12 +1,12 @@
 # User Stories: Configuração de Planos Comerciais
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F02-03 — Configuração de Planos Comerciais
-- **Épico:** EP-02 — Gestão de Clientes e Assinaturas
+- **Feature:** FEAT-EP-0002-0003 — Configuração de Planos Comerciais
+- **Épico:** EP-0002 — Gestão de Clientes e Assinaturas
 - **Prioridade:** Must Have
 - **Data-Alvo:** 31/08/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -45,7 +45,7 @@ Permitir que o time de produto crie e gerencie os planos comerciais do SaaS de f
 **Critérios de Aceitação:**
 - Edição de plano gera nova versão
 - Clientes já vinculados permanecem na versão contratada até upgrade
-- Plano pode ser excluído apenas se não houver clientes ativos vinculados a ele (RN06-01). Caso haja clientes ativos, o plano pode apenas ser desativado.
+- Plano pode ser excluído apenas se não houver clientes ativos vinculados a ele (RN-FEAT-EP-0002-0003-0001). Caso haja clientes ativos, o plano pode apenas ser desativado.
 
 ### US-018 — Desativação de Plano Comercial
 
@@ -62,9 +62,9 @@ Permitir que o time de produto crie e gerencie os planos comerciais do SaaS de f
 
 | ID | Regra |
 |----|-------|
-| **RN06-01** | Um plano não pode ser excluído se houver clientes ativos vinculados a ele |
-| **RN06-02** | Alteração de preço de plano não afeta assinaturas já contratadas (vale o preço da data de contratação) |
-| **RN06-03** | Deve existir pelo menos um plano ativo no sistema |
+| **RN-FEAT-EP-0002-0003-0001** | Um plano não pode ser excluído se houver clientes ativos vinculados a ele |
+| **RN-FEAT-EP-0002-0003-0002** | Alteração de preço de plano não afeta assinaturas já contratadas (vale o preço da data de contratação) |
+| **RN-FEAT-EP-0002-0003-0003** | Deve existir pelo menos um plano ativo no sistema |
 
 ---
 

@@ -1,8 +1,8 @@
-# FEATURE - EP-0004-0004: App Switcher (Seletor de Módulos)
+# FEATURE - FEAT-EP-0004-0004: App Switcher (Seletor de Módulos)
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0004-0004 — App Switcher (Seletor de Módulos) |
+| **Feature** | FEAT-EP-0004-0004 — App Switcher (Seletor de Módulos) |
 | **Épico** | [EP-0004 — Experiência do Cliente e Autoatendimento](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) | **Anterior:** [EP-0004-0003 — Dashboard](../FEATURE-EP-0004-0003-dashboard-cliente.md) | **Próximo:** [EP-0004-0005 — Unidades de Negócio](../FEATURE-EP-0004-0005-gestao-unidades-negocio.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) | **Anterior:** [FEAT-EP-0004-0003 — Dashboard](../FEAT-EP-0004-0003-dashboard-cliente.md) | **Próximo:** [FEAT-EP-0004-0005 — Unidades de Negócio](../FEAT-EP-0004-0005-gestao-unidades-negocio.md)
 
 **Requisitos BRD Vinculados:** [BR-08](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — App Switcher
 
@@ -42,7 +42,7 @@ Fornecer o mecanismo de navegação entre módulos da plataforma, permitindo que
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-08** | App Switcher (Seletor de Aplicativos) | [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) / J4: Navegação com App Switcher | **EP-0004-0004** — App Switcher |
+| **BR-08** | App Switcher (Seletor de Aplicativos) | [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) / J4: Navegação com App Switcher | **FEAT-EP-0004-0004** — App Switcher |
 
 ---
 

@@ -1,12 +1,12 @@
 # User Stories: Gestão de Unidades de Negócio
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F04-05 — Gestão de Unidades de Negócio
-- **Épico:** EP-04 — Experiência do Cliente e Autoatendimento
+- **Feature:** FEAT-EP-0004-0005 — Gestão de Unidades de Negócio
+- **Épico:** EP-0004 — Experiência do Cliente e Autoatendimento
 - **Prioridade:** Must Have
 - **Data-Alvo:** 15/10/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -75,12 +75,12 @@ Permitir que o cliente cadastre e gerencie suas filiais e CNPJs de forma autôno
 
 | ID | Regra |
 |----|-------|
-| **RN17-01** | CNPJ deve ser único entre Unidades de Negócio ativas do mesmo tenant (soft delete libera o CNPJ para reúso) |
-| **RN17-02** | Uma unidade desativada não pode ser definida como "pai" de novas filiais |
-| **RN17-03** | A primeira unidade cadastrada (durante onboarding) é automaticamente a Matriz |
-| **RN17-04** | Não há limite de níveis hierárquicos (Matriz → Filial → Sub-filial) |
-| **RN17-05** | Seletor de Unidade de Negócio reflete apenas as unidades que o usuário tem permissão |
-| **RN17-06** | Não é permitido criar ciclos na hierarquia (ex: Unidade A → Unidade B → Unidade A). Sistema valida a cadeia hierárquica antes de salvar. |
+| **RN-FEAT-EP-0004-0005-0001** | CNPJ deve ser único entre Unidades de Negócio ativas do mesmo tenant (desativação lógica libera o CNPJ para reúso) |
+| **RN-FEAT-EP-0004-0005-0002** | Uma unidade desativada não pode ser definida como "pai" de novas filiais |
+| **RN-FEAT-EP-0004-0005-0003** | A primeira unidade cadastrada (durante onboarding) é automaticamente a Matriz |
+| **RN-FEAT-EP-0004-0005-0004** | Não há limite de níveis hierárquicos (Matriz → Filial → Sub-filial) |
+| **RN-FEAT-EP-0004-0005-0005** | Seletor de Unidade de Negócio reflete apenas as unidades que o usuário tem permissão |
+| **RN-FEAT-EP-0004-0005-0006** | Não é permitido criar ciclos na hierarquia (ex: Unidade A → Unidade B → Unidade A). Sistema valida a cadeia hierárquica antes de salvar. |
 
 ### Casos de Borda (US-053)
 
