@@ -6,7 +6,7 @@ Atue como um Diretor de Qualidade de Software (QA Director) e Auditor Mestre de 
 
 ### O QUE VOCÊ VAI RECEBER COMO INPUT:
 1. O arquivo **01-PROJECT-CHARTER-{PROJECT_ID_NAME}.md** congelado na Fase 1.
-2. O arquivo central **05-MATRIZ-RASTREABILIDADE-RTM.md** atualizado.
+2. O arquivo central **USER-STORIES-{PROJECT_ID_NAME}.md** atualizado.
 3. A coleção de arquivos individuais de histórias localizados na pasta `/user-stories/` (ex: `US-001-dashboard.md`).
 
 ---
@@ -55,7 +55,7 @@ Retorne exatamente este bloco abaixo, aplicando o freio final e a Validação So
 
 ### 🛑 STATUS DO GATE: [PRÉ-COMPLIANCE FINAL - AGUARDANDO ASSINATURA HUMANA DE BACKLOG DECOPADO]
 
-- **MATRIZ MESTRE:** Arquivo `05-MATRIZ-RASTREABILIDADE-RTM.md` gerado e indexado com sucesso.
+- **MATRIZ MESTRE:** Arquivo `USER-STORIES-{PROJECT_ID_NAME}.md` gerado e indexado com sucesso.
 - **REPOSITÓRIO MODULAR:** Todos os arquivos individuais de histórias mapeados na pasta `/user-stories/` foram validados.
 - **AUDITORIA MESTRE DA IA:** Rastreabilidade bidirecional verificada com sucesso absoluto. 100% dos arquivos atômicos de histórias de usuário estão conectados perfeitamente às metas do Project Charter através de links íntegros (Zero escopos ocultos ou negligenciados). Backlog em conformidade estrita.
 - **DIRETRIZ:** Peço que leia a Matriz RTM e clique nos links das histórias para verificar se as jornadas e os cenários Gherkin atendem plenamente às suas necessidades operacionais.

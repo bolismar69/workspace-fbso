@@ -1,4 +1,4 @@
-# EP-0003: Governança de Acessos e Permissões
+# EPICO - EP-0003: Governança de Acessos e Permissões
 
 | Campo | Detalhe |
 |-------|---------|

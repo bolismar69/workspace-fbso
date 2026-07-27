@@ -1,87 +1,168 @@
 # PROMPT: GERADOR DE ESPECIFICAÇÃO DE FUNCIONALIDADES (FEATURES PRD)
 ## Arquivo: PROMPT-GENERATE-FEATURES.md
-## Versão: 1.0 — Layout Puro e Mapeamento de Transição Ágil
+## Versão: 2.0 — Estrutura Modular com Arquivos Individuais por Feature
 
-Atue como um Analista de Negócios Ágil Sênior (Agile BA) e Product Owner, aplicando as competências de `agile-ba-practices`, `acceptance-criteria`, `breakdown-feature-prd` e os filtros pragmáticos corporativos de `caveman` e `caveman-review`. Sua missão é ler o documento de Épicos congelado da Fase 3 e desdobrá-lo em uma **Especificação de Funcionalidades (Features)** exaustiva.
+Atue como um Analista de Negócios Ágil Sênior (Agile BA) e Product Owner, aplicando as competências de `agile-ba-practices`, `acceptance-criteria`, `breakdown-feature-prd` e os filtros pragmáticos corporativos de `caveman` e `caveman-review`. Sua missão é ler o documento de Épicos congelado da Fase 3 e desdobrá-lo em uma **Especificação de Funcionalidades (Features)** exaustiva, estruturada de forma modular: um arquivo índice central + arquivos individuais por feature na pasta `features/`.
 
 ### 🛑 DIRETRIZES CRÍTICAS DE HERANÇA E ESCOPO:
-1. **Taxonomia e Rastreabilidade de IDs:** Siga rigorosamente a taxonomia padrão. As funcionalidades devem utilizar o formato `F[ÉPICO]-[SEQUENCIAL]` (Ex: `F01-01`). As User Stories associadas de rascunho devem utilizar `US-[SEQUENCIAL]` (Ex: `US-001`). As Regras de Negócio específicas devem utilizar `RN[ÉPICO]-[SEQUENCIAL]` (Ex: `RN01-01`).
-2. **Abstração Técnica Absoluta:** O foco é o comportamento esperado sob a ótica do usuário e do negócio. Não inclua referências a arquitetura técnica, bancos de dados, microsserviços ou tecnologias front-end/back-end.
-3. **Mapeamento Exigido:** O documento deve conter obrigatoriamente: Visão Geral de Funcionalidades, Cronograma por Funcionalidade, Matriz de Cobertura contra o Project Charter, Diagrama de Linha de Tempo ASCII e a Matriz de Priorização MoSCoW.
-4. **Análise de Conformidade Interna (Caveman Review):** Aplique um filtro mental pragmático durante a geração. Elimine qualquer termo rebuscado de tecnologia que mascare a falta de uma regra de negócio real.
+1. **Estrutura Modular (NOVO — v2.0):** O documento de Features passa a ser entregue em dois artefatos complementares:
+   - **Arquivo Índice:** `04-FEATURES-{PROJECT_ID_NAME}.md` — resumo executivo com visão consolidada, cronograma, matriz de cobertura Charter×Features, matriz MoSCoW e diagrama de linha de tempo.
+   - **Arquivos Individuais:** `features/FEATURE-EP-{EEEE}-{NNNN}-{nome-slugificado}.md` — um arquivo por feature com objetivo de negócio, user stories, regras de negócio e matriz de rastreabilidade específica.
+2. **Taxonomia e Rastreabilidade de IDs (ATUALIZADO — v2.0):** As funcionalidades devem utilizar o formato `EP-{EEEE}-{NNNN}` onde `{EEEE}` é o código do épico associado com 4 dígitos e `{NNNN}` é o sequencial dentro do épico com 4 dígitos (reiniciando para cada épico). Ex: `EP-0001-0001`, `EP-0001-0002`, `EP-0002-0001`. As User Stories associadas mantêm o formato `US-[SEQUENCIAL]` (ex: `US-001`). As Regras de Negócio passam a utilizar o formato `RN-FEAT-{codigo-feature}-{SSSS}` (ex: `RN-FEAT-EP-0001-0001-0001`).
+3. **Abstracão Técnica Absoluta:** O foco é o comportamento esperado sob a ótica do usuário e do negócio. Não inclua referências a arquitetura técnica, bancos de dados, microsserviços ou tecnologias front-end/back-end.
+4. **Mapeamento Exigido (no Índice):** O documento deve conter obrigatoriamente: Visão Geral de Funcionalidades com links para arquivos individuais, Cronograma por Funcionalidade, Matriz de Cobertura contra o Project Charter, Diagrama de Linha de Tempo ASCII e Matriz de Priorização MoSCoW.
+5. **Análise de Conformidade Interna (Caveman Review):** Aplique um filtro mental pragmático durante a geração. Elimine qualquer termo rebuscado de tecnologia que mascare a falta de uma regra de negócio real.
+6. **Links Cruzados Obrigatórios:**
+   - O índice deve linkar para cada arquivo individual: `[EP-0001-0001](features/FEATURE-EP-0001-0001-nome.md)`
+   - Cada arquivo individual deve linkar de volta para o índice: `[Índice de Features](../04-FEATURES-{PROJECT_ID_NAME}.md)`
+   - Cada arquivo individual deve linkar para o épico associado: `[EP-0001](../epics/EP-0001-nome.md)`
+   - Cada arquivo individual deve referenciar o BRD: `[BR-XX](../02-BRD-{PROJECT_ID_NAME}.md)`
 
 ---
-
 ### INSTRUÇÕES DE EXECUÇÃO:
 1. **Inputs:** Consuma o arquivo `03-EPICS-{PROJECT_ID_NAME}.md` (Fase 3), o `02-BRD-{PROJECT_ID_NAME}.md` (Fase 2) e o `01-PROJECT-CHARTER-{PROJECT_ID_NAME}.md` (Fase 1).
-2. **Decomposição:** Identifique as funcionalidades necessárias para cobrir as jornadas e requisitos descritos, estimando o total de funcionalidades e histórias.
-3. **Formatação:** Retorne o documento preenchendo estritamente o layout limpo abaixo com base nos dados do projeto do usuário.
+2. **Criar Estrutura de Diretórios:** Execute `mkdir -p {PROJECT_COMPLETE_PATH_NAME}/features/` para garantir que a pasta de artefatos modulares exista.
+3. **Decomposição:** Identifique as funcionalidades necessárias para cobrir as jornadas e requisitos descritos. Atribua códigos sequenciais `EP-{EEEE}-{NNNN}` a cada feature, onde `{EEEE}` é o código do épico pai e `{NNNN}` é o sequencial reiniciado para cada épico.
+4. **Geração dos Arquivos Individuais:** Para cada feature, crie um arquivo na pasta `features/` com o nome `FEATURE-EP-{EEEE}-{NNNN}-{nome-slugificado}.md` seguindo o template de detalhamento (objetivo, user stories, regras de negócio, matriz de rastreabilidade).
+5. **Geração do Arquivo Índice:** Crie o arquivo `04-FEATURES-{PROJECT_ID_NAME}.md` na raiz do projeto com o conteúdo consolidado.
+6. **Formatação:** Retorne os documentos finais estruturados com os layouts abaixo.
 
 ---
+### ESTRUTURA E LAYOUT DO ARQUIVO ÍNDICE (`04-FEATURES-{PROJECT_ID_NAME}.md`):
 
-### ESTRUTURA E LAYOUT PADRÃO DE SAÍDA (TEMPLATE PURO):
-
-#### # Funcionalidades do Projeto: [Inserir Nome do Projeto]
-##### Document ID: FEATURES-[SIGLA-DO-PROJETO]-2026-001
+```
+# Funcionalidades do Projeto: [Inserir Nome do Projeto]
 
 | Campo | Detalhe |
 |-------|---------|
-| **Projeto** | PRJ-[ÁREA]-2026-[NÚMERO]-[NOME-DO-PROJETO] |
-| **Documento** | FEATURES-[SIGLA-DO-PROJETO]-2026-001 |
-| **Versão** | 1.0 — Documento Inicial de Funcionalidades |
+| **Projeto** | {PROJECT_ID_NAME} |
+| **Documento** | FEATURES-{PROJECT_ID_NAME} |
+| **Versão** | 1.0 — Documento Inicial de Funcionalidades (Estrutura Modular v2.0) |
 | **Data** | [Data Atual] |
-| **Origem** | `EPICS-[SIGLA-DO-PROJETO]-2026-001` (Versão Validada) |
+| **Origem** | `03-EPICS-{PROJECT_ID_NAME}.md` v[X.X] |
 | **Status** | Em Revisão / Aguardando Validação |
 
 ---
 
 ## Visão Geral das Funcionalidades
 
-[Construir tabela cruzando todas as funcionalidades geradas: ID, Funcionalidade, Épico Pai, Prioridade MoSCoW, Quantidade de User Stories estimadas, Data-Alvo alinhada aos marcos].
+[Construir tabela cruzando todas as funcionalidades: ID com link para arquivo individual, Funcionalidade, Épico Pai, Prioridade MoSCoW, User Stories, Data-Alvo].
+
+| ID | Funcionalidade | Épico | Prioridade | User Stories | Data-Alvo |
+|----|---------------|-------|------------|-------------|-----------|
+| **EP-0001-0001** | [Nome da Feature 1](features/FEATURE-EP-0001-0001-nome-1.md) | EP-0001 | Must Have | N | **DD/MM/AAAA** |
 
 **Total: [X] funcionalidades | [Y] user stories**
 
+> 📄 **Detalhamento completo** de cada feature disponível na pasta [`features/`](features/).
+
+### Mapeamento de Numeração (se aplicável)
+
+[Tabela de ponte entre IDs antigos (ex: F01-01) e novos (EP-0001-0001), útil durante a transição].
+
 ### Cronograma de Entregas por Funcionalidade
 
-[Construir tabela ordenando cronologicamente por: Data-Alvo, Marco, Épico, Funcionalidades].
+[Construir tabela ordenada cronologicamente por: Data-Alvo, Marco, Épico, Funcionalidades].
 
 ---
 
-## [ID_EPICO]: [Nome do Épico]
+## Matriz de Rastreabilidade BRD → Épico/Jornada → Features
+
+| BRD | Requisito Funcional | Épico/Jornada | Feature |
+|:---|:---|:---|:---|
+| **BR-01** | [Descrição] | EP-0001 / J1: [Nome] | [EP-0001-0001](features/FEATURE-EP-0001-0001-nome.md) |
 
 ---
 
-### [ID_FUNCIONALIDADE]: [Nome da Funcionalidade]
+## Matriz de Cobertura: Entregas do Project Charter × Features
 
-**Objetivo de Negócio:** [Explicar resumidamente o valor comercial, a dor que alivia e a necessidade operacional desta funcionalidade específica].
+| Entrega (Project Charter) | Funcionalidades Relacionadas |
+|---------------------------|------------------------------|
+| D1 — [Nome da Entrega] | [EP-0001-0001](features/...), [EP-0001-0002](features/...) |
 
-**Prioridade:** [Must Have / Should Have / Could Have]
-
-#### User Stories (Rascunho Inicial)
-
-| # | User Story | Critérios de Aceitação |
-|---|-----------|----------------------|
-| [US-XXX] | Como **[Persona]**, quero [ação/funcionalidade] para [benefício/valor de negócio] | • [Critério de comportamento esperado de tela 1]<br>• [Critério de comportamento esperado de tela 2] |
-
-#### Regras de Negócio
-
-- **[RNXX-XX]:** [Descrever restrições operacionais específicas da tela, validações lógicas, regras de exibição e valores padrão].
-
----
-
-## Matriz de Cobertura: Entregas do Project Charter × Funcionalidades
-
-[Construir tabela mapeando cada ID de Entrega do Charter (D1, D2...) contra a lista de IDs de Funcionalidades relacionadas criadas].
-
-[Desenhar a linha de tempo em formato ASCII consolidando as datas, Marcos M1 a M7, os Épicos correspondentes e listando verticalmente abaixo de cada marco todas as suas respectivas funcionalidades FXX-XX].
-
+[Diagrama de Linha de Tempo ASCII consolidando datas, Marcos, Épicos e Features].
 
 ---
 
 ## Matriz de Priorização (MoSCoW)
 
-[Construir tabela resumida contendo: Prioridade, Lista de Funcionalidades agregadas e Quantidade Total por linha].
+| Prioridade | Funcionalidades | Quantidade |
+|-----------|----------------|------------|
+| **Must Have** | [Lista de FP IDs] | N |
+| **Should Have** | [Lista de FP IDs] | N |
+| **Could Have** | — | 0 |
+| **Won't Have (esta fase)** | [Descrição do excluído] | — |
 
 ---
-`[STATUS: SUCESSO - ENVIADO PARA RE-AUDITORIA DE FEATURES]`
 
+> **Este documento é um índice resumido.** O detalhamento completo de cada feature — incluindo objetivo de negócio, user stories, critérios de aceitação e regras de negócio — está nos arquivos individuais da pasta [`features/`](features/).
+
+---
+🤖 *Documentação gerada de forma automatizada pelo Agente: Analista de Negócios/Claude. Foram utilizados os skills: agile-ba-practices, acceptance-criteria, breakdown-feature-prd. Estrutura modular v2.0.*
+```
+
+---
+### ESTRUTURA E LAYOUT DE CADA ARQUIVO INDIVIDUAL (`features/FEATURE-EP-{EEEE}-{NNNN}-{nome-slugificado}.md`):
+
+> **Nota:** O slug do nome deve ser derivado do título da feature, em kebab-case. Ex: "Dashboard de Métricas Operacionais" → `dashboard-metricas-operacionais`.
+
+```
+# FEATURE - EP-{EEEE}-{NNNN}: [Inserir Nome da Feature]
+
+| Campo | Detalhe |
+|-------|---------|
+| **Feature** | EP-{EEEE}-{NNNN} — [Nome da Feature] |
+| **Épico** | [EP-{EEEE} — Nome do Épico](../epics/EP-{EEEE}-nome-do-epico.md) |
+| **Projeto** | {PROJECT_ID_NAME} |
+| **Documento** | FEATURES-{PROJECT_ID_NAME} |
+| **Versão** | 1.0 — Documento Inicial de Funcionalidades |
+| **Data** | [Data Atual] |
+| **Origem** | `03-EPICS-{PROJECT_ID_NAME}.md` e `02-BRD-{PROJECT_ID_NAME}.md` |
+| **Status** | Em Revisão / Aguardando Validação |
+
+> 📄 **Índice de Features:** [`04-FEATURES-{PROJECT_ID_NAME}.md`](../04-FEATURES-{PROJECT_ID_NAME}.md) | **Épico:** [EP-{EEEE}](../epics/EP-{EEEE}-nome-do-epico.md) | **Anterior:** [EP-{EEEE}-{NNNN} — Nome](../FEATURE-EP-{EEEE}-{NNNN}-anterior.md) | **Próximo:** [EP-{EEEE}-{NNNN} — Nome](../FEATURE-EP-{EEEE}-{NNNN}-proximo.md)
+
+**Requisitos BRD Vinculados:** [BR-XX](../02-BRD-{PROJECT_ID_NAME}.md) — [Nome do Requisito]
+
+---
+
+## Objetivo de Negócio
+[Explicar resumidamente o valor comercial, a dor que alivia e a necessidade operacional desta funcionalidade específica].
+
+**Prioridade:** [Must Have / Should Have / Could Have]
+
+## User Stories
+
+| # | User Story | Critérios de Aceitação |
+|---|-----------|----------------------|
+| US-XXX | Como **[Persona]**, quero [ação/funcionalidade] para [benefício/valor de negócio] | • [Critério 1]<br>• [Critério 2] |
+
+## Regras de Negócio
+
+- **RN-FEAT-EP-{EEEE}-{NNNN}-{SSSS}:** [Descrever restrições operacionais específicas, validações lógicas, regras de exibição e valores padrão].
+
+---
+
+## Matriz de Rastreabilidade BRD → Épico/Jornada → Esta Feature
+
+| BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
+|:---|:---|:---|:---|
+| **BR-XX** | [Descrição] | [EP-{EEEE}](../epics/EP-{EEEE}-nome.md) / J[N]: [Nome da Jornada] | **EP-{EEEE}-{NNNN}** — [Nome da Feature] |
+
+---
+
+> 📄 **Índice de Features:** [`04-FEATURES-{PROJECT_ID_NAME}.md`](../04-FEATURES-{PROJECT_ID_NAME}.md) | **Épico:** [EP-{EEEE}](../epics/EP-{EEEE}-nome-do-epico.md)
+```
+
+---
+### PÓS-GERAÇÃO:
+
+Após criar todos os arquivos individuais e o índice, execute uma verificação de integridade:
+1. Confirme que todos os links no índice apontam para arquivos existentes na pasta `features/`
+2. Confirme que todos os arquivos individuais têm link de volta para o índice
+3. Confirme que cada arquivo referencia corretamente o épico associado e os BRDs aplicáveis
+4. Confirme que a matriz consolidada no índice cobre 100% das features
+5. Confirme que o formato `EP-{EEEE}-{NNNN}` é consistente em todos os lugares
+
+Ao final de cada arquivo gerado (índice e individuais), insira a tag:
+`[STATUS: SUCESSO - ENVIADO PARA RE-AUDITORIA DE FEATURES]`
