@@ -2,9 +2,10 @@
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
-- **Versão:** 1.1
+- **Versão:** 1.2
+- **Baseline de Negócio:** [Project Charter v1.2](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [BRD v1.2](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Épicos v1.2](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Features FEAT-EP-](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 - **Data de Criação:** 26 de Julho de 2026
-- **Última Atualização:** 26 de Julho de 2026 (seção 4.1 migrada para sequence diagram Mermaid)
+- **Última Atualização:** 27 de Julho de 2026 (alinhamento com docs de negócio v1.2)
 - **Documento Mestre:** [GLOBAL-SECURITY.md](../../../.specs/security/GLOBAL-SECURITY.md) — este documento o especializa para o projeto
 - **Documentos Complementares:** [ARCHITECTURE-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md) · [STACK-MATRIX](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md)
 
@@ -341,7 +342,7 @@ jobs:
 - [ ] `.gitignore` validado (sem `.env`, `*.pem`, `*.jks`)
 - [ ] ADRs de segurança publicados (ADR-002 RLS, ADR-003 OIDC)
 
-### Sprint 1 (EP-01)
+### Sprint 1 (EP-0001)
 
 - [ ] RLS ativado com `FORCE` em todas as tabelas
 - [ ] Spring Security configurado com `KongHeaderAuthenticationFilter`

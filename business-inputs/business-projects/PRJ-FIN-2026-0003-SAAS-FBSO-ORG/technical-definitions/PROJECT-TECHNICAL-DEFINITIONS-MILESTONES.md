@@ -2,12 +2,14 @@
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
-- **Versão:** 1.1
+- **Versão:** 1.2
 - **Data de Criação:** 26 de Julho de 2026
-- **Última Atualização:** 26 de Julho de 2026 (diagramas Mermaid: Gantt + flowcharts de dependências)
+- **Última Atualização:** 27 de Julho de 2026 (alinhamento com docs de negócio v1.2)
 - **Documentos Complementares:** [PRD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md) · [TEAM-CAPACITY](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md)
 
 ---
+
+- **Baseline de Negócio:** [Project Charter v1.2](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [BRD v1.2](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Épicos v1.2](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Features FEAT-EP-](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ## 1. Visão Geral do Roadmap
 
@@ -21,13 +23,13 @@ gantt
     section Infraestrutura
     M1 — Fundação (DB + IAM + Kong)    :done,    m1, 2026-07-01, 2026-07-15
 
-    section EP-01 — Portal Admin
+    section EP-0001 — Portal Admin
     M2 — Dashboard + Contas            :active,  m2, 2026-07-16, 2026-08-15
 
-    section EP-02 — Clientes
+    section EP-0002 — Clientes
     M3 — Tenants + Planos + Auditoria   :         m3, 2026-08-16, 2026-08-31
 
-    section EP-03 — RBAC
+    section EP-0003 — RBAC
     M4 — Usuários + Papéis + Permissões :         m4, 2026-09-01, 2026-09-15
 
     section EP-04a — Portal Cliente
@@ -81,16 +83,16 @@ gantt
 |:---|:---|
 | **Data** | 15 de Agosto de 2026 |
 | **Entrega** | D2 — Portal Admin Interno |
-| **Épico** | EP-01 |
+| **Épico** | EP-0001 |
 | **Status** | 🔄 EM PROGRESSO |
 
 #### Features e User Stories
 
 | Feature | US | Soluções |
 |:---|:---|:---|
-| F01-01 Dashboard | US-001, US-002, US-003 | S01, S03 |
-| F01-02 Visão de Contas | US-004, US-005 | S01, S03 |
-| F01-03 Alertas (Should) | US-006, US-007 | S01, S03 |
+| FEAT-EP-0001-0001 Dashboard | US-001, US-002, US-003 | S01, S03 |
+| FEAT-EP-0001-0002 Visão de Contas | US-004, US-005 | S01, S03 |
+| FEAT-EP-0001-0003 Alertas (Should) | US-006, US-007 | S01, S03 |
 
 #### Soluções Afetadas
 
@@ -112,7 +114,7 @@ flowchart LR
 
 | Risco | Mitigação |
 |:---|:---|
-| Frontend sem dev dedicado (Tom só em 01/11) | Dashboard é 100% backend neste milestone. Frontend do EP-01 feito por Bolismar como full-stack. |
+| Frontend sem dev dedicado (Tom só em 01/11) | Dashboard é 100% backend neste milestone. Frontend do EP-0001 feito por Bolismar como full-stack. |
 | Maria Madalena (★☆☆) em tarefas backend | Tasks de complexidade baixa: testes, validação de DTOs, documentação de endpoints. |
 
 #### Critérios de Aceitação
@@ -132,18 +134,18 @@ flowchart LR
 |:---|:---|
 | **Data** | 31 de Agosto de 2026 |
 | **Entrega** | D3 — Gestão de clientes, planos e assinaturas |
-| **Épico** | EP-02 |
+| **Épico** | EP-0002 |
 | **Status** | ⏳ PENDENTE |
 
 #### Features e User Stories
 
 | Feature | US | Soluções |
 |:---|:---|:---|
-| F02-01 Cadastro Contas | US-008 a US-011 | S01, S03, S04, S07 |
-| F02-02 Gestão Status | US-012 a US-014 | S01, S03 |
-| F02-03 Config Planos | US-015 a US-018 | S01, S03 |
-| F02-04 Vinculação Assinaturas | US-019 a US-021 | S01, S03 |
-| F02-05 Auditoria | US-022, US-023 | S01, S03 |
+| FEAT-EP-0002-0001 Cadastro Contas | US-008 a US-011 | S01, S03, S04, S07 |
+| FEAT-EP-0002-0002 Gestão Status | US-012 a US-014 | S01, S03 |
+| FEAT-EP-0002-0003 Config Planos | US-015 a US-018 | S01, S03 |
+| FEAT-EP-0002-0004 Vinculação Assinaturas | US-019 a US-021 | S01, S03 |
+| FEAT-EP-0002-0005 Auditoria | US-022, US-023 | S01, S03 |
 
 #### Soluções Afetadas
 
@@ -159,7 +161,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    M2["M2 — EP-01<br/>Tenant API base + Dashboard"] --> S01["S01 Backend<br/>CRUD Tenants + Plans + Subscriptions"]
+    M2["M2 — EP-0001<br/>Tenant API base + Dashboard"] --> S01["S01 Backend<br/>CRUD Tenants + Plans + Subscriptions"]
     S01 --> M3A["M3 — Workflow<br/>Ativação, suspensão, auditoria"]
     S01 --> S04["S04 Keycloak<br/>Realm auto-create/disable"]
 ```
@@ -190,17 +192,17 @@ flowchart LR
 |:---|:---|
 | **Data** | 15 de Setembro de 2026 |
 | **Entrega** | D4 — Gestão de usuários e permissões |
-| **Épico** | EP-03 |
+| **Épico** | EP-0003 |
 | **Status** | ⏳ PENDENTE |
 
 #### Features e User Stories
 
 | Feature | US | Soluções |
 |:---|:---|:---|
-| F03-01 Cadastro Usuários | US-024 a US-026 | S01, S03, S04, S07 |
-| F03-02 RBAC | US-027 a US-030 | S01, S03, S04 |
-| F03-03 Vínculo BU+Módulo | US-031 a US-033 | S01, S03, S04 |
-| F03-04 Visibilidade | US-034 a US-036 | S01, S02, S04, S14 |
+| FEAT-EP-0003-0001 Cadastro Usuários | US-024 a US-026 | S01, S03, S04, S07 |
+| FEAT-EP-0003-0002 RBAC | US-027 a US-030 | S01, S03, S04 |
+| FEAT-EP-0003-0003 Vínculo BU+Módulo | US-031 a US-033 | S01, S03, S04 |
+| FEAT-EP-0003-0004 Visibilidade | US-034 a US-036 | S01, S02, S04, S14 |
 
 #### Soluções Afetadas
 
@@ -217,7 +219,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    M3["M3 — EP-02<br/>Tenants ativos + Planos"] --> M4A["M4 — RBAC<br/>Users + Roles + Permissions"]
+    M3["M3 — EP-0002<br/>Tenants ativos + Planos"] --> M4A["M4 — RBAC<br/>Users + Roles + Permissions"]
     M3 --> S04["S04 Keycloak<br/>Protocol Mappers<br/>(roles, permissions, BU ids)"]
     S04 --> S14["S14 Kong Gateway<br/>Header Injection<br/>(X-User-Permissions, X-Business-Unit-Ids)"]
     S14 --> M4B["M4 — Visibilidade<br/>Menus dinâmicos + @PreAuthorize"]
@@ -255,10 +257,10 @@ flowchart LR
 
 | Feature | US | Soluções |
 |:---|:---|:---|
-| F04-01 Autenticação | US-037 a US-039 | S01, S02, S04, S14 |
-| F04-02 Onboarding | US-040 a US-044 | S01, S02, S03 |
-| F04-03 Dashboard Cliente (Should) | US-045, US-046 | S01, S02 |
-| F04-04 App Switcher | US-047 a US-049 | S01, S02, S04 |
+| FEAT-EP-0004-0001 Autenticação | US-037 a US-039 | S01, S02, S04, S14 |
+| FEAT-EP-0004-0002 Onboarding | US-040 a US-044 | S01, S02, S03 |
+| FEAT-EP-0004-0003 Dashboard Cliente (Should) | US-045, US-046 | S01, S02 |
+| FEAT-EP-0004-0004 App Switcher | US-047 a US-049 | S01, S02, S04 |
 
 #### Soluções Afetadas
 
@@ -274,7 +276,7 @@ flowchart LR
 ```mermaid
 flowchart LR
     M4["M4 — RBAC<br/>Roles + Permissions no JWT"] --> S02["S02 Frontend<br/>Menu dinâmico baseado<br/>em permissões"]
-    M3["M3 — EP-02<br/>Tenant ativo com Realm"] --> M5A["M5 — Portal Cliente<br/>Cliente acessa portal<br/>com domínio próprio"]
+    M3["M3 — EP-0002<br/>Tenant ativo com Realm"] --> M5A["M5 — Portal Cliente<br/>Cliente acessa portal<br/>com domínio próprio"]
     M4 --> S04["S04 Keycloak<br/>Realm personalizado<br/>(logo, cores, fontes)"]
     S04 --> M5B["M5 — Login Experience<br/>Tela de login com<br/>marca do tenant"]
 ```
@@ -283,7 +285,7 @@ flowchart LR
 
 | Risco | Mitigação |
 |:---|:---|
-| **Frontend intensivo sem dev dedicado** | 🔴 Crítico. Todo o EP-04a é frontend. Bolismar full-stack precisa entregar sozinho. Features Should Have (F04-03 Dashboard Cliente) podem ser postergadas. |
+| **Frontend intensivo sem dev dedicado** | 🔴 Crítico. Todo o EP-04a é frontend. Bolismar full-stack precisa entregar sozinho. Features Should Have (FEAT-EP-0004-0003 Dashboard Cliente) podem ser postergadas. |
 | Onboarding wizard com 4 passos de estado | Usar Zustand para gerenciar estado do wizard. Persistir progresso no backend. |
 | App Switcher com módulos dinâmicos | Estrutura de dados preparada desde M3 (`plan_modules`). |
 
@@ -312,8 +314,8 @@ flowchart LR
 
 | Feature | US | Soluções |
 |:---|:---|:---|
-| F04-05 Unidades Negócio | US-050 a US-054 | S01, S02, S03 |
-| F04-06 Catálogo Produtos | US-055 a US-058 | S01, S02, S03 |
+| FEAT-EP-0004-0005 Unidades Negócio | US-050 a US-054 | S01, S02, S03 |
+| FEAT-EP-0004-0006 Catálogo Produtos | US-055 a US-058 | S01, S02, S03 |
 
 #### Soluções Afetadas
 
@@ -423,9 +425,9 @@ gantt
 
 | Milestone | Features | Semanas | Backend (h) | Frontend (h) | QA (h) | Risco Capacidade |
 |:---|:---:|:---:|:---:|:---:|:---:|:---|
-| M2 (EP-01) | 2-3 | 4 | 320h (2 devs × 40h × 4semanas) | 160h (Bolismar full-stack) | 80h | 🟢 OK |
-| M3 (EP-02) | 5 | 2 | 160h | — (backend-heavy) | 80h | 🟡 2 semanas é apertado para 5 features |
-| M4 (EP-03) | 4 | 2 | 160h | 80h (telas RBAC) | 80h | 🟡 Frontend sem Tom |
+| M2 (EP-0001) | 2-3 | 4 | 320h (2 devs × 40h × 4semanas) | 160h (Bolismar full-stack) | 80h | 🟢 OK |
+| M3 (EP-0002) | 5 | 2 | 160h | — (backend-heavy) | 80h | 🟡 2 semanas é apertado para 5 features |
+| M4 (EP-0003) | 4 | 2 | 160h | 80h (telas RBAC) | 80h | 🟡 Frontend sem Tom |
 | M5 (EP-04a) | 3-4 | 2 | 120h | 200h (frontend intensivo!) | 80h | 🔴 Frontend intensivo sem dev dedicado |
 | M6 (EP-04b) | 2 | 2 | 120h | 120h | 80h | 🟡 Tom chega 01/11 (após M6) |
 | M7 (Homolog) | — | 2 | 80h | 80h | 160h | 🟢 OK |

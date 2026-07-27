@@ -1,10 +1,11 @@
 # Histórico de Execução — Definições Técnicas do Projeto
 
+- **Baseline de Negócio:** [Project Charter v1.2](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [BRD v1.2](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Épicos v1.2](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Features FEAT-EP-](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
 - **Versão:** 2.0
 - **Data de Criação:** 25 de Julho de 2026
-- **Última Atualização:** 26 de Julho de 2026 (FINAL — Roadmap concluído)
+- **Última Atualização:** 27 de Julho de 2026 (alinhamento com docs de negócio v1.2)
 
 ---
 
@@ -68,12 +69,12 @@ technical-definitions/
 ├── PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-MATRIX.md      ← Fase 9
 └── sprints/
     ├── sprint-00/    ← Setup & Fundação
-    ├── sprint-01/    ← EP-01 (Dashboard + Contas)
-    ├── sprint-02/    ← EP-01 + EP-02 início
-    ├── sprint-03/    ← EP-02 (Clientes e Assinaturas)
-    ├── sprint-04/    ← EP-02 final + EP-03 início
-    ├── sprint-05/    ← EP-03 (RBAC)
-    ├── sprint-06/    ← EP-03 final + EP-04a início
+    ├── sprint-01/    ← EP-0001 (Dashboard + Contas)
+    ├── sprint-02/    ← EP-0001 + EP-0002 início
+    ├── sprint-03/    ← EP-0002 (Clientes e Assinaturas)
+    ├── sprint-04/    ← EP-0002 final + EP-0003 início
+    ├── sprint-05/    ← EP-0003 (RBAC)
+    ├── sprint-06/    ← EP-0003 final + EP-04a início
     ├── sprint-07/    ← EP-04a (Portal Cliente)
     ├── sprint-08/    ← EP-04a final + EP-04b início
     ├── sprint-09/    ← EP-04b (BUs + Catálogo)

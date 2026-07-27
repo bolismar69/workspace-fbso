@@ -2,10 +2,11 @@
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
-- **Versão:** 1.2
+- **Versão:** 1.3
 - **Data de Criação:** 25 de Julho de 2026
-- **Última Atualização:** 26 de Julho de 2026 (seção 4.2 migrada para flowchart Mermaid)
+- **Última Atualização:** 27 de Julho de 2026 (alinhamento com docs de negócio v1.2)
 - **Status:** ✅ COMPLIANCE — Validado pelo Time de Arquitetura
+- **Baseline de Negócio:** [Project Charter v1.2](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [BRD v1.2](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Épicos v1.2](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Features FEAT-EP-](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 - **Documentos Complementares:** [SOLUTIONS-CATALOG](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md) · [TEAM-MAP](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md)
 
 ---

@@ -2,10 +2,11 @@
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
-- **Versão:** 1.0
+- **Versão:** 1.1
 - **Data de Criação:** 26 de Julho de 2026
-- **Última Atualização:** 26 de Julho de 2026
+- **Última Atualização:** 27 de Julho de 2026 (alinhamento com docs de negócio v1.2)
 - **Status:** CREATED — Aguardando validação humana (Gate → COMPLIANCE)
+- **Baseline de Negócio:** [Project Charter v1.2](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [BRD v1.2](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Épicos v1.2](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Features FEAT-EP-](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 - **Documentos Complementares:** [SOLUTIONS-CATALOG](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md) · [STACK-MATRIX](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md) · [TEAM-MAP](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md)
 
 ---
@@ -48,96 +49,96 @@ A **FBSO Platform** é o portal administrativo SaaS multi-produto da FBSO.ORG �
 
 | Épico | Nº Features | Soluções Primárias | Soluções de Suporte |
 |:---|:---:|:---|:---|
-| **EP-01** Portal Admin Interno | 3 | S01 (Backend), S02 (Frontend) | S03, S05, S06, S09, S11, S14 |
-| **EP-02** Clientes e Assinaturas | 5 | S01 (Backend), S02 (Frontend) | S03, S05, S06, S11, S14 |
-| **EP-03** RBAC | 4 | S01 (Backend), S02 (Frontend), S04 (Keycloak) | S03, S05, S06, S07, S11, S14 |
-| **EP-04** Portal do Cliente | 6 | S01 (Backend), S02 (Frontend), S04 (Keycloak) | S03, S05, S06, S07, S11, S13, S14 |
+| **EP-0001** Portal Admin Interno | 3 | S01 (Backend), S02 (Frontend) | S03, S05, S06, S09, S11, S14 |
+| **EP-0002** Clientes e Assinaturas | 5 | S01 (Backend), S02 (Frontend) | S03, S05, S06, S11, S14 |
+| **EP-0003** RBAC | 4 | S01 (Backend), S02 (Frontend), S04 (Keycloak) | S03, S05, S06, S07, S11, S14 |
+| **EP-0004** Portal do Cliente | 6 | S01 (Backend), S02 (Frontend), S04 (Keycloak) | S03, S05, S06, S07, S11, S13, S14 |
 
 ### 2.2 Features × Soluções (Matriz Completa)
 
 | ID | Feature | Prioridade | S01 BE | S02 FE | S04 IAM | Data-Alvo |
 |:---|:---|:---:|:---:|:---:|:---:|:---|
-| F01-01 | Dashboard de Métricas Operacionais | Must | ✅ API métricas | ✅ Gráficos | — | 15/08/2026 |
-| F01-02 | Visão de Contas com Filtros | Must | ✅ API busca | ✅ Tabela+filtros | — | 15/08/2026 |
-| F01-03 | Alertas e Indicadores de Atenção | Should | ✅ API alertas | ✅ Badges | — | 15/08/2026 |
-| F02-01 | Cadastro e Ativação de Contas | Must | ✅ CRUD tenants | ✅ Formulários | — | 31/08/2026 |
-| F02-02 | Gestão de Status do Tenant | Must | ✅ Status workflow | ✅ Indicadores | — | 31/08/2026 |
-| F02-03 | Configuração de Planos Comerciais | Must | ✅ CRUD plans | ✅ Configurador | — | 31/08/2026 |
-| F02-04 | Vinculação e Gestão de Assinaturas | Must | ✅ Subscriptions | ✅ Vinculação | — | 31/08/2026 |
-| F02-05 | Histórico de Auditoria Administrativa | Must | ✅ Audit tables | ✅ Timeline | — | 31/08/2026 |
-| F03-01 | Cadastro e Convite de Usuários | Must | ✅ CRUD users | ✅ Convite | ✅ JWT+roles | 15/09/2026 |
-| F03-02 | Definição de Papéis e Permissões (RBAC) | Must | ✅ RBAC engine | ✅ Matriz | ✅ Realms | 15/09/2026 |
-| F03-03 | Vinculação Usuário × Unidade × Módulo | Must | ✅ Vínculos | ✅ Interface | ✅ Claims | 15/09/2026 |
-| F03-04 | Controle de Visibilidade de Menus e Ações | Must | ✅ Permissions | ✅ Menus dinâmicos | ✅ Roles | 15/09/2026 |
-| F04-01 | Autenticação e Recuperação de Senha | Must | ✅ Auth endpoints | ✅ Login OIDC | ✅ OIDC+PKCE | 30/09/2026 |
-| F04-02 | Onboarding Guiado de Primeiro Acesso | Must | ✅ Onboarding API | ✅ Wizard 4 passos | ✅ Realm setup | 30/09/2026 |
-| F04-03 | Dashboard do Cliente | Should | ✅ Métricas tenant | ✅ Dashboard cliente | — | 30/09/2026 |
-| F04-04 | App Switcher (Seletor de Módulos) | Must | ✅ Módulos API | ✅ Switcher UI | ✅ Permissions | 30/09/2026 |
-| F04-05 | Gestão de Unidades de Negócio | Must | ✅ CRUD BUs | ✅ Hierarquia | ✅ BU claims | 15/10/2026 |
-| F04-06 | Catálogo de Produtos e Serviços | Must | ✅ CRUD catálogo | ✅ Cards/tabela | ✅ Módulo ativo | 15/10/2026 |
+| FEAT-EP-0001-0001 | Dashboard de Métricas Operacionais | Must | ✅ API métricas | ✅ Gráficos | — | 15/08/2026 |
+| FEAT-EP-0001-0002 | Visão de Contas com Filtros | Must | ✅ API busca | ✅ Tabela+filtros | — | 15/08/2026 |
+| FEAT-EP-0001-0003 | Alertas e Indicadores de Atenção | Should | ✅ API alertas | ✅ Badges | — | 15/08/2026 |
+| FEAT-EP-0002-0001 | Cadastro e Ativação de Contas | Must | ✅ CRUD tenants | ✅ Formulários | — | 31/08/2026 |
+| FEAT-EP-0002-0002 | Gestão de Status do Tenant | Must | ✅ Status workflow | ✅ Indicadores | — | 31/08/2026 |
+| FEAT-EP-0002-0003 | Configuração de Planos Comerciais | Must | ✅ CRUD plans | ✅ Configurador | — | 31/08/2026 |
+| FEAT-EP-0002-0004 | Vinculação e Gestão de Assinaturas | Must | ✅ Subscriptions | ✅ Vinculação | — | 31/08/2026 |
+| FEAT-EP-0002-0005 | Histórico de Auditoria Administrativa | Must | ✅ Audit tables | ✅ Timeline | — | 31/08/2026 |
+| FEAT-EP-0003-0001 | Cadastro e Convite de Usuários | Must | ✅ CRUD users | ✅ Convite | ✅ JWT+roles | 15/09/2026 |
+| FEAT-EP-0003-0002 | Definição de Papéis e Permissões (RBAC) | Must | ✅ RBAC engine | ✅ Matriz | ✅ Realms | 15/09/2026 |
+| FEAT-EP-0003-0003 | Vinculação Usuário × Unidade × Módulo | Must | ✅ Vínculos | ✅ Interface | ✅ Claims | 15/09/2026 |
+| FEAT-EP-0003-0004 | Controle de Visibilidade de Menus e Ações | Must | ✅ Permissions | ✅ Menus dinâmicos | ✅ Roles | 15/09/2026 |
+| FEAT-EP-0004-0001 | Autenticação e Recuperação de Senha | Must | ✅ Auth endpoints | ✅ Login OIDC | ✅ OIDC+PKCE | 30/09/2026 |
+| FEAT-EP-0004-0002 | Onboarding Guiado de Primeiro Acesso | Must | ✅ Onboarding API | ✅ Wizard 4 passos | ✅ Realm setup | 30/09/2026 |
+| FEAT-EP-0004-0003 | Dashboard do Cliente | Should | ✅ Métricas tenant | ✅ Dashboard cliente | — | 30/09/2026 |
+| FEAT-EP-0004-0004 | App Switcher (Seletor de Módulos) | Must | ✅ Módulos API | ✅ Switcher UI | ✅ Permissions | 30/09/2026 |
+| FEAT-EP-0004-0005 | Gestão de Unidades de Negócio | Must | ✅ CRUD BUs | ✅ Hierarquia | ✅ BU claims | 15/10/2026 |
+| FEAT-EP-0004-0006 | Catálogo de Produtos e Serviços | Must | ✅ CRUD catálogo | ✅ Cards/tabela | ✅ Módulo ativo | 15/10/2026 |
 
 ### 2.3 User Stories por Feature
 
 | Feature | US# | Título Resumido |
 |:---|:---|:---|
-| F01-01 | US-001 | Dashboard com indicadores principais (contas ativas, status, planos) |
-| F01-01 | US-002 | Filtros de período (7, 30, 90 dias, mês atual, ano atual) |
-| F01-01 | US-003 | Gráfico de evolução da base de clientes |
-| F01-02 | US-004 | Lista completa de contas com paginação (25 por página) |
-| F01-02 | US-005 | Busca textual por nome/razão social (a partir de 3 caracteres) |
-| F01-03 | US-006 | Destaque visual de tenants com pendências |
-| F01-03 | US-007 | Indicadores de atenção (onboarding incompleto, atraso pagamento) |
-| F02-01 | US-008 | Cadastro de nova conta com dados do cliente |
-| F02-01 | US-009 | Ativação de conta com envio de credenciais |
-| F02-01 | US-010 | Validação de CNPJ no cadastro de conta |
-| F02-01 | US-011 | Criação automática da primeira Unidade de Negócio |
-| F02-02 | US-012 | Alteração de status (ativo, suspenso, inativo) com registro de auditoria |
-| F02-02 | US-013 | Visualização do histórico de status do tenant |
-| F02-02 | US-014 | Notificação de suspensão para o tenant |
-| F02-03 | US-015 | Cadastro de plano com nome, descrição, valor e módulos |
-| F02-03 | US-016 | Definição de vigência e recorrência do plano |
-| F02-03 | US-017 | Tabela associativa `plan_modules` (quais módulos cada plano libera) |
-| F02-03 | US-018 | Visualização da matriz plano×módulo |
-| F02-04 | US-019 | Vinculação de tenant a plano com data de início |
-| F02-04 | US-020 | Troca de plano (upgrade/downgrade) com efeito imediato |
-| F02-04 | US-021 | Histórico de assinaturas do tenant |
-| F02-05 | US-022 | Registro automático de ações administrativas (quem, quando, qual ação) |
-| F02-05 | US-023 | Consulta de auditoria por tenant, período e tipo de ação |
-| F03-01 | US-024 | Convite de usuário por email com link de ativação |
-| F03-01 | US-025 | Cadastro de usuário com perfil e Unidade de Negócio |
-| F03-01 | US-026 | Lista de usuários com filtros por tenant e status |
-| F03-02 | US-027 | Definição de papéis padrão (Admin Tenant, Gerente, Operador) |
-| F03-02 | US-028 | Criação de papel customizado pelo Admin do Tenant |
-| F03-02 | US-029 | Atribuição de permissões granulares por papel |
-| F03-02 | US-030 | Visualização da matriz papel×permissão |
-| F03-03 | US-031 | Vinculação usuário a uma ou mais Unidades de Negócio |
-| F03-03 | US-032 | Ativação/desativação de módulos por usuário |
-| F03-03 | US-033 | Troca de contexto entre Unidades de Negócio (menu dropdown) |
-| F03-04 | US-034 | Menu lateral renderizado conforme permissões do usuário |
-| F03-04 | US-035 | Ocultação de ações (botões, links) sem permissão |
-| F03-04 | US-036 | Mensagem amigável ao acessar rota sem permissão |
-| F04-01 | US-037 | Tela de login via Keycloak com personalização por tenant (logo, cores) |
-| F04-01 | US-038 | Recuperação de senha via email |
-| F04-01 | US-039 | Logout com redirect para tela de login |
-| F04-02 | US-040 | Boas-vindas pós-primeiro login |
-| F04-02 | US-041 | Wizard de 4 passos (perfil, unidade, catálogo, confirmação) |
-| F04-02 | US-042 | Validação de CNPJ da Unidade de Negócio no wizard |
-| F04-02 | US-043 | Configuração de preferências iniciais (fuso horário, idioma) |
-| F04-02 | US-044 | Tour guiado pelos menus e funcionalidades |
-| F04-03 | US-045 | Dashboard com métricas do tenant (unidades, usuários, módulos ativos) |
-| F04-03 | US-046 | Atalhos para ações frequentes (nova unidade, convidar usuário) |
-| F04-04 | US-047 | App Switcher no topo com módulos contratados |
-| F04-04 | US-048 | Indicador visual do módulo ativo |
-| F04-04 | US-049 | Preparação para expansão: estrutura suporta novos módulos |
-| F04-05 | US-050 | Cadastro de Unidade de Negócio (CNPJ, regime tributário) |
-| F04-05 | US-051 | Estrutura hierárquica Matriz/Filial |
-| F04-05 | US-052 | Lista de Unidades com busca e filtros |
-| F04-05 | US-053 | Visualização detalhada da Unidade com usuários vinculados |
-| F04-05 | US-054 | Edição e desativação de Unidade |
-| F04-06 | US-055 | Cadastro de produto/serviço (nome, tipo, classificação) |
-| F04-06 | US-056 | Lista de produtos com busca e filtros |
-| F04-06 | US-057 | Tabela `product_tax_mapping` com schema definido |
-| F04-06 | US-058 | Contrato de interface para acoplamento futuro do Tributali-Engine |
+| FEAT-EP-0001-0001 | US-001 | Dashboard com indicadores principais (contas ativas, status, planos) |
+| FEAT-EP-0001-0001 | US-002 | Filtros de período (7, 30, 90 dias, mês atual, ano atual) |
+| FEAT-EP-0001-0001 | US-003 | Gráfico de evolução da base de clientes |
+| FEAT-EP-0001-0002 | US-004 | Lista completa de contas com paginação (25 por página) |
+| FEAT-EP-0001-0002 | US-005 | Busca textual por nome/razão social (a partir de 3 caracteres) |
+| FEAT-EP-0001-0003 | US-006 | Destaque visual de tenants com pendências |
+| FEAT-EP-0001-0003 | US-007 | Indicadores de atenção (onboarding incompleto, atraso pagamento) |
+| FEAT-EP-0002-0001 | US-008 | Cadastro de nova conta com dados do cliente |
+| FEAT-EP-0002-0001 | US-009 | Ativação de conta com envio de credenciais |
+| FEAT-EP-0002-0001 | US-010 | Validação de CNPJ no cadastro de conta |
+| FEAT-EP-0002-0001 | US-011 | Criação automática da primeira Unidade de Negócio |
+| FEAT-EP-0002-0002 | US-012 | Alteração de status (ativo, suspenso, inativo) com registro de auditoria |
+| FEAT-EP-0002-0002 | US-013 | Visualização do histórico de status do tenant |
+| FEAT-EP-0002-0002 | US-014 | Notificação de suspensão para o tenant |
+| FEAT-EP-0002-0003 | US-015 | Cadastro de plano com nome, descrição, valor e módulos |
+| FEAT-EP-0002-0003 | US-016 | Definição de vigência e recorrência do plano |
+| FEAT-EP-0002-0003 | US-017 | Tabela associativa `plan_modules` (quais módulos cada plano libera) |
+| FEAT-EP-0002-0003 | US-018 | Visualização da matriz plano×módulo |
+| FEAT-EP-0002-0004 | US-019 | Vinculação de tenant a plano com data de início |
+| FEAT-EP-0002-0004 | US-020 | Troca de plano (upgrade/downgrade) com efeito imediato |
+| FEAT-EP-0002-0004 | US-021 | Histórico de assinaturas do tenant |
+| FEAT-EP-0002-0005 | US-022 | Registro automático de ações administrativas (quem, quando, qual ação) |
+| FEAT-EP-0002-0005 | US-023 | Consulta de auditoria por tenant, período e tipo de ação |
+| FEAT-EP-0003-0001 | US-024 | Convite de usuário por email com link de ativação |
+| FEAT-EP-0003-0001 | US-025 | Cadastro de usuário com perfil e Unidade de Negócio |
+| FEAT-EP-0003-0001 | US-026 | Lista de usuários com filtros por tenant e status |
+| FEAT-EP-0003-0002 | US-027 | Definição de papéis padrão (Admin Tenant, Gerente, Operador) |
+| FEAT-EP-0003-0002 | US-028 | Criação de papel customizado pelo Admin do Tenant |
+| FEAT-EP-0003-0002 | US-029 | Atribuição de permissões granulares por papel |
+| FEAT-EP-0003-0002 | US-030 | Visualização da matriz papel×permissão |
+| FEAT-EP-0003-0003 | US-031 | Vinculação usuário a uma ou mais Unidades de Negócio |
+| FEAT-EP-0003-0003 | US-032 | Ativação/desativação de módulos por usuário |
+| FEAT-EP-0003-0003 | US-033 | Troca de contexto entre Unidades de Negócio (menu dropdown) |
+| FEAT-EP-0003-0004 | US-034 | Menu lateral renderizado conforme permissões do usuário |
+| FEAT-EP-0003-0004 | US-035 | Ocultação de ações (botões, links) sem permissão |
+| FEAT-EP-0003-0004 | US-036 | Mensagem amigável ao acessar rota sem permissão |
+| FEAT-EP-0004-0001 | US-037 | Tela de login via Keycloak com personalização por tenant (logo, cores) |
+| FEAT-EP-0004-0001 | US-038 | Recuperação de senha via email |
+| FEAT-EP-0004-0001 | US-039 | Logout com redirect para tela de login |
+| FEAT-EP-0004-0002 | US-040 | Boas-vindas pós-primeiro login |
+| FEAT-EP-0004-0002 | US-041 | Wizard de 4 passos (perfil, unidade, catálogo, confirmação) |
+| FEAT-EP-0004-0002 | US-042 | Validação de CNPJ da Unidade de Negócio no wizard |
+| FEAT-EP-0004-0002 | US-043 | Configuração de preferências iniciais (fuso horário, idioma) |
+| FEAT-EP-0004-0002 | US-044 | Tour guiado pelos menus e funcionalidades |
+| FEAT-EP-0004-0003 | US-045 | Dashboard com métricas do tenant (unidades, usuários, módulos ativos) |
+| FEAT-EP-0004-0003 | US-046 | Atalhos para ações frequentes (nova unidade, convidar usuário) |
+| FEAT-EP-0004-0004 | US-047 | App Switcher no topo com módulos contratados |
+| FEAT-EP-0004-0004 | US-048 | Indicador visual do módulo ativo |
+| FEAT-EP-0004-0004 | US-049 | Preparação para expansão: estrutura suporta novos módulos |
+| FEAT-EP-0004-0005 | US-050 | Cadastro de Unidade de Negócio (CNPJ, regime tributário) |
+| FEAT-EP-0004-0005 | US-051 | Estrutura hierárquica Matriz/Filial |
+| FEAT-EP-0004-0005 | US-052 | Lista de Unidades com busca e filtros |
+| FEAT-EP-0004-0005 | US-053 | Visualização detalhada da Unidade com usuários vinculados |
+| FEAT-EP-0004-0005 | US-054 | Edição e desativação de Unidade |
+| FEAT-EP-0004-0006 | US-055 | Cadastro de produto/serviço (nome, tipo, classificação) |
+| FEAT-EP-0004-0006 | US-056 | Lista de produtos com busca e filtros |
+| FEAT-EP-0004-0006 | US-057 | Tabela `product_tax_mapping` com schema definido |
+| FEAT-EP-0004-0006 | US-058 | Contrato de interface para acoplamento futuro do Tributali-Engine |
 
 ---
 
@@ -151,28 +152,28 @@ O MVP da FBSO Platform é o conjunto mínimo de funcionalidades que permite à F
 
 | Épico | Features MVP | User Stories | Data-Alvo |
 |:---|:---|:---:|:---|
-| EP-01 | F01-01, F01-02 | 5 US | 15/08/2026 (M2) |
-| EP-02 | F02-01 a F02-05 | 14 US | 31/08/2026 (M3) |
-| EP-03 | F03-01 a F03-04 | 13 US | 15/09/2026 (M4) |
-| EP-04a | F04-01, F04-02, F04-04 | 11 US | 30/09/2026 (M5) |
-| EP-04b | F04-05, F04-06 | 9 US | 15/10/2026 (M6) |
+| EP-0001 | FEAT-EP-0001-0001, FEAT-EP-0001-0002 | 5 US | 15/08/2026 (M2) |
+| EP-0002 | FEAT-EP-0002-0001 a FEAT-EP-0002-0005 | 14 US | 31/08/2026 (M3) |
+| EP-0003 | FEAT-EP-0003-0001 a FEAT-EP-0003-0004 | 13 US | 15/09/2026 (M4) |
+| EP-04a | FEAT-EP-0004-0001, FEAT-EP-0004-0002, FEAT-EP-0004-0004 | 11 US | 30/09/2026 (M5) |
+| EP-04b | FEAT-EP-0004-0005, FEAT-EP-0004-0006 | 9 US | 15/10/2026 (M6) |
 | **Total MVP** | **16 features** | **52 US** | **15/10/2026** |
 
 ### 3.3 Fora do MVP (Should Have / Pós-MVP)
 
 | Feature | Prioridade | Justificativa |
 |:---|:---|:---|
-| F01-03 (Alertas) | Should | Valor percebido é menor que Dashboard + Lista. Pode ser entregue no M2 se houver capacidade. |
-| F04-03 (Dashboard Cliente) | Should | Cliente navega pelo menu. Dashboard é bônus se tempo permitir. |
+| FEAT-EP-0001-0003 (Alertas) | Should | Valor percebido é menor que Dashboard + Lista. Pode ser entregue no M2 se houver capacidade. |
+| FEAT-EP-0004-0003 (Dashboard Cliente) | Should | Cliente navega pelo menu. Dashboard é bônus se tempo permitir. |
 
 ### 3.4 Entregas (D1-D7) × Marcos (M1-M7)
 
 | Entrega | Descrição | Marco | Data |
 |:---|:---|:---:|:---|
 | **D1** | Infraestrutura e setup inicial (Docker, DB, Keycloak, Kong, CI/CD) | M1 | 15/07/2026 ✅ |
-| **D2** | Portal Admin — Dashboard e visão de contas (EP-01) | M2 | 15/08/2026 |
-| **D3** | Gestão de clientes, planos e assinaturas (EP-02) | M3 | 31/08/2026 |
-| **D4** | Gestão de usuários e permissões RBAC (EP-03) | M4 | 15/09/2026 |
+| **D2** | Portal Admin — Dashboard e visão de contas (EP-0001) | M2 | 15/08/2026 |
+| **D3** | Gestão de clientes, planos e assinaturas (EP-0002) | M3 | 31/08/2026 |
+| **D4** | Gestão de usuários e permissões RBAC (EP-0003) | M4 | 15/09/2026 |
 | **D5** | Portal do Cliente — autenticação, onboarding, app switcher (EP-04a) | M5 | 30/09/2026 |
 | **D6** | Unidades de negócio e catálogo (EP-04b) | M6 | 15/10/2026 |
 | **D7** | Homologação final e ajustes pré-produção | M7 | 30/10/2026 |
