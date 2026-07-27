@@ -183,7 +183,7 @@ flowchart LR
 | 2 | `02-BRD-{ID}.md` | Requisitos de negócio detalhados, regras de atendimento |
 | 3 | `03-EPICS-{ID}.md` | Grandes blocos de entrega de valor |
 | 4 | `04-FEATURES-{ID}.md` | Funcionalidades tangíveis e implementáveis |
-| 5 | `05-MATRIZ-RASTREABILIDADE-RTM.md` + `user-stories/US-*.md` | Índice central + arquivos atômicos com Gherkin |
+| 5 | `USER-STORIES-{PROJECT_ID_NAME}.md` + `user-stories/US-*.md` | Índice central + arquivos atômicos com Gherkin |
 
 ---
 

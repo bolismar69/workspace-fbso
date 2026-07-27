@@ -1,4 +1,4 @@
-# EP-0004: Experiência do Cliente e Autoatendimento
+# EPICO - EP-0004: Experiência do Cliente e Autoatendimento
 
 | Campo | Detalhe |
 |-------|---------|

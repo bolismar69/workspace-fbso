@@ -1,4 +1,4 @@
-# EP-0002: Gestão de Clientes e Assinaturas
+# EPICO - EP-0002: Gestão de Clientes e Assinaturas
 
 | Campo | Detalhe |
 |-------|---------|

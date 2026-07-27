@@ -96,12 +96,14 @@ Uma vez confirmado, execute:
 ```bash
 mkdir -p {PROJECT_COMPLETE_PATH_NAME}/user-stories/
 mkdir -p {PROJECT_COMPLETE_PATH_NAME}/epics/
+mkdir -p {PROJECT_COMPLETE_PATH_NAME}/features/
 ```
 
 Este comando:
 - Cria a pasta do projeto se não existir (equivalente a `mkdir -p` no topo)
 - Cria a subpasta `user-stories/` para os artefatos modulares da Fase 5
 - Cria a subpasta `epics/` para os artefatos modulares da Fase 3 (arquivos individuais por épico)
+- Cria a subpasta `features/` para os artefatos modulares da Fase 4 (arquivos individuais por feature)
 - É idempotente — não tem efeito colateral se as pastas já existirem
 
 ---
@@ -117,8 +119,9 @@ Verifique na ordem a existência de cada artefato do roadmap e reporte o status:
 | Epics (índice) | `{PROJECT_COMPLETE_PATH_NAME}/03-EPICS-{PROJECT_ID_NAME}.md` | ✅ Existe / ❌ Não existe |
 | Epics (pasta) | `{PROJECT_COMPLETE_PATH_NAME}/epics/` | ✅ Existe com N arquivos / ❌ Vazia / ❌ Não existe |
 | Features | `{PROJECT_COMPLETE_PATH_NAME}/04-FEATURES-{PROJECT_ID_NAME}.md` | ✅ Existe / ❌ Não existe |
+| Features (pasta) | `{PROJECT_COMPLETE_PATH_NAME}/features/` | ✅ Existe com N arquivos / ❌ Vazia / ❌ Não existe |
 | User Stories (pasta) | `{PROJECT_COMPLETE_PATH_NAME}/user-stories/` | ✅ Existe com N arquivos / ❌ Vazia / ❌ Não existe |
-| Matriz RTM | `{PROJECT_COMPLETE_PATH_NAME}/05-MATRIZ-RASTREABILIDADE-RTM.md` | ✅ Existe / ❌ Não existe |
+| Matriz RTM | `{PROJECT_COMPLETE_PATH_NAME}/USER-STORIES-{PROJECT_ID_NAME}.md` | ✅ Existe / ❌ Não existe |
 
 **Lógica de decisão com base no status:**
 - Se **todos** os arquivos estão marcados como ❌ Não existe → Projeto novo. Iniciar da Fase 1 (Project Charter).
@@ -144,7 +147,7 @@ MECANISMO DE ORQUESTRAÇÃO DINÂMICA (LOOPS DE VALIDAÇÃO SOBERANA)
 Toda fase do projeto deve rodar sob um ecossistema trifásico de prompts (Gerador, Auditor/Portão e Corretor), mas com controle final obrigatório do Humano. O fluxo segue estritamente esta máquina de estados:
 
 1. Geração / Evolução: A IA recebe os inputs disponíveis e executa o prompt gerador (`PROMPT-GENERATE-[FASE].md`). 
-   - NOTA DE ARQUITETURA (FASE 5): Nesta fase final, o gerador adota uma estrutura modular desacoplada, gerando um índice central (`05-MATRIZ-RASTREABILIDADE-RTM.md`) e múltiplos arquivos atômicos na pasta `/user-stories/`.
+   - NOTA DE ARQUITETURA (FASE 5): Nesta fase final, o gerador adota uma estrutura modular desacoplada, gerando um índice central (`USER-STORIES-{PROJECT_ID_NAME}.md`) e múltiplos arquivos atômicos na pasta `/user-stories/`.
 2. Auditoria Interna da IA: O artefato (ou o repositório modular na Fase 5) é enviado para o portão (`PROMPT-GATE-[FASE].md`).
    - SE A IA ENCONTRAR ERROS: Emite o status `[NÃO COMPLIANCE]`, coleta o feedback do humano, aciona o `PROMPT-FIX-[FASE].md` de forma cirúrgica (reparando apenas o arquivo atômico afetado) e retorna ao passo 2.
    - SE A IA NÃO ENCONTRAR ERROS: Avança para o passo 3 (Portão de Validação Humana).
@@ -160,7 +163,7 @@ Antes de aprovar a conclusão da Fase 5 (User Stories), a IA deverá obrigatoria
 1. Mapeamento de Dependência: Toda User Story criada na Fase 5 deve, obrigatoriamente, estar vinculada retroativamente: User Story -> Feature -> Epic -> Requisito de Negócio (BRD) -> Objetivo/Premissa do Project Charter.
 2. Identificação de Órfãos: Identificar e alertar o usuário se existir alguma User Story que NÃO possua um objetivo correspondente no Project Charter (Evitando Escopo Oculto).
 3. Verificação de Cobertura: Garantir que 100% dos Objetivos Estratégicos definidos no Project Charter foram atendidos por, pelo menos, uma User Story (Evitando Escopo Negligenciado).
-4. Prompt de Auditoria Interna: A IA deve executar uma auto-análise comparando o conjunto de arquivos modulares da pasta `user-stories/` e o arquivo central `05-MATRIZ-RASTREABILIDADE-RTM.md` contra o arquivo '01-PROJECT-CHARTER-{PROJECT_ID_NAME}.md', gerando um relatório de conformidade (Pass/Fail) baseado em consistência conceitual, regras de negócio e termos técnicos equivalentes. O portão (`project-documents/PROMPT-GATE-USER-STORIES.md`) deve validar cada arquivo individual e a integridade dos links markdown ativos na matriz RTM.
+4. Prompt de Auditoria Interna: A IA deve executar uma auto-análise comparando o conjunto de arquivos modulares da pasta `user-stories/` e o arquivo central `USER-STORIES-{PROJECT_ID_NAME}.md` contra o arquivo '01-PROJECT-CHARTER-{PROJECT_ID_NAME}.md', gerando um relatório de conformidade (Pass/Fail) baseado em consistência conceitual, regras de negócio e termos técnicos equivalentes. O portão (`project-documents/PROMPT-GATE-USER-STORIES.md`) deve validar cada arquivo individual e a integridade dos links markdown ativos na matriz RTM.
 
 --------------------------------------------------------------------------------
 FASES DO ROADMAP COM CHECKPOINTS E PIPELINES DE PROMPTS
@@ -194,15 +197,15 @@ FASES DO ROADMAP COM CHECKPOINTS E PIPELINES DE PROMPTS
    - Inputs: '03-EPICS-{PROJECT_ID_NAME}.md' (validado e congelado).
    - Checkpoint de Rastreabilidade: Vincular formalmente o ID da Feature ao ID do Épico de origem.
    - Responsáveis: Product Owner / Tech Lead.
-   - Entregáveis: Arquivo '04-FEATURES-{PROJECT_ID_NAME}.md' aprovado pelo humano.
+   - Entregáveis: Arquivo índice '04-FEATURES-{PROJECT_ID_NAME}.md' aprovado pelo humano + coleção de arquivos atômicos individuais `/features/FEATURE-EP-{EEEE}-{NNNN}-{nome-slug}.md` com detalhamento completo de cada feature, user stories, regras de negócio e matriz BRD×Épico/Jornada×Feature.
    - Pipeline Sequencial de Tarefas: Executar `project-documents/PROMPT-GENERATE-FEATURES.md` $\rightarrow$ Validar via `project-documents/PROMPT-GATE-FEATURES.md`. Aplicar loops de correção ou retrocesso por novos insumos até o aceite humano final.
 
 5. User Stories (Histórias de Usuário) & Validação de Repositório Modular
    - Objetivo: Refinar as Features no formato ágil clássico com critérios de aceite exaustivos (Gherkin) em arquivos individuais separados por ID, consolidando a árvore de rastreabilidade em um índice central vivo.
    - Inputs: '04-FEATURES-{PROJECT_ID_NAME}.md' (validado e congelado) e o '01-PROJECT-CHARTER-{PROJECT_ID_NAME}.md' original de negócio.
-   - Checkpoint de Rastreabilidade Mestre: Execução da Matriz Automatizada Bidirecional. O portão lerá o arquivo '05-MATRIZ-RASTREABILIDADE-RTM.md' e validará a existência e conformidade de cada arquivo físico contido na pasta `/user-stories/`.
+   - Checkpoint de Rastreabilidade Mestre: Execução da Matriz Automatizada Bidirecional. O portão lerá o arquivo 'USER-STORIES-{PROJECT_ID_NAME}.md' e validará a existência e conformidade de cada arquivo físico contido na pasta `/user-stories/`.
    - Responsáveis: Product Owner / Equipe de Desenvolvimento.
-   - Entregáveis: Arquivo central '05-MATRIZ-RASTREABILIDADE-RTM.md' com links markdown ativos + coleção de arquivos atômicos individuais `/user-stories/US-[ID].md` validados.
+   - Entregáveis: Arquivo central 'USER-STORIES-{PROJECT_ID_NAME}.md' com links markdown ativos + coleção de arquivos atômicos individuais `/user-stories/US-[ID].md` validados.
    - Pipeline Sequencial de Tarefas: Executar `project-documents/PROMPT-GENERATE-USER-STORIES.md` para criar o repositório descentralizado. Enviar a estrutura para o `project-documents/PROMPT-GATE-USER-STORIES.md`. Se houver links quebrados ou falhas conceituais, rodar o `project-documents/PROMPT-FIX-USER-STORIES.md` de forma isolada no arquivo com defeito até o status COMPLIANCE FINAL aprovado pelo humano.
 
 --------------------------------------------------------------------------------
@@ -290,7 +293,8 @@ gh pr create \
 - 03-EPICS-${PROJECT_ID_NAME}.md
 - epics/*.md
 - 04-FEATURES-${PROJECT_ID_NAME}.md
-- 05-MATRIZ-RASTREABILIDADE-RTM.md
+- features/*.md
+- USER-STORIES-{PROJECT_ID_NAME}.md
 - user-stories/*.md
 
 ### Checklist
