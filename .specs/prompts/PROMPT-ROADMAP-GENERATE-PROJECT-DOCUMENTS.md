@@ -197,7 +197,7 @@ FASES DO ROADMAP COM CHECKPOINTS E PIPELINES DE PROMPTS
    - Inputs: '03-EPICS-{PROJECT_ID_NAME}.md' (validado e congelado).
    - Checkpoint de Rastreabilidade: Vincular formalmente o ID da Feature ao ID do Épico de origem.
    - Responsáveis: Product Owner / Tech Lead.
-   - Entregáveis: Arquivo índice '04-FEATURES-{PROJECT_ID_NAME}.md' aprovado pelo humano + coleção de arquivos atômicos individuais `/features/FEATURE-EP-{EEEE}-{NNNN}-{nome-slug}.md` com detalhamento completo de cada feature, user stories, regras de negócio e matriz BRD×Épico/Jornada×Feature.
+   - Entregáveis: Arquivo índice '04-FEATURES-{PROJECT_ID_NAME}.md' aprovado pelo humano + coleção de arquivos atômicos individuais `/features/FEAT-EP-{EEEE}-{SSSS}-{nome-slug}.md` com detalhamento completo de cada feature, user stories, regras de negócio e matriz BRD×Épico/Jornada×Feature.
    - Pipeline Sequencial de Tarefas: Executar `project-documents/PROMPT-GENERATE-FEATURES.md` $\rightarrow$ Validar via `project-documents/PROMPT-GATE-FEATURES.md`. Aplicar loops de correção ou retrocesso por novos insumos até o aceite humano final.
 
 5. User Stories (Histórias de Usuário) & Validação de Repositório Modular
