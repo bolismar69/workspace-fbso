@@ -1,8 +1,8 @@
-# FEATURE - EP-0003-0001: Cadastro e Convite de Usuários
+# FEATURE - FEAT-EP-0003-0001: Cadastro e Convite de Usuários
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0003-0001 — Cadastro e Convite de Usuários |
+| **Feature** | FEAT-EP-0003-0001 — Cadastro e Convite de Usuários |
 | **Épico** | [EP-0003 — Governança de Acessos e Permissões](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0003](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) | **Anterior:** [EP-0002-0005 — Auditoria](../FEATURE-EP-0002-0005-historico-auditoria-administrativa.md) | **Próximo:** [EP-0003-0002 — RBAC](../FEATURE-EP-0003-0002-definicao-papeis-permissoes-rbac.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0003](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) | **Anterior:** [FEAT-EP-0002-0005 — Auditoria](../FEAT-EP-0002-0005-historico-auditoria-administrativa.md) | **Próximo:** [FEAT-EP-0003-0002 — RBAC](../FEAT-EP-0003-0002-definicao-papeis-permissoes-rbac.md)
 
 **Requisitos BRD Vinculados:** [BR-05](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Gestão de Usuários e Permissões
 
@@ -42,7 +42,7 @@ Permitir que o administrador do tenant cadastre e convide usuários para acessar
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-05** | Gestão de Usuários e Permissões | [EP-0003](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) / J1: Convite de novo usuário · J3: Revogação de acesso | **EP-0003-0001** — Cadastro e Convite de Usuários |
+| **BR-05** | Gestão de Usuários e Permissões | [EP-0003](../epics/EP-0003-governanca-de-acessos-e-permissoes.md) / J1: Convite de novo usuário · J3: Revogação de acesso | **FEAT-EP-0003-0001** — Cadastro e Convite de Usuários |
 
 ---
 

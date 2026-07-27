@@ -1,8 +1,8 @@
-# FEATURE - EP-0002-0001: Cadastro e Ativação de Contas de Clientes
+# FEATURE - FEAT-EP-0002-0001: Cadastro e Ativação de Contas de Clientes
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0002-0001 — Cadastro e Ativação de Contas de Clientes |
+| **Feature** | FEAT-EP-0002-0001 — Cadastro e Ativação de Contas de Clientes |
 | **Épico** | [EP-0002 — Gestão de Clientes e Assinaturas](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) | **Próximo:** [EP-0002-0002 — Gestão de Status](../FEATURE-EP-0002-0002-gestao-status-tenant.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) | **Próximo:** [FEAT-EP-0002-0002 — Gestão de Status](../FEAT-EP-0002-0002-gestao-status-tenant.md)
 
 **Requisitos BRD Vinculados:** [BR-02](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Ativação e Gestão de Contas
 
@@ -43,7 +43,7 @@ Permitir que o time interno crie contas de clientes de forma estruturada, com to
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-02** | Ativação e Gestão de Contas | [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) / J1: Ativação de novo cliente | **EP-0002-0001** — Cadastro e Ativação de Contas |
+| **BR-02** | Ativação e Gestão de Contas | [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) / J1: Ativação de novo cliente | **FEAT-EP-0002-0001** — Cadastro e Ativação de Contas |
 
 ---
 

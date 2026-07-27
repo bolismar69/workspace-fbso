@@ -1,8 +1,8 @@
-# FEATURE - EP-0004-0006: Catálogo de Produtos e Serviços
+# FEATURE - FEAT-EP-0004-0006: Catálogo de Produtos e Serviços
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0004-0006 — Catálogo de Produtos e Serviços |
+| **Feature** | FEAT-EP-0004-0006 — Catálogo de Produtos e Serviços |
 | **Épico** | [EP-0004 — Experiência do Cliente e Autoatendimento](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) | **Anterior:** [EP-0004-0005 — Unidades de Negócio](../FEATURE-EP-0004-0005-gestao-unidades-negocio.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) | **Anterior:** [FEAT-EP-0004-0005 — Unidades de Negócio](../FEAT-EP-0004-0005-gestao-unidades-negocio.md)
 
 **Requisitos BRD Vinculados:** [BR-10](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Catálogo de Produtos/Serviços
 
@@ -44,7 +44,7 @@ Permitir que o cliente cadastre e gerencie seu portfólio comercial (produtos e 
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-10** | Catálogo de Produtos/Serviços | [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) / J3: Cadastro de portfólio de produtos | **EP-0004-0006** — Catálogo de Produtos e Serviços |
+| **BR-10** | Catálogo de Produtos/Serviços | [EP-0004](../epics/EP-0004-experiencia-do-cliente-e-autoatendimento.md) / J3: Cadastro de portfólio de produtos | **FEAT-EP-0004-0006** — Catálogo de Produtos e Serviços |
 
 ---
 

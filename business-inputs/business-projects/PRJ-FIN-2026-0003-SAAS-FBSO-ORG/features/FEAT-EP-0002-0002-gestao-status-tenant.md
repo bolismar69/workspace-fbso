@@ -1,8 +1,8 @@
-# FEATURE - EP-0002-0002: Gestão de Status do Tenant
+# FEATURE - FEAT-EP-0002-0002: Gestão de Status do Tenant
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0002-0002 — Gestão de Status do Tenant |
+| **Feature** | FEAT-EP-0002-0002 — Gestão de Status do Tenant |
 | **Épico** | [EP-0002 — Gestão de Clientes e Assinaturas](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) | **Anterior:** [EP-0002-0001 — Cadastro e Ativação](../FEATURE-EP-0002-0001-cadastro-ativacao-contas-clientes.md) | **Próximo:** [EP-0002-0003 — Planos Comerciais](../FEATURE-EP-0002-0003-configuracao-planos-comerciais.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) | **Anterior:** [FEAT-EP-0002-0001 — Cadastro e Ativação](../FEAT-EP-0002-0001-cadastro-ativacao-contas-clientes.md) | **Próximo:** [FEAT-EP-0002-0003 — Planos Comerciais](../FEAT-EP-0002-0003-configuracao-planos-comerciais.md)
 
 **Requisitos BRD Vinculados:** [BR-02](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Ativação e Gestão de Contas
 
@@ -42,7 +42,7 @@ Controlar o ciclo de vida de cada conta de cliente, permitindo ativar, suspender
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-02** | Ativação e Gestão de Contas | [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) / J2: Suspensão por inadimplência | **EP-0002-0002** — Gestão de Status do Tenant |
+| **BR-02** | Ativação e Gestão de Contas | [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) / J2: Suspensão por inadimplência | **FEAT-EP-0002-0002** — Gestão de Status do Tenant |
 
 ---
 

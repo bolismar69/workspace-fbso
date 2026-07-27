@@ -1,8 +1,8 @@
-# FEATURE - EP-0002-0005: Histórico de Auditoria Administrativa
+# FEATURE - FEAT-EP-0002-0005: Histórico de Auditoria Administrativa
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0002-0005 — Histórico de Auditoria Administrativa |
+| **Feature** | FEAT-EP-0002-0005 — Histórico de Auditoria Administrativa |
 | **Épico** | [EP-0002 — Gestão de Clientes e Assinaturas](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) | **Anterior:** [EP-0002-0004 — Vinculação de Assinaturas](../FEATURE-EP-0002-0004-vinculacao-gestao-assinaturas.md) | **Próximo:** [EP-0003-0001 — Cadastro e Convite de Usuários](../FEATURE-EP-0003-0001-cadastro-convite-usuarios.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) | **Anterior:** [FEAT-EP-0002-0004 — Vinculação de Assinaturas](../FEAT-EP-0002-0004-vinculacao-gestao-assinaturas.md) | **Próximo:** [FEAT-EP-0003-0001 — Cadastro e Convite de Usuários](../FEAT-EP-0003-0001-cadastro-convite-usuarios.md)
 
 **Requisitos BRD Vinculados:** [BR-02](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Ativação e Gestão de Contas
 
@@ -40,7 +40,7 @@ Registrar todas as ações administrativas realizadas pelo time interno, garanti
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-02** | Ativação e Gestão de Contas | [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) / J1: Ativação de novo cliente · J2: Suspensão por inadimplência | **EP-0002-0005** — Histórico de Auditoria Administrativa |
+| **BR-02** | Ativação e Gestão de Contas | [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) / J1: Ativação de novo cliente · J2: Suspensão por inadimplência | **FEAT-EP-0002-0005** — Histórico de Auditoria Administrativa |
 
 ---
 

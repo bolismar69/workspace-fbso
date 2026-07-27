@@ -1,8 +1,8 @@
-# FEATURE - EP-0002-0004: Vinculação e Gestão de Assinaturas
+# FEATURE - FEAT-EP-0002-0004: Vinculação e Gestão de Assinaturas
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0002-0004 — Vinculação e Gestão de Assinaturas |
+| **Feature** | FEAT-EP-0002-0004 — Vinculação e Gestão de Assinaturas |
 | **Épico** | [EP-0002 — Gestão de Clientes e Assinaturas](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) | **Anterior:** [EP-0002-0003 — Planos Comerciais](../FEATURE-EP-0002-0003-configuracao-planos-comerciais.md) | **Próximo:** [EP-0002-0005 — Histórico de Auditoria](../FEATURE-EP-0002-0005-historico-auditoria-administrativa.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) | **Anterior:** [FEAT-EP-0002-0003 — Planos Comerciais](../FEAT-EP-0002-0003-configuracao-planos-comerciais.md) | **Próximo:** [FEAT-EP-0002-0005 — Histórico de Auditoria](../FEAT-EP-0002-0005-historico-auditoria-administrativa.md)
 
 **Requisitos BRD Vinculados:** [BR-04](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Vinculação de Assinaturas
 
@@ -42,7 +42,7 @@ Vincular clientes a planos com controle de vigência, permitindo upgrade/downgra
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-04** | Vinculação de Assinaturas | [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) / J1: Ativação de novo cliente · J3: Upgrade de plano | **EP-0002-0004** — Vinculação e Gestão de Assinaturas |
+| **BR-04** | Vinculação de Assinaturas | [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) / J1: Ativação de novo cliente · J3: Upgrade de plano | **FEAT-EP-0002-0004** — Vinculação e Gestão de Assinaturas |
 
 ---
 

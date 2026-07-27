@@ -1,8 +1,8 @@
-# FEATURE - EP-0001-0001: Dashboard de Métricas Operacionais
+# FEATURE - FEAT-EP-0001-0001: Dashboard de Métricas Operacionais
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0001-0001 — Dashboard de Métricas Operacionais |
+| **Feature** | FEAT-EP-0001-0001 — Dashboard de Métricas Operacionais |
 | **Épico** | [EP-0001 — Portal Administrativo Interno](../epics/EP-0001-portal-administrativo-interno.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) | **Próximo:** [EP-0001-0002 — Visão de Contas com Filtros](../FEATURE-EP-0001-0002-visao-contas-com-filtros.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) | **Próximo:** [FEAT-EP-0001-0002 — Visão de Contas com Filtros](../FEAT-EP-0001-0002-visao-contas-com-filtros.md)
 
 **Requisitos BRD Vinculados:** [BR-01](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Dashboard Administrativo
 
@@ -42,11 +42,11 @@ Prover visibilidade em tempo real da operação do SaaS para o time interno da F
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-01** | Dashboard Administrativo | [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) / J1: Acompanhamento diário da operação · J2: Análise de crescimento por plano | **EP-0001-0001** — Dashboard de Métricas Operacionais |
+| **BR-01** | Dashboard Administrativo | [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) / J1: Acompanhamento diário da operação · J2: Análise de crescimento por plano | **FEAT-EP-0001-0001** — Dashboard de Métricas Operacionais |
 
 ---
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) | **Próximo:** [EP-0001-0002 — Visão de Contas com Filtros](../FEATURE-EP-0001-0002-visao-contas-com-filtros.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0001](../epics/EP-0001-portal-administrativo-interno.md) | **Próximo:** [FEAT-EP-0001-0002 — Visão de Contas com Filtros](../FEAT-EP-0001-0002-visao-contas-com-filtros.md)
 
 ---
 🤖 *Documentação gerada de forma automatizada pelo Agente: Analista de Negócios/Claude. Estrutura modular v2.0.*

@@ -1,12 +1,12 @@
 # User Stories: Cadastro e Ativação de Contas de Clientes
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F02-01 — Cadastro e Ativação de Contas de Clientes
-- **Épico:** EP-02 — Gestão de Clientes e Assinaturas
+- **Feature:** FEAT-EP-0002-0001 — Cadastro e Ativação de Contas de Clientes
+- **Épico:** EP-0002 — Gestão de Clientes e Assinaturas
 - **Prioridade:** Must Have
 - **Data-Alvo:** 31/08/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -61,9 +61,9 @@ Permitir que o time interno crie contas de clientes de forma estruturada, com to
 
 | ID | Regra |
 |----|-------|
-| **RN04-01** | Toda criação de Tenant gera registro de auditoria com: administrador responsável, data/hora, dados iniciais |
-| **RN04-02** | Razão social é validada como obrigatória; sistema alerta se já existir Tenant ativo com mesma razão social |
-| **RN04-03** | Link de ativação é único e de uso único por Tenant |
+| **RN-FEAT-EP-0002-0001-0001** | Toda criação de Tenant gera registro de auditoria com: administrador responsável, data/hora, dados iniciais |
+| **RN-FEAT-EP-0002-0001-0002** | Razão social é validada como obrigatória; sistema alerta se já existir Tenant ativo com mesma razão social |
+| **RN-FEAT-EP-0002-0001-0003** | Link de ativação é único e de uso único por Tenant |
 
 ---
 

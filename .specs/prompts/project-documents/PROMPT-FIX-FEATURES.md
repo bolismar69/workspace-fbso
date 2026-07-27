@@ -6,13 +6,13 @@ Atue como um Analista de Negócios Sênior e Especialista em Refinamento de Back
 
 ### O QUE VOCÊ VAI RECEBER COMO INPUT:
 1. O arquivo índice **04-FEATURES-{PROJECT_ID_NAME}.md** (o rascunho da Fase 4).
-2. Os arquivos individuais na pasta **features/** (`FEATURE-EP-{EEEE}-{NNNN}-{nome}.md`).
+2. Os arquivos individuais na pasta **features/** (`FEAT-EP-{EEEE}-{NNNN}-{nome}.md`).
 3. O **Relatório de Auditoria** gerado pelo `PROMPT-GATE-FEATURES.md` (que inclui indicadores de quais arquivos específicos estão afetados).
 4. As **Respostas e Posicionamentos** do usuário humano.
 
 ### 🛑 REGRAS DE OURO DA CORREÇÃO:
 1. **Correção Cirúrgica com Precisão de Arquivo (NOVO — v2.0):** O Relatório do Gate indica exatamente qual(is) arquivo(s) estão afetados:
-   - Se o desvio for **específico de uma feature** → corrija apenas o arquivo individual `features/FEATURE-EP-{EEEE}-{NNNN}-{nome}.md` correspondente.
+   - Se o desvio for **específico de uma feature** → corrija apenas o arquivo individual `features/FEAT-EP-{EEEE}-{NNNN}-{nome}.md` correspondente.
    - Se o desvio for **transversal** (ex: matriz de cobertura, cronograma, MoSCoW) → corrija apenas o arquivo índice `04-FEATURES-{PROJECT_ID_NAME}.md`.
    - Se ambos forem afetados → corrija ambos, mas apenas nas seções apontadas pelo Gate.
    - Mantenha os demais arquivos perfeitamente idênticos ao rascunho anterior.

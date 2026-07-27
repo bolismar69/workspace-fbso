@@ -1,14 +1,14 @@
 # User Stories: Dashboard do Cliente
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F04-03 — Dashboard do Cliente
-- **Épico:** EP-04 — Experiência do Cliente e Autoatendimento
+- **Feature:** FEAT-EP-0004-0003 — Dashboard do Cliente
+- **Épico:** EP-0004 — Experiência do Cliente e Autoatendimento
 - **Prioridade:** Should Have
 - **Data-Alvo:** 30/09/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
-> **Nota:** F04-03 é classificado como Should Have (bônus se tempo permitir). Caso não seja implementado, o destino pós-login/onboarding será o Seletor de Módulo (F04-04).
+> **Nota:** FEAT-EP-0004-0003 é classificado como Should Have (bônus se tempo permitir). Caso não seja implementado, o destino pós-login/onboarding será o Seletor de Módulo (FEAT-EP-0004-0004).
 
 ---
 
@@ -27,7 +27,7 @@ Oferecer ao cliente uma tela inicial com visão geral de sua conta e acessos rá
 **Critérios de Aceitação:**
 - Dashboard com cards informativos: Unidades Ativas, Produtos no Catálogo, Plano Contratado
 - Cada card é clicável e leva à respectiva área de gestão
-- Card 'Produtos no Catálogo' exibe '0' ou 'Em breve' até que F04-06 (Catálogo de Produtos) esteja implementada (data-alvo 15/10/2026).
+- Card 'Produtos no Catálogo' exibe '0' ou 'Em breve' até que FEAT-EP-0004-0006 (Catálogo de Produtos) esteja implementada (data-alvo 15/10/2026).
 
 ### US-046 — Notificações e Lembretes no Dashboard
 
@@ -50,8 +50,8 @@ Oferecer ao cliente uma tela inicial com visão geral de sua conta e acessos rá
 
 | ID | Regra |
 |----|-------|
-| **RN15-01** | Dashboard do cliente adapta-se ao módulo ativo no Seletor de Módulo (App Switcher na fase multi-produto) (métricas diferentes por módulo) |
-| **RN15-02** | Na Fase 0 (este projeto), haverá um dashboard genérico que será expandido quando os módulos forem ativados |
+| **RN-FEAT-EP-0004-0003-0001** | Dashboard do cliente adapta-se ao módulo ativo no Seletor de Módulo (App Switcher na fase multi-produto) (métricas diferentes por módulo) |
+| **RN-FEAT-EP-0004-0003-0002** | Na Fase 0 (este projeto), haverá um dashboard genérico que será expandido quando os módulos forem ativados |
 
 ---
 

@@ -1,12 +1,12 @@
 # User Stories: Gestão de Status do Tenant
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F02-02 — Gestão de Status do Tenant
-- **Épico:** EP-02 — Gestão de Clientes e Assinaturas
+- **Feature:** FEAT-EP-0002-0002 — Gestão de Status do Tenant
+- **Épico:** EP-0002 — Gestão de Clientes e Assinaturas
 - **Prioridade:** Must Have
 - **Data-Alvo:** 31/08/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -24,7 +24,7 @@ Controlar o ciclo de vida de cada conta de cliente, permitindo ativar, suspender
 
 **Critérios de Aceitação:**
 - Seletor de status na tela de detalhes do Tenant
-- Transições permitidas seguem regra de negócio RN05-01
+- Transições permitidas seguem regra de negócio RN-FEAT-EP-0002-0002-0001
 - Ao alterar para Suspenso, campo de motivo é obrigatório
 
 ### US-013 — Bloqueio de Acesso na Suspensão
@@ -50,9 +50,9 @@ Controlar o ciclo de vida de cada conta de cliente, permitindo ativar, suspender
 
 | ID | Regra |
 |----|-------|
-| **RN05-01** | Transições permitidas: Pendente Onboarding→Ativo, Pendente Onboarding→Inativo (abandono de onboarding), Ativo→Suspenso, Suspenso→Ativo, Suspenso→Inativo (encerramento de conta suspensa), Ativo→Inativo, Inativo→Ativo |
-| **RN05-02** | Suspensão exige motivo registrado (campo obrigatório) |
-| **RN05-03** | Reativação de conta suspensa restaura as permissões anteriores dos usuários |
+| **RN-FEAT-EP-0002-0002-0001** | Transições permitidas: Pendente Onboarding→Ativo, Pendente Onboarding→Inativo (abandono de onboarding), Ativo→Suspenso, Suspenso→Ativo, Suspenso→Inativo (encerramento de conta suspensa), Ativo→Inativo, Inativo→Ativo |
+| **RN-FEAT-EP-0002-0002-0002** | Suspensão exige motivo registrado (campo obrigatório) |
+| **RN-FEAT-EP-0002-0002-0003** | Reativação de conta suspensa restaura as permissões anteriores dos usuários |
 
 ---
 

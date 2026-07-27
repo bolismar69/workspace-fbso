@@ -1,12 +1,12 @@
 # User Stories: Visão de Contas com Filtros
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F01-02 — Visão de Contas com Filtros
-- **Épico:** EP-01 — Portal Administrativo Interno
+- **Feature:** FEAT-EP-0001-0002 — Visão de Contas com Filtros
+- **Épico:** EP-0001 — Portal Administrativo Interno
 - **Prioridade:** Must Have
 - **Data-Alvo:** 15/08/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -45,8 +45,8 @@ Permitir que o time administrativo localize rapidamente qualquer conta de client
 
 | ID | Regra |
 |----|-------|
-| **RN02-01** | Contas com status "Excluído" (soft delete) não aparecem na lista padrão |
-| **RN02-02** | A busca não diferencia maiúsculas de minúsculas |
+| **RN-FEAT-EP-0001-0002-0001** | Contas com status "Excluído" (desativação lógica) não aparecem na lista padrão |
+| **RN-FEAT-EP-0001-0002-0002** | A busca não diferencia maiúsculas de minúsculas |
 
 ---
 
@@ -56,7 +56,7 @@ Permitir que o time administrativo localize rapidamente qualquer conta de client
 |---|----------|-----------|
 | F1 | Lista de contas com paginação e ordenação correta | Print da lista com 25+ registros |
 | F2 | Busca textual funcional com correspondência parcial | Teste com termo de 3 caracteres |
-| F3 | Contas excluídas (soft delete) não visíveis na lista padrão | Verificação com tenant soft-deleted |
+| F3 | Contas excluídas (desativação lógica) não visíveis na lista padrão | Verificação com tenant desativada logicamente |
 
 ---
 

@@ -1,12 +1,12 @@
 # User Stories: Onboarding Guiado de Primeiro Acesso
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F04-02 — Onboarding Guiado de Primeiro Acesso
-- **Épico:** EP-04 — Experiência do Cliente e Autoatendimento
+- **Feature:** FEAT-EP-0004-0002 — Onboarding Guiado de Primeiro Acesso
+- **Épico:** EP-0004 — Experiência do Cliente e Autoatendimento
 - **Prioridade:** Must Have
 - **Data-Alvo:** 30/09/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -62,7 +62,7 @@ Conduzir o cliente por um fluxo simples e guiado no primeiro acesso, garantindo 
 **Critérios de Aceitação:**
 - Tela de boas-vindas com: saudação personalizada, resumo do que foi configurado
 - Sugestões de próximos passos: "Convide seu time", "Cadastre seus produtos"
-- Botão "Ir para o Portal" que leva ao Seletor de Módulo (F04-04). Caso o Dashboard do Cliente (F04-03, Should Have) esteja implementado, o destino será o dashboard.
+- Botão "Ir para o Portal" que leva ao Seletor de Módulo (FEAT-EP-0004-0004). Caso o Dashboard do Cliente (FEAT-EP-0004-0003, Should Have) esteja implementado, o destino será o dashboard.
 
 ---
 
@@ -70,10 +70,10 @@ Conduzir o cliente por um fluxo simples e guiado no primeiro acesso, garantindo 
 
 | ID | Regra |
 |----|-------|
-| **RN14-01** | Onboarding é obrigatório no primeiro acesso; não pode ser pulado |
-| **RN14-02** | Primeira Unidade de Negócio cadastrada no onboarding é automaticamente definida como Matriz |
-| **RN14-03** | Onboarding só é considerado concluído quando todos os passos obrigatórios são finalizados |
-| **RN14-04** | Tenant só muda para status "Ativo" após conclusão do onboarding |
+| **RN-FEAT-EP-0004-0002-0001** | Onboarding é obrigatório no primeiro acesso; não pode ser pulado |
+| **RN-FEAT-EP-0004-0002-0002** | Primeira Unidade de Negócio cadastrada no onboarding é automaticamente definida como Matriz |
+| **RN-FEAT-EP-0004-0002-0003** | Onboarding só é considerado concluído quando todos os passos obrigatórios são finalizados |
+| **RN-FEAT-EP-0004-0002-0004** | Tenant só muda para status "Ativo" após conclusão do onboarding |
 
 ---
 

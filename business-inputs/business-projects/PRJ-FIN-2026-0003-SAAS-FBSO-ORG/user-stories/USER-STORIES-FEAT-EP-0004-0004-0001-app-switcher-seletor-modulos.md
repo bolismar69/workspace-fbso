@@ -1,12 +1,12 @@
 # User Stories: App Switcher (Seletor de Módulos)
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F04-04 — App Switcher (Seletor de Módulos)
-- **Épico:** EP-04 — Experiência do Cliente e Autoatendimento
+- **Feature:** FEAT-EP-0004-0004 — App Switcher (Seletor de Módulos)
+- **Épico:** EP-0004 — Experiência do Cliente e Autoatendimento
 - **Prioridade:** Must Have
 - **Data-Alvo:** 30/09/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -51,9 +51,9 @@ Fornecer o mecanismo de navegação entre módulos da plataforma, permitindo que
 
 | ID | Regra |
 |----|-------|
-| **RN16-01** | Lista de módulos no App Switcher é determinada pela interseção entre: módulos do plano contratado e módulos que o usuário tem permissão |
-| **RN16-02** | Na Fase 0, haverá um módulo placeholder chamado "FBSO Platform" visível para todos os clientes |
-| **RN16-03** | A troca de módulo mantém o contexto da Unidade de Negócio selecionada |
+| **RN-FEAT-EP-0004-0004-0001** | Lista de módulos no App Switcher é determinada pela interseção entre: módulos do plano contratado e módulos que o usuário tem permissão |
+| **RN-FEAT-EP-0004-0004-0002** | Na Fase 0, haverá um módulo placeholder chamado "FBSO Platform" visível para todos os clientes |
+| **RN-FEAT-EP-0004-0004-0003** | A troca de módulo mantém o contexto da Unidade de Negócio selecionada |
 
 ---
 

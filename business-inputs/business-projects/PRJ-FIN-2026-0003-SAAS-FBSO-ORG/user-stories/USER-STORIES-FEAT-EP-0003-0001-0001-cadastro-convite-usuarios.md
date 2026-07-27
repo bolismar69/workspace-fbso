@@ -1,12 +1,12 @@
 # User Stories: Cadastro e Convite de Usuários
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F03-01 — Cadastro e Convite de Usuários
-- **Épico:** EP-03 — Governança de Acessos e Permissões
+- **Feature:** FEAT-EP-0003-0001 — Cadastro e Convite de Usuários
+- **Épico:** EP-0003 — Governança de Acessos e Permissões
 - **Prioridade:** Must Have
 - **Data-Alvo:** 15/09/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -52,9 +52,9 @@ Permitir que o administrador do tenant cadastre e convide usuários para acessar
 
 | ID | Regra |
 |----|-------|
-| **RN09-01** | Convite de usuário expira em 7 dias se não aceito |
-| **RN09-02** | E-mail deve ser único por tenant (não pode haver dois usuários com mesmo e-mail no mesmo tenant) |
-| **RN09-03** | Administrador do tenant não pode desativar a si mesmo |
+| **RN-FEAT-EP-0003-0001-0001** | Convite de usuário expira em 7 dias se não aceito |
+| **RN-FEAT-EP-0003-0001-0002** | E-mail deve ser único por tenant (não pode haver dois usuários com mesmo e-mail no mesmo tenant) |
+| **RN-FEAT-EP-0003-0001-0003** | Administrador do tenant não pode desativar a si mesmo |
 
 ---
 

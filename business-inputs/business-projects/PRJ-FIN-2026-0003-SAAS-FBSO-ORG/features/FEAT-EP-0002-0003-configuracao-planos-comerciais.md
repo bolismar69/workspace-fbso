@@ -1,8 +1,8 @@
-# FEATURE - EP-0002-0003: Configuração de Planos Comerciais
+# FEATURE - FEAT-EP-0002-0003: Configuração de Planos Comerciais
 
 | Campo | Detalhe |
 |-------|---------|
-| **Feature** | EP-0002-0003 — Configuração de Planos Comerciais |
+| **Feature** | FEAT-EP-0002-0003 — Configuração de Planos Comerciais |
 | **Épico** | [EP-0002 — Gestão de Clientes e Assinaturas](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) |
 | **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
 | **Documento** | FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
@@ -11,7 +11,7 @@
 | **Origem** | `03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` e `02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md` |
 | **Status** | Em Revisão / Aguardando Validação |
 
-> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) | **Anterior:** [EP-0002-0002 — Gestão de Status](../FEATURE-EP-0002-0002-gestao-status-tenant.md) | **Próximo:** [EP-0002-0004 — Vinculação de Assinaturas](../FEATURE-EP-0002-0004-vinculacao-gestao-assinaturas.md)
+> 📄 **Índice de Features:** [`04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md`](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | **Épico:** [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) | **Anterior:** [FEAT-EP-0002-0002 — Gestão de Status](../FEAT-EP-0002-0002-gestao-status-tenant.md) | **Próximo:** [FEAT-EP-0002-0004 — Vinculação de Assinaturas](../FEAT-EP-0002-0004-vinculacao-gestao-assinaturas.md)
 
 **Requisitos BRD Vinculados:** [BR-03](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) — Configuração de Planos Comerciais
 
@@ -43,7 +43,7 @@ Permitir que o time de produto crie e gerencie os planos comerciais do SaaS de f
 
 | BRD | Requisito Funcional | Épico/Jornada | Esta Feature |
 |:---|:---|:---|:---|
-| **BR-03** | Configuração de Planos Comerciais | [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) / Requisitos Funcionais §5 | **EP-0002-0003** — Configuração de Planos Comerciais |
+| **BR-03** | Configuração de Planos Comerciais | [EP-0002](../epics/EP-0002-gestao-de-clientes-e-assinaturas.md) / Requisitos Funcionais §5 | **FEAT-EP-0002-0003** — Configuração de Planos Comerciais |
 
 ---
 

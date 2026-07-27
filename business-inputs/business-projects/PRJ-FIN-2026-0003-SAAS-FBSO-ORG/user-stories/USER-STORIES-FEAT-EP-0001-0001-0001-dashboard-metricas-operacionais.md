@@ -1,12 +1,12 @@
 # User Stories: Dashboard de Métricas Operacionais
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F01-01 — Dashboard de Métricas Operacionais
-- **Épico:** EP-01 — Portal Administrativo Interno
+- **Feature:** FEAT-EP-0001-0001 — Dashboard de Métricas Operacionais
+- **Épico:** EP-0001 — Portal Administrativo Interno
 - **Prioridade:** Must Have
 - **Data-Alvo:** 15/08/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -26,7 +26,7 @@ Prover visibilidade em tempo real da operação do SaaS para o time interno da F
 - Dashboard carrega com os indicadores atualizados em até 3 segundos
 - Indicadores exibidos: total de contas ativas, total de contas por status, total de contas por plano, taxa de conversão de onboarding (contas que completaram onboarding / total de contas criadas no período)
 - Cada indicador é clicável e leva à lista filtrada correspondente
-- Dashboard com base de clientes vazia exibe todos os indicadores com valor zero (RN01-03)
+- Dashboard com base de clientes vazia exibe todos os indicadores com valor zero (RN-FEAT-EP-0001-0001-0003)
 - Em caso de falha no carregamento dos dados, dashboard exibe mensagem informativa com opção de tentar novamente
 - Indicadores exibem skeleton/loader durante o carregamento inicial
 
@@ -54,9 +54,9 @@ Prover visibilidade em tempo real da operação do SaaS para o time interno da F
 
 | ID | Regra |
 |----|-------|
-| **RN01-01** | Métricas consideram apenas tenants com status diferente de "Excluído" (soft delete) |
-| **RN01-02** | Período padrão do dashboard ao carregar: mês atual |
-| **RN01-03** | Indicadores que exibem "zero" devem ser apresentados com o número 0, nunca em branco |
+| **RN-FEAT-EP-0001-0001-0001** | Métricas consideram apenas tenants com status diferente de "Excluído" (desativação lógica) |
+| **RN-FEAT-EP-0001-0001-0002** | Período padrão do dashboard ao carregar: mês atual |
+| **RN-FEAT-EP-0001-0001-0003** | Indicadores que exibem "zero" devem ser apresentados com o número 0, nunca em branco |
 
 ---
 

@@ -1,12 +1,12 @@
 # User Stories: Autenticação e Recuperação de Senha
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Feature:** F04-01 — Autenticação e Recuperação de Senha
-- **Épico:** EP-04 — Experiência do Cliente e Autoatendimento
+- **Feature:** FEAT-EP-0004-0001 — Autenticação e Recuperação de Senha
+- **Épico:** EP-0004 — Experiência do Cliente e Autoatendimento
 - **Prioridade:** Must Have
 - **Data-Alvo:** 30/09/2026
 - **Versão:** 1.1 — Revisada conforme User Story Review (15/07/2026)
-- **Origem:** [04-FEATURES.md](../04-FEATURES.md)
+- **Origem:** [04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 
 ---
 
@@ -52,9 +52,9 @@ Oferecer ao cliente uma experiência segura e fluida de acesso ao portal, com fl
 
 | ID | Regra |
 |----|-------|
-| **RN13-01** | Senha deve ter no mínimo 8 caracteres, incluindo letra e número |
-| **RN13-02** | Sessão expira após 60 minutos de inatividade |
-| **RN13-03** | Link de redefinição de senha é de uso único |
+| **RN-FEAT-EP-0004-0001-0001** | Senha deve ter no mínimo 8 caracteres, incluindo letra e número |
+| **RN-FEAT-EP-0004-0001-0002** | Sessão expira após 60 minutos de inatividade |
+| **RN-FEAT-EP-0004-0001-0003** | Link de redefinição de senha é de uso único |
 
 ---
 
