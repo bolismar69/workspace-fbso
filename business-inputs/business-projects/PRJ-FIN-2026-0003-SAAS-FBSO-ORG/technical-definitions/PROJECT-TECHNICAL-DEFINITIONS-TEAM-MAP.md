@@ -2,10 +2,11 @@
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
-- **Versão:** 1.3
+- **Versão:** 1.4
 - **Data de Criação:** 25 de Julho de 2026
-- **Última Atualização:** 26 de Julho de 2026 (adição Kong API Gateway)
+- **Última Atualização:** 27 de Julho de 2026 (alinhamento com docs de negócio v1.2)
 - **Status:** ✅ COMPLIANCE — Validado pelo Time de Arquitetura
+- **Baseline de Negócio:** [Project Charter v1.2](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [BRD v1.2](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Épicos v1.2](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Features](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 - **Documento Complementar:** [PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md) (nomes, contatos, horas/semana)
 
 ---
@@ -42,10 +43,10 @@ Ele serve como:
 
 | Épico | Funcionalidades | Complexidade Técnica |
 |:---|:---|:---|
-| EP-01 — Portal Admin Interno | Dashboard, Filtros, Alertas | Média (queries analíticas, gráficos) |
-| EP-02 — Clientes e Assinaturas | Tenants, Planos, Assinaturas, Auditoria | Alta (multi-tenant, integridade referencial) |
-| EP-03 — RBAC | Usuários, Papéis, Permissões, Visibilidade | Alta (modelo de segurança, regras granulares) |
-| EP-04 — Portal do Cliente | Autenticação, Onboarding, Catálogo, App Switcher | Muito Alta (UX, fluxos complexos, Keycloak SSO) |
+| EP-0001 — Portal Admin Interno | Dashboard, Filtros, Alertas | Média (queries analíticas, gráficos) |
+| EP-0002 — Clientes e Assinaturas | Tenants, Planos, Assinaturas, Auditoria | Alta (multi-tenant, integridade referencial) |
+| EP-0003 — RBAC | Usuários, Papéis, Permissões, Visibilidade | Alta (modelo de segurança, regras granulares) |
+| EP-0004 — Portal do Cliente | Autenticação, Onboarding, Catálogo, App Switcher | Muito Alta (UX, fluxos complexos, Keycloak SSO) |
 
 ---
 
@@ -224,7 +225,7 @@ Ele serve como:
 | Gap | Severidade | Impacto | Mitigação |
 |:---|:---:|:---|:---|
 | **SAML 2.0 — único especialista** | 🔴 Crítica | Projeto depende de 1 pessoa (Gertrudes) para integração SSO corporativo. Bolismar cobre ★★☆ como backup parcial, mas conhecimento profundo está concentrado. | Capacitar Francisco (Tech Lead) em SAML 2.0 até M2 (15/08/2026). Documentar configurações no ADR. |
-| **Frontend até 01/11/2026** | 🔴 Crítica | Tom (Frontend ★★★) só inicia em novembro. Até lá, Bolismar é o único full-stack disponível para frontend. Sem ele, features EP-01 a EP-04a atrasam. | Bolismar cobre frontend até outubro. Priorizar componentes reutilizáveis para reduzir retrabalho quando Tom chegar. |
+| **Frontend até 01/11/2026** | 🔴 Crítica | Tom (Frontend ★★★) só inicia em novembro. Até lá, Bolismar é o único full-stack disponível para frontend. Sem ele, features EP-0001 a EP-0004a atrasam. | Bolismar cobre frontend até outubro. Priorizar componentes reutilizáveis para reduzir retrabalho quando Tom chegar. |
 | **Maria Madalena — perfil 100% junior** | 🔴 Crítica | Backend developer junior (★☆☆ em todas as tecnologias). Não entrega tarefas complexas sem supervisão. Representa risco de produtividade para o time backend. | Pareamento obrigatório com Francisco (TL) ou Bolismar (FS) nas primeiras 4 sprints. Tasks designadas devem ser bem delimitadas e revisadas. Plano de evolução: atingir ★★☆ em Java/Spring Boot até M3 (31/08/2026). |
 
 ### 5.2 Gaps Moderados (🟡 — Risco Médio)
@@ -271,13 +272,13 @@ Ele serve como:
 ### 6.3 Ações Imediatas (Sprint 0)
 
 1. **Tech Lead (Francisco):** Criar template de code review com checklist multi-tenant. Designar tasks iniciais para Maria com escopo bem delimitado.
-2. **Full-Stack (Bolismar):** Setup inicial do frontend (Next.js + Tailwind) para EP-01. Cobrir frontend até chegada de Tom.
+2. **Full-Stack (Bolismar):** Setup inicial do frontend (Next.js + Tailwind) para EP-0001. Cobrir frontend até chegada de Tom.
 3. **IAM (Gertrudes):** Documentar arquitetura SAML 2.0 + OIDC, publicar ADR de autenticação. Parear com Francisco em SAML.
 4. **DevOps (Davi):** Configurar infraestrutura local (Docker Compose com Keycloak + PostgreSQL). Auto-instrumentação OpenTelemetry. Setup Grafana para dashboards de monitoramento. Documentar configurações Hostinger/Digital-Ocean.
 5. **Arquiteto (Bruno):** Revisão de design multi-tenant. Publicar ADRs de arquitetura. Code review de queries com `tenant_id`.
 6. **DB (Carlos):** Definir schema base, configurar Flyway, criar índices para multi-tenant.
-7. **QA (Felipe):** Setup Playwright + JMeter. Definir cenários de teste para EP-01.
-8. **BA (Mauro):** Preparar massa de dados de teste. Validar critérios de aceitação do EP-01.
+7. **QA (Felipe):** Setup Playwright + JMeter. Definir cenários de teste para EP-0001.
+8. **BA (Mauro):** Preparar massa de dados de teste. Validar critérios de aceitação do EP-0001.
 9. **BE Temp (Judith):** Code review de setup inicial. Contribuir com testes e documentação (27-31/07).
 
 ---

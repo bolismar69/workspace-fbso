@@ -2,10 +2,11 @@
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
-- **Versão:** 1.3
+- **Versão:** 1.4
 - **Data de Criação:** 25 de Julho de 2026
-- **Última Atualização:** 26 de Julho de 2026 (diagramas Mermaid: ecossistema, roadmap, dependências)
+- **Última Atualização:** 27 de Julho de 2026 (alinhamento IDs de épicos/features com docs de negócio v1.2)
 - **Status:** ✅ COMPLIANCE — Validado pelo Time de Arquitetura
+- **Baseline de Negócio:** [Project Charter v1.2](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [BRD v1.2](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Épicos v1.2](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Features FEAT-EP-](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 - **Documentos Complementares:** [TEAM-MAP](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md) · [TEAM-CAPACITY](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md)
 
 ---
@@ -88,9 +89,9 @@ flowchart TB
 | **Propósito** | API central da FBSO Platform. Gerencia tenants, planos, assinaturas, usuários, permissões (RBAC), unidades de negócio e catálogo de produtos. Backend único que serve tanto o Portal Admin Interno quanto o Portal do Cliente. |
 | **Stack** | Java 25 LTS, Spring Boot 3.5.14, Spring Security, Spring Data JDBC, Spring Validation, Maven, Oracle GraalVM 25.0.3+9.1 (Native Image) |
 | **Estado Atual** | ✅ Existente — em desenvolvimento (Sprint 5 concluído) |
-| **Maturidade** | v0.1.0-SNAPSHOT — funcionalidades EP-01 e EP-02 parcialmente implementadas |
+| **Maturidade** | v0.1.0-SNAPSHOT — funcionalidades EP-0001 e EP-0002 parcialmente implementadas |
 | **Prioridade** | 🔴 Must Have — Core do projeto |
-| **Épicos Relacionados** | EP-01 (Portal Admin), EP-02 (Clientes/Assinaturas), EP-03 (RBAC), EP-04 (Portal do Cliente) |
+| **Épicos Relacionados** | EP-0001 (Portal Admin), EP-0002 (Clientes/Assinaturas), EP-0003 (RBAC), EP-0004 (Portal do Cliente) |
 | **Dependências** | PostgreSQL 17 (S03), Keycloak 26 (S04), Flyway (S06) |
 | **Owner Técnico** | Tech Lead (Francisco Oliveira) + Backend Team (Bolismar Oliveira, Maria Madalena) |
 | **Repositório** | `backend/java/spring/microservices/ms-fbso-platform-admin/` |
@@ -134,7 +135,7 @@ flowchart TB
 | **Estado Atual** | 🔮 Planejado — início previsto para 01/11/2026 (chegada do Frontend Developer Tom Santos) |
 | **Maturidade** | Pré-projeto — arquitetura definida no TECHNICAL-PLAN.md, sem código. Bolismar Oliveira fará setup inicial (Next.js + Tailwind) antes de 01/11 para não zerar o frontend. |
 | **Prioridade** | 🔴 Must Have — Entrega D5 (Portal do Cliente), M5 (30/09/2026) |
-| **Épicos Relacionados** | EP-01 (Portal Admin — dashboards), EP-02 (gestão de tenants/planos — interfaces admin), EP-03 (gestão de usuários/permissões — interfaces admin), EP-04 (Portal do Cliente — todas as interfaces) |
+| **Épicos Relacionados** | EP-0001 (Portal Admin — dashboards), EP-0002 (gestão de tenants/planos — interfaces admin), EP-0003 (gestão de usuários/permissões — interfaces admin), EP-0004 (Portal do Cliente — todas as interfaces) |
 | **Dependências** | S01 (ms-fbso-platform-admin — API REST), S04 (Keycloak — autenticação) |
 | **Owner Técnico** | Full-Stack (Bolismar Oliveira) até 01/11/2026 → Frontend (Tom Santos) assume |
 | **Repositório** | `frontend/javascript/react/web_apps/web_app-fbso-platform-portal/` (a criar) |
@@ -144,15 +145,15 @@ flowchart TB
 
 | Módulo | Área | Features |
 |:---|:---|:---|
-| Admin Dashboard | Portal Admin | F01-01, F01-02, F01-03 |
-| Tenant Manager | Portal Admin | F02-01, F02-02 |
-| Plan & Subscription | Portal Admin | F02-03, F02-04, F02-05 |
-| User & RBAC Manager | Portal Admin | F03-01, F03-02, F03-03, F03-04 |
-| Client Onboarding | Portal Cliente | F04-01, F04-02 |
-| Client Dashboard | Portal Cliente | F04-03 |
-| App Switcher | Portal Cliente | F04-04 |
-| Business Units | Portal Cliente | F04-05 |
-| Product Catalog | Portal Cliente | F04-06 |
+| Admin Dashboard | Portal Admin | FEAT-EP-0001-0001, FEAT-EP-0001-0002, FEAT-EP-0001-0003 |
+| Tenant Manager | Portal Admin | FEAT-EP-0002-0001, FEAT-EP-0002-0002 |
+| Plan & Subscription | Portal Admin | FEAT-EP-0002-0003, FEAT-EP-0002-0004, FEAT-EP-0002-0005 |
+| User & RBAC Manager | Portal Admin | FEAT-EP-0003-0001, FEAT-EP-0003-0002, FEAT-EP-0003-0003, FEAT-EP-0003-0004 |
+| Client Onboarding | Portal Cliente | FEAT-EP-0004-0001, FEAT-EP-0004-0002 |
+| Client Dashboard | Portal Cliente | FEAT-EP-0004-0003 |
+| App Switcher | Portal Cliente | FEAT-EP-0004-0004 |
+| Business Units | Portal Cliente | FEAT-EP-0004-0005 |
+| Product Catalog | Portal Cliente | FEAT-EP-0004-0006 |
 
 ---
 
@@ -172,7 +173,7 @@ flowchart TB
 | **Estado Atual** | ✅ Existente — configurado no docker-compose.yml |
 | **Maturidade** | Produção-ready para ambiente dev. Schema em evolução via Flyway. |
 | **Prioridade** | 🔴 Must Have — Sem banco, nada funciona |
-| **Épicos Relacionados** | Todos (EP-01 a EP-04) |
+| **Épicos Relacionados** | Todos (EP-0001 a EP-0004) |
 | **Dependências** | Nenhuma (serviço base) |
 | **Owner Técnico** | DB Developer (Carlos Caldas) + Backend Team |
 | **Container** | `postgres:17-alpine` — porta 5432 |
@@ -193,7 +194,7 @@ flowchart TB
 | **Estado Atual** | ✅ Existente — configurado no docker-compose.yml |
 | **Maturidade** | Dev-ready. Realm config via `realm-config.json`. SAML e OIDC configurados. |
 | **Prioridade** | 🔴 Must Have — Autenticação é obrigatória para todas as features |
-| **Épicos Relacionados** | EP-03 (RBAC), EP-04 (Autenticação Cliente) |
+| **Épicos Relacionados** | EP-0003 (RBAC), EP-0004 (Autenticação Cliente) |
 | **Dependências** | PostgreSQL 17 (S03) |
 | **Owner Técnico** | IAM Specialist (Gertrudes Paiva) + Tech Lead (Francisco Oliveira) |
 | **Container** | `quay.io/keycloak/keycloak:26.0` — porta 8081 (mapeada para 8080 interno) |
@@ -258,7 +259,7 @@ flowchart TB
 | **Estado Atual** | ✅ Existente — configurado no docker-compose.yml |
 | **Maturidade** | Completo. Utilizado apenas em desenvolvimento. |
 | **Prioridade** | 🟡 Should Have — Apenas desenvolvimento |
-| **Épicos Relacionados** | EP-03 (convite de usuários), EP-04 (recuperação de senha) |
+| **Épicos Relacionados** | EP-0003 (convite de usuários), EP-0004 (recuperação de senha) |
 | **Dependências** | Docker |
 | **Owner Técnico** | DevOps (Davi Silva) |
 | **Container** | `mailhog/mailhog:v1.0.1` — SMTP 1025, Web UI 8025 |
@@ -295,7 +296,7 @@ flowchart TB
 | **Estado Atual** | 🔮 Planejado — configuração prevista na Sprint 1 |
 | **Maturidade** | Não iniciado |
 | **Prioridade** | 🟢 Could Have — Importante para operação, não bloqueia features |
-| **Épicos Relacionados** | EP-01 (métricas operacionais já cobertas pelo dashboard da aplicação) |
+| **Épicos Relacionados** | EP-0001 (métricas operacionais já cobertas pelo dashboard da aplicação) |
 | **Dependências** | S08 (OpenTelemetry — fonte de dados) |
 | **Owner Técnico** | DevOps (Davi Silva) — ★★★. Full-Stack (Bolismar Oliveira) — ★★☆ suporte |
 
@@ -406,7 +407,7 @@ flowchart TB
 | **Estado Atual** | 🔮 Planejado — a definir (ADR-005) |
 | **Maturidade** | Pré-projeto |
 | **Prioridade** | 🟡 Should Have — Necessário para produção, não bloqueia desenvolvimento |
-| **Épicos Relacionados** | EP-01, EP-04 (frontend — performance e segurança de entrega) |
+| **Épicos Relacionados** | EP-0001, EP-0004 (frontend — performance e segurança de entrega) |
 | **Dependências** | S02 (Frontend), Cloudflare, DigitalOcean |
 | **Owner Técnico** | DevOps (Davi Silva) ★★★ + Tech Lead (Francisco Oliveira) ★★☆ |
 
@@ -416,10 +417,10 @@ flowchart TB
 
 | Épico | S01<br>BE | S02<br>FE | S03<br>PG | S04<br>KC | S05<br>Docker | S06<br>Flyway | S07<br>Mail | S08<br>OTel | S09<br>Graf | S10<br>RMQ | S11<br>CI | S12<br>Sec | S13<br>CDN | S14<br>Kong |
 |:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| EP-01 — Portal Admin | ✅ | ✅ | ✅ | — | ✅ | ✅ | — | — | ✅ | — | ✅ | ✅ | ✅ | ✅ |
-| EP-02 — Clientes | ✅ | ✅ | ✅ | — | ✅ | ✅ | — | — | — | — | ✅ | ✅ | — | ✅ |
-| EP-03 — RBAC | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | — | — | ✅ | ✅ | — | ✅ |
-| EP-04 — Portal Cliente | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | — | — | ✅ | ✅ | ✅ | ✅ |
+| EP-0001 — Portal Admin | ✅ | ✅ | ✅ | — | ✅ | ✅ | — | — | ✅ | — | ✅ | ✅ | ✅ | ✅ |
+| EP-0002 — Clientes | ✅ | ✅ | ✅ | — | ✅ | ✅ | — | — | — | — | ✅ | ✅ | — | ✅ |
+| EP-0003 — RBAC | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | — | — | ✅ | ✅ | — | ✅ |
+| EP-0004 — Portal Cliente | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | — | — | ✅ | ✅ | ✅ | ✅ |
 | Observabilidade | ✅ | — | — | — | ✅ | — | — | ✅ | ✅ | — | ✅ | — | — | ✅ |
 | Infraestrutura Base | — | — | ✅ | ✅ | ✅ | ✅ | ✅ | — | — | — | ✅ | ✅ | — | ✅ |
 
@@ -461,8 +462,8 @@ gantt
 
 | Solução | M1 (15/07) | M2 (15/08) | M3 (31/08) | M4 (15/09) | M5 (30/09) | M6 (15/10) | M7 (30/10) |
 |:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| S01 Backend | EP-01 | EP-01 + EP-02 | EP-02 | EP-03 | EP-04a | EP-04b | Homologação |
-| S02 Frontend | — | — | — | — | — | Início (01/11) | EP-01 + EP-04a |
+| S01 Backend | EP-0001 | EP-0001 + EP-0002 | EP-0002 | EP-0003 | EP-04a | EP-04b | Homologação |
+| S02 Frontend | — | — | — | — | — | Início (01/11) | EP-0001 + EP-04a |
 | S03-S07 Infra | Setup | Manutenção | Manutenção | Manutenção | Manutenção | Manutenção | Manutenção |
 | S08 OTel | — | Setup Sprint 0/1 | — | — | — | — | — |
 | S09 Grafana | — | Setup Sprint 1 | — | — | — | — | — |
