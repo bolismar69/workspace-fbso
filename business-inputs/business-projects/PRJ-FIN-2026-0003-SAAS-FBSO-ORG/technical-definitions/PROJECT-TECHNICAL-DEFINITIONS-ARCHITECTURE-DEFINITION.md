@@ -152,6 +152,19 @@ C4Container
 | **OTLP/gRPC** | Backend → OTel Collector | Protocolo padrão OpenTelemetry para tracing. |
 | **SMTP (Dev)** | Backend → MailHog | Captura de emails em desenvolvimento. Produção: serviço externo. |
 
+### 4.3 Matriz de Comunicação por Épico
+
+| Épico | Frontend→Backend | Backend→DB | Keycloak | Fase 0 |
+|:---|:---|:---|:---|:---|
+| **EP-0001** (Dashboard Admin) | `GET /dashboard/admin` | `SELECT` agregado em tenant | JWT validation | ✅ |
+| **EP-0002** (Clientes e Planos) | CRUD `/tenants`, `/plans`, `/subscriptions` | CRUD em tenant, plan, subscription | JWT validation + roles | ✅ |
+| **EP-0002** (Auditoria) | `GET /audit` | `SELECT` em audit_log | JWT validation | ✅ |
+| **EP-0003** (RBAC) | CRUD `/users`, `/permissions` | CRUD em user, user_permission, role_resource | JWT validation + roles | ✅ |
+| **EP-0004** (Portal Cliente) | CRUD `/business-units`, `/products`, `/onboarding` | CRUD em business_unit, product_service | JWT + onboarding flow | ✅ |
+| **EP-0004** (Dashboard Cliente) | `GET /dashboard/client` | `SELECT` agregado por BU | JWT validation | ✅ |
+
+> **Origem:** Esta matriz foi migrada do INTEGRATION-MAP.md §6 (documento original absorvido e removido).
+
 ---
 
 ## 5. Topologia de Deploy
@@ -301,6 +314,20 @@ sequenceDiagram
 
 > ⚠️ **Estado atual:** RabbitMQ (S10) é futuro. Eventos acima são implementados como chamadas síncronas diretas até que S10 seja ativado.
 
+### 6.4 Tratamento de Erros entre Integrações
+
+| Cenário | Comportamento Esperado |
+|:---|:---|
+| **Backend indisponível** | Frontend exibe tela de "Serviço temporariamente indisponível". Retry com exponential backoff (3 tentativas). |
+| **PostgreSQL indisponível** | Backend retorna HTTP 503. Health check do K8s reinicia o pod se o banco não retornar em 30s. |
+| **Keycloak indisponível** | Usuários já autenticados (JWT válido) continuam operando normalmente. Novos logins exibem "Autenticação temporariamente indisponível". |
+| **JWT expirado** | Backend retorna HTTP 401. Frontend redireciona para tela de login (ou tenta refresh token silenciosamente). |
+| **JWT inválido (assinatura)** | Backend retorna HTTP 401. Log de segurança gerado. Sem refresh — força novo login. |
+| **Permissão negada (RBAC)** | Backend retorna HTTP 403. Frontend exibe tela de "Acesso Negado". |
+| **Timeout de query** | Backend retorna HTTP 504. Alerta de monitoramento dispara. Query é cancelada no PostgreSQL. |
+
+> **Origem:** Esta matriz de tratamento de erros foi migrada do INTEGRATION-MAP.md §7 (documento original absorvido e removido).
+
 ---
 
 ## 7. Diagramas de Sequência — Fluxos Críticos
@@ -360,7 +387,7 @@ sequenceDiagram
     Admin->>FE: Preenche formulário de novo tenant
     FE->>Kong: POST /api/tenants
     Kong->>BE: Forward + headers
-    BE->>BE: Valida CNPJ (US-010)
+    BE->>BE: Valida CNPJ (US-FEAT-EP-0002-0001-0010)
     BE->>DB: SET app.current_tenant_id = '00000000-...' (admin context)
     BE->>DB: INSERT INTO fbso_portal.tenants
     BE->>DB: INSERT INTO fbso_portal.business_units (primeira BU)
@@ -596,8 +623,8 @@ sequenceDiagram
 | [SOLUTIONS-CATALOG](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md) | 14 soluções catalogadas |
 | [STACK-MATRIX](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md) | Stacks por solução |
 | [PRD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md) | Baseline de produto |
-| [TECHNICAL-PLAN.md](../TECHNICAL-PLAN.md) | Stack e decisões originais |
-| [INTEGRATION-MAP.md](../INTEGRATION-MAP.md) | Documento original absorvido |
+| [STACK-MATRIX](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md) | Stack tecnológica e ADRs de decisões |
+| [PRD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md) | Baseline de requisitos de produto |
 | `/architecture/` | ADRs globais, blueprints, data standards |
 | [docker-compose.yml](../../../backend/java/spring/microservices/ms-fbso-platform-admin/docker-compose.yml) | Topologia dev |
 

@@ -26,9 +26,9 @@ Oferecer ao cliente uma experiência segura e fluida de acesso ao portal, com fl
 
 | # | User Story | Critérios de Aceitação |
 |---|-----------|----------------------|
-| US-037 | Como **Cliente**, quero fazer login no portal usando meu e-mail e senha para acessar minha conta | • Tela de login com campos: e-mail e senha • Mensagens de erro genéricas (não revelar se o e-mail existe ou não) • Após login bem-sucedido, redirecionar para o dashboard ou onboarding (se primeiro acesso) |
-| US-038 | Como **Cliente**, quero recuperar minha senha caso eu a esqueça, recebendo um link de redefinição por e-mail | • Opção "Esqueci minha senha" na tela de login • Usuário informa e-mail e recebe link de redefinição • Link expira em 1 hora • Nova senha deve atender critérios mínimos de complexidade |
-| US-039 | Como **Cliente**, quero que ao errar a senha repetidas vezes, minha conta seja temporariamente bloqueada por segurança | • Após 5 tentativas consecutivas com erro, conta bloqueada por 15 minutos • Mensagem informa o tempo restante de bloqueio • Administrador do tenant pode desbloquear manualmente |
+| US-FEAT-EP-0004-0001-0037 | Como **Cliente**, quero fazer login no portal usando meu e-mail e senha para acessar minha conta | • Tela de login com campos: e-mail e senha • Mensagens de erro genéricas (não revelar se o e-mail existe ou não) • Após login bem-sucedido, redirecionar para o dashboard ou onboarding (se primeiro acesso) |
+| US-FEAT-EP-0004-0001-0038 | Como **Cliente**, quero recuperar minha senha caso eu a esqueça, recebendo um link de redefinição por e-mail | • Opção "Esqueci minha senha" na tela de login • Usuário informa e-mail e recebe link de redefinição • Link expira em 1 hora • Nova senha deve atender critérios mínimos de complexidade |
+| US-FEAT-EP-0004-0001-0039 | Como **Cliente**, quero que ao errar a senha repetidas vezes, minha conta seja temporariamente bloqueada por segurança | • Após 5 tentativas consecutivas com erro, conta bloqueada por 15 minutos • Mensagem informa o tempo restante de bloqueio • Administrador do tenant pode desbloquear manualmente |
 
 ## Regras de Negócio
 

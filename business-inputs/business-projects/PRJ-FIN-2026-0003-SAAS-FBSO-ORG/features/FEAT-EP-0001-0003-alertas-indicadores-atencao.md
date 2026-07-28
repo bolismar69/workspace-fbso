@@ -26,8 +26,8 @@ Destacar proativamente situações que exigem ação do time administrativo, evi
 
 | # | User Story | Critérios de Aceitação |
 |---|-----------|----------------------|
-| US-006 | Como **Administrador FBSO**, quero ver indicadores de alerta no dashboard para contas que precisam de atenção (ex: onboarding incompleto há mais de 48h, assinatura suspensa) | • Alertas aparecem como cards coloridos (amarelo: atenção; vermelho: crítico) no topo do dashboard • Cada alerta exibe a quantidade de contas na situação e é clicável • Ao clicar, direciona para a lista filtrada das contas naquela situação |
-| US-007 | Como **Administrador FBSO**, quero que o sistema destaque visualmente na lista de contas aquelas com status irregular para identificação rápida durante a navegação | • Contas suspensas exibem ícone ou cor de destaque na lista • Ao passar o cursor, tooltip explica o motivo da suspensão (se registrado) |
+| US-FEAT-EP-0001-0003-0006 | Como **Administrador FBSO**, quero ver indicadores de alerta no dashboard para contas que precisam de atenção (ex: onboarding incompleto há mais de 48h, assinatura suspensa) | • Alertas aparecem como cards coloridos (amarelo: atenção; vermelho: crítico) no topo do dashboard • Cada alerta exibe a quantidade de contas na situação e é clicável • Ao clicar, direciona para a lista filtrada das contas naquela situação |
+| US-FEAT-EP-0001-0003-0007 | Como **Administrador FBSO**, quero que o sistema destaque visualmente na lista de contas aquelas com status irregular para identificação rápida durante a navegação | • Contas suspensas exibem ícone ou cor de destaque na lista • Ao passar o cursor, tooltip explica o motivo da suspensão (se registrado) |
 
 ## Regras de Negócio
 

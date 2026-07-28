@@ -139,6 +139,153 @@ GET /api/v1/tenants?page=0&size=25&sort=createdDt,desc
 | `X-Request-Id` | UUID (gerado pelo Kong se ausente) | Recomendado |
 | `X-Tenant-Id` | UUID (injetado pelo Kong) | ✅ (rotas tenant-scoped) |
 
+### 3.6 Catálogo de Recursos API
+
+Esta seção define o catálogo completo dos 11 recursos REST da FBSO Platform, migrado do API-CONTRACTS.md original (removido após consolidação). Os schemas detalhados de request/response estão no OpenAPI YAML canônico (`.specs/api/fbso-platform-api.yaml`).
+
+| # | Recurso | Endpoint Base | Épico | Operações |
+|:---|:---|:---|:---|:---|
+| R-01 | **Tenants** | `/tenants` | EP-0002 | CRUD + ativar/suspender/reativar |
+| R-02 | **Plans** | `/plans` | EP-0002 | CRUD + desativar |
+| R-03 | **Subscriptions** | `/subscriptions` | EP-0002 | Criar, alterar, suspender, histórico |
+| R-04 | **Users** | `/users` | EP-0003 | CRUD + convidar/desativar |
+| R-05 | **Permissions** | `/permissions` | EP-0003 | Atribuir/revogar papéis e vínculos |
+| R-06 | **Business Units** | `/business-units` | EP-0004 | CRUD + hierarquia + desativar |
+| R-07 | **Products** | `/products` | EP-0004 | CRUD + ativar/desativar |
+| R-08 | **Dashboard Admin** | `/dashboard/admin` | EP-0001 | Leitura de métricas operacionais |
+| R-09 | **Dashboard Client** | `/dashboard/client` | EP-0004 | Leitura de métricas do cliente |
+| R-10 | **Onboarding** | `/onboarding` | EP-0004 | Fluxo de primeiro acesso (4 passos) |
+| R-11 | **Audit** | `/audit` | EP-0002 | Consulta ao histórico de auditoria |
+
+#### R-01 — Tenants (`/tenants`)
+
+| Método | Path | Descrição | RBAC |
+|:---|:---|:---|:---|
+| `GET` | `/tenants` | Listar todos os tenants (paginado, com filtros) | Admin FBSO |
+| `GET` | `/tenants/{id}` | Obter detalhes de um tenant | Admin FBSO |
+| `POST` | `/tenants` | Criar novo tenant (status: PENDING_ONBOARDING) | Admin FBSO |
+| `PATCH` | `/tenants/{id}` | Atualizar dados cadastrais do tenant | Admin FBSO |
+| `POST` | `/tenants/{id}/activate` | Ativar tenant manualmente | Admin FBSO |
+| `POST` | `/tenants/{id}/suspend` | Suspender tenant (bloqueia acesso) | Admin FBSO |
+| `POST` | `/tenants/{id}/reactivate` | Reativar tenant suspenso | Admin FBSO |
+
+**Query Params:** `status` (ACTIVE, SUSPENDED, PENDING_ONBOARDING, INACTIVE), `planId`, `search` (razão social ou nome fantasia), `page`, `size`, `sort`
+
+#### R-02 — Plans (`/plans`)
+
+| Método | Path | Descrição | RBAC |
+|:---|:---|:---|:---|
+| `GET` | `/plans` | Listar todos os planos | Admin FBSO / Gestor Produto |
+| `GET` | `/plans/{id}` | Obter detalhes de um plano | Admin FBSO / Gestor Produto |
+| `POST` | `/plans` | Criar novo plano comercial | Gestor Produto |
+| `PATCH` | `/plans/{id}` | Atualizar plano (gera nova versão) | Gestor Produto |
+| `POST` | `/plans/{id}/deactivate` | Desativar plano | Gestor Produto |
+
+#### R-03 — Subscriptions (`/subscriptions`)
+
+| Método | Path | Descrição | RBAC |
+|:---|:---|:---|:---|
+| `GET` | `/tenants/{tenantId}/subscriptions` | Histórico de assinaturas do tenant | Admin FBSO / Admin Tenant |
+| `GET` | `/tenants/{tenantId}/subscriptions/active` | Assinatura ativa do tenant | Admin FBSO / Admin Tenant |
+| `POST` | `/tenants/{tenantId}/subscriptions` | Criar nova assinatura (vincula plano) | Admin FBSO |
+| `POST` | `/subscriptions/{id}/change-plan` | Upgrade/downgrade de plano | Admin FBSO |
+| `POST` | `/subscriptions/{id}/suspend` | Suspender assinatura | Admin FBSO |
+| `POST` | `/subscriptions/{id}/reactivate` | Reativar assinatura | Admin FBSO |
+
+#### R-04 — Users (`/users`)
+
+| Método | Path | Descrição | RBAC |
+|:---|:---|:---|:---|
+| `GET` | `/users` | Listar usuários do tenant (contexto do JWT) | Admin Tenant |
+| `GET` | `/users/{id}` | Detalhes do usuário | Admin Tenant / próprio usuário |
+| `POST` | `/users` | Convidar novo usuário (dispara e-mail) | Admin Tenant |
+| `PATCH` | `/users/{id}` | Atualizar dados do usuário | Admin Tenant / próprio usuário |
+| `POST` | `/users/{id}/deactivate` | Desativar usuário (bloqueia acesso) | Admin Tenant |
+| `POST` | `/users/{id}/reactivate` | Reativar usuário | Admin Tenant |
+
+#### R-05 — Permissions (`/permissions`)
+
+| Método | Path | Descrição | RBAC |
+|:---|:---|:---|:---|
+| `GET` | `/users/{userId}/permissions` | Permissões atuais do usuário | Admin Tenant |
+| `PUT` | `/users/{userId}/permissions` | Substituir vínculos (BU + módulos) | Admin Tenant |
+| `PATCH` | `/users/{userId}/permissions/role` | Alterar papel do usuário | Admin Tenant |
+| `DELETE` | `/users/{userId}/permissions/{buId}` | Remover acesso a uma Unidade de Negócio | Admin Tenant |
+
+#### R-06 — Business Units (`/business-units`)
+
+| Método | Path | Descrição | RBAC |
+|:---|:---|:---|:---|
+| `GET` | `/business-units` | Listar unidades do tenant (hierárquico) | Admin Tenant / Manager BU |
+| `GET` | `/business-units/{id}` | Detalhes da unidade | Admin Tenant / Manager BU / Operador BU |
+| `POST` | `/business-units` | Cadastrar nova unidade | Admin Tenant / Manager BU |
+| `PATCH` | `/business-units/{id}` | Atualizar dados da unidade | Admin Tenant / Manager BU |
+| `POST` | `/business-units/{id}/deactivate` | Desativar unidade | Admin Tenant |
+
+#### R-07 — Products (`/products`)
+
+| Método | Path | Descrição | RBAC |
+|:---|:---|:---|:---|
+| `GET` | `/products` | Listar produtos (filtrado pela BU ativa) | Todos com acesso à BU |
+| `GET` | `/products/{id}` | Detalhes do produto | Todos com acesso à BU |
+| `POST` | `/products` | Cadastrar novo produto | Admin Tenant / Manager BU |
+| `PATCH` | `/products/{id}` | Atualizar produto | Admin Tenant / Manager BU |
+| `POST` | `/products/{id}/deactivate` | Desativar produto | Admin Tenant / Manager BU |
+| `POST` | `/products/{id}/activate` | Reativar produto | Admin Tenant / Manager BU |
+
+**Query Params:** `type` (PRODUCT, SERVICE), `status` (ACTIVE, INACTIVE), `search` (nome ou SKU)
+
+#### R-08/R-09 — Dashboards (`/dashboard/admin`, `/dashboard/client`)
+
+| Método | Path | Descrição | RBAC |
+|:---|:---|:---|:---|
+| `GET` | `/dashboard/admin/summary` | Indicadores principais do SaaS | Admin FBSO |
+| `GET` | `/dashboard/admin/accounts-by-status` | Contas agrupadas por status | Admin FBSO |
+| `GET` | `/dashboard/admin/accounts-by-plan` | Contas agrupadas por plano | Admin FBSO |
+| `GET` | `/dashboard/admin/evolution` | Evolução da base ao longo do tempo | Admin FBSO |
+| `GET` | `/dashboard/admin/alerts` | Alertas de atenção | Admin FBSO |
+| `GET` | `/dashboard/client/summary` | Resumo da conta do cliente | Todos os papéis do tenant |
+
+**Query Params:** `period` (7d, 30d, 90d, currentMonth, currentYear) ou customizado (`from` + `to`)
+
+#### R-10 — Onboarding (`/onboarding`)
+
+| Método | Path | Descrição | RBAC |
+|:---|:---|:---|:---|
+| `GET` | `/onboarding/status` | Status atual do onboarding | Cliente autenticado |
+| `POST` | `/onboarding/step-1` | Confirmar/atualizar dados cadastrais | Cliente autenticado |
+| `POST` | `/onboarding/step-2` | Cadastrar primeira Unidade de Negócio (Matriz) | Cliente autenticado |
+| `GET` | `/onboarding/step-3` | Visualizar resumo do plano contratado | Cliente autenticado |
+| `POST` | `/onboarding/complete` | Finalizar onboarding (tenant → ACTIVE) | Cliente autenticado |
+
+#### R-11 — Audit (`/audit`)
+
+| Método | Path | Descrição | RBAC |
+|:---|:---|:---|:---|
+| `GET` | `/audit` | Listar registros de auditoria | Admin FBSO / Auditor |
+| `GET` | `/audit/{id}` | Detalhes de um registro de auditoria | Admin FBSO / Auditor |
+| `GET` | `/tenants/{tenantId}/audit` | Auditoria de um tenant específico | Admin FBSO |
+
+**Query Params:** `entityType` (TENANT, PLAN, SUBSCRIPTION, USER, PERMISSION, BUSINESS_UNIT, PRODUCT), `action` (CREATED, UPDATED, SUSPENDED, REACTIVATED, DEACTIVATED), `from`, `to`, `page`, `size`, `sort`
+
+### 3.7 Matriz RBAC × Endpoints
+
+| Recurso | Admin FBSO | Admin Tenant | Manager BU | Operator BU | Auditor |
+|:---|:---:|:---:|:---:|:---:|:---:|
+| **Tenants** (`/tenants`) | CRUD + ações | — | — | — | — |
+| **Plans** (`/plans`) | CRUD | — | — | — | — |
+| **Subscriptions** (`/subscriptions`) | CRUD | Ver (seu) | — | — | Ver |
+| **Users** (`/users`) | — | CRUD | — | — | — |
+| **Permissions** (`/permissions`) | — | CRUD | — | — | — |
+| **Business Units** (`/business-units`) | — | CRUD | Ver + Editar (sua) | Ver (sua) | Ver |
+| **Products** (`/products`) | — | CRUD | Criar, Editar, Ver | Ver | Ver |
+| **Dashboard Admin** | Ver | — | — | — | — |
+| **Dashboard Client** | — | Ver | Ver | Ver | Ver |
+| **Onboarding** | — | Executar | Executar | Executar | — |
+| **Audit** | Ver (todos) | — | — | — | Ver (tenant) |
+
+> **Origem:** As seções 3.6 e 3.7 foram migradas do API-CONTRACTS.md original §3-5 (removido). Os schemas JSON detalhados foram removidos — o OpenAPI YAML em `.specs/api/fbso-platform-api.yaml` é a fonte canônica dos schemas de request/response. As convenções de nomenclatura desta seção prevalecem sobre o API-CONTRACTS.md original (ex: `camelCase` para query params, formato de erro flat).
+
 ---
 
 ## 4. Padrões de Banco de Dados
@@ -261,6 +408,75 @@ CREATE UNIQUE INDEX uq_{tabela}_{coluna}_active
 | **Transactions** | `@Transactional(readOnly = true)` padrão. `readOnly = false` explícito em escritas. |
 | **Build** | Maven wrapper (`./mvnw`). Proibido usar Maven do sistema. |
 
+#### Estrutura de Pacotes (package-by-layer)
+
+```
+com.fbso.platform.admin/              ← Projeto: ms-fbso-platform-admin
+│
+├── config/
+│   ├── SecurityConfig.java           ← Configuração Spring Security + JWT
+│   ├── TenantContext.java            ← Holder do tenant_id da requisição atual
+│   └── WebConfig.java                ← CORS, interceptors
+│
+├── security/
+│   ├── JwtAuthenticationFilter.java  ← Filtro que valida JWT em toda requisição
+│   ├── TenantIsolationFilter.java    ← Injeta tenant_id nas queries
+│   └── RbacInterceptor.java          ← Verifica permissões por recurso/ação
+│
+├── tenant/
+│   ├── TenantController.java         ← REST /tenants
+│   ├── TenantService.java
+│   └── TenantRepository.java
+│
+├── plan/
+│   ├── PlanController.java           ← REST /plans
+│   ├── PlanService.java
+│   └── PlanRepository.java
+│
+├── subscription/
+│   ├── SubscriptionController.java   ← REST /subscriptions
+│   ├── SubscriptionService.java
+│   └── SubscriptionRepository.java
+│
+├── user/
+│   ├── UserController.java           ← REST /users
+│   ├── UserService.java
+│   ├── UserRepository.java
+│   └── UserInviteService.java        ← Lógica de convite por e-mail
+│
+├── permission/
+│   ├── PermissionController.java     ← REST /permissions
+│   ├── PermissionService.java
+│   └── PermissionRepository.java
+│
+├── businessunit/
+│   ├── BusinessUnitController.java   ← REST /business-units
+│   ├── BusinessUnitService.java
+│   └── BusinessUnitRepository.java
+│
+├── product/
+│   ├── ProductController.java        ← REST /products
+│   ├── ProductService.java
+│   └── ProductRepository.java
+│
+├── dashboard/
+│   ├── DashboardController.java      ← REST /dashboard/admin, /dashboard/client
+│   └── DashboardService.java
+│
+├── onboarding/
+│   ├── OnboardingController.java     ← REST /onboarding
+│   └── OnboardingService.java
+│
+├── audit/
+│   ├── AuditController.java          ← REST /audit
+│   ├── AuditService.java
+│   └── AuditEntityListener.java      ← JPA Entity Listener para auto-auditoria
+│
+└── common/
+    ├── BaseEntity.java               ← Superclasse com campos de auditoria
+    └── SoftDeleteRepository.java     ← Repository base com filtro deleted_dt IS NULL
+```
+
 ### 6.2 TypeScript/React (S02)
 
 | Regra | Detalhe |
@@ -271,6 +487,59 @@ CREATE UNIQUE INDEX uq_{tabela}_{coluna}_active
 | **Fetch** | SWR com tipos gerados do OpenAPI. Sem `fetch` cru nos componentes. |
 | **Validação** | Zod schemas para formulários + tipos TypeScript via `z.infer`. |
 | **Acessibilidade** | `jsx-a11y` rules no ESLint. `aria-label` em elementos sem texto visível. |
+
+#### Estrutura de Rotas (Next.js App Router)
+
+```
+web_app-fbso-platform-portal/
+│
+├── app/
+│   ├── (auth)/
+│   │   ├── login/page.tsx            ← Tela de login (redireciona para Keycloak)
+│   │   └── reset-password/page.tsx   ← Recuperação de senha
+│   │
+│   ├── (onboarding)/
+│   │   └── onboarding/
+│   │       ├── page.tsx              ← Wizard — Passo 1: Confirmar dados
+│   │       ├── step-2/page.tsx       ← Passo 2: Cadastrar Matriz
+│   │       ├── step-3/page.tsx       ← Passo 3: Resumo do Plano
+│   │       └── step-4/page.tsx       ← Passo 4: Boas-vindas
+│   │
+│   ├── (admin)/                      ← Rotas do time FBSO.ORG
+│   │   ├── dashboard/page.tsx        ← Dashboard administrativo
+│   │   ├── tenants/page.tsx          ← Gestão de contas
+│   │   ├── plans/page.tsx            ← Configuração de planos
+│   │   └── audit/page.tsx            ← Histórico de auditoria
+│   │
+│   └── (portal)/                     ← Rotas do cliente
+│       ├── dashboard/page.tsx        ← Dashboard do cliente
+│       ├── business-units/page.tsx   ← Unidades de Negócio
+│       ├── products/page.tsx         ← Catálogo de Produtos
+│       ├── users/page.tsx            ← Gestão de Usuários (Admin Tenant)
+│       └── profile/page.tsx          ← Perfil do usuário
+│
+├── components/
+│   ├── layout/
+│   │   ├── AppSwitcher.tsx           ← Seletor de módulos no topo
+│   │   ├── Sidebar.tsx               ← Menu lateral dinâmico
+│   │   └── BusinessUnitSelector.tsx  ← Seletor de Unidade de Negócio
+│   ├── dashboard/
+│   │   ├── MetricsCard.tsx           ← Card de indicador
+│   │   └── TrendChart.tsx            ← Gráfico de evolução
+│   └── common/
+│       ├── DataTable.tsx             ← Tabela paginada reutilizável
+│       └── StatusBadge.tsx           ← Badge de status colorido
+│
+├── lib/
+│   ├── auth.ts                       ← Integração com Keycloak (next-auth)
+│   ├── api-client.ts                 ← Cliente HTTP com injeção de JWT
+│   └── permissions.ts                ← Hook usePermission(resource, action)
+│
+└── mocks/
+    └── handlers/                     ← MSW handlers baseados no OpenAPI
+```
+
+> **Origem:** As estruturas de pacotes (§6.1) e rotas (§6.2) foram migradas do ARCHITECTURE.md original §5-6 (removido após consolidação).
 
 ### 6.3 SQL / Flyway (S06)
 

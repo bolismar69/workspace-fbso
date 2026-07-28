@@ -26,9 +26,9 @@ Fornecer o mecanismo de navegação entre módulos da plataforma, permitindo que
 
 | # | User Story | Critérios de Aceitação |
 |---|-----------|----------------------|
-| US-047 | Como **Cliente**, quero ver um seletor de aplicativos no topo do portal que exiba os módulos disponíveis no meu plano para navegar entre os produtos que contratei | • App Switcher posicionado no canto superior, ao lado do logo da FBSO Platform • Exibe apenas módulos que o usuário tem permissão para acessar • Módulo ativo aparece destacado visualmente |
-| US-048 | Como **Cliente**, quero que ao selecionar um módulo diferente no App Switcher, o menu lateral e o conteúdo da tela se adaptem imediatamente ao módulo escolhido | • Troca de módulo atualiza menu lateral em tempo real • Conteúdo da tela é redirecionado para o dashboard do módulo selecionado • Transição fluida, sem recarregamento completo da página |
-| US-049 | Como **Cliente com apenas um módulo contratado**, quero que o Seletor de Módulo exiba o nome do meu módulo mesmo que eu não tenha outras opções, para que eu saiba em qual produto estou | • Seletor de Módulo visível mesmo com um único módulo • Exibe o nome do módulo ativo sem dropdown de seleção • Indica visualmente que novos módulos podem ser adicionados no futuro |
+| US-FEAT-EP-0004-0004-0047 | Como **Cliente**, quero ver um seletor de aplicativos no topo do portal que exiba os módulos disponíveis no meu plano para navegar entre os produtos que contratei | • App Switcher posicionado no canto superior, ao lado do logo da FBSO Platform • Exibe apenas módulos que o usuário tem permissão para acessar • Módulo ativo aparece destacado visualmente |
+| US-FEAT-EP-0004-0004-0048 | Como **Cliente**, quero que ao selecionar um módulo diferente no App Switcher, o menu lateral e o conteúdo da tela se adaptem imediatamente ao módulo escolhido | • Troca de módulo atualiza menu lateral em tempo real • Conteúdo da tela é redirecionado para o dashboard do módulo selecionado • Transição fluida, sem recarregamento completo da página |
+| US-FEAT-EP-0004-0004-0049 | Como **Cliente com apenas um módulo contratado**, quero que o Seletor de Módulo exiba o nome do meu módulo mesmo que eu não tenha outras opções, para que eu saiba em qual produto estou | • Seletor de Módulo visível mesmo com um único módulo • Exibe o nome do módulo ativo sem dropdown de seleção • Indica visualmente que novos módulos podem ser adicionados no futuro |
 
 ## Regras de Negócio
 

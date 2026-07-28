@@ -26,10 +26,10 @@ Permitir que o cliente cadastre e gerencie seu portfólio comercial (produtos e 
 
 | # | User Story | Critérios de Aceitação |
 |---|-----------|----------------------|
-| US-055 | Como **Cliente**, quero cadastrar um novo produto ou serviço informando nome, SKU/código interno, tipo (Produto ou Serviço) e descrição | • Formulário com campos: nome (obrigatório), SKU (opcional), tipo (obrigatório: Produto ou Serviço), descrição (opcional) • Item criado com status "Ativo" por padrão • Vinculado automaticamente à Unidade de Negócio ativa no seletor |
-| US-056 | Como **Cliente**, quero visualizar a lista de produtos e serviços cadastrados para minha Unidade de Negócio, com busca por nome ou SKU | • Lista filtrada pela Unidade de Negócio selecionada no seletor • Campo de busca textual que filtra por nome ou SKU • Colunas: Nome, SKU, Tipo, Status, Indicador de Mapeamento Fiscal |
-| US-057 | Como **Cliente**, quero editar as informações de um produto ou serviço (nome, SKU, tipo, descrição) para manter o catálogo atualizado | • Tela de edição acessível a partir da lista • Todos os campos do cadastro são editáveis • Alterações aplicadas imediatamente após salvar |
-| US-058 | Como **Cliente**, quero ativar ou desativar um produto do catálogo sem excluí-lo definitivamente, para controlar quais itens estão em uso | • Botão "Desativar" na lista (para itens ativos) • Botão "Ativar" na lista (para itens inativos) • Item desativado não aparece em cadastros futuros, mas mantém histórico |
+| US-FEAT-EP-0004-0006-0055 | Como **Cliente**, quero cadastrar um novo produto ou serviço informando nome, SKU/código interno, tipo (Produto ou Serviço) e descrição | • Formulário com campos: nome (obrigatório), SKU (opcional), tipo (obrigatório: Produto ou Serviço), descrição (opcional) • Item criado com status "Ativo" por padrão • Vinculado automaticamente à Unidade de Negócio ativa no seletor |
+| US-FEAT-EP-0004-0006-0056 | Como **Cliente**, quero visualizar a lista de produtos e serviços cadastrados para minha Unidade de Negócio, com busca por nome ou SKU | • Lista filtrada pela Unidade de Negócio selecionada no seletor • Campo de busca textual que filtra por nome ou SKU • Colunas: Nome, SKU, Tipo, Status, Indicador de Mapeamento Fiscal |
+| US-FEAT-EP-0004-0006-0057 | Como **Cliente**, quero editar as informações de um produto ou serviço (nome, SKU, tipo, descrição) para manter o catálogo atualizado | • Tela de edição acessível a partir da lista • Todos os campos do cadastro são editáveis • Alterações aplicadas imediatamente após salvar |
+| US-FEAT-EP-0004-0006-0058 | Como **Cliente**, quero ativar ou desativar um produto do catálogo sem excluí-lo definitivamente, para controlar quais itens estão em uso | • Botão "Desativar" na lista (para itens ativos) • Botão "Ativar" na lista (para itens inativos) • Item desativado não aparece em cadastros futuros, mas mantém histórico |
 
 ## Regras de Negócio
 

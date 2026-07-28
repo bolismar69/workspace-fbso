@@ -26,8 +26,8 @@ Registrar todas as ações administrativas realizadas pelo time interno, garanti
 
 | # | User Story | Critérios de Aceitação |
 |---|-----------|----------------------|
-| US-022 | Como **Administrador FBSO**, quero que toda ação de criação, alteração de status, mudança de plano e edição de dados de tenant seja automaticamente registrada em um histórico de auditoria | • Registro inclui: tipo da ação, administrador responsável, data/hora, dados anteriores e novos (quando aplicável) • Histórico acessível na tela de detalhes do Tenant • Histórico não pode ser editado ou apagado |
-| US-023 | Como **Auditor Interno**, quero filtrar o histórico de auditoria por período e por tipo de ação para localizar eventos específicos | • Filtros disponíveis: período (data inicial e final), tipo de ação (criação, suspensão, alteração de plano) • Resultados ordenados do mais recente para o mais antigo |
+| US-FEAT-EP-0002-0005-0022 | Como **Administrador FBSO**, quero que toda ação de criação, alteração de status, mudança de plano e edição de dados de tenant seja automaticamente registrada em um histórico de auditoria | • Registro inclui: tipo da ação, administrador responsável, data/hora, dados anteriores e novos (quando aplicável) • Histórico acessível na tela de detalhes do Tenant • Histórico não pode ser editado ou apagado |
+| US-FEAT-EP-0002-0005-0023 | Como **Auditor Interno**, quero filtrar o histórico de auditoria por período e por tipo de ação para localizar eventos específicos | • Filtros disponíveis: período (data inicial e final), tipo de ação (criação, suspensão, alteração de plano) • Resultados ordenados do mais recente para o mais antigo |
 
 ## Regras de Negócio
 

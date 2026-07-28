@@ -26,8 +26,9 @@ Oferecer ao cliente uma tela inicial com visão geral de sua conta e acessos rá
 
 | # | User Story | Critérios de Aceitação |
 |---|-----------|----------------------|
-| US-045 | Como **Cliente**, quero visualizar um dashboard com informações resumidas da minha conta: unidades de negócio ativas, total de produtos cadastrados e meu plano atual | • Dashboard com cards informativos: Unidades Ativas, Produtos no Catálogo, Plano Contratado • Cada card é clicável e leva à respectiva área de gestão |
-| US-046 | Como **Cliente**, quero ver notificações e lembretes relevantes no meu dashboard (ex: "Complete seu cadastro de produtos", "Convite de usuário pendente") | • Área de notificações visível no dashboard • Cada notificação com link para a ação relacionada • Notificações podem ser dispensadas pelo usuário |
+| US-FEAT-EP-0004-0003-0045 | Como **Cliente**, quero visualizar um dashboard com informações resumidas da minha conta: unidades de negócio ativas, total de produtos cadastrados e meu plano atual | • Dashboard com cards informativos: Unidades Ativas, Produtos no Catálogo, Plano Contratado • Cada card é clicável e leva à respectiva área de gestão |
+| US-FEAT-EP-0004-0003-0046 | Como **Cliente**, quero ver notificações e lembretes relevantes no meu dashboard (ex: "Complete seu cadastro de produtos", "Convite de usuário pendente") | • Área de notificações visível no dashboard • Cada notificação com link para a ação relacionada • Notificações podem ser dispensadas pelo usuário |
+| US-FEAT-EP-0004-0003-0062 | Como **Administrador do Tenant**, quero realizar o upgrade do meu plano contratado diretamente pelo portal, selecionando um plano superior e visualizando os novos módulos que ficarão disponíveis para expandir as funcionalidades da minha conta de forma autônoma, sem precisar contatar o time comercial da FBSO | • Área 'Meu Plano' no dashboard do cliente exibe apenas planos superiores (upgrade) com comparação clara de nome, valor e módulos • Confirmação de upgrade encerra assinatura atual, cria nova assinatura e libera novos módulos imediatamente • Time comercial é notificado sobre o upgrade • Downgrade e cancelamento NÃO disponíveis via self-service (apenas via contato comercial) • Histórico de assinaturas exibe transição com indicação 'UPGRADE_PLANO_SELF_SERVICE' |
 
 ## Regras de Negócio
 

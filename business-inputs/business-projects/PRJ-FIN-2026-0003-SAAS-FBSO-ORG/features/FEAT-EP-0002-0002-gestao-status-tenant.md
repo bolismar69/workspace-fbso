@@ -26,9 +26,9 @@ Controlar o ciclo de vida de cada conta de cliente, permitindo ativar, suspender
 
 | # | User Story | Critérios de Aceitação |
 |---|-----------|----------------------|
-| US-012 | Como **Administrador FBSO**, quero alterar o status de uma conta de cliente entre os estados: Pendente Onboarding, Ativo, Suspenso, Inativo para refletir a situação real da conta | • Seletor de status na tela de detalhes do Tenant • Transições permitidas seguem regra de negócio RN-FEAT-EP-0002-0002-0001 • Ao alterar para Suspenso, campo de motivo é obrigatório |
-| US-013 | Como **Administrador FBSO**, quero que ao suspender uma conta, todos os usuários daquele tenant tenham o acesso ao portal bloqueado imediatamente | • Bloqueio efetivo em até 5 minutos após a suspensão • Usuários logados recebem mensagem de sessão encerrada na próxima ação • Status do tenant atualizado em tempo real para "Suspenso" |
-| US-014 | Como **Administrador FBSO**, quero visualizar o histórico de mudanças de status de cada conta (quando foi ativada, suspensa, reativada e por quem) | • Linha do tempo de status na tela de detalhes do Tenant • Cada evento exibe: status anterior → novo status, responsável, data/hora, motivo (se aplicável) |
+| US-FEAT-EP-0002-0002-0012 | Como **Administrador FBSO**, quero alterar o status de uma conta de cliente entre os estados: Pendente Onboarding, Ativo, Suspenso, Inativo para refletir a situação real da conta | • Seletor de status na tela de detalhes do Tenant • Transições permitidas seguem regra de negócio RN-FEAT-EP-0002-0002-0001 • Ao alterar para Suspenso, campo de motivo é obrigatório |
+| US-FEAT-EP-0002-0002-0013 | Como **Administrador FBSO**, quero que ao suspender uma conta, todos os usuários daquele tenant tenham o acesso ao portal bloqueado imediatamente | • Bloqueio efetivo em até 5 minutos após a suspensão • Usuários logados recebem mensagem de sessão encerrada na próxima ação • Status do tenant atualizado em tempo real para "Suspenso" |
+| US-FEAT-EP-0002-0002-0014 | Como **Administrador FBSO**, quero visualizar o histórico de mudanças de status de cada conta (quando foi ativada, suspensa, reativada e por quem) | • Linha do tempo de status na tela de detalhes do Tenant • Cada evento exibe: status anterior → novo status, responsável, data/hora, motivo (se aplicável) |
 
 ## Regras de Negócio
 

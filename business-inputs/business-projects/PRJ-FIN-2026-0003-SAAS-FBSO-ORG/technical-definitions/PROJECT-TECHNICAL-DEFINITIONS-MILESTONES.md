@@ -90,9 +90,9 @@ gantt
 
 | Feature | US | Soluções |
 |:---|:---|:---|
-| FEAT-EP-0001-0001 Dashboard | US-001, US-002, US-003 | S01, S03 |
-| FEAT-EP-0001-0002 Visão de Contas | US-004, US-005 | S01, S03 |
-| FEAT-EP-0001-0003 Alertas (Should) | US-006, US-007 | S01, S03 |
+| FEAT-EP-0001-0001 Dashboard | US-FEAT-EP-0001-0001-0001, US-FEAT-EP-0001-0001-0002, US-FEAT-EP-0001-0001-0003 | S01, S03 |
+| FEAT-EP-0001-0002 Visão de Contas | US-FEAT-EP-0001-0002-0004, US-FEAT-EP-0001-0002-0005 | S01, S03 |
+| FEAT-EP-0001-0003 Alertas (Should) | US-FEAT-EP-0001-0003-0006, US-FEAT-EP-0001-0003-0007 | S01, S03 |
 
 #### Soluções Afetadas
 
@@ -141,11 +141,11 @@ flowchart LR
 
 | Feature | US | Soluções |
 |:---|:---|:---|
-| FEAT-EP-0002-0001 Cadastro Contas | US-008 a US-011 | S01, S03, S04, S07 |
-| FEAT-EP-0002-0002 Gestão Status | US-012 a US-014 | S01, S03 |
-| FEAT-EP-0002-0003 Config Planos | US-015 a US-018 | S01, S03 |
-| FEAT-EP-0002-0004 Vinculação Assinaturas | US-019 a US-021 | S01, S03 |
-| FEAT-EP-0002-0005 Auditoria | US-022, US-023 | S01, S03 |
+| FEAT-EP-0002-0001 Cadastro Contas | US-FEAT-EP-0002-0001-0008 a US-FEAT-EP-0002-0001-0011 | S01, S03, S04, S07 |
+| FEAT-EP-0002-0002 Gestão Status | US-FEAT-EP-0002-0002-0012 a US-FEAT-EP-0002-0002-0014 | S01, S03 |
+| FEAT-EP-0002-0003 Config Planos | US-FEAT-EP-0002-0003-0015 a US-FEAT-EP-0002-0003-0018 | S01, S03 |
+| FEAT-EP-0002-0004 Vinculação Assinaturas | US-FEAT-EP-0002-0004-0019 a US-FEAT-EP-0002-0004-0021 | S01, S03 |
+| FEAT-EP-0002-0005 Auditoria | US-FEAT-EP-0002-0005-0022, US-FEAT-EP-0002-0005-0023 | S01, S03 |
 
 #### Soluções Afetadas
 
@@ -171,7 +171,7 @@ flowchart LR
 | Risco | Mitigação |
 |:---|:---|
 | Fluxo de criação de Realm no Keycloak via API | Testar no Sprint 0 com realm template. Documentar timeout e retry. |
-| Validação CNPJ (US-010) | Integrar com `ms-cnpj-validacao` se disponível, ou mock no MVP. |
+| Validação CNPJ (US-FEAT-EP-0002-0001-0010) | Integrar com `ms-cnpj-validacao` se disponível, ou mock no MVP. |
 | Maria Madalena (★☆☆) | Continuar com tasks de baixa complexidade + pair programming. |
 
 #### Critérios de Aceitação
@@ -199,10 +199,10 @@ flowchart LR
 
 | Feature | US | Soluções |
 |:---|:---|:---|
-| FEAT-EP-0003-0001 Cadastro Usuários | US-024 a US-026 | S01, S03, S04, S07 |
-| FEAT-EP-0003-0002 RBAC | US-027 a US-030 | S01, S03, S04 |
-| FEAT-EP-0003-0003 Vínculo BU+Módulo | US-031 a US-033 | S01, S03, S04 |
-| FEAT-EP-0003-0004 Visibilidade | US-034 a US-036 | S01, S02, S04, S14 |
+| FEAT-EP-0003-0001 Cadastro Usuários | US-FEAT-EP-0003-0001-0024 a US-FEAT-EP-0003-0001-0026 | S01, S03, S04, S07 |
+| FEAT-EP-0003-0002 RBAC | US-FEAT-EP-0003-0002-0027 a US-FEAT-EP-0003-0002-0030 | S01, S03, S04 |
+| FEAT-EP-0003-0003 Vínculo BU+Módulo | US-FEAT-EP-0003-0003-0031 a US-FEAT-EP-0003-0003-0033 | S01, S03, S04 |
+| FEAT-EP-0003-0004 Visibilidade | US-FEAT-EP-0003-0004-0034 a US-FEAT-EP-0003-0004-0036 | S01, S02, S04, S14 |
 
 #### Soluções Afetadas
 
@@ -257,10 +257,10 @@ flowchart LR
 
 | Feature | US | Soluções |
 |:---|:---|:---|
-| FEAT-EP-0004-0001 Autenticação | US-037 a US-039 | S01, S02, S04, S14 |
-| FEAT-EP-0004-0002 Onboarding | US-040 a US-044 | S01, S02, S03 |
-| FEAT-EP-0004-0003 Dashboard Cliente (Should) | US-045, US-046 | S01, S02 |
-| FEAT-EP-0004-0004 App Switcher | US-047 a US-049 | S01, S02, S04 |
+| FEAT-EP-0004-0001 Autenticação | US-FEAT-EP-0004-0001-0037 a US-FEAT-EP-0004-0001-0039 | S01, S02, S04, S14 |
+| FEAT-EP-0004-0002 Onboarding | US-FEAT-EP-0004-0002-0040 a US-FEAT-EP-0004-0002-0044 | S01, S02, S03 |
+| FEAT-EP-0004-0003 Dashboard Cliente (Should) | US-FEAT-EP-0004-0003-0045, US-FEAT-EP-0004-0003-0046 | S01, S02 |
+| FEAT-EP-0004-0004 App Switcher | US-FEAT-EP-0004-0004-0047 a US-FEAT-EP-0004-0004-0049 | S01, S02, S04 |
 
 #### Soluções Afetadas
 
@@ -314,8 +314,8 @@ flowchart LR
 
 | Feature | US | Soluções |
 |:---|:---|:---|
-| FEAT-EP-0004-0005 Unidades Negócio | US-050 a US-054 | S01, S02, S03 |
-| FEAT-EP-0004-0006 Catálogo Produtos | US-055 a US-058 | S01, S02, S03 |
+| FEAT-EP-0004-0005 Unidades Negócio | US-FEAT-EP-0004-0005-0050 a US-FEAT-EP-0004-0005-0054 | S01, S02, S03 |
+| FEAT-EP-0004-0006 Catálogo Produtos | US-FEAT-EP-0004-0006-0055 a US-FEAT-EP-0004-0006-0058 | S01, S02, S03 |
 
 #### Soluções Afetadas
 

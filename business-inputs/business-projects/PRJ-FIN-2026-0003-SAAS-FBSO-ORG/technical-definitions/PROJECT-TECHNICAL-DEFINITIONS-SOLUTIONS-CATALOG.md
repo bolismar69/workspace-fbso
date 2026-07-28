@@ -133,7 +133,7 @@ flowchart TB
 | **Propósito** | Interface web unificada da FBSO Platform. Duas áreas: (1) Portal Admin Interno — dashboard operacional, gestão de tenants, planos, usuários; (2) Portal do Cliente — onboarding, autenticação, dashboard, catálogo, app switcher. |
 | **Stack** | React 19+, Next.js (App Router), Tailwind CSS, TypeScript, Playwright (testes E2E), MSW (mock API) |
 | **Estado Atual** | 🔮 Planejado — início previsto para 01/11/2026 (chegada do Frontend Developer Tom Santos) |
-| **Maturidade** | Pré-projeto — arquitetura definida no TECHNICAL-PLAN.md, sem código. Bolismar Oliveira fará setup inicial (Next.js + Tailwind) antes de 01/11 para não zerar o frontend. |
+| **Maturidade** | Pré-projeto — arquitetura definida no planejamento técnico original, sem código. Bolismar Oliveira fará setup inicial (Next.js + Tailwind) antes de 01/11 para não zerar o frontend. |
 | **Prioridade** | 🔴 Must Have — Entrega D5 (Portal do Cliente), M5 (30/09/2026) |
 | **Épicos Relacionados** | EP-0001 (Portal Admin — dashboards), EP-0002 (gestão de tenants/planos — interfaces admin), EP-0003 (gestão de usuários/permissões — interfaces admin), EP-0004 (Portal do Cliente — todas as interfaces) |
 | **Dependências** | S01 (ms-fbso-platform-admin — API REST), S04 (Keycloak — autenticação) |
@@ -311,7 +311,7 @@ flowchart TB
 | **Tipo** | Message Broker |
 | **Propósito** | Comunicação assíncrona entre módulos da plataforma no futuro — eventos de ativação de tenant, notificações de mudança de plano, integração com módulos fiscais (Tributali-Engine) e varejo (Storekeeper Portal). |
 | **Stack** | RabbitMQ (container Docker) |
-| **Estado Atual** | 🔮 Futuro — fora do escopo atual. Referenciado no TECHNICAL-PLAN.md como componente futuro. |
+| **Estado Atual** | 🔮 Futuro — fora do escopo atual. Referenciado no planejamento técnico original como componente futuro. |
 | **Maturidade** | Pré-projeto |
 | **Prioridade** | ⚪ Won't Have (agora) — Apenas quando houver 2+ módulos de produto |
 | **Épicos Relacionados** | Nenhum no escopo atual. Futuro: integração Tributali-Engine + Storekeeper Portal |
@@ -514,7 +514,7 @@ flowchart TB
 
 | Documento | Relação |
 |:---|:---|
-| [TECHNICAL-PLAN.md](../TECHNICAL-PLAN.md) | Stack tecnológica e decisões de arquitetura |
+| [STACK-MATRIX](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md) | Stack tecnológica e decisões de arquitetura |
 | [01-PROJECT-CHARTER](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | Escopo e entregas D1-D7 |
 | [04-FEATURES](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 18 funcionalidades, 58 user stories |
 | [PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md) | Owners técnicos e skills |

@@ -50,7 +50,7 @@ Este documento define a **stack tecnológica precisa** de cada uma das soluçõe
 
 | Dimensão | Tecnologia | Versão | Justificativa |
 |:---|:---|:---|:---|
-| **Linguagem** | Java (Oracle GraalVM) | 25 LTS (25.0.3+9.1) | LTS mais recente. GraalVM Native Image para startup rápido. [TECHNICAL-PLAN §2.2.2](../TECHNICAL-PLAN.md) |
+| **Linguagem** | Java (Oracle GraalVM) | 25 LTS (25.0.3+9.1) | LTS mais recente. GraalVM Native Image para startup rápido (ADR-001). |
 | **Framework** | Spring Boot | 3.5.14 | Parent POM: `spring-boot-starter-parent:3.5.14`. |
 | **Build** | Maven Wrapper | 3.9+ | `mvnw` incluso no repositório. |
 | **Segurança** | Spring Security + OAuth2 Resource Server | 6.5+ | Validação JWT. Kong injeta headers (`X-Tenant-ID`, `X-User-Permissions`) — backend consome sem revalidar. |
@@ -322,6 +322,23 @@ flowchart TB
 | **ADR-003** | OIDC (OpenID Connect) + Kong API Gateway | Authorization Code Flow + PKCE. Kong valida JWT via JWKS (local), injeta headers (`X-Tenant-ID`, `X-User-Permissions`). Backend consome headers sem revalidar. | Gertrudes (IAM) + Davi (DevOps) | Sprint 0 |
 | **ADR-004** | Soft Delete + RLS integrado | Política combinada: `tenant_id + (deleted_dt IS NULL OR pg_has_role(current_user, 'admin_role', 'member'))`. Admin pode ver/excluir soft-deleted. Expurgo definitivo fora do escopo. | Carlos (DB) | Sprint 1 |
 | **ADR-005** | Cloudflare + DigitalOcean (CDN e WAF) | Cloudflare Edge (validação, WAF, SSL, DDoS) → DigitalOcean Origin (processamento). Custom Hostnames para domínios white-label. Certificado SSL automático por cliente. | Davi (DevOps) | Sprint 4 |
+
+### ADRs de Negócio/Stack (origem: ARCHITECTURE.md)
+
+Estes 8 ADRs complementam os 5 ADRs técnicos acima, documentando as decisões de stack e arquitetura de negócio que fundamentaram as escolhas tecnológicas do projeto.
+
+| ADR | Decisão | Justificativa | Impacto |
+|:---|:---|:---|:---|
+| **ADR-06** | PostgreSQL com isolamento lógico (Shared Database) | Time reduzido — um banco único simplifica operação, backup e custos. Isolamento garantido por filtro `tenant_id` obrigatório em 100% das queries. | Todo endpoint DEVE filtrar por tenant_id. Risco: uma query sem filtro expõe dados entre tenants. |
+| **ADR-07** | Java 25 LTS + Spring Boot + GraalVM para backend | Stack corporativa consolidada. Spring Security integra nativamente com JWT. Spring Data JDBC simplifica persistência com filtro Multi-Tenant. GraalVM Native Image para inicialização rápida e baixo consumo de memória. | Exige configuração de TenantResolver e SecurityFilter customizados. GraalVM requer AOT compilation metadata para reflection. |
+| **ADR-08** | React + Next.js + Tailwind CSS para frontend | Next.js provê SSR onde necessário e separação clara entre rotas admin e cliente. Tailwind com CSS variables prepara temas dinâmicos por tenant. | Exige design system com tokens CSS customizáveis. |
+| **ADR-09** | Keycloak como IdP externo | Isola complexidade de autenticação (SAML, OIDC, MFA, SSO) da aplicação. Enterprise-ready desde o dia 1. Backend só valida JWT. | Keycloak é um container adicional para gerenciar. Configuração do realm deve ser versionada (realm-config.json). |
+| **ADR-10** | Soft Delete universal | Requisito de auditoria fiscal e compliance. Nenhum registro é removido fisicamente. `deleted_dt IS NULL` em toda query. | Índices únicos devem ser parciais (`WHERE deleted_dt IS NULL`). Volume de dados cresce indefinidamente. |
+| **ADR-11** | API Contract First (OpenAPI) | O contrato de API é definido antes do código. Backend e Frontend desenvolvem em paralelo com MSW mock. | Exige disciplina de versionamento de contrato. Mudanças pós-aprovação seguem processo formal. |
+| **ADR-12** | JWT Stateless (sem sessão no servidor) | Cada requisição carrega o token JWT com todas as claims necessárias (tenant_id, roles, modules). Backend não mantém estado de sessão. | Token trafega em toda requisição. Revogação de acesso exige blacklist ou tempo de expiração curto. |
+| **ADR-13** | Docker + Kubernetes para todos os ambientes | Consistência entre dev, staging e produção. K8s provê health checks, rolling updates, auto-scaling. | Exige Dockerfile para cada componente. Complexidade de configuração K8s (ConfigMaps, Secrets, Ingress). |
+
+> **Origem:** Estes 8 ADRs foram migrados do ARCHITECTURE.md original §4 (removido após consolidação). Os ADRs de integração (Kong, JWKS, Header Injection, RLS, Cloudflare) estão em [ARCHITECTURE-DEFINITION.md](./PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md) §8.
 
 ---
 

@@ -26,9 +26,9 @@ Prover visibilidade em tempo real da operação do SaaS para o time interno da F
 
 | # | User Story | Critérios de Aceitação |
 |---|-----------|----------------------|
-| US-001 | Como **Administrador FBSO**, quero visualizar os indicadores principais da operação em uma tela de dashboard para ter uma visão rápida da saúde do SaaS | • Dashboard carrega com os indicadores atualizados em até 3 segundos • Indicadores exibidos: total de contas ativas, total de contas por status, total de contas por plano • Cada indicador é clicável e leva à lista filtrada correspondente |
-| US-002 | Como **Líder Comercial**, quero filtrar as métricas do dashboard por período (últimos 7, 30, 90 dias, mês atual, ano atual) para analisar tendências de crescimento | • Filtro de período disponível no topo do dashboard • Ao alterar o período, todos os indicadores são recalculados • Gráfico de evolução da base reflete o período selecionado |
-| US-003 | Como **Diretoria**, quero visualizar um gráfico de evolução da base de clientes ao longo do tempo para acompanhar o crescimento do SaaS | • Gráfico de linhas ou barras exibe a quantidade de novas contas por mês • Gráfico permite alternar entre visão de contas totais e novas contas • Período do gráfico segue o filtro aplicado no dashboard |
+| US-FEAT-EP-0001-0001-0001 | Como **Administrador FBSO**, quero visualizar os indicadores principais da operação em uma tela de dashboard para ter uma visão rápida da saúde do SaaS | • Dashboard carrega com os indicadores atualizados em até 3 segundos • Indicadores exibidos: total de contas ativas, total de contas por status, total de contas por plano • Cada indicador é clicável e leva à lista filtrada correspondente |
+| US-FEAT-EP-0001-0001-0002 | Como **Líder Comercial**, quero filtrar as métricas do dashboard por período (últimos 7, 30, 90 dias, mês atual, ano atual) para analisar tendências de crescimento | • Filtro de período disponível no topo do dashboard • Ao alterar o período, todos os indicadores são recalculados • Gráfico de evolução da base reflete o período selecionado |
+| US-FEAT-EP-0001-0001-0003 | Como **Diretoria**, quero visualizar um gráfico de evolução da base de clientes ao longo do tempo para acompanhar o crescimento do SaaS | • Gráfico de linhas ou barras exibe a quantidade de novas contas por mês • Gráfico permite alternar entre visão de contas totais e novas contas • Período do gráfico segue o filtro aplicado no dashboard |
 
 ## Regras de Negócio
 

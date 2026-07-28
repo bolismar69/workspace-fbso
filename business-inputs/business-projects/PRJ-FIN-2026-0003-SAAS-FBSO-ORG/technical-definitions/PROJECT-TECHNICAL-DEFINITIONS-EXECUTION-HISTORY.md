@@ -16,17 +16,30 @@
 | 0 | Bootstrap | 0 | ✅ COMPLIANCE | 25/07 | — | Estrutura criada, TEAM-CAPACITY migrado |
 | 1 | TEAM-MAP | 1 | ✅ COMPLIANCE | 26/07 | v1.3 | 11 perfis, 9 categorias, 36+ tecnologias |
 | 2 | SOLUTIONS-CATALOG | 2 | ✅ COMPLIANCE | 26/07 | v1.2 | 14 soluções (2 apps + 12 infra) |
-| 3 | STACK-MATRIX | 3 | ✅ COMPLIANCE | 26/07 | v1.1 | 14 stacks com versões, 5 ADRs |
-| 4 | PRD-DEFINITION | 4 | ✅ COMPLIANCE | 26/07 | v1.0 | 18 features, 58 US, MVP 52 US |
-| 5 | ARCHITECTURE-DEFINITION | 5 | ✅ COMPLIANCE | 26/07 | v1.1 | C4 L1+L2, 6 seq diagrams, 5 ADRs integração |
+| 3 | STACK-MATRIX | 3 | ✅ COMPLIANCE | 26/07 | v1.1 | 14 stacks com versões, 13 ADRs (5 técnicos + 8 negócio/stack) |
+| 4 | PRD-DEFINITION | 4 | ✅ COMPLIANCE | 26/07 | v1.0 | 18 features, 58 US, MVP 52 US, ERD migrado do TECHNICAL-PLAN |
+| 5 | ARCHITECTURE-DEFINITION | 5 | ✅ COMPLIANCE | 26/07 | v1.1 | C4 L1+L2, 6 seq diagrams, 5 ADRs integração, matriz épico, error handling |
 | 6 | SECURITY-DEFINITION | 6 | ✅ COMPLIANCE | 26/07 | v1.1 | 12 ameaças, IAM, DevSecOps, LGPD |
-| 7 | SPECS-DEFINITION | 7 | ✅ COMPLIANCE | 26/07 | v1.0 | Convenções Java/React/DB/API/Logging |
+| 7 | SPECS-DEFINITION | 7 | ✅ COMPLIANCE | 26/07 | v1.0 | Convenções Java/React/DB/API/Logging, 11 recursos API, matriz RBAC, pacotes backend, rotas frontend |
 | 8 | MILESTONES | 8 | ✅ COMPLIANCE | 26/07 | v1.0 | 7 milestones M1-M7 |
 | 9 | SOLUTIONS-MATRIX | 9 | ✅ COMPLIANCE | 26/07 | v1.0 | Tabela-mestra 14 soluções, RACI |
 | 10 | Estrutura de Sprints | 10 | ✅ COMPLIANCE | 26/07 | — | 11 sprints (00 a 10) |
-| 11 | EXECUTION-HISTORY | 11 | ✅ FINAL | 26/07 | v2.0 | Roadmap completo |
+| 11 | EXECUTION-HISTORY | 11 | ✅ FINAL | 27/07 | v3.0 | Roadmap completo + registro de consolidação |
+| 12 | REPOSITORY-STRUCTURE | 12 | ✅ COMPLIANCE | 27/07 | v1.0 | Árvore de diretórios alvo, convenções `.specs/` |
 
-**Resumo: 11/11 fases concluídas. 9 documentos técnicos gerados. 0 fases pendentes.**
+**Resumo: 12/12 fases concluídas. 10 documentos técnicos gerados. 0 fases pendentes.**
+
+### Consolidação de Documentos (Fase 13 implícita — 27/07/2026)
+
+Os 4 documentos de nível de projeto foram consolidados na pasta `technical-definitions/` e **removidos**:
+
+| Documento Removido | Conteúdo Migrado Para |
+|:---|:---|
+| `TECHNICAL-PLAN.md` | ERD → PRD-DEFINITION §2.4 · Dir Tree → REPOSITORY-STRUCTURE · Stack/Milestones/Riscos já cobertos por STACK-MATRIX + MILESTONES |
+| `ARCHITECTURE.md` | ADRs → STACK-MATRIX §5 · Pacotes/rotas → SPECS-DEFINITION §6.1-6.2 · C4/Auth/Multi-Tenant já cobertos por ARCHITECTURE-DEFINITION |
+| `INTEGRATION-MAP.md` | Totalmente absorvido por ARCHITECTURE-DEFINITION (matriz épico §4.3, error handling §6.4) |
+| `API-CONTRACTS.md` | 11 recursos + matriz RBAC → SPECS-DEFINITION §3.6-3.7 · Inconsistências resolvidas (camelCase, flat errors, 5min JWT) |
+| `TECHNICAL-TEAM-MAP.md` | Duplicata do [TEAM-MAP](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md) (v1.4, mais completo). Removido por redundância. |
 
 ---
 
@@ -67,7 +80,7 @@ technical-definitions/
 ├── PROJECT-TECHNICAL-DEFINITIONS-SPECS-DEFINITION.md      ← Fase 7
 ├── PROJECT-TECHNICAL-DEFINITIONS-MILESTONES.md            ← Fase 8
 ├── PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-MATRIX.md      ← Fase 9
-└── sprints/
+└── PROJECT-TECHNICAL-DEFINITIONS-REPOSITORY-STRUCTURE.md ← Fase 12
     ├── sprint-00/    ← Setup & Fundação
     ├── sprint-01/    ← EP-0001 (Dashboard + Contas)
     ├── sprint-02/    ← EP-0001 + EP-0002 início
@@ -127,7 +140,9 @@ technical-definitions/
 | 26/07/2026 | Fase 10 concluída — 11 sprints criadas (00-10) | Time de Arquitetura |
 | 26/07/2026 | **Fase 11 FINAL — Roadmap de Definições Técnicas concluído** | Time de Arquitetura |
 | 26/07/2026 | Revisão Mermaid global: todos os documentos com ASCII art convertidos para Mermaid (flowchart, gantt, sequence). SOLUTIONS-CATALOG v1.3, STACK-MATRIX v1.2, ARCHITECTURE v1.2, MILESTONES v1.1. | Time de Arquitetura |
+| 27/07/2026 | **Fase 12 — REPOSITORY-STRUCTURE criado** (v1.0): árvore de diretórios alvo, convenções `.specs/`, matriz de localização de artefatos | Time de Arquitetura |
+| 27/07/2026 | **Fase 13 (implícita) — Consolidação de documentos de projeto**: TECHNICAL-PLAN.md (§2.4 ERD → PRD-DEFINITION, §4.3 Dir Tree → REPOSITORY-STRUCTURE), ARCHITECTURE.md (ADRs → STACK-MATRIX, pacotes/rotas → SPECS-DEFINITION), INTEGRATION-MAP.md (matriz épico/error handling → ARCHITECTURE-DEFINITION), API-CONTRACTS.md (11 recursos + RBAC → SPECS-DEFINITION). 4 arquivos deletados por obsolescência. | Time de Arquitetura |
 
 ---
 
-🤖 *Documentação gerada de forma automatizada pelo Agente: Arquiteto de Soluções/Claude. Roadmap de 11 fases concluído em 2 dias (25-26 Julho 2026). 9 documentos técnicos gerados, 14 soluções catalogadas, 5 ADRs documentados.*
+🤖 *Documentação gerada de forma automatizada pelo Agente: Arquiteto de Soluções/Claude. Roadmap de 12 fases concluído em 3 dias (25-27 Julho 2026). 10 documentos técnicos gerados, 14 soluções catalogadas, 13 ADRs documentados, 4 documentos de projeto consolidados e removidos.*
