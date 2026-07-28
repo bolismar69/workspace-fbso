@@ -23,18 +23,18 @@
 | **FEAT-EP-0002-0003** | [Configuração de Planos Comerciais](features/FEAT-EP-0002-0003-configuracao-planos-comerciais.md) | EP-0002 | Must Have | 4 | **31/08/2026** |
 | **FEAT-EP-0002-0004** | [Vinculação e Gestão de Assinaturas](features/FEAT-EP-0002-0004-vinculacao-gestao-assinaturas.md) | EP-0002 | Must Have | 3 | **31/08/2026** |
 | **FEAT-EP-0002-0005** | [Histórico de Auditoria Administrativa](features/FEAT-EP-0002-0005-historico-auditoria-administrativa.md) | EP-0002 | Must Have | 2 | **31/08/2026** |
-| **FEAT-EP-0003-0001** | [Cadastro e Convite de Usuários](features/FEAT-EP-0003-0001-cadastro-convite-usuarios.md) | EP-0003 | Must Have | 3 | **15/09/2026** |
+| **FEAT-EP-0003-0001** | [Cadastro e Convite de Usuários](features/FEAT-EP-0003-0001-cadastro-convite-usuarios.md) | EP-0003 | Must Have | 6 | **15/09/2026** |
 | **FEAT-EP-0003-0002** | [Definição de Papéis e Permissões (RBAC)](features/FEAT-EP-0003-0002-definicao-papeis-permissoes-rbac.md) | EP-0003 | Must Have | 4 | **15/09/2026** |
 | **FEAT-EP-0003-0003** | [Vinculação Usuário × Unidade × Módulo](features/FEAT-EP-0003-0003-vinculacao-usuario-unidade-modulo.md) | EP-0003 | Must Have | 3 | **15/09/2026** |
 | **FEAT-EP-0003-0004** | [Controle de Visibilidade de Menus e Ações](features/FEAT-EP-0003-0004-controle-visibilidade-menus-acoes.md) | EP-0003 | Must Have | 3 | **15/09/2026** |
 | **FEAT-EP-0004-0001** | [Autenticação e Recuperação de Senha](features/FEAT-EP-0004-0001-autenticacao-recuperacao-senha.md) | EP-0004 | Must Have | 3 | **30/09/2026** |
 | **FEAT-EP-0004-0002** | [Onboarding Guiado de Primeiro Acesso](features/FEAT-EP-0004-0002-onboarding-guiado-primeiro-acesso.md) | EP-0004 | Must Have | 5 | **30/09/2026** |
-| **FEAT-EP-0004-0003** | [Dashboard do Cliente](features/FEAT-EP-0004-0003-dashboard-cliente.md) | EP-0004 | Should Have | 2 | **30/09/2026** |
+| **FEAT-EP-0004-0003** | [Dashboard do Cliente](features/FEAT-EP-0004-0003-dashboard-cliente.md) | EP-0004 | Should Have | 3 | **30/09/2026** |
 | **FEAT-EP-0004-0004** | [App Switcher (Seletor de Módulos)](features/FEAT-EP-0004-0004-app-switcher-seletor-modulos.md) | EP-0004 | Must Have | 3 | **30/09/2026** |
 | **FEAT-EP-0004-0005** | [Gestão de Unidades de Negócio](features/FEAT-EP-0004-0005-gestao-unidades-negocio.md) | EP-0004 | Must Have | 5 | **15/10/2026** |
 | **FEAT-EP-0004-0006** | [Catálogo de Produtos e Serviços](features/FEAT-EP-0004-0006-catalogo-produtos-servicos.md) | EP-0004 | Must Have | 4 | **15/10/2026** |
 
-**Total: 18 funcionalidades | 58 user stories**
+**Total: 18 funcionalidades | 62 user stories**
 
 > 📄 **Detalhamento completo** de cada feature — incluindo objetivo de negócio, user stories, critérios de aceitação e regras de negócio — está nos arquivos individuais da pasta [`features/`](features/).
 

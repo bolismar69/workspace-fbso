@@ -81,64 +81,201 @@ A **FBSO Platform** é o portal administrativo SaaS multi-produto da FBSO.ORG �
 
 | Feature | US# | Título Resumido |
 |:---|:---|:---|
-| FEAT-EP-0001-0001 | US-001 | Dashboard com indicadores principais (contas ativas, status, planos) |
-| FEAT-EP-0001-0001 | US-002 | Filtros de período (7, 30, 90 dias, mês atual, ano atual) |
-| FEAT-EP-0001-0001 | US-003 | Gráfico de evolução da base de clientes |
-| FEAT-EP-0001-0002 | US-004 | Lista completa de contas com paginação (25 por página) |
-| FEAT-EP-0001-0002 | US-005 | Busca textual por nome/razão social (a partir de 3 caracteres) |
-| FEAT-EP-0001-0003 | US-006 | Destaque visual de tenants com pendências |
-| FEAT-EP-0001-0003 | US-007 | Indicadores de atenção (onboarding incompleto, atraso pagamento) |
-| FEAT-EP-0002-0001 | US-008 | Cadastro de nova conta com dados do cliente |
-| FEAT-EP-0002-0001 | US-009 | Ativação de conta com envio de credenciais |
-| FEAT-EP-0002-0001 | US-010 | Validação de CNPJ no cadastro de conta |
-| FEAT-EP-0002-0001 | US-011 | Criação automática da primeira Unidade de Negócio |
-| FEAT-EP-0002-0002 | US-012 | Alteração de status (ativo, suspenso, inativo) com registro de auditoria |
-| FEAT-EP-0002-0002 | US-013 | Visualização do histórico de status do tenant |
-| FEAT-EP-0002-0002 | US-014 | Notificação de suspensão para o tenant |
-| FEAT-EP-0002-0003 | US-015 | Cadastro de plano com nome, descrição, valor e módulos |
-| FEAT-EP-0002-0003 | US-016 | Definição de vigência e recorrência do plano |
-| FEAT-EP-0002-0003 | US-017 | Tabela associativa `plan_modules` (quais módulos cada plano libera) |
-| FEAT-EP-0002-0003 | US-018 | Visualização da matriz plano×módulo |
-| FEAT-EP-0002-0004 | US-019 | Vinculação de tenant a plano com data de início |
-| FEAT-EP-0002-0004 | US-020 | Troca de plano (upgrade/downgrade) com efeito imediato |
-| FEAT-EP-0002-0004 | US-021 | Histórico de assinaturas do tenant |
-| FEAT-EP-0002-0005 | US-022 | Registro automático de ações administrativas (quem, quando, qual ação) |
-| FEAT-EP-0002-0005 | US-023 | Consulta de auditoria por tenant, período e tipo de ação |
-| FEAT-EP-0003-0001 | US-024 | Convite de usuário por email com link de ativação |
-| FEAT-EP-0003-0001 | US-025 | Cadastro de usuário com perfil e Unidade de Negócio |
-| FEAT-EP-0003-0001 | US-026 | Lista de usuários com filtros por tenant e status |
-| FEAT-EP-0003-0002 | US-027 | Definição de papéis padrão (Admin Tenant, Gerente, Operador) |
-| FEAT-EP-0003-0002 | US-028 | Criação de papel customizado pelo Admin do Tenant |
-| FEAT-EP-0003-0002 | US-029 | Atribuição de permissões granulares por papel |
-| FEAT-EP-0003-0002 | US-030 | Visualização da matriz papel×permissão |
-| FEAT-EP-0003-0003 | US-031 | Vinculação usuário a uma ou mais Unidades de Negócio |
-| FEAT-EP-0003-0003 | US-032 | Ativação/desativação de módulos por usuário |
-| FEAT-EP-0003-0003 | US-033 | Troca de contexto entre Unidades de Negócio (menu dropdown) |
-| FEAT-EP-0003-0004 | US-034 | Menu lateral renderizado conforme permissões do usuário |
-| FEAT-EP-0003-0004 | US-035 | Ocultação de ações (botões, links) sem permissão |
-| FEAT-EP-0003-0004 | US-036 | Mensagem amigável ao acessar rota sem permissão |
-| FEAT-EP-0004-0001 | US-037 | Tela de login via Keycloak com personalização por tenant (logo, cores) |
-| FEAT-EP-0004-0001 | US-038 | Recuperação de senha via email |
-| FEAT-EP-0004-0001 | US-039 | Logout com redirect para tela de login |
-| FEAT-EP-0004-0002 | US-040 | Boas-vindas pós-primeiro login |
-| FEAT-EP-0004-0002 | US-041 | Wizard de 4 passos (perfil, unidade, catálogo, confirmação) |
-| FEAT-EP-0004-0002 | US-042 | Validação de CNPJ da Unidade de Negócio no wizard |
-| FEAT-EP-0004-0002 | US-043 | Configuração de preferências iniciais (fuso horário, idioma) |
-| FEAT-EP-0004-0002 | US-044 | Tour guiado pelos menus e funcionalidades |
-| FEAT-EP-0004-0003 | US-045 | Dashboard com métricas do tenant (unidades, usuários, módulos ativos) |
-| FEAT-EP-0004-0003 | US-046 | Atalhos para ações frequentes (nova unidade, convidar usuário) |
-| FEAT-EP-0004-0004 | US-047 | App Switcher no topo com módulos contratados |
-| FEAT-EP-0004-0004 | US-048 | Indicador visual do módulo ativo |
-| FEAT-EP-0004-0004 | US-049 | Preparação para expansão: estrutura suporta novos módulos |
-| FEAT-EP-0004-0005 | US-050 | Cadastro de Unidade de Negócio (CNPJ, regime tributário) |
-| FEAT-EP-0004-0005 | US-051 | Estrutura hierárquica Matriz/Filial |
-| FEAT-EP-0004-0005 | US-052 | Lista de Unidades com busca e filtros |
-| FEAT-EP-0004-0005 | US-053 | Visualização detalhada da Unidade com usuários vinculados |
-| FEAT-EP-0004-0005 | US-054 | Edição e desativação de Unidade |
-| FEAT-EP-0004-0006 | US-055 | Cadastro de produto/serviço (nome, tipo, classificação) |
-| FEAT-EP-0004-0006 | US-056 | Lista de produtos com busca e filtros |
-| FEAT-EP-0004-0006 | US-057 | Tabela `product_tax_mapping` com schema definido |
-| FEAT-EP-0004-0006 | US-058 | Contrato de interface para acoplamento futuro do Tributali-Engine |
+| FEAT-EP-0001-0001 | US-FEAT-EP-0001-0001-0001 | Dashboard com indicadores principais (contas ativas, status, planos) |
+| FEAT-EP-0001-0001 | US-FEAT-EP-0001-0001-0002 | Filtros de período (7, 30, 90 dias, mês atual, ano atual) |
+| FEAT-EP-0001-0001 | US-FEAT-EP-0001-0001-0003 | Gráfico de evolução da base de clientes |
+| FEAT-EP-0001-0002 | US-FEAT-EP-0001-0002-0004 | Lista completa de contas com paginação (25 por página) |
+| FEAT-EP-0001-0002 | US-FEAT-EP-0001-0002-0005 | Busca textual por nome/razão social (a partir de 3 caracteres) |
+| FEAT-EP-0001-0003 | US-FEAT-EP-0001-0003-0006 | Destaque visual de tenants com pendências |
+| FEAT-EP-0001-0003 | US-FEAT-EP-0001-0003-0007 | Indicadores de atenção (onboarding incompleto, atraso pagamento) |
+| FEAT-EP-0002-0001 | US-FEAT-EP-0002-0001-0008 | Cadastro de nova conta com dados do cliente |
+| FEAT-EP-0002-0001 | US-FEAT-EP-0002-0001-0009 | Ativação de conta com envio de credenciais |
+| FEAT-EP-0002-0001 | US-FEAT-EP-0002-0001-0010 | Validação de CNPJ no cadastro de conta |
+| FEAT-EP-0002-0001 | US-FEAT-EP-0002-0001-0011 | Criação automática da primeira Unidade de Negócio |
+| FEAT-EP-0002-0002 | US-FEAT-EP-0002-0002-0012 | Alteração de status (ativo, suspenso, inativo) com registro de auditoria |
+| FEAT-EP-0002-0002 | US-FEAT-EP-0002-0002-0013 | Visualização do histórico de status do tenant |
+| FEAT-EP-0002-0002 | US-FEAT-EP-0002-0002-0014 | Notificação de suspensão para o tenant |
+| FEAT-EP-0002-0003 | US-FEAT-EP-0002-0003-0015 | Cadastro de plano com nome, descrição, valor e módulos |
+| FEAT-EP-0002-0003 | US-FEAT-EP-0002-0003-0016 | Definição de vigência e recorrência do plano |
+| FEAT-EP-0002-0003 | US-FEAT-EP-0002-0003-0017 | Tabela associativa `plan_modules` (quais módulos cada plano libera) |
+| FEAT-EP-0002-0003 | US-FEAT-EP-0002-0003-0018 | Visualização da matriz plano×módulo |
+| FEAT-EP-0002-0004 | US-FEAT-EP-0002-0004-0019 | Vinculação de tenant a plano com data de início |
+| FEAT-EP-0002-0004 | US-FEAT-EP-0002-0004-0020 | Troca de plano (upgrade/downgrade) com efeito imediato |
+| FEAT-EP-0002-0004 | US-FEAT-EP-0002-0004-0021 | Histórico de assinaturas do tenant |
+| FEAT-EP-0002-0005 | US-FEAT-EP-0002-0005-0022 | Registro automático de ações administrativas (quem, quando, qual ação) |
+| FEAT-EP-0002-0005 | US-FEAT-EP-0002-0005-0023 | Consulta de auditoria por tenant, período e tipo de ação |
+| FEAT-EP-0003-0001 | US-FEAT-EP-0003-0001-0024 | Convite de usuário por email com link de ativação |
+| FEAT-EP-0003-0001 | US-FEAT-EP-0003-0001-0025 | Cadastro de usuário com perfil e Unidade de Negócio |
+| FEAT-EP-0003-0001 | US-FEAT-EP-0003-0001-0026 | Lista de usuários com filtros por tenant e status |
+| FEAT-EP-0003-0002 | US-FEAT-EP-0003-0002-0027 | Definição de papéis padrão (Admin Tenant, Gerente, Operador) |
+| FEAT-EP-0003-0002 | US-FEAT-EP-0003-0002-0028 | Criação de papel customizado pelo Admin do Tenant |
+| FEAT-EP-0003-0002 | US-FEAT-EP-0003-0002-0029 | Atribuição de permissões granulares por papel |
+| FEAT-EP-0003-0002 | US-FEAT-EP-0003-0002-0030 | Visualização da matriz papel×permissão |
+| FEAT-EP-0003-0003 | US-FEAT-EP-0003-0003-0031 | Vinculação usuário a uma ou mais Unidades de Negócio |
+| FEAT-EP-0003-0003 | US-FEAT-EP-0003-0003-0032 | Ativação/desativação de módulos por usuário |
+| FEAT-EP-0003-0003 | US-FEAT-EP-0003-0003-0033 | Troca de contexto entre Unidades de Negócio (menu dropdown) |
+| FEAT-EP-0003-0004 | US-FEAT-EP-0003-0004-0034 | Menu lateral renderizado conforme permissões do usuário |
+| FEAT-EP-0003-0004 | US-FEAT-EP-0003-0004-0035 | Ocultação de ações (botões, links) sem permissão |
+| FEAT-EP-0003-0004 | US-FEAT-EP-0003-0004-0036 | Mensagem amigável ao acessar rota sem permissão |
+| FEAT-EP-0004-0001 | US-FEAT-EP-0004-0001-0037 | Tela de login via Keycloak com personalização por tenant (logo, cores) |
+| FEAT-EP-0004-0001 | US-FEAT-EP-0004-0001-0038 | Recuperação de senha via email |
+| FEAT-EP-0004-0001 | US-FEAT-EP-0004-0001-0039 | Logout com redirect para tela de login |
+| FEAT-EP-0004-0002 | US-FEAT-EP-0004-0002-0040 | Boas-vindas pós-primeiro login |
+| FEAT-EP-0004-0002 | US-FEAT-EP-0004-0002-0041 | Wizard de 4 passos (perfil, unidade, catálogo, confirmação) |
+| FEAT-EP-0004-0002 | US-FEAT-EP-0004-0002-0042 | Validação de CNPJ da Unidade de Negócio no wizard |
+| FEAT-EP-0004-0002 | US-FEAT-EP-0004-0002-0043 | Configuração de preferências iniciais (fuso horário, idioma) |
+| FEAT-EP-0004-0002 | US-FEAT-EP-0004-0002-0044 | Tour guiado pelos menus e funcionalidades |
+| FEAT-EP-0004-0003 | US-FEAT-EP-0004-0003-0045 | Dashboard com métricas do tenant (unidades, usuários, módulos ativos) |
+| FEAT-EP-0004-0003 | US-FEAT-EP-0004-0003-0046 | Atalhos para ações frequentes (nova unidade, convidar usuário) |
+| FEAT-EP-0004-0004 | US-FEAT-EP-0004-0004-0047 | App Switcher no topo com módulos contratados |
+| FEAT-EP-0004-0004 | US-FEAT-EP-0004-0004-0048 | Indicador visual do módulo ativo |
+| FEAT-EP-0004-0004 | US-FEAT-EP-0004-0004-0049 | Preparação para expansão: estrutura suporta novos módulos |
+| FEAT-EP-0004-0005 | US-FEAT-EP-0004-0005-0050 | Cadastro de Unidade de Negócio (CNPJ, regime tributário) |
+| FEAT-EP-0004-0005 | US-FEAT-EP-0004-0005-0051 | Estrutura hierárquica Matriz/Filial |
+| FEAT-EP-0004-0005 | US-FEAT-EP-0004-0005-0052 | Lista de Unidades com busca e filtros |
+| FEAT-EP-0004-0005 | US-FEAT-EP-0004-0005-0053 | Visualização detalhada da Unidade com usuários vinculados |
+| FEAT-EP-0004-0005 | US-FEAT-EP-0004-0005-0054 | Edição e desativação de Unidade |
+| FEAT-EP-0004-0006 | US-FEAT-EP-0004-0006-0055 | Cadastro de produto/serviço (nome, tipo, classificação) |
+| FEAT-EP-0004-0006 | US-FEAT-EP-0004-0006-0056 | Lista de produtos com busca e filtros |
+| FEAT-EP-0004-0006 | US-FEAT-EP-0004-0006-0057 | Tabela `product_tax_mapping` com schema definido |
+| FEAT-EP-0004-0006 | US-FEAT-EP-0004-0006-0058 | Contrato de interface para acoplamento futuro do Tributali-Engine |
+
+### 2.4 Modelo de Dados de Referência (ERD)
+
+O diagrama abaixo — extraído do plano técnico original — apresenta a visão completa das entidades planejadas para a FBSO Platform. As entidades na **parte superior** do diagrama (até PRODUCT_SERVICE) estão no escopo deste projeto (Core Administrativo). As demais pertencem a fases futuras.
+
+#### 2.4.1 Diagrama de Entidades e Relacionamentos
+
+```mermaid
+erDiagram
+    %% ============================================
+    %% FASE 0 — CORE ADMINISTRATIVO (Este Projeto)
+    %% ============================================
+    TENANT ||--o{ USER : "possui"
+    TENANT ||--|| SUBSCRIPTION : "paga"
+    TENANT ||--o{ BUSINESS_UNIT : "gerencia"
+
+    PLAN ||--o{ SUBSCRIPTION : "define"
+
+    BUSINESS_UNIT ||--o{ USER_PERMISSION : "restringe"
+    USER ||--o{ USER_PERMISSION : "recebe"
+    USER_PERMISSION ||--o{ ROLE_RESOURCE : "concede acesso"
+    RESOURCE_ACTION ||--o{ ROLE_RESOURCE : "mapeia"
+
+    BUSINESS_UNIT ||--o{ PRODUCT_SERVICE : "cadastra"
+
+    %% ============================================
+    %% FASES FUTURAS — Módulos-Produto
+    %% ============================================
+    BUSINESS_UNIT ||--o{ BILLABLE : "configura regras"
+    PRODUCT_SERVICE ||--o{ PRODUCT_BILLABLE_MAPPING : "mapeia"
+    BILLABLE ||--o{ PRODUCT_BILLABLE_MAPPING : "vincula"
+    BUSINESS_UNIT ||--o{ ORDER : "vende/compra"
+    ORDER ||--o{ ORDER_ITEM : "contem"
+    PRODUCT_SERVICE ||--o{ ORDER_ITEM : "eh vendido em"
+    ORDER ||--o{ INVOICE : "gera"
+    INVOICE ||--o{ INVOICE_ITEM : "contem"
+    ORDER_ITEM ||--|| INVOICE_ITEM : "origina"
+    PRODUCT_BILLABLE_MAPPING ||--o{ INVOICE_ITEM : "aplica regras de"
+    INVOICE ||--o{ TRANSACTION_PAYMENT : "recebe"
+    TRANSACTION_PAYMENT ||--o{ SPLIT_PAYMENT : "dispara"
+    TENANT ||--o{ BILLING_INFO : "cadastra cartao/pagamento"
+    BUSINESS_UNIT ||--o{ BANK_ACCOUNT : "configura para receber"
+    BILLABLE }o--|| BANK_ACCOUNT : "direciona receita para"
+```
+
+#### 2.4.2 Dicionário de Entidades — Fase 0 (Core Administrativo)
+
+Entidades que **DEVEM** ser implementadas neste projeto:
+
+##### Camada Administrativa (SaaS Core)
+
+| Entidade | Descrição | Campos Essenciais |
+|:---|:---|:---|
+| **TENANT** | Conta Master / Pagadora do cliente | `id` (PK), `name_corporate` (Razão Social), `name_fantasy` (Nome Fantasia), `segment` (Segmento de Mercado), `status` (Enum: PENDING_ONBOARDING, ACTIVE, SUSPENDED, INACTIVE) |
+| **USER** | Usuários do ecossistema | `id` (PK), `tenant_id` (FK), `external_keycloak_id` (UUID do Keycloak), `email`, `name`, `status` (ACTIVE, INACTIVE, INVITE_PENDING) |
+| **PLAN** | Plano comercial do SaaS | `id` (PK), `name`, `description`, `price`, `recurrence` (MONTHLY, QUARTERLY, YEARLY), `status` (ACTIVE, DISCONTINUED) |
+| **SUBSCRIPTION** | Assinatura de um Tenant a um Plano | `id` (PK), `tenant_id` (FK), `plan_id` (FK), `start_date`, `end_date` (nullable), `status` (ACTIVE, SUSPENDED, CANCELED) |
+| **PLAN_MODULE** | Módulos incluídos em cada plano | `id` (PK), `plan_id` (FK), `module_name` (ex: TRIBUTALI_ENGINE, STOREKEEPER_PORTAL) |
+
+##### Camada de Isolamento Operacional (Governança)
+
+| Entidade | Descrição | Campos Essenciais |
+|:---|:---|:---|
+| **BUSINESS_UNIT** | CNPJs / Filiais vinculadas a um Tenant | `id` (PK), `tenant_id` (FK), `parent_id` (FK auto-relacionamento Matriz/Filial), `cnpj` (Único entre ativos), `corporate_name`, `tax_regime` (SIMPLES_NACIONAL, LUCRO_REAL, LUCRO_PRESUMIDO), `address`, `status` (ACTIVE, INACTIVE) |
+| **USER_PERMISSION** | Tabela Ponte de Segurança — vincula usuário a unidades | `id` (PK), `user_id` (FK), `business_unit_id` (FK), `role` (Enum: ADMIN_TENANT, MANAGER_BU, OPERATOR_BU, AUDITOR) |
+| **RESOURCE_ACTION** | Telas e ações do portal | `id` (PK), `resource_name` (ex: dashboard, product_catalog, user_management), `action` (view, create, edit, delete) |
+| **ROLE_RESOURCE** | Tabela ponte — papel × recursos permitidos | `id` (PK), `role` (Enum), `resource_action_id` (FK) |
+
+##### Camada de Catálogo
+
+| Entidade | Descrição | Campos Essenciais |
+|:---|:---|:---|
+| **PRODUCT_SERVICE** | Catálogo Comercial da Unidade de Negócio | `id` (PK), `business_unit_id` (FK), `name`, `sku` (opcional, único por BU), `type` (PRODUCT, SERVICE), `description`, `status` (ACTIVE, INACTIVE) |
+
+##### Campos de Auditoria (TODAS as tabelas)
+
+| Campo | Tipo | Descrição |
+|:---|:---|:---|
+| `created_dt` | Timestamp | Data/hora de criação do registro |
+| `updated_dt` | Timestamp | Data/hora da última atualização |
+| `created_by` | FK → USER.id | Usuário que criou o registro |
+| `updated_by` | FK → USER.id | Usuário que atualizou o registro |
+| `deleted_dt` | Timestamp (nullable) | Data/hora da exclusão lógica (NULL = ativo) |
+| `deleted_by` | FK → USER.id | Usuário que realizou a exclusão lógica |
+
+#### 2.4.3 Entidades Fora do Escopo (Fases Futuras)
+
+Estas entidades **NÃO** devem ser implementadas na Fase 0. Documentadas como referência para garantir que o schema do Core não impeça sua adição futura.
+
+| Entidade | Descrição | Fase Prevista |
+|:---|:---|:---|
+| **BILLABLE** | Engine Fiscal — regras de tributação (NCM, NBS, CNAE, alíquotas IBS/CBS) | Tributali-Engine |
+| **PRODUCT_BILLABLE_MAPPING** | De-Para: Produto × Regra Fiscal | Tributali-Engine |
+| **ORDER / ORDER_ITEM** | Pedidos comerciais (Quote → Sale Order) | Storekeeper / Tributali-Engine |
+| **INVOICE / INVOICE_ITEM** | Documentos de cobrança | Storekeeper / Tributali-Engine |
+| **TRANSACTION_PAYMENT** | Entrada de pagamentos (gateway ou input manual) | Storekeeper / Tributali-Engine |
+| **SPLIT_PAYMENT** | Split de arrecadação (IBS/CBS para o governo) | Tributali-Engine |
+| **BILLING_INFO** | Dados de cartão/pagamento do Tenant | Storekeeper |
+| **BANK_ACCOUNT** | Contas bancárias por Unidade de Negócio | Storekeeper / Tributali-Engine |
+
+#### 2.4.4 Índices Únicos e Soft Delete
+
+Conforme ADR-05, utiliza-se **Índice Único Parcial** (PostgreSQL) para entidades com restrições de unicidade sob Soft Delete:
+
+```sql
+-- CNPJ único apenas entre registros ativos do mesmo tenant
+CREATE UNIQUE INDEX unique_cnpj_active
+ON business_unit (tenant_id, cnpj)
+WHERE deleted_dt IS NULL;
+
+-- E-mail único por tenant apenas entre ativos
+CREATE UNIQUE INDEX unique_email_active
+ON "user" (tenant_id, email)
+WHERE deleted_dt IS NULL;
+
+-- SKU único por Unidade de Negócio apenas entre ativos
+CREATE UNIQUE INDEX unique_sku_active
+ON product_service (business_unit_id, sku)
+WHERE deleted_dt IS NULL AND sku IS NOT NULL;
+```
+
+#### 2.4.5 Mapeamento Entidade → Endpoint API
+
+| Entidade | Recurso API | Épico |
+|:---|:---|:---|
+| TENANT | `/tenants` | EP-0002 |
+| PLAN | `/plans` | EP-0002 |
+| SUBSCRIPTION | `/subscriptions` | EP-0002 |
+| PLAN_MODULE | (sub-recurso de `/plans`) | EP-0002 |
+| USER | `/users` | EP-0003 |
+| USER_PERMISSION | `/permissions` | EP-0003 |
+| RESOURCE_ACTION | (tabela de domínio — populada via migration, sem CRUD externo) | EP-0003 |
+| ROLE_RESOURCE | (tabela de domínio — populada via migration, sem CRUD externo) | EP-0003 |
+| BUSINESS_UNIT | `/business-units` | EP-0004 |
+| PRODUCT_SERVICE | `/products` | EP-0004 |
+
+> **Origem:** Esta seção foi migrada do planejamento técnico original (TECHNICAL-PLAN.md §2.4, removido) para o PRD-DEFINITION por ser a perspectiva de dados das features e épicos já descritos neste documento. O mapeamento Entidade→Endpoint conecta o modelo de dados aos recursos de API definidos no [SPECS-DEFINITION.md](./PROJECT-TECHNICAL-DEFINITIONS-SPECS-DEFINITION.md).
 
 ---
 
@@ -187,7 +324,7 @@ O MVP da FBSO Platform é o conjunto mínimo de funcionalidades que permite à F
 #### FCS-01: Onboarding de Novo Cliente (End-to-End)
 
 ```
-1. [S02] Administrador FBSO acessa Portal Admin → cadastra tenant (US-008)
+1. [S02] Administrador FBSO acessa Portal Admin → cadastra tenant (US-FEAT-EP-0002-0001-0008)
 2. [S01] Backend cria tenant, gera credenciais, persiste no schema fbso_portal
 3. [S04] Keycloak cria Realm para o tenant com configurações padrão
 4. [S01] Backend dispara email de boas-vindas → [S07] MailHog captura (dev)
@@ -195,21 +332,21 @@ O MVP da FBSO Platform é o conjunto mínimo de funcionalidades que permite à F
 6. [S04] Keycloak redireciona para tela de login OIDC com marca do tenant
 7. [S14] Kong valida JWT, injeta X-Tenant-ID
 8. [S01] Backend recebe headers, aplica SET app.current_tenant_id
-9. [S02] Cliente passa pelo wizard de onboarding (US-040 a US-044)
+9. [S02] Cliente passa pelo wizard de onboarding (US-FEAT-EP-0004-0002-0040 a US-FEAT-EP-0004-0002-0044)
 10. [S01] Primeira Unidade de Negócio criada automaticamente
 ```
 
 #### FCS-02: Controle de Acesso Granular (RBAC End-to-End)
 
 ```
-1. [S02] Admin do Tenant define papel customizado (US-028)
+1. [S02] Admin do Tenant define papel customizado (US-FEAT-EP-0003-0002-0028)
 2. [S01] Backend persiste papel e permissões no schema fbso_portal
 3. [S04] Keycloak mapeia permissões como claims no JWT via Protocol Mappers
-4. [S02] Admin vincula usuário ao papel e Unidade de Negócio (US-031)
+4. [S02] Admin vincula usuário ao papel e Unidade de Negócio (US-FEAT-EP-0003-0003-0031)
 5. [S14] Kong valida JWT, extrai claims → headers: X-User-Permissions
 6. [S01] Backend aplica filtro de permissões nas queries
-7. [S02] Frontend renderiza menu lateral conforme permissões (US-034)
-8. [S02] Botões/ações sem permissão são ocultados (US-035)
+7. [S02] Frontend renderiza menu lateral conforme permissões (US-FEAT-EP-0003-0004-0034)
+8. [S02] Botões/ações sem permissão são ocultados (US-FEAT-EP-0003-0004-0035)
 ```
 
 #### FCS-03: White-Label por Domínio (Multi-Tenant Visual)
@@ -412,7 +549,7 @@ E após login, o portal exibe a identidade visual do Supermercado ABC
 | [04-FEATURES](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 18 features, 58 user stories |
 | [05-MATRIZ-RTM](../05-MATRIZ-RASTREABILIDADE-RTM.md) | Rastreabilidade D→EP→F→US |
 | [user-stories/](../user-stories/) | 18 arquivos de user stories |
-| [TECHNICAL-PLAN.md](../TECHNICAL-PLAN.md) | Stack tecnológica e decisões |
+| [STACK-MATRIX](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md) | Stack tecnológica e decisões |
 | [GLOBAL-SECURITY.md](../../../.specs/security/GLOBAL-SECURITY.md) | Política de segurança |
 | [SOLUTIONS-CATALOG](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md) | 14 soluções técnicas |
 | [STACK-MATRIX](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md) | Stacks por solução |

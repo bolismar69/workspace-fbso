@@ -289,7 +289,7 @@ Ele serve como:
 |:---|:---|
 | [PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md) | Nomes, contatos, horas/semana de cada profissional |
 | [PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY-EXCEPTIONS.md](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY-EXCEPTIONS.md) | Exceções de capacidade (ausências, reduções) |
-| [TECHNICAL-PLAN.md](../TECHNICAL-PLAN.md) | Stack tecnológica completa e decisões de arquitetura |
+| [STACK-MATRIX](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md) | Stack tecnológica completa e decisões de arquitetura |
 | [01-PROJECT-CHARTER](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | Escopo, entregas D1-D7, marcos M1-M7 |
 | [04-FEATURES](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) | 18 funcionalidades, 58 user stories, datas-alvo |
 

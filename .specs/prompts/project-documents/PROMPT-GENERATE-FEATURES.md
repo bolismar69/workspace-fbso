@@ -1,6 +1,6 @@
 # PROMPT: GERADOR DE ESPECIFICAÇÃO DE FUNCIONALIDADES (FEATURES PRD)
 ## Arquivo: PROMPT-GENERATE-FEATURES.md
-## Versão: 3.0 — Padrão de ID FEAT-EP-{EEEE}-{SSSS} com Arquivos Individuais por Feature
+## Versão: 4.0 — Padrão de ID FEAT-EP-{EEEE}-{SSSS} + US-FEAT-{codigo-feature}-{SSSS} global
 
 Atue como um Analista de Negócios Ágil Sênior (Agile BA) e Product Owner, aplicando as competências de `agile-ba-practices`, `acceptance-criteria`, `breakdown-feature-prd` e os filtros pragmáticos corporativos de `caveman` e `caveman-review`. Sua missão é ler o documento de Épicos congelado da Fase 3 e desdobrá-lo em uma **Especificação de Funcionalidades (Features)** exaustiva, estruturada de forma modular: um arquivo índice central + arquivos individuais por feature na pasta `features/`.
 
@@ -8,7 +8,7 @@ Atue como um Analista de Negócios Ágil Sênior (Agile BA) e Product Owner, apl
 1. **Estrutura Modular (NOVO — v2.0):** O documento de Features passa a ser entregue em dois artefatos complementares:
    - **Arquivo Índice:** `04-FEATURES-{PROJECT_ID_NAME}.md` — resumo executivo com visão consolidada, cronograma, matriz de cobertura Charter×Features, matriz MoSCoW e diagrama de linha de tempo.
    - **Arquivos Individuais:** `features/FEAT-EP-{EEEE}-{SSSS}-{nome-slugificado}.md` — um arquivo por feature com objetivo de negócio, user stories, regras de negócio e matriz de rastreabilidade específica.
-2. **Taxonomia e Rastreabilidade de IDs (ATUALIZADO — v3.0):** As funcionalidades devem utilizar o formato `FEAT-EP-{EEEE}-{SSSS}` onde `{EEEE}` é o código do épico associado com 4 dígitos e `{SSSS}` é o sequencial dentro do épico com 4 dígitos (reiniciando para cada épico). Ex: `FEAT-EP-0001-0001`, `FEAT-EP-0001-0002`, `FEAT-EP-0002-0001`. As User Stories associadas mantêm o formato `US-[SEQUENCIAL]` (ex: `US-001`). As Regras de Negócio passam a utilizar o formato `RN-FEAT-EP-{EEEE}-{SSSS}-{SSSS}` (ex: `RN-FEAT-EP-0001-0001-0001`).
+2. **Taxonomia e Rastreabilidade de IDs (ATUALIZADO — v4.0):** As funcionalidades devem utilizar o formato `FEAT-EP-{EEEE}-{SSSS}` onde `{EEEE}` é o código do épico associado com 4 dígitos e `{SSSS}` é o sequencial dentro do épico com 4 dígitos (reiniciando para cada épico). Ex: `FEAT-EP-0001-0001`, `FEAT-EP-0001-0002`, `FEAT-EP-0002-0001`. As User Stories associadas seguem o padrão `US-FEAT-{codigo-feature}-{SSSS}` com `{SSSS}` **global** (0001-9999, não reinicia por feature). Ex: `US-FEAT-EP-0001-0001-0001`, `US-FEAT-EP-0001-0002-0004`. As Regras de Negócio utilizam o formato `RN-FEAT-EP-{EEEE}-{SSSS}-{SSSS}` (ex: `RN-FEAT-EP-0001-0001-0001`).
 3. **Abstracão Técnica Absoluta:** O foco é o comportamento esperado sob a ótica do usuário e do negócio. Não inclua referências a arquitetura técnica, bancos de dados, microsserviços ou tecnologias front-end/back-end.
 4. **Mapeamento Exigido (no Índice):** O documento deve conter obrigatoriamente: Visão Geral de Funcionalidades com links para arquivos individuais, Cronograma por Funcionalidade, Matriz de Cobertura contra o Project Charter, Diagrama de Linha de Tempo ASCII e Matriz de Priorização MoSCoW.
 5. **Análise de Conformidade Interna (Caveman Review):** Aplique um filtro mental pragmático durante a geração. Elimine qualquer termo rebuscado de tecnologia que mascare a falta de uma regra de negócio real.
@@ -135,7 +135,7 @@ Atue como um Analista de Negócios Ágil Sênior (Agile BA) e Product Owner, apl
 
 | # | User Story | Critérios de Aceitação |
 |---|-----------|----------------------|
-| US-XXX | Como **[Persona]**, quero [ação/funcionalidade] para [benefício/valor de negócio] | • [Critério 1]<br>• [Critério 2] |
+| US-FEAT-{codigo-feature}-{SSSS} | Como **[Persona]**, quero [ação/funcionalidade] para [benefício/valor de negócio] | • [Critério 1]<br>• [Critério 2] |
 
 ## Regras de Negócio
 

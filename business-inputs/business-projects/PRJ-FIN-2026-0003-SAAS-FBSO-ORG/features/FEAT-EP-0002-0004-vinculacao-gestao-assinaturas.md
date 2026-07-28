@@ -26,9 +26,9 @@ Vincular clientes a planos com controle de vigência, permitindo upgrade/downgra
 
 | # | User Story | Critérios de Aceitação |
 |---|-----------|----------------------|
-| US-019 | Como **Administrador FBSO**, quero vincular um cliente a um plano comercial definindo data de início, vigência e status da assinatura | • Seletor de plano (apenas planos ativos listados) • Campos: data de início, data de término (ou "indeterminado"), status (Ativa, Suspensa, Cancelada) • Ao ativar assinatura, módulos do plano são liberados para o tenant |
-| US-020 | Como **Líder Comercial**, quero realizar upgrade ou downgrade de plano de um cliente, mantendo o histórico da assinatura anterior | • Ao trocar de plano, assinatura anterior é finalizada com data de término • Nova assinatura é criada com data de início igual ao dia seguinte ao término da anterior • Histórico exibe todas as assinaturas do cliente em ordem cronológica |
-| US-021 | Como **Administrador FBSO**, quero suspender a assinatura de um cliente, o que deve bloquear o acesso dele aos módulos do plano | • Suspensão da assinatura bloqueia acesso aos módulos em até 5 minutos • Status da assinatura alterado para "Suspensa" • Reativação da assinatura restaura acesso aos mesmos módulos |
+| US-FEAT-EP-0002-0004-0019 | Como **Administrador FBSO**, quero vincular um cliente a um plano comercial definindo data de início, vigência e status da assinatura | • Seletor de plano (apenas planos ativos listados) • Campos: data de início, data de término (ou "indeterminado"), status (Ativa, Suspensa, Cancelada) • Ao ativar assinatura, módulos do plano são liberados para o tenant |
+| US-FEAT-EP-0002-0004-0020 | Como **Líder Comercial**, quero realizar upgrade ou downgrade de plano de um cliente, mantendo o histórico da assinatura anterior | • Ao trocar de plano, assinatura anterior é finalizada com data de término • Nova assinatura é criada com data de início igual ao dia seguinte ao término da anterior • Histórico exibe todas as assinaturas do cliente em ordem cronológica |
+| US-FEAT-EP-0002-0004-0021 | Como **Administrador FBSO**, quero suspender a assinatura de um cliente, o que deve bloquear o acesso dele aos módulos do plano | • Suspensão da assinatura bloqueia acesso aos módulos em até 5 minutos • Status da assinatura alterado para "Suspensa" • Reativação da assinatura restaura acesso aos mesmos módulos |
 
 ## Regras de Negócio
 

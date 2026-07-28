@@ -26,8 +26,8 @@ Permitir que o time administrativo localize rapidamente qualquer conta de client
 
 | # | User Story | Critérios de Aceitação |
 |---|-----------|----------------------|
-| US-004 | Como **Administrador FBSO**, quero visualizar a lista completa de contas de clientes com informações resumidas (nome, plano, status, data de criação) para navegar pela base | • Tabela exibe: razão social, plano contratado, status, data de criação, data da última ação • Lista ordenada por data de criação (mais recentes primeiro) • Paginação a cada 25 registros |
-| US-005 | Como **Administrador FBSO**, quero buscar uma conta específica por nome ou razão social para localizar rapidamente um cliente | • Campo de busca textual no topo da lista • Busca filtra em tempo real (a partir de 3 caracteres digitados) • Resultados exibem correspondências parciais (ex: "Super" encontra "Supermercado Bom Preço") |
+| US-FEAT-EP-0001-0002-0004 | Como **Administrador FBSO**, quero visualizar a lista completa de contas de clientes com informações resumidas (nome, plano, status, data de criação) para navegar pela base | • Tabela exibe: razão social, plano contratado, status, data de criação, data da última ação • Lista ordenada por data de criação (mais recentes primeiro) • Paginação a cada 25 registros |
+| US-FEAT-EP-0001-0002-0005 | Como **Administrador FBSO**, quero buscar uma conta específica por nome ou razão social para localizar rapidamente um cliente | • Campo de busca textual no topo da lista • Busca filtra em tempo real (a partir de 3 caracteres digitados) • Resultados exibem correspondências parciais (ex: "Super" encontra "Supermercado Bom Preço") |
 
 ## Regras de Negócio
 

@@ -121,7 +121,7 @@ Verifique na ordem a existência de cada artefato do roadmap e reporte o status:
 | Features | `{PROJECT_COMPLETE_PATH_NAME}/04-FEATURES-{PROJECT_ID_NAME}.md` | ✅ Existe / ❌ Não existe |
 | Features (pasta) | `{PROJECT_COMPLETE_PATH_NAME}/features/` | ✅ Existe com N arquivos / ❌ Vazia / ❌ Não existe |
 | User Stories (pasta) | `{PROJECT_COMPLETE_PATH_NAME}/user-stories/` | ✅ Existe com N arquivos / ❌ Vazia / ❌ Não existe |
-| Matriz RTM | `{PROJECT_COMPLETE_PATH_NAME}/USER-STORIES-{PROJECT_ID_NAME}.md` | ✅ Existe / ❌ Não existe |
+| Matriz RTM | `{PROJECT_COMPLETE_PATH_NAME}/05-USER-STORIES-{PROJECT_ID_NAME}.md` | ✅ Existe / ❌ Não existe |
 
 **Lógica de decisão com base no status:**
 - Se **todos** os arquivos estão marcados como ❌ Não existe → Projeto novo. Iniciar da Fase 1 (Project Charter).
@@ -205,7 +205,7 @@ FASES DO ROADMAP COM CHECKPOINTS E PIPELINES DE PROMPTS
    - Inputs: '04-FEATURES-{PROJECT_ID_NAME}.md' (validado e congelado) e o '01-PROJECT-CHARTER-{PROJECT_ID_NAME}.md' original de negócio.
    - Checkpoint de Rastreabilidade Mestre: Execução da Matriz Automatizada Bidirecional. O portão lerá o arquivo 'USER-STORIES-{PROJECT_ID_NAME}.md' e validará a existência e conformidade de cada arquivo físico contido na pasta `/user-stories/`.
    - Responsáveis: Product Owner / Equipe de Desenvolvimento.
-   - Entregáveis: Arquivo central 'USER-STORIES-{PROJECT_ID_NAME}.md' com links markdown ativos + coleção de arquivos atômicos individuais `/user-stories/US-[ID].md` validados.
+   - Entregáveis: Arquivo central '05-USER-STORIES-{PROJECT_ID_NAME}.md' com links markdown ativos + coleção de arquivos atômicos individuais `/user-stories/US-FEAT-{codigo-feature}-{SSSS}-{nome-da-user-story}.md` validados, onde `SSSS` é sequencial global (0001-9999).
    - Pipeline Sequencial de Tarefas: Executar `project-documents/PROMPT-GENERATE-USER-STORIES.md` para criar o repositório descentralizado. Enviar a estrutura para o `project-documents/PROMPT-GATE-USER-STORIES.md`. Se houver links quebrados ou falhas conceituais, rodar o `project-documents/PROMPT-FIX-USER-STORIES.md` de forma isolada no arquivo com defeito até o status COMPLIANCE FINAL aprovado pelo humano.
 
 --------------------------------------------------------------------------------
@@ -216,11 +216,11 @@ MODELO DA MATRIZ DE RASTREABILIDADE DE ESCOPO (RTM)
 
 | ID Obj. (Fase 1: Charter) | Descrição do Objetivo | ID Req. (Fase 2: BRD) | Descrição do Requisito de Negócio | ID Épico (Fase 3) | ID Feature (Fase 4) | ID User Story (Fase 5) | Descrição da User Story (História) | Status de Validação |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **OBJ-01** | Reduzir chamados de suporte em 30% | **REQ-01.1** | Permitir que o cliente altere seus dados cadastrais sozinho. | **EPIC-01** | **FEAT-01.1** | **US-01.1.1** | Como cliente, quero atualizar meu e-mail para receber notificações corretas. | ✅ Aprovado |
-| **OBJ-01** | Reduzir chamados de suporte em 30% | **REQ-01.1** | Permitir que o cliente altere seus dados cadastrais sozinho. | **EPIC-01** | **FEAT-01.1** | **US-01.1.2** | Como cliente, quero alterar minha senha para manter a conta segura. | ✅ Aprovado |
-| **OBJ-01** | Reduzir chamados de suporte em 30% | **REQ-01.2** | Disponibilizar download de 2ª via de fatura em PDF. | **EPIC-01** | **FEAT-01.2** | **US-01.2.1** | Como cliente, quero baixar o PDF da fatura para realizar o pagamento. | ✅ Aprovado |
-| OBJ-02 | Aumentar a segurança dos dados | REQ-02.1 | Implementar autenticação em duas etapas (2FA). | EPIC-02 | FEAT-02.1 | US-02.1.1 | Como usuário, quero ativar o 2FA via SMS para proteger meus dados. | ✅ Aprovado |
-| OBJ-02 | Aumentar a segurança dos dados | REQ-02.1 | Implementar autenticação em duas etapas (2FA). | EPIC-02 | FEAT-02.1 | US-02.1.2 | Como usuário, quero validar o token de segurança no login para acessar o portal. | ✅ Aprovado |
+| **OBJ-01** | Reduzir chamados de suporte em 30% | **REQ-01.1** | Permitir que o cliente altere seus dados cadastrais sozinho. | **EP-0001** | **FEAT-EP-0001-0001** | **US-FEAT-EP-0001-0001-0001** | Como cliente, quero atualizar meu e-mail para receber notificações corretas. | ✅ Aprovado |
+| **OBJ-01** | Reduzir chamados de suporte em 30% | **REQ-01.2** | Disponibilizar download de 2ª via de fatura em PDF. | **EP-0001** | **FEAT-EP-0001-0002** | **US-FEAT-EP-0001-0002-0002** | Como cliente, quero baixar o PDF da fatura para realizar o pagamento. | ✅ Aprovado |
+| **OBJ-01** | Reduzir chamados de suporte em 30% | **REQ-01.3** | Notificar cliente sobre faturas em atraso via e-mail. | **EP-0001** | **FEAT-EP-0001-0003** | **US-FEAT-EP-0001-0003-0003** | Como cliente, quero receber alertas de fatura vencida para evitar multas. | ✅ Aprovado |
+| OBJ-02 | Aumentar a segurança dos dados | REQ-02.1 | Implementar autenticação em duas etapas (2FA). | EP-0002 | FEAT-EP-0002-0001 | US-FEAT-EP-0002-0001-0004 | Como usuário, quero ativar o 2FA via SMS para proteger meus dados. | ✅ Aprovado |
+| OBJ-02 | Aumentar a segurança dos dados | REQ-02.2 | Implementar política de senhas fortes com expiração. | EP-0002 | FEAT-EP-0002-0002 | US-FEAT-EP-0002-0002-0005 | Como usuário, quero ser forçado a trocar minha senha a cada 90 dias. | ✅ Aprovado |
 
 
 --------------------------------------------------------------------------------
@@ -294,7 +294,7 @@ gh pr create \
 - epics/*.md
 - 04-FEATURES-${PROJECT_ID_NAME}.md
 - features/*.md
-- USER-STORIES-{PROJECT_ID_NAME}.md
+- 05-USER-STORIES-{PROJECT_ID_NAME}.md
 - user-stories/*.md
 
 ### Checklist

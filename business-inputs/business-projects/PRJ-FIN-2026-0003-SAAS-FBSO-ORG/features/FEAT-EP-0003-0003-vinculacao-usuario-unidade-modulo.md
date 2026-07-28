@@ -26,9 +26,9 @@ Permitir controle granular de acesso, definindo exatamente quais unidades de neg
 
 | # | User Story | Critérios de Aceitação |
 |---|-----------|----------------------|
-| US-031 | Como **Administrador do Tenant**, quero definir quais Unidades de Negócio um usuário pode acessar (uma, várias ou todas) para restringir seu escopo de atuação | • No cadastro/edição do usuário, lista de Unidades de Negócio com checkbox • Permite selecionar "Todas" ou unidades específicas • Para Admin do Tenant, "Todas" é fixo e não pode ser alterado |
-| US-032 | Como **Administrador do Tenant**, quero definir quais módulos/produtos um usuário pode acessar (ex: apenas Storekeeper, apenas Tributali-Engine, ou ambos) para restringir sua visão da plataforma | • No cadastro/edição do usuário, lista de módulos contratados pelo tenant • Cada módulo com checkbox (marcado = acesso permitido) • Usuário sem acesso a um módulo não o vê no App Switcher |
-| US-033 | Como **Administrador do Tenant**, quero alterar as vinculações de um usuário a qualquer momento (adicionar/remover unidade, adicionar/remover módulo) com efeito imediato | • Alterações salvas têm efeito na próxima ação do usuário • Se usuário estiver logado e tiver acesso a uma unidade removida, a sessão é ajustada • Registro de auditoria gerado para cada alteração |
+| US-FEAT-EP-0003-0003-0031 | Como **Administrador do Tenant**, quero definir quais Unidades de Negócio um usuário pode acessar (uma, várias ou todas) para restringir seu escopo de atuação | • No cadastro/edição do usuário, lista de Unidades de Negócio com checkbox • Permite selecionar "Todas" ou unidades específicas • Para Admin do Tenant, "Todas" é fixo e não pode ser alterado |
+| US-FEAT-EP-0003-0003-0032 | Como **Administrador do Tenant**, quero definir quais módulos/produtos um usuário pode acessar (ex: apenas Storekeeper, apenas Tributali-Engine, ou ambos) para restringir sua visão da plataforma | • No cadastro/edição do usuário, lista de módulos contratados pelo tenant • Cada módulo com checkbox (marcado = acesso permitido) • Usuário sem acesso a um módulo não o vê no App Switcher |
+| US-FEAT-EP-0003-0003-0033 | Como **Administrador do Tenant**, quero alterar as vinculações de um usuário a qualquer momento (adicionar/remover unidade, adicionar/remover módulo) com efeito imediato | • Alterações salvas têm efeito na próxima ação do usuário • Se usuário estiver logado e tiver acesso a uma unidade removida, a sessão é ajustada • Registro de auditoria gerado para cada alteração |
 
 ## Regras de Negócio
 
