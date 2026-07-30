@@ -7,7 +7,7 @@ Preciso que você crie um roadmap de execução detalhado e um guia de orquestra
 
 Objetivo Principal: Garantir que todas as definições técnicas do projeto estejam criadas, revisadas e 100% alinhadas conceitualmente entre si e com os documentos de negócio (Charter, BRD, Epics, Features, User Stories), preparando o terreno para que cada time de solução técnica inicie seu trabalho com baseline consistente.
 
-Regra Crítica de Execução (Gating Rule): O processo é estritamente sequencial dentro de cada bloco. Nenhuma fase subsequente pode ser iniciada sem a aprovação formal, soberana e explícita do usuário humano na fase anterior. Blocos independentes podem ser executados em paralelo.
+Regra Crítica de Execução (Gating Rule): O processo é estritamente sequencial em todas as fases. Nenhuma fase subsequente pode ser iniciada sem a aprovação formal, soberana e explícita do usuário humano na fase anterior.
 
 ---
 
@@ -257,8 +257,8 @@ business-inputs/business-projects/{PROJECT_ID_NAME}/
 | 2 | `superpowers:executing-plans` | Execução do plano de fases com gates | Orquestração |
 | 3 | `superpowers:writing-plans` | Escrita e refino do plano de execução | Orquestração |
 | 4 | `superpowers:verification-before-completion` | Verificação de completude antes de cada COMPLIANCE | Qualidade |
-| 5 | `workflow-orchestration-patterns` | Padrões de orquestração de workflows multi-fase | Orquestração |
-| 6 | `dispatching-parallel-agents` | Disparo de agentes em paralelo para Blocos A e B | Orquestração |
+| 5 | `workflow-orchestration-patterns` | Padrões de orquestração de pipeline sequencial multi-bloco | Orquestração |
+| 6 | `sequential-orchestration` | Orquestração de fases em sequência estrita com gates e barreiras | Orquestração |
 | 7 | `gap-analysis` | Análise de gaps entre documentos de negócio e definições técnicas | Análise |
 | 8 | `analyze-project` | Análise do projeto existente para bootstrap | Análise |
 | 9 | `context-manager` | Gestão de contexto entre fases longas | Contexto |
