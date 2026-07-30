@@ -7,7 +7,7 @@
 - **Última Atualização:** 27 de Julho de 2026 (alinhamento IDs de épicos/features com docs de negócio v1.2)
 - **Status:** ✅ COMPLIANCE — Validado pelo Time de Arquitetura
 - **Baseline de Negócio:** [Project Charter v1.2](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [BRD v1.2](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Épicos v1.2](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Features FEAT-EP-](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
-- **Documentos Complementares:** [TEAM-MAP](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md) · [TEAM-CAPACITY](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md)
+- **Documentos Complementares:** [TEAM-SKILLS-MAP](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md) (Discovery Team) · [TEAM-CAPACITY](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md) · [ARCHITECTURE-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md) · [SECURITY-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md)
 
 ---
 
@@ -50,8 +50,6 @@ flowchart TB
     S01 -->|"OIDC/JWT"| S04
     S02 -->|"REST API"| S01
     S02 -->|"OIDC Login"| S04
-
-    %% 2 aplicações + 12 componentes infra = 14 soluções técnicas
 ```
 
 ### 2.1 Distribuição por Tipo
@@ -428,7 +426,6 @@ flowchart TB
 
 ## 5. Roadmap de Construção por Solução
 
-```
 ```mermaid
 gantt
     title Roadmap de Construção por Solução
@@ -455,7 +452,6 @@ gantt
     section Futuro
     S02 Frontend    :         s02, 2026-11-01, 2026-12-15
     S10 RabbitMQ    :         s10, 2026-11-15, 2026-12-31
-```
 ```
 
 ### Marcos de Entrega por Solução

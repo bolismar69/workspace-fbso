@@ -25,7 +25,12 @@ O projeto adota modelo **multi-tenant com discriminator column** (`tenant_id`) e
 - `business_units` — unidades de negócio (id, tenant_id, nome, parent_id)
 - `audit_log` — auditoria (id, tenant_id, user_id, acao, entidade, dados_antes, dados_depois, timestamp)
 
-### 1.2 Diagrama ERD (Mermaid)
+### 1.2 Repositório de Desenvolvimento
+
+- **Data Engineering:** `/home/bolismar/work/workspace-fbso/data_engineering/` — schemas, migrações, pipelines ETL, configurações de banco de dados
+- **Organização:** `databases/db-postgresql/schema_fbso_platform/` — schema principal do projeto
+
+### 1.3 Diagrama ERD (Mermaid)
 
 ```mermaid
 erDiagram
@@ -40,7 +45,7 @@ erDiagram
     BUSINESS_UNIT ||--o{ PRODUCT_SERVICE : "cadastra"
 ```
 
-### 1.3 Dicionário de Entidades — Fase 0 (Core)
+### 1.4 Dicionário de Entidades — Fase 0 (Core)
 
 | Entidade | Descrição | Campos Essenciais |
 |:---|:---|:---|
@@ -56,7 +61,7 @@ erDiagram
 
 **Campos de Auditoria (todas as tabelas):** `created_dt`, `updated_dt`, `created_by`, `updated_by`, `deleted_dt` (soft delete), `deleted_by`
 
-### 1.4 Índices e Soft Delete
+### 1.5 Índices e Soft Delete
 
 Índice Único Parcial (PostgreSQL) para unicidade sob Soft Delete:
 ```sql
@@ -64,7 +69,7 @@ CREATE UNIQUE INDEX idx_tenant_cnpj_active
     ON tenants (cnpj) WHERE deleted_dt IS NULL;
 ```
 
-### 1.5 Estratégia Multi-Tenant
+### 1.6 Estratégia Multi-Tenant
 
 | Aspecto | Decisão |
 |:---|:---|

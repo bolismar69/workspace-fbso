@@ -8,11 +8,14 @@
 
 ## 1. Pipeline CI/CD
 - **Ferramenta:** GitHub Actions
+- **Workflows:** `/home/bolismar/work/workspace-fbso/.github/workflows/`
 - **Workflows:** build→test→SAST→container→deploy (Dev/Staging/Prod)
 - **Estratégia de branch:** feature/* → PR → main → deploy automático Dev; tag semver → Staging; release → Prod
 
 ## 2. Infrastructure as Code
 - **Ferramenta:** Terraform (AWS) + Docker Compose (local)
+- **Repositório IaC:** `/home/bolismar/work/workspace-fbso/devops/` (scripts e configurações genéricas de DevOps)
+- **Blueprints Docker:** `/home/bolismar/work/workspace-fbso/architecture/blueprints/` (Dockerfiles específicos por versão de tecnologia)
 - **Módulos:** RDS, ElastiCache, EKS, S3, IAM, Route53, CloudFront
 - **State:** S3 backend com DynamoDB lock
 
