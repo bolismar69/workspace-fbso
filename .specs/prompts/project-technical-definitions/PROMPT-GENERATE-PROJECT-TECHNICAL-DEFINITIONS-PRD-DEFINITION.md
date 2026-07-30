@@ -2,11 +2,24 @@
 
 ## Contexto
 
-Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` 🆕 — a **baseline de requisitos de produto no nível do projeto**. Este documento é a referência normativa que cada PRD.md de solução individual vai especializar, garantindo que todos os times partam da mesma interpretação dos requisitos de negócio.
+Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` — a **baseline de requisitos de produto no nível do projeto**, focada no **PRD de Negócio**. Este documento é a referência normativa que cada PRD.md de solução individual vai especializar, garantindo que todos os times partam da mesma interpretação dos requisitos de negócio.
 
 **Relação com outros artefatos:** O PRD Definition está para os PRDs de solução assim como o GLOBAL-SECURITY.md está para os SECURITY.md de solução — é a referência que cada solução especializa, não substitui.
 
-**Inputs upstream:** `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md` (Fase 2) + documentos de negócio (Charter, BRD, Epics, Features, User Stories, RTM) + TECHNICAL-PLAN.md (referência).
+> **IMPORTANTE — PRD DE NEGÓCIO CONGELADO APÓS BARREIRA 0:**
+> Este documento é **CONGELADO** após a Barreira 0. Não será reaberto para alterações de escopo. O `SPECS-DEFINITION` (Fase 16 — Bloco C) fará a consolidação técnica detalhada a partir deste PRD.
+
+**Inputs upstream (Fase 4 — Bloco 0 — Product Definition & Product Backlog & PRD):**
+- **Inputs Globais do Roadmap** (todas as 8 variáveis)
+- **INTAKE-LOG.md (F1):** Log de demandas iniciais e triagem
+- **DOR-ASSESSMENT.md (F2):** Definition of Ready — avaliação de maturidade
+- **PRODUCT-BACKLOG-LIST.md (F3):** Backlog priorizado do produto
+- **Documentos de Negócio:** Charter, BRD, Epics, Features, User Stories, RTM
+
+**Blocos posteriores (NÃO são inputs deste prompt — vêm após o Bloco 0):**
+- Bloco A (F5-F6) — People & Solutions: Usa este PRD como referência
+- Bloco B (F7-F15) — Architecture, Security, Specs: Usa este PRD como referência
+- Bloco C (F16+) — Technical Consolidation: SPECS-DEFINITION detalha tecnicamente
 
 ---
 
@@ -17,6 +30,12 @@ Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` �
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
 | `{TECHNICAL_DEFINITIONS_PATH}` | Caminho da pasta technical-definitions |
+| `{TECHNICAL_SOLUTION_PATH}` | Caminho base das soluções técnicas |
+| `{TECHNICAL_SOLUTION_NAMES}` | Lista de nomes das soluções técnicas do projeto |
+| `{ARCHITECTURE_GLOBAL}` | Caminho para a pasta de arquitetura global (ADRs, blueprints) |
+| `{SECURITY_GLOBAL}` | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) |
+| `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
+| `{PROJECT_PROMPT_INPUTS}` | (Opcional) Lista de caminhos para prompts auxiliares ou contextos adicionais |
 
 ---
 
@@ -32,17 +51,17 @@ Invocar skills de produto, requisitos e análise de negócio para extrair e cons
 
 ### Passo 3 — Gerar o Artefato
 Gerar `{TECHNICAL_DEFINITIONS_PATH}/PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` com:
-1. **Visão do Produto** — Sistema completo como produto unificado
-2. **Matriz Requisito → Solução** — Cada BR/Feature/US mapeado para solução(ões)
-3. **MVP Global** — Entrega mínima viável cross-solution
-4. **Requisitos Funcionais Cross-Solution** — Fluxos multi-solução
-5. **Requisitos Não-Funcionais Globais** — Performance, disponibilidade, escalabilidade
-6. **Restrições de Produto** — O que NÃO está no escopo
-7. **Glossário de Domínio Unificado** — Termos canônicos para todos os times
-8. **Critérios de Aceitação Cross-Solution** — Cenários end-to-end
+1. **Visão do Produto** — Sistema completo como produto unificado, com foco no valor de negócio
+2. **Matriz Requisito → Entrega** — Cada BR/Feature/US mapeado para entregas de negócio
+3. **MVP Global** — Entrega mínima viável com critérios de negócio mensuráveis
+4. **Requisitos Funcionais de Negócio** — Funcionalidades essenciais descritas em linguagem de negócio
+5. **Restrições de Produto** — O que NÃO está no escopo (decisões de negócio)
+6. **Glossário de Domínio Unificado** — Termos canônicos para todos os times
+
+> Requisitos técnicos detalhados (NFRs, cenários de aceitação técnicos, fluxos cross-solution detalhados) pertencem ao `SPECS-DEFINITION.md` (Fase 16 — Bloco C).
 
 ### Passo 4 — Validação Pós-Geração
-Verificar: todas as seções preenchidas, matriz de cobertura 100%, MVP definido, restrições documentadas.
+Verificar: todas as seções preenchidas, matriz de cobertura 100% do backlog, MVP definido, restrições documentadas.
 
 ---
 
@@ -77,6 +96,7 @@ Verificar: todas as seções preenchidas, matriz de cobertura 100%, MVP definido
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: prompt gerador do PRD Definition | Time de Arquitetura |
+| 2.0 | 30/07/2026 | Migração para Bloco 0 (F4): PRD de Negócio congelado após Barreira 0; inputs alterados para INTAKE-LOG/DOR-ASSESSMENT/BACKLOG; seções reorientadas para foco em negócio | Time de Arquitetura |
 
 ---
 
