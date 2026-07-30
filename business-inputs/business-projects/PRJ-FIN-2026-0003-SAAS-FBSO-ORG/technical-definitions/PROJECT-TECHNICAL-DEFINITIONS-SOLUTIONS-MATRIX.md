@@ -2,9 +2,10 @@
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
+- **Fase:** F14 — Bloco C (Catálogo, Matriz, Stack, Specs & Milestones)
 - **Versão:** 1.1
 - **Data de Criação:** 26 de Julho de 2026
-- **Última Atualização:** 27 de Julho de 2026 (alinhamento com docs de negócio v1.2)
+- **Última Atualização:** 27 de Julho de 2026 (alinhamento com v5.0 Bloco C)
 - **Status:** ✅ COMPLIANCE — Validado pelo Time de Arquitetura
 - **Documentos Complementares:** [TEAM-SKILLS-MAP](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md) (Discovery Team) · [TEAM-CAPACITY](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md) · [ARCHITECTURE-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md) · [SECURITY-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md) · [SOLUTIONS-CATALOG](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md)
 

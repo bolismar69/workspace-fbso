@@ -2,9 +2,10 @@
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
+- **Fase:** F16 — Bloco C (Catálogo, Matriz, Stack, Specs & Milestones)
 - **Versão:** 1.1
 - **Data de Criação:** 26 de Julho de 2026
-- **Última Atualização:** 27 de Julho de 2026 (alinhamento com docs de negócio v1.2)
+- **Última Atualização:** 27 de Julho de 2026 (consolidação técnica v5.0 — referências cross-artifact)
 - **Status:** ✅ COMPLIANCE — Validado pelo Time de Arquitetura
 - **Baseline de Negócio:** [Project Charter v1.2](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [BRD v1.2](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Épicos v1.2](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Features FEAT-EP-](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
 - **Documentos Complementares:** [TEAM-SKILLS-MAP](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md) (Discovery Team) · [TEAM-CAPACITY](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md) · [ARCHITECTURE-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md) · [SECURITY-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md) · [PRD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md)

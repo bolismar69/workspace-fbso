@@ -2,6 +2,7 @@
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
+- **Fase:** F13 — Bloco C (Catálogo, Matriz, Stack, Specs & Milestones)
 - **Versão:** 1.4
 - **Data de Criação:** 25 de Julho de 2026
 - **Última Atualização:** 27 de Julho de 2026 (alinhamento IDs de épicos/features com docs de negócio v1.2)
