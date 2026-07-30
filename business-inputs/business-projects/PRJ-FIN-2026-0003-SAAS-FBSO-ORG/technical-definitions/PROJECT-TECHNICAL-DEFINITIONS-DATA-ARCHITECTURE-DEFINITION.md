@@ -25,7 +25,46 @@ O projeto adota modelo **multi-tenant com discriminator column** (`tenant_id`) e
 - `business_units` — unidades de negócio (id, tenant_id, nome, parent_id)
 - `audit_log` — auditoria (id, tenant_id, user_id, acao, entidade, dados_antes, dados_depois, timestamp)
 
-### 1.2 Estratégia Multi-Tenant
+### 1.2 Diagrama ERD (Mermaid)
+
+```mermaid
+erDiagram
+    TENANT ||--o{ USER : "possui"
+    TENANT ||--|| SUBSCRIPTION : "paga"
+    TENANT ||--o{ BUSINESS_UNIT : "gerencia"
+    PLAN ||--o{ SUBSCRIPTION : "define"
+    BUSINESS_UNIT ||--o{ USER_PERMISSION : "restringe"
+    USER ||--o{ USER_PERMISSION : "recebe"
+    USER_PERMISSION ||--o{ ROLE_RESOURCE : "concede acesso"
+    RESOURCE_ACTION ||--o{ ROLE_RESOURCE : "mapeia"
+    BUSINESS_UNIT ||--o{ PRODUCT_SERVICE : "cadastra"
+```
+
+### 1.3 Dicionário de Entidades — Fase 0 (Core)
+
+| Entidade | Descrição | Campos Essenciais |
+|:---|:---|:---|
+| **TENANT** | Conta Master do cliente | `id`, `name_corporate`, `name_fantasy`, `segment`, `status` |
+| **USER** | Usuários do ecossistema | `id`, `tenant_id` (FK), `external_keycloak_id`, `email`, `name`, `status` |
+| **PLAN** | Plano comercial SaaS | `id`, `name`, `price`, `recurrence`, `status` |
+| **SUBSCRIPTION** | Assinatura Tenant×Plano | `id`, `tenant_id` (FK), `plan_id` (FK), `start_date`, `end_date`, `status` |
+| **BUSINESS_UNIT** | CNPJs/Filiais do Tenant | `id`, `tenant_id` (FK), `parent_id` (FK), `cnpj`, `corporate_name`, `tax_regime` |
+| **USER_PERMISSION** | Ponte Usuário×Unidade×Papel | `id`, `user_id` (FK), `business_unit_id` (FK), `role` |
+| **RESOURCE_ACTION** | Telas e ações do portal | `id`, `resource_name`, `action` |
+| **ROLE_RESOURCE** | Ponte Papel×Recursos | `id`, `role`, `resource_action_id` (FK) |
+| **PRODUCT_SERVICE** | Catálogo da Unidade | `id`, `business_unit_id` (FK), `name`, `sku`, `type`, `status` |
+
+**Campos de Auditoria (todas as tabelas):** `created_dt`, `updated_dt`, `created_by`, `updated_by`, `deleted_dt` (soft delete), `deleted_by`
+
+### 1.4 Índices e Soft Delete
+
+Índice Único Parcial (PostgreSQL) para unicidade sob Soft Delete:
+```sql
+CREATE UNIQUE INDEX idx_tenant_cnpj_active
+    ON tenants (cnpj) WHERE deleted_dt IS NULL;
+```
+
+### 1.5 Estratégia Multi-Tenant
 
 | Aspecto | Decisão |
 |:---|:---|

@@ -620,11 +620,10 @@ sequenceDiagram
 
 ## 9. Modelo de Dados de Referência (ERD)
 
-> **Origem:** Migrado do PRD-DEFINITION em 30/07/2026. O modelo de dados é responsabilidade da arquitetura (TOGAF Phase C — Data Architecture). O PRD referencia este documento para rastreabilidade Features→Entidades.
-
-O diagrama abaixo apresenta a visão completa das entidades planejadas para a FBSO Platform. As entidades na **parte superior** do diagrama (até PRODUCT_SERVICE) estão no escopo deste projeto (Core Administrativo). As demais pertencem a fases futuras.
+> 📐 **Delegado para F9 — DATA-ARCHITECTURE-DEFINITION:** O modelo de dados completo (diagrama ERD, dicionário de entidades, índices e estratégia de soft delete) está documentado em [DATA-ARCHITECTURE-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-DATA-ARCHITECTURE-DEFINITION.md) (F9 — Data Architect). Esta seção mantém apenas a referência arquitetural para rastreabilidade Features→Entidades no contexto de integração (C4).
 
 ### 9.1 Diagrama de Entidades e Relacionamentos
+> 📐 **Fonte canônica:** [DATA-ARCHITECTURE-DEFINITION §1.2](./PROJECT-TECHNICAL-DEFINITIONS-DATA-ARCHITECTURE-DEFINITION.md) (F9). O diagrama abaixo é mantido como referência de integração arquitetural.
 
 ```mermaid
 erDiagram
@@ -757,7 +756,21 @@ WHERE deleted_dt IS NULL AND sku IS NOT NULL;
 
 ---
 
-## 10. Referências
+## 10. Delegação para Disciplinas do Bloco B
+
+Conforme a arquitetura v5.0, os detalhes específicos de cada disciplina são documentados em artefatos independentes:
+
+| Disciplina | Artefato | Conteúdo Delegado |
+|:---|:---|:---|
+| **Data Architect** | [DATA-ARCHITECTURE-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-DATA-ARCHITECTURE-DEFINITION.md) (F9) | Modelo ERD completo, dicionário de entidades, índices, storage strategy, pipelines ETL/CDC, data governance |
+| **DevOps/SRE** | [DEVOPS-SRE-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-DEVOPS-SRE-DEFINITION.md) (F10) | Pipeline CI/CD, IaC, observabilidade, SLOs, containers, runbooks |
+| **Test Specialist** | [TEST-STRATEGY-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-TEST-STRATEGY-DEFINITION.md) (F11) | Pirâmide de testes, automação, performance, segurança, quality gates |
+| **Infra/Cloud** | [INFRA-CLOUD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-INFRA-CLOUD-DEFINITION.md) (F12) | Topologia detalhada, compute, networking, storage, DR, custos |
+| **Security** | [SECURITY-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md) (F8) | Threat model, IAM, compliance, DevSecOps |
+
+> Esta seção substitui a concentração de todos os detalhes técnicos no ARCHITECTURE-DEFINITION (v4.0). Cada disciplina mantém seu artefato canônico; o ARCHITECTURE foca em integração entre soluções (C4, ADRs, matriz de comunicação).
+
+## 11. Referências
 
 | Documento | Relação |
 |:---|:---|
