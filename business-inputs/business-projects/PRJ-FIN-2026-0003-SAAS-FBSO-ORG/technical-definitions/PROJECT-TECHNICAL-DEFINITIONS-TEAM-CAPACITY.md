@@ -2,11 +2,14 @@
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
-- **Versão:** 2.0
+- **Versão:** 2.1
 - **Data de Criação:** 13 de Julho de 2026
-- **Última Atualização:** 25 de Julho de 2026 (migração para technical-definitions como TEAM-CAPACITY)
+- **Última Atualização:** 30 de Julho de 2026 (alinhamento com Bloco 0 v5.0)
 - **Status:** ⚠️ TODO — Aguardando definição dos integrantes técnicos que executarão as soluções
-- **Origem:** Migrado de `TECHNICAL-TEAM-MAP.md` (versão 1.5) — o documento original permanece na raiz do projeto como referência de negócio
+- **Fase:** F6 — Bloco A (People & Solutions)
+- **Bloco 0 — Artefatos Upstream:** [INTAKE-LOG](./PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md) (F1) · [DOR-ASSESSMENT](./PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md) (F2) · [PRODUCT-BACKLOG-LIST](./PROJECT-TECHNICAL-DEFINITIONS-PRODUCT-BACKLOG-LIST.md) (F3) · [PRD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md) (F4)
+- **Documento Complementar:** [TEAM-SKILLS-MAP](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md) (F5 — skills por papel)
+- **Origem:** Migrado de `TECHNICAL-TEAM-MAP.md` (versão 1.5)
 
 ---
 

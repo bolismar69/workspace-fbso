@@ -1,8 +1,8 @@
-# PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX
+# PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX (F15)
 
 ## Contexto
 
-Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md`. O agente corretor aplica correções cirúrgicas com base no relatório de falha.
+Este prompt é acionado quando o gate (F15) reprova `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md`. O agente corretor aplica correções cirúrgicas com base no relatório inline do gate, considerando as 6 disciplinas do Bloco B. **Nunca reescreve o documento do zero. Modifique estritamente as seções, tabelas ou linhas apontadas como Não Compliance.**
 
 ---
 
@@ -19,8 +19,8 @@ Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-SOL
 
 ## Fluxo de Execução
 
-### Passo 1 — Carregar Relatório de Falha
-Ler `STACK_MATRIX_SCOPE_FAIL_REPORT.md`, a matriz atual, catálogo de soluções e ADRs.
+### Passo 1 — Carregar Relatório do Gate
+Ler o **Relatório de Auditoria** emitido pelo gate (relatório inline com os IDs de conflito e respostas do humano), a matriz atual, catálogo de soluções (F13), matriz (F14) e ADRs.
 
 ### Passo 2 — Processar NCs por Prioridade
 | Prioridade | Tipo de NC | Ação Corretiva |
@@ -53,6 +53,7 @@ Ler `STACK_MATRIX_SCOPE_FAIL_REPORT.md`, a matriz atual, catálogo de soluções
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: prompt de correção da matriz de stacks | Time de Arquitetura |
+| 2.0 | 30/07/2026 | Renumeração F10→F15; adicionadas referências às 6 disciplinas do Bloco B | Time de Arquitetura |
 
 ---
 

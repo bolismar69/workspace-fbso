@@ -2,7 +2,7 @@
 
 ## Contexto
 
-Este prompt implementa o **Gate de Validação do Catálogo de Soluções** para o artefato `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md`. O agente validador verifica se o catálogo está completo, consistente e cobre todos os épicos/features do projeto de negócio.
+Este prompt implementa o **Gate de Validação do Catálogo de Soluções (F13)** para o artefato `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md`. O agente validador verifica se o catálogo está completo, consistente e cobre todos os épicos/features do projeto de negócio, com base nos insumos das 6 disciplinas do Bloco B.
 
 **Princípio fundamental:** Nenhum épico ou feature do projeto de negócio pode ficar sem solução técnica designada. Cobertura 100% é obrigatória.
 
@@ -15,12 +15,18 @@ Este prompt implementa o **Gate de Validação do Catálogo de Soluções** para
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
 | `{TECHNICAL_DEFINITIONS_PATH}` | Caminho da pasta technical-definitions |
+| `{TECHNICAL_SOLUTION_PATH}` | Caminho base das soluções técnicas |
+| `{TECHNICAL_SOLUTION_NAMES}` | Lista de nomes das soluções técnicas do projeto |
+| `{ARCHITECTURE_GLOBAL}` | Caminho para a pasta de arquitetura global (ADRs, blueprints) |
+| `{SECURITY_GLOBAL}` | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) |
+| `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
+| `{PROJECT_PROMPT_INPUTS}` | (Opcional) Lista de caminhos para prompts auxiliares ou contextos adicionais |
+
+**Arquivos gerados pelo GENERATE:** `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md`
 
 ---
 
 ## Fluxo de Execução
-
-### Passo 0 — Validação de Parâmetros
 
 ### Passo 1 — Carregar Documentos Base
 Ler `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md`, documentos de negócio (Charter, BRD, Epics, Features, RTM).
@@ -45,13 +51,53 @@ Ler `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md`, documentos de negócio
 | # | Verificação | Critério |
 |---|---|---|
 | 3.1 | Alinhamento com TECHNICAL-PLAN | Soluções do TECHNICAL-PLAN constam no catálogo |
-| 3.2 | Responsáveis coerentes | Responsáveis existem no TEAM-MAP |
+| 3.2 | Responsáveis coerentes | Responsáveis existem no TEAM-SKILLS-MAP |
 
-### Passo 3 — Calcular Veredito
-100% OK → APROVADO | ≥ 75% → RESSALVA | < 75% → REPROVADO
+### Passo 3 — Emitir Veredito
 
-### Passo 4 — Gerar Relatório de Falha (se REPROVADO)
-Gerar `SOLUTIONS_CATALOG_SCOPE_FAIL_REPORT.md`.
+---
+
+## FORMATO OBRIGATÓRIO DE SAÍDA (O RELATÓRIO DO GATE)
+
+### 🚨 CENÁRIO A: SE FOREM ENCONTRADOS DESVIOS OU QUEBRAS DE COBERTURA (NÃO COMPLIANCE)
+
+#### 📊 RELATÓRIO DE AUDITORIA DE CATÁLOGO: [Nome do Projeto]
+
+##### 🔍 Pontos Conflitantes Identificados:
+- **[ID-CONFLITO-SC-01] - [Título Curto]:**
+  - **O que foi gerado:** [Descrever o trecho problemático]
+  - **O que os documentos de negócio determinavam:** [Descrever a referência do BRD/Epics/Features]
+  - **Impacto:** [O risco de épico/feature sem solução técnica]
+  - **Sugestão de tratativa:** [O que poderia ser feito para corrigir]
+
+##### ❓ Perguntas de Alinhamento para o Usuário:
+Para que possamos corrigir o catálogo, por favor, responda:
+1. Quanto ao **[ID-CONFLITO-SC-01]**, qual é a definição correta a ser aplicada?
+2. [Perguntas diretas para sanar os desvios encontrados]
+
+---
+### 🛑 STATUS DO GATE: [NÃO COMPLIANCE]
+*(Instrução: O processo pausa aqui. Assim que o humano responder, injete este relatório + respostas no PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md)*
+
+---
+
+### ✅ CENÁRIO B: SE O CATÁLOGO ESTIVER 100% CONFORME (PRÉ-COMPLIANCE)
+
+#### 📊 RELATÓRIO DE AUDITORIA DE CATÁLOGO: [Nome do Projeto]
+
+### 🛑 STATUS DO GATE: [PRÉ-COMPLIANCE INTERNO - AGUARDANDO VALIDAÇÃO HUMANA]
+
+- **DOCUMENTO:** `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md` gerado e estruturado conforme os documentos de negócio.
+- **AUDITORIA DA IA:** Cobertura verificada. 100% dos épicos/features mapeados para soluções. Classificação, estado e prioridade documentados. Nenhuma solução órfã detectada.
+- **DIRETRIZ:** Peço que leia o catálogo para verificar se as soluções listadas atendem plenamente ao escopo técnico esperado.
+
+Por favor, responda às seguintes perguntas para podermos prosseguir ou reajustar:
+
+1. O catálogo de soluções está em compliance e cobre adequadamente todos os épicos e features do projeto?
+2. Deseja enviar mais documentos/arquivos para enriquecer o catálogo?
+3. Deseja enviar mais informações ou novos direcionamentos via input de texto neste momento?
+
+*(Instrução de Orquestração: Se "Sim, Não, Não" → [STATUS: COMPLIANCE] e F14 (SOLUTIONS-MATRIX). Se novos inputs → retrocede ao PROMPT-GENERATE).*
 
 ---
 
@@ -73,6 +119,7 @@ Gerar `SOLUTIONS_CATALOG_SCOPE_FAIL_REPORT.md`.
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: gate de validação do catálogo de soluções | Time de Arquitetura |
+| 2.0 | 28/07/2026 | Refatoração: adoção do padrão HITL com 3 perguntas obrigatórias e veredito binário | Time de Arquitetura |
 
 ---
 

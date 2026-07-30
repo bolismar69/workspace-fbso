@@ -4,17 +4,28 @@
 
 Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md` — o **catálogo exaustivo de soluções técnicas** do projeto. Cataloga serviços, bancos de dados, integrações, filas/mensageria, processos ETL, data services, frontends, mobile apps — toda solução técnica necessária para entregar o escopo do projeto.
 
-**Inputs upstream:** Documentos de negócio (Charter, BRD, Epics, Features) + TECHNICAL-PLAN.md (referência) + PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md (para atribuição de responsabilidades).
+**Inputs upstream (Bloco C — F13):** Este artefato recebe insumos cumulativos de todos os blocos anteriores:
+- **Inputs Globais do Roadmap:** `PROJECT_PATH`, `PROJECT_ID_NAME`, `TECHNICAL_SOLUTION_PATH`, `TECHNICAL_SOLUTION_NAMES`, `ARCHITECTURE_GLOBAL`, `SECURITY_GLOBAL`
+- **Bloco 0 (Product Def & Backlog & PRD):** `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md`, `PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md`, `PROJECT-TECHNICAL-DEFINITIONS-PRODUCT-BACKLOG-LIST.md`, `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md`
+- **Bloco A (People & Solutions):** `PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md` (Discovery Team skills) + `PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md` (disponibilidade e horas)
+- **Bloco B (6 Disciplinas Técnicas):** `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md` (padrões técnicos, C4, ADRs) + `PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md` (threat model, IAM, compliance) + `PROJECT-TECHNICAL-DEFINITIONS-DATA-ARCHITECTURE-DEFINITION.md` (modelagem, storage, pipelines) + `PROJECT-TECHNICAL-DEFINITIONS-DEVOPS-SRE-DEFINITION.md` (CI/CD, IaC, observabilidade, SLOs) + `PROJECT-TECHNICAL-DEFINITIONS-TEST-STRATEGY-DEFINITION.md` (pirâmide de testes, automação) + `PROJECT-TECHNICAL-DEFINITIONS-INFRA-CLOUD-DEFINITION.md` (topologia, networking, DR)
+- **Documentos de Negócio:** Charter, BRD, Epics, Features (para escopo e requisitos)
 
 ---
 
 ## Parâmetros de Entrada
 
-| Parâmetro | Descrição | Exemplo |
-|---|---|---|
-| `{PROJECT_PATH}` | Caminho base dos projetos de negócio | `/home/user/work/business-inputs/business-projects` |
-| `{PROJECT_ID_NAME}` | Identificador completo do projeto | `PRJ-FIN-2026-0003-SAAS-FBSO-ORG` |
-| `{TECHNICAL_DEFINITIONS_PATH}` | Caminho da pasta technical-definitions | Derivado |
+| Parâmetro | Descrição |
+|---|---|
+| `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
+| `{PROJECT_ID_NAME}` | Identificador completo do projeto |
+| `{TECHNICAL_DEFINITIONS_PATH}` | Caminho da pasta technical-definitions |
+| `{TECHNICAL_SOLUTION_PATH}` | Caminho base das soluções técnicas |
+| `{TECHNICAL_SOLUTION_NAMES}` | Lista de nomes das soluções técnicas do projeto |
+| `{ARCHITECTURE_GLOBAL}` | Caminho para a pasta de arquitetura global (ADRs, blueprints) |
+| `{SECURITY_GLOBAL}` | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) |
+| `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
+| `{PROJECT_PROMPT_INPUTS}` | (Opcional) Lista de caminhos para prompts auxiliares ou contextos adicionais |
 
 ---
 
@@ -23,7 +34,7 @@ Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md`
 ### Passo 0 — Validação de Parâmetros
 
 ### Passo 1 — Carregar Documentos Base
-Ler documentos de negócio (Charter, BRD, Epics, Features), TECHNICAL-PLAN.md (referência) e TEAM-MAP.md (para atribuição).
+Ler documentos de negócio (Charter, BRD, Epics, Features), TECHNICAL-PLAN.md (referência) e TEAM-SKILLS-MAP.md (para atribuição).
 
 ### Passo 2 — Invocar Skills Especializadas
 Invocar skills para analisar domínio, identificar soluções necessárias, classificar por tipo e mapear relação com épicos/features.

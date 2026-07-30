@@ -1,8 +1,8 @@
-# PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-SPECS-DEFINITION
+# PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-SPECS-DEFINITION (F16)
 
 ## Contexto
 
-Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-SPECS-DEFINITION.md`. O agente corretor aplica correções cirúrgicas com base no relatório de falha.
+Este prompt é acionado quando o gate (F16) reprova `PROJECT-TECHNICAL-DEFINITIONS-SPECS-DEFINITION.md`. O agente corretor aplica correções cirúrgicas com base no relatório inline do gate, focando em restaurar referências quebradas, eliminar duplicação de conteúdo e garantir sumários concisos. **Nunca reescreve o documento do zero. Modifique estritamente as seções, tabelas ou linhas apontadas como Não Compliance.**
 
 ---
 
@@ -18,20 +18,21 @@ Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-SPE
 
 ## Fluxo de Execução
 
-### Passo 1 — Carregar Relatório de Falha e Artefatos
-Ler `SPECS_DEFINITION_SCOPE_FAIL_REPORT.md`, o documento atual, Stack Matrix, blueprints.
+### Passo 1 — Carregar Relatório do Gate e Artefatos
+Ler o **Relatório de Auditoria** emitido pelo gate (relatório inline com os IDs de conflito e respostas do humano), o documento atual e TODOS os artefatos dos Blocos 0, A, B e C.
 
 ### Passo 2 — Processar NCs por Prioridade
 | Prioridade | Tipo de NC | Ação Corretiva |
 |---|---|---|
-| P0 | Seção obrigatória vazia | Preencher seção completa com padrões e exemplos |
-| P1 | Padrão contradiz Stack Matrix | Alinhar com a stack definida |
-| P1 | Padrão viola regra de segurança | Alinhar com Security Definition |
-| P2 | Padrão sem exemplo | Adicionar exemplo concreto |
-| P3 | Restrição sem valor | Especificar valor numérico |
+| P0 | Artefato não referenciado | Adicionar seção com sumário + `→ ver [ARTEFATO]` |
+| P0 | Conteúdo duplicado | Substituir por sumário conciso + referência |
+| P1 | Link markdown inválido | Corrigir caminho do artefato |
+| P2 | Sumário muito extenso | Reduzir para ~1 parágrafo |
+| P3 | Seção ausente | Preencher sumário referenciando artefato correto |
 
 ### Passo 3 — Aplicar Correções Cirúrgicas
 ### Passo 4 — Validar Correções
+100% artefatos referenciados, links válidos, sem duplicação.
 
 ---
 
@@ -40,8 +41,8 @@ Ler `SPECS_DEFINITION_SCOPE_FAIL_REPORT.md`, o documento atual, Stack Matrix, bl
 | Ordem | Skill | Propósito | Categoria |
 |---|---|---|---|
 | 1 | `gap-analysis` | Analisar relatório e priorizar | Análise |
-| 2 | `coding-guidelines` | Corrigir padrões de código | Código |
-| 3 | `api-documentation` | Corrigir padrões de API | API |
+| 2 | `reference-builder` | Corrigir referências cruzadas | Mapeamento |
+| 3 | `senior-architect` | Validar correções técnicas | Arquitetura |
 | 4 | `documentation-writer` | Atualizar documento | Documentação |
 
 > **🔄 Flexibilidade:** Substituir skills conforme aderência.
@@ -53,6 +54,7 @@ Ler `SPECS_DEFINITION_SCOPE_FAIL_REPORT.md`, o documento atual, Stack Matrix, bl
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: prompt de correção da baseline de especificações | Time de Arquitetura |
+| 2.0 | 30/07/2026 | Reformulação: correção focada em referências, links e eliminação de duplicação | Time de Arquitetura |
 
 ---
 

@@ -2,12 +2,14 @@
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
-- **Versão:** 1.1
+- **Versão:** 1.2
 - **Data de Criação:** 26 de Julho de 2026
-- **Última Atualização:** 27 de Julho de 2026 (alinhamento com docs de negócio v1.2)
+- **Última Atualização:** 30 de Julho de 2026 (alinhamento com Bloco 0 v5.0 — PRD de Negócio)
 - **Status:** CREATED — Aguardando validação humana (Gate → COMPLIANCE)
-- **Baseline de Negócio:** [Project Charter v1.2](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [BRD v1.2](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Épicos v1.2](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Features FEAT-EP-](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
-- **Documentos Complementares:** [SOLUTIONS-CATALOG](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md) · [STACK-MATRIX](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md) · [TEAM-MAP](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md)
+- **Fase:** F4 — Bloco 0 (Product Definition & Product Backlog & PRD)
+- **Baseline de Negócio:** [Project Charter](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) · [BRD](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) · [Épicos](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) · [Features](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) · [User Stories](../05-USER-STORIES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md) · [Definition of Done](../DEFINITION_OF_DONE.md) · [Matriz KPI](../MATRIZ-KPI.md) · [Stakeholder Map](../STAKEHOLDER-MAP.md) · [Glossário](../GLOSSARY.md)
+- **Bloco 0 — Artefatos Upstream:** [INTAKE-LOG](./PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md) (F1) · [DOR-ASSESSMENT](./PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md) (F2) · [PRODUCT-BACKLOG-LIST](./PROJECT-TECHNICAL-DEFINITIONS-PRODUCT-BACKLOG-LIST.md) (F3)
+- **Downstream:** Este PRD de Negócio é input congelado para os Blocos A (People), B (Architecture & Specialists) e C (Specs & Milestones)
 
 ---
 
@@ -139,143 +141,6 @@ A **FBSO Platform** é o portal administrativo SaaS multi-produto da FBSO.ORG �
 | FEAT-EP-0004-0006 | US-FEAT-EP-0004-0006-0056 | Lista de produtos com busca e filtros |
 | FEAT-EP-0004-0006 | US-FEAT-EP-0004-0006-0057 | Tabela `product_tax_mapping` com schema definido |
 | FEAT-EP-0004-0006 | US-FEAT-EP-0004-0006-0058 | Contrato de interface para acoplamento futuro do Tributali-Engine |
-
-### 2.4 Modelo de Dados de Referência (ERD)
-
-O diagrama abaixo — extraído do plano técnico original — apresenta a visão completa das entidades planejadas para a FBSO Platform. As entidades na **parte superior** do diagrama (até PRODUCT_SERVICE) estão no escopo deste projeto (Core Administrativo). As demais pertencem a fases futuras.
-
-#### 2.4.1 Diagrama de Entidades e Relacionamentos
-
-```mermaid
-erDiagram
-    %% ============================================
-    %% FASE 0 — CORE ADMINISTRATIVO (Este Projeto)
-    %% ============================================
-    TENANT ||--o{ USER : "possui"
-    TENANT ||--|| SUBSCRIPTION : "paga"
-    TENANT ||--o{ BUSINESS_UNIT : "gerencia"
-
-    PLAN ||--o{ SUBSCRIPTION : "define"
-
-    BUSINESS_UNIT ||--o{ USER_PERMISSION : "restringe"
-    USER ||--o{ USER_PERMISSION : "recebe"
-    USER_PERMISSION ||--o{ ROLE_RESOURCE : "concede acesso"
-    RESOURCE_ACTION ||--o{ ROLE_RESOURCE : "mapeia"
-
-    BUSINESS_UNIT ||--o{ PRODUCT_SERVICE : "cadastra"
-
-    %% ============================================
-    %% FASES FUTURAS — Módulos-Produto
-    %% ============================================
-    BUSINESS_UNIT ||--o{ BILLABLE : "configura regras"
-    PRODUCT_SERVICE ||--o{ PRODUCT_BILLABLE_MAPPING : "mapeia"
-    BILLABLE ||--o{ PRODUCT_BILLABLE_MAPPING : "vincula"
-    BUSINESS_UNIT ||--o{ ORDER : "vende/compra"
-    ORDER ||--o{ ORDER_ITEM : "contem"
-    PRODUCT_SERVICE ||--o{ ORDER_ITEM : "eh vendido em"
-    ORDER ||--o{ INVOICE : "gera"
-    INVOICE ||--o{ INVOICE_ITEM : "contem"
-    ORDER_ITEM ||--|| INVOICE_ITEM : "origina"
-    PRODUCT_BILLABLE_MAPPING ||--o{ INVOICE_ITEM : "aplica regras de"
-    INVOICE ||--o{ TRANSACTION_PAYMENT : "recebe"
-    TRANSACTION_PAYMENT ||--o{ SPLIT_PAYMENT : "dispara"
-    TENANT ||--o{ BILLING_INFO : "cadastra cartao/pagamento"
-    BUSINESS_UNIT ||--o{ BANK_ACCOUNT : "configura para receber"
-    BILLABLE }o--|| BANK_ACCOUNT : "direciona receita para"
-```
-
-#### 2.4.2 Dicionário de Entidades — Fase 0 (Core Administrativo)
-
-Entidades que **DEVEM** ser implementadas neste projeto:
-
-##### Camada Administrativa (SaaS Core)
-
-| Entidade | Descrição | Campos Essenciais |
-|:---|:---|:---|
-| **TENANT** | Conta Master / Pagadora do cliente | `id` (PK), `name_corporate` (Razão Social), `name_fantasy` (Nome Fantasia), `segment` (Segmento de Mercado), `status` (Enum: PENDING_ONBOARDING, ACTIVE, SUSPENDED, INACTIVE) |
-| **USER** | Usuários do ecossistema | `id` (PK), `tenant_id` (FK), `external_keycloak_id` (UUID do Keycloak), `email`, `name`, `status` (ACTIVE, INACTIVE, INVITE_PENDING) |
-| **PLAN** | Plano comercial do SaaS | `id` (PK), `name`, `description`, `price`, `recurrence` (MONTHLY, QUARTERLY, YEARLY), `status` (ACTIVE, DISCONTINUED) |
-| **SUBSCRIPTION** | Assinatura de um Tenant a um Plano | `id` (PK), `tenant_id` (FK), `plan_id` (FK), `start_date`, `end_date` (nullable), `status` (ACTIVE, SUSPENDED, CANCELED) |
-| **PLAN_MODULE** | Módulos incluídos em cada plano | `id` (PK), `plan_id` (FK), `module_name` (ex: TRIBUTALI_ENGINE, STOREKEEPER_PORTAL) |
-
-##### Camada de Isolamento Operacional (Governança)
-
-| Entidade | Descrição | Campos Essenciais |
-|:---|:---|:---|
-| **BUSINESS_UNIT** | CNPJs / Filiais vinculadas a um Tenant | `id` (PK), `tenant_id` (FK), `parent_id` (FK auto-relacionamento Matriz/Filial), `cnpj` (Único entre ativos), `corporate_name`, `tax_regime` (SIMPLES_NACIONAL, LUCRO_REAL, LUCRO_PRESUMIDO), `address`, `status` (ACTIVE, INACTIVE) |
-| **USER_PERMISSION** | Tabela Ponte de Segurança — vincula usuário a unidades | `id` (PK), `user_id` (FK), `business_unit_id` (FK), `role` (Enum: ADMIN_TENANT, MANAGER_BU, OPERATOR_BU, AUDITOR) |
-| **RESOURCE_ACTION** | Telas e ações do portal | `id` (PK), `resource_name` (ex: dashboard, product_catalog, user_management), `action` (view, create, edit, delete) |
-| **ROLE_RESOURCE** | Tabela ponte — papel × recursos permitidos | `id` (PK), `role` (Enum), `resource_action_id` (FK) |
-
-##### Camada de Catálogo
-
-| Entidade | Descrição | Campos Essenciais |
-|:---|:---|:---|
-| **PRODUCT_SERVICE** | Catálogo Comercial da Unidade de Negócio | `id` (PK), `business_unit_id` (FK), `name`, `sku` (opcional, único por BU), `type` (PRODUCT, SERVICE), `description`, `status` (ACTIVE, INACTIVE) |
-
-##### Campos de Auditoria (TODAS as tabelas)
-
-| Campo | Tipo | Descrição |
-|:---|:---|:---|
-| `created_dt` | Timestamp | Data/hora de criação do registro |
-| `updated_dt` | Timestamp | Data/hora da última atualização |
-| `created_by` | FK → USER.id | Usuário que criou o registro |
-| `updated_by` | FK → USER.id | Usuário que atualizou o registro |
-| `deleted_dt` | Timestamp (nullable) | Data/hora da exclusão lógica (NULL = ativo) |
-| `deleted_by` | FK → USER.id | Usuário que realizou a exclusão lógica |
-
-#### 2.4.3 Entidades Fora do Escopo (Fases Futuras)
-
-Estas entidades **NÃO** devem ser implementadas na Fase 0. Documentadas como referência para garantir que o schema do Core não impeça sua adição futura.
-
-| Entidade | Descrição | Fase Prevista |
-|:---|:---|:---|
-| **BILLABLE** | Engine Fiscal — regras de tributação (NCM, NBS, CNAE, alíquotas IBS/CBS) | Tributali-Engine |
-| **PRODUCT_BILLABLE_MAPPING** | De-Para: Produto × Regra Fiscal | Tributali-Engine |
-| **ORDER / ORDER_ITEM** | Pedidos comerciais (Quote → Sale Order) | Storekeeper / Tributali-Engine |
-| **INVOICE / INVOICE_ITEM** | Documentos de cobrança | Storekeeper / Tributali-Engine |
-| **TRANSACTION_PAYMENT** | Entrada de pagamentos (gateway ou input manual) | Storekeeper / Tributali-Engine |
-| **SPLIT_PAYMENT** | Split de arrecadação (IBS/CBS para o governo) | Tributali-Engine |
-| **BILLING_INFO** | Dados de cartão/pagamento do Tenant | Storekeeper |
-| **BANK_ACCOUNT** | Contas bancárias por Unidade de Negócio | Storekeeper / Tributali-Engine |
-
-#### 2.4.4 Índices Únicos e Soft Delete
-
-Conforme ADR-05, utiliza-se **Índice Único Parcial** (PostgreSQL) para entidades com restrições de unicidade sob Soft Delete:
-
-```sql
--- CNPJ único apenas entre registros ativos do mesmo tenant
-CREATE UNIQUE INDEX unique_cnpj_active
-ON business_unit (tenant_id, cnpj)
-WHERE deleted_dt IS NULL;
-
--- E-mail único por tenant apenas entre ativos
-CREATE UNIQUE INDEX unique_email_active
-ON "user" (tenant_id, email)
-WHERE deleted_dt IS NULL;
-
--- SKU único por Unidade de Negócio apenas entre ativos
-CREATE UNIQUE INDEX unique_sku_active
-ON product_service (business_unit_id, sku)
-WHERE deleted_dt IS NULL AND sku IS NOT NULL;
-```
-
-#### 2.4.5 Mapeamento Entidade → Endpoint API
-
-| Entidade | Recurso API | Épico |
-|:---|:---|:---|
-| TENANT | `/tenants` | EP-0002 |
-| PLAN | `/plans` | EP-0002 |
-| SUBSCRIPTION | `/subscriptions` | EP-0002 |
-| PLAN_MODULE | (sub-recurso de `/plans`) | EP-0002 |
-| USER | `/users` | EP-0003 |
-| USER_PERMISSION | `/permissions` | EP-0003 |
-| RESOURCE_ACTION | (tabela de domínio — populada via migration, sem CRUD externo) | EP-0003 |
-| ROLE_RESOURCE | (tabela de domínio — populada via migration, sem CRUD externo) | EP-0003 |
-| BUSINESS_UNIT | `/business-units` | EP-0004 |
-| PRODUCT_SERVICE | `/products` | EP-0004 |
-
-> **Origem:** Esta seção foi migrada do planejamento técnico original (TECHNICAL-PLAN.md §2.4, removido) para o PRD-DEFINITION por ser a perspectiva de dados das features e épicos já descritos neste documento. O mapeamento Entidade→Endpoint conecta o modelo de dados aos recursos de API definidos no [SPECS-DEFINITION.md](./PROJECT-TECHNICAL-DEFINITIONS-SPECS-DEFINITION.md).
 
 ---
 
@@ -566,3 +431,5 @@ E após login, o portal exibe a identidade visual do Supermercado ABC
 ---
 
 🤖 *Documentação gerada de forma automatizada pelo Agente: Arquiteto de Soluções/Claude. Resultado da Fase 4 do Roadmap de Definições Técnicas — Pipeline: Generate → Gate → Fix → COMPLIANCE.*
+
+| 2.0 | 30/07/2026 | Migração: seção 2.4 — Modelo de Dados de Referência (ERD) movido para ARCHITECTURE-DEFINITION §9 (TOGAF Phase C — Data Architecture). PRD mantém referência ao modelo de dados sem duplicar definições de schema. | Time de Arquitetura |

@@ -2,13 +2,15 @@
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
-- **Versão:** 1.1
+- **Versão:** 1.2
 - **Data de Criação:** 26 de Julho de 2026
-- **Última Atualização:** 27 de Julho de 2026 (alinhamento com docs de negócio v1.2)
-- **Status:** ✅ COMPLIANCE — Validado pelo Time de Arquitetura
-- **Baseline de Negócio:** [Project Charter v1.2](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [BRD v1.2](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Épicos v1.2](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Features FEAT-EP-](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
+- **Última Atualização:** 30 de Julho de 2026 (alinhamento com Bloco B v5.0)
+- **Status:** ✅ COMPLIANCE — Validado pelo Time de Arquitetura (v5.0 reconfirmado)
+- **Fase:** F7 — Bloco B (Architecture & Security & Specialists) · **Disciplina:** Solution Architect
+- **Bloco 0 — Baseline de Negócio:** [INTAKE-LOG](./PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md) (F1) · [DOR-ASSESSMENT](./PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md) (F2) · [PRODUCT-BACKLOG-LIST](./PROJECT-TECHNICAL-DEFINITIONS-PRODUCT-BACKLOG-LIST.md) (F3) · [PRD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md) (F4)
+- **Bloco A — Team:** [TEAM-SKILLS-MAP](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md) (F5) · [TEAM-CAPACITY](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md) (F6)
+- **Bloco B — Disciplinas Irmãs:** [SECURITY-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md) (F8) · DATA-ARCH (F9 🆕) · DEVOPS-SRE (F10 🆕) · TEST-STRATEGY (F11 🆕) · INFRA-CLOUD (F12 🆕)
 - **Substitui:** `INTEGRATION-MAP.md` (absorvido neste documento)
-- **Documentos Complementares:** [SOLUTIONS-CATALOG](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md) · [STACK-MATRIX](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md) · [PRD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md)
 
 ---
 
@@ -616,15 +618,31 @@ sequenceDiagram
 
 ---
 
-## 9. Referências
+## 9. Modelo de Dados de Referência (ERD)
+
+> 📐 **Delegado para F9 — DATA-ARCHITECTURE-DEFINITION:** O modelo de dados completo (diagrama ERD, dicionário de entidades, índices e estratégia de soft delete) está documentado em [DATA-ARCHITECTURE-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-DATA-ARCHITECTURE-DEFINITION.md) (F9 — Data Architect). Esta seção mantém apenas a referência arquitetural para rastreabilidade Features→Entidades no contexto de integração (C4).
+
+## 10. Delegação para Disciplinas do Bloco B
+
+Conforme a arquitetura v5.0, os detalhes específicos de cada disciplina são documentados em artefatos independentes:
+
+| Disciplina | Artefato | Conteúdo Delegado |
+|:---|:---|:---|
+| **Data Architect** | [DATA-ARCHITECTURE-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-DATA-ARCHITECTURE-DEFINITION.md) (F9) | Modelo ERD completo, dicionário de entidades, índices, storage strategy, pipelines ETL/CDC, data governance |
+| **DevOps/SRE** | [DEVOPS-SRE-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-DEVOPS-SRE-DEFINITION.md) (F10) | Pipeline CI/CD, IaC, observabilidade, SLOs, containers, runbooks |
+| **Test Specialist** | [TEST-STRATEGY-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-TEST-STRATEGY-DEFINITION.md) (F11) | Pirâmide de testes, automação, performance, segurança, quality gates |
+| **Infra/Cloud** | [INFRA-CLOUD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-INFRA-CLOUD-DEFINITION.md) (F12) | Topologia detalhada, compute, networking, storage, DR, custos |
+| **Security** | [SECURITY-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md) (F8) | Threat model, IAM, compliance, DevSecOps |
+
+> Esta seção substitui a concentração de todos os detalhes técnicos no ARCHITECTURE-DEFINITION (v4.0). Cada disciplina mantém seu artefato canônico; o ARCHITECTURE foca em integração entre soluções (C4, ADRs, matriz de comunicação).
+
+## 11. Referências
 
 | Documento | Relação |
 |:---|:---|
 | [SOLUTIONS-CATALOG](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md) | 14 soluções catalogadas |
 | [STACK-MATRIX](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md) | Stacks por solução |
-| [PRD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md) | Baseline de produto |
-| [STACK-MATRIX](./PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md) | Stack tecnológica e ADRs de decisões |
-| [PRD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md) | Baseline de requisitos de produto |
+| [PRD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md) | Baseline de produto (referencia este documento para modelo de dados) |
 | `/architecture/` | ADRs globais, blueprints, data standards |
 | [docker-compose.yml](../../../backend/java/spring/microservices/ms-fbso-platform-admin/docker-compose.yml) | Topologia dev |
 
@@ -634,6 +652,7 @@ sequenceDiagram
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
+| 2.0 | 30/07/2026 | Migração: seção 9 — Modelo de Dados de Referência (ERD) recebido do PRD-DEFINITION (TOGAF Phase C — Data Architecture). Inclui ERD, dicionário de entidades, índices parciais, entidades fora do escopo e mapeamento Entidade→Endpoint. Seção 9 (antiga Referências) renumerada para 10. | Time de Arquitetura |
 | 1.1 | 26/07/2026 | Correções pós-validação humana: (1) seção 5.2 migrada para flowchart Mermaid, (2) seção 6.2 migrada para sequence diagram Mermaid, (3) ADR-I01 atualizado com modelo de confiança Kong+Keycloak (sem double-check no backend), (4) adicionados 3 diagramas de sequência: upgrade de plano com ativação de módulos (7.4), downgrade com inativação (7.5), cancelamento com logout forçado (7.6). 3 estudos pendentes documentados (notificação de novos módulos, bloqueio de acesso, derrubar sessões). | Time de Arquitetura |
 
 ---

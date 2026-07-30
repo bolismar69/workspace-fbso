@@ -2,7 +2,7 @@
 
 ## Contexto
 
-Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md`. O agente corretor aplica correções cirúrgicas com base no relatório de falha.
+Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` (PRD de Negócio — Bloco 0, Fase 4). O agente corretor aplica correções cirúrgicas com base no relatório inline do gate. **Nunca reescreve o documento do zero. Modifique estritamente as seções, tabelas ou linhas apontadas como Não Compliance.**
 
 ---
 
@@ -18,8 +18,8 @@ Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-PRD
 
 ## Fluxo de Execução
 
-### Passo 1 — Carregar Relatório de Falha e Artefatos
-Ler `PRD_DEFINITION_SCOPE_FAIL_REPORT.md`, o PRD Definition atual, documentos de negócio e catálogo de soluções.
+### Passo 1 — Carregar Relatório do Gate e Artefatos
+Ler o **Relatório de Auditoria** emitido pelo gate (relatório inline com os IDs de conflito e respostas do humano), o PRD Definition atual, documentos de negócio e catálogo de soluções.
 
 ### Passo 2 — Processar NCs por Prioridade
 | Prioridade | Tipo de NC | Ação Corretiva |
@@ -31,7 +31,7 @@ Ler `PRD_DEFINITION_SCOPE_FAIL_REPORT.md`, o PRD Definition atual, documentos de
 
 ### Passo 3 — Aplicar Correções Cirúrgicas
 ### Passo 4 — Validar Correções
-100% P0 resolvidas, cobertura 100%, 8 seções completas.
+100% P0 resolvidas, cobertura 100% do backlog, todas as seções obrigatórias completas.
 
 ---
 
@@ -53,6 +53,7 @@ Ler `PRD_DEFINITION_SCOPE_FAIL_REPORT.md`, o PRD Definition atual, documentos de
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: prompt de correção do PRD Definition | Time de Arquitetura |
+| 2.0 | 30/07/2026 | Atualização Bloco 0 (F4): adicionado contexto de fase (PRD de Negócio — Bloco 0, Fase 4) | Time de Arquitetura |
 
 ---
 

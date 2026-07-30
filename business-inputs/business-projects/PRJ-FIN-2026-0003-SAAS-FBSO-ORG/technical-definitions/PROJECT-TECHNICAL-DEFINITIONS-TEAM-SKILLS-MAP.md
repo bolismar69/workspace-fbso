@@ -1,12 +1,13 @@
-# PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP — Matriz de Skills do Time Técnico
+# PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP — Matriz de Skills do Discovery Team
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
 - **Programa:** FBSO Platform — Portal Administrativo SaaS
-- **Versão:** 1.4
+- **Versão:** 3.1 — Discovery Team (TOGAF Upstream Architecture)
 - **Data de Criação:** 25 de Julho de 2026
-- **Última Atualização:** 27 de Julho de 2026 (alinhamento com docs de negócio v1.2)
-- **Status:** ✅ COMPLIANCE — Validado pelo Time de Arquitetura
-- **Baseline de Negócio:** [Project Charter v1.2](../01-PROJECT-CHARTER-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [BRD v1.2](../02-BRD-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Épicos v1.2](../03-EPICS-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md), [Features](../04-FEATURES-PRJ-FIN-2026-0003-SAAS-FBSO-ORG.md)
+- **Última Atualização:** 30 de Julho de 2026 (alinhamento com Bloco 0 v5.0)
+- **Status:** Em Revisão / Aguardando Validação (Fase 5 — Bloco A)
+- **Fase:** F5 — Bloco A (People & Solutions)
+- **Bloco 0 — Artefatos Upstream:** [INTAKE-LOG](./PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md) (F1) · [DOR-ASSESSMENT](./PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md) (F2) · [PRODUCT-BACKLOG-LIST](./PROJECT-TECHNICAL-DEFINITIONS-PRODUCT-BACKLOG-LIST.md) (F3) · [PRD-DEFINITION](./PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md) (F4 — escopo do produto)
 - **Documento Complementar:** [PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md) (nomes, contatos, horas/semana)
 
 ---
@@ -22,9 +23,29 @@ Ele serve como:
 
 ---
 
-## 2. Contexto Técnico do Projeto
+## 2. Discovery Team — Papéis da Upstream Architecture (TOGAF Preliminary Phase)
 
-### 2.1 Stack Tecnológica Definida
+Os papéis abaixo compõem o time fixo de **Discovery Técnico** responsável pela fase de Upstream Architecture (Blocos A e B do roadmap). Cada papel representa uma competência essencial para a análise e definição da arquitetura do projeto.
+
+| # | Papel | Responsabilidade no Discovery | Profissional Designado | Nível |
+|---|-------|-------------------------------|------------------------|-------|
+| 1 | Engenheiro de Sistemas | Visão sistêmica, integração entre componentes, requisitos não-funcionais | Francisco Oliveira (Tech Lead) | ★★★ |
+| 2 | Arquiteto de Soluções | Definição da arquitetura macro, C4, ADRs, padrões cross-solution | Bruno Gratto (Solution Architect) | ★★★ |
+| 3 | Arquiteto de Banco de Dados | Modelagem de dados, multi-tenant, schema design, migrações | Carlos Caldas (DB Developer) | ★★★ |
+| 4 | Arquiteto de DevOps/SRE | Infraestrutura, CI/CD, containerização, observabilidade, deploy | Davi Silva (DevOps) | ★★★ |
+| 5 | Arquiteto de Segurança | Threat model, IAM, secrets management, compliance (LGPD, PCI, SOC2) | Gertrudes Paiva (IAM Specialist) | ★★★ |
+| 6 | Arquiteto/Especialista de Testes | Estratégia de testes, tipos de teste, ferramentas, qualidade | Felipe Canedas (QA Engineer) | ★★★ |
+| 7 | Arquiteto/Especialista de Cloud-Provider | Serviços cloud, networking, custos, multi-cloud | Davi Silva (DevOps) | ★★★ |
+| 8 | Líder Técnico / Tech Lead | Coordenação técnica, code review, mentoria, decisões de design | Francisco Oliveira (Tech Lead) | ★★★ |
+| 9 | Especialista em Integrações/APIs | Contratos de API, mensageria, integração entre soluções | Bolismar Oliveira (Full-Stack) | ★★★ |
+
+> ⚠️ **Nota:** Alguns profissionais acumulam mais de um papel no Discovery Team (ex: Francisco cobre Engenharia de Sistemas + Tech Lead; Davi cobre DevOps/SRE + Cloud-Provider). O [TEAM-CAPACITY](./PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md) detalha a disponibilidade horária de cada um.
+
+---
+
+## 3. Contexto Técnico do Projeto
+
+### 3.1 Stack Tecnológica Definida
 
 | Camada | Tecnologia | Relevância |
 |:---|:---|:---|
@@ -39,7 +60,7 @@ Ele serve como:
 | **Cloud/Hosting** | AWS, Hostinger, Digital-Ocean | Infraestrutura e hospedagem |
 | **Segurança** | RBAC, JWT validation, CORS, Rate Limiting, OWASP Top 10 | Postura de segurança |
 
-### 2.2 Escopo Técnico (18 funcionalidades, 58 user stories)
+### 3.2 Escopo Técnico (18 funcionalidades, 58 user stories)
 
 | Épico | Funcionalidades | Complexidade Técnica |
 |:---|:---|:---|
@@ -50,9 +71,9 @@ Ele serve como:
 
 ---
 
-## 3. Matriz de Competências
+## 4. Matriz de Competências
 
-### 3.1 Matriz Perfil × Tecnologia × Proficiência
+### 4.1 Matriz Perfil × Tecnologia × Proficiência
 
 **Legenda de Proficiência:**
 - ★★★ Senior/Especialista — Autônomo, define padrões, mentoriza
@@ -111,7 +132,7 @@ Ele serve como:
 | Grafana | — | ★★☆ | — | — | — | — | — | — | ★★★ | — | — |
 | Logging (SLF4J/Logback) | ★★★ | ★★★ | — | ★☆☆ | ★★☆ | — | ★★★ | ★☆☆ | ★★★ | — | ★★★ |
 
-### 3.2 Resumo por Papel
+### 4.2 Resumo por Papel
 
 | Papel | Profissional | Tecnologias Core (★★★) | Carga |
 |:---|:---|:---|:---:|
@@ -131,9 +152,9 @@ Ele serve como:
 
 ---
 
-## 4. Skills por Categoria
+## 5. Skills por Categoria
 
-### 4.1 Linguagens de Programação
+### 5.1 Linguagens de Programação
 
 | Skill | Cobertura | Profissionais ★★★ | Gaps |
 |:---|:---|:---|:---|
@@ -143,7 +164,7 @@ Ele serve como:
 | HTML/CSS | ⚠️ Depende de Tom | Bolismar, Tom | Tom só inicia em 01/11/2026 |
 | Shell Script (Bash) | ✅ Forte | Francisco, Bolismar, Davi | — |
 
-### 4.2 Frameworks Backend
+### 5.2 Frameworks Backend
 
 | Skill | Cobertura | Profissionais ★★★ | Gaps |
 |:---|:---|:---|:---|
@@ -153,7 +174,7 @@ Ele serve como:
 | Spring Validation | ✅ Forte | Francisco, Bolismar, Judith | — |
 | JUnit 5 + Mockito | ✅ Forte | Francisco, Bolismar, Felipe, Judith | — |
 
-### 4.3 Frameworks Frontend
+### 5.3 Frameworks Frontend
 
 | Skill | Cobertura | Profissionais ★★★ | Gaps |
 |:---|:---|:---|:---|
@@ -161,7 +182,7 @@ Ele serve como:
 | Next.js (App Router) | ⚠️ Limitada | Bolismar, Tom | Sem redundancy além de Bolismar até novembro |
 | Tailwind CSS | ⚠️ Depende de Tom | Bolismar, Tom | Idem — Bolismar cobre até chegada de Tom |
 
-### 4.4 Banco de Dados
+### 5.4 Banco de Dados
 
 | Skill | Cobertura | Profissionais ★★★ | Gaps |
 |:---|:---|:---|:---|
@@ -169,7 +190,7 @@ Ele serve como:
 | Flyway Migrations | ✅ Coberto | Francisco, Bolismar, Carlos | — |
 | Multi-Tenant Design | ✅ Coberto | Bolismar | Francisco e demais em ★★☆/★☆☆. Bruno cobre conceitualmente. |
 
-### 4.5 IAM & Segurança
+### 5.5 IAM & Segurança
 
 | Skill | Cobertura | Profissionais ★★★ | Gaps |
 |:---|:---|:---|:---|
@@ -180,7 +201,7 @@ Ele serve como:
 | RBAC Design | ✅ Forte | Francisco, Bolismar, Gertrudes | — |
 | OWASP Top 10 | ✅ Forte | Francisco, Bolismar, Felipe, Gertrudes | — |
 
-### 4.6 DevOps & Infraestrutura
+### 5.6 DevOps & Infraestrutura
 
 | Skill | Cobertura | Profissionais ★★★ | Gaps |
 |:---|:---|:---|:---|
@@ -189,7 +210,7 @@ Ele serve como:
 | GraalVM Native Image | ✅ Coberto | Bolismar | Davi não cobre (—). Francisco em ★★☆ como suporte |
 | CI/CD (GitHub Actions) | ✅ Forte | Francisco, Bolismar, Davi | — |
 
-### 4.7 Cloud & Hosting
+### 5.7 Cloud & Hosting
 
 | Skill | Cobertura | Profissionais ★★★ | Gaps |
 |:---|:---|:---|:---|
@@ -197,7 +218,7 @@ Ele serve como:
 | Hostinger | ⚠️ Concentrada | Davi | Apenas DevOps cobre |
 | Digital-Ocean | ⚠️ Concentrada | Davi | Apenas DevOps cobre |
 
-### 4.8 Qualidade & Testes
+### 5.8 Qualidade & Testes
 
 | Skill | Cobertura | Profissionais ★★★ | Gaps |
 |:---|:---|:---|:---|
@@ -207,7 +228,7 @@ Ele serve como:
 | Testes de Segurança (SAST) | ✅ Coberto | Bolismar, Felipe | — |
 | Testes de Performance (JMeter) | ✅ Coberto | Bolismar, Felipe | — |
 
-### 4.9 Observabilidade
+### 5.9 Observabilidade
 
 | Skill | Cobertura | Profissionais ★★★ | Gaps |
 |:---|:---|:---|:---|
@@ -218,9 +239,9 @@ Ele serve como:
 
 ---
 
-## 5. Gap Analysis: Competências Necessárias vs. Disponíveis
+## 6. Gap Analysis: Competências Necessárias vs. Disponíveis
 
-### 5.1 Gaps Críticos (🔴 — Risco Alto)
+### 6.1 Gaps Críticos (🔴 — Risco Alto)
 
 | Gap | Severidade | Impacto | Mitigação |
 |:---|:---:|:---|:---|
@@ -228,7 +249,7 @@ Ele serve como:
 | **Frontend até 01/11/2026** | 🔴 Crítica | Tom (Frontend ★★★) só inicia em novembro. Até lá, Bolismar é o único full-stack disponível para frontend. Sem ele, features EP-0001 a EP-0004a atrasam. | Bolismar cobre frontend até outubro. Priorizar componentes reutilizáveis para reduzir retrabalho quando Tom chegar. |
 | **Maria Madalena — perfil 100% junior** | 🔴 Crítica | Backend developer junior (★☆☆ em todas as tecnologias). Não entrega tarefas complexas sem supervisão. Representa risco de produtividade para o time backend. | Pareamento obrigatório com Francisco (TL) ou Bolismar (FS) nas primeiras 4 sprints. Tasks designadas devem ser bem delimitadas e revisadas. Plano de evolução: atingir ★★☆ em Java/Spring Boot até M3 (31/08/2026). |
 
-### 5.2 Gaps Moderados (🟡 — Risco Médio)
+### 6.2 Gaps Moderados (🟡 — Risco Médio)
 
 | Gap | Severidade | Impacto | Mitigação |
 |:---|:---:|:---|:---|
@@ -237,7 +258,7 @@ Ele serve como:
 | **Felipe Canedas — dependência externa** | 🟡 Média | QA domina seu escopo (★★★) mas precisa de apoio para atividades fora dele (ex: configurar ambiente Docker, analisar logs). | Bolismar ou Francisco como ponto focal de suporte ao QA para infra/testes. |
 | **Hostinger / Digital-Ocean — concentrados no DevOps** | 🟡 Média | Apenas Davi conhece esses provedores. Se ambos forem usados em produção, não há redundancy. | Documentar configurações de DNS, rede e deploy para cada provider. Capacitar Bolismar (já tem AWS ★★★) nos outros providers se necessário. |
 
-### 5.3 Gaps Menores (🟢 — Risco Baixo)
+### 6.3 Gaps Menores (🟢 — Risco Baixo)
 
 | Gap | Severidade | Impacto | Mitigação |
 |:---|:---:|:---|:---|
@@ -248,16 +269,16 @@ Ele serve como:
 
 ---
 
-## 6. Recomendações
+## 7. Recomendações
 
-### 6.1 Contratação / Realocação
+### 7.1 Contratação / Realocação
 
 | # | Recomendação | Prazo | Prioridade |
 |:---|:---|:---|:---:|
 | R1 | Contratar ou realocar **segundo Frontend Developer** para cobrir o período até 01/11/2026 (Tom) | Imediato | 🔴 Alta |
 | R2 | Plano de aceleração para **Maria Madalena**: mentoria dedicada para atingir autonomia (★★☆) em Java/Spring Boot | Sprint 0-4 | 🔴 Alta |
 
-### 6.2 Capacitação
+### 7.2 Capacitação
 
 | # | Treinamento | Público | Quando | Duração |
 |:---|:---|:---|:---|:---:|
@@ -269,7 +290,7 @@ Ele serve como:
 | T6 | Mentoria Java/Spring Boot — aceleração Maria Madalena | Maria (BE) + Francisco/Bolismar | Sprint 0-4 | 2h/semana (pair programming) |
 | T7 | Grafana Dashboards Básico | Bolismar (FS) | Sprint 1 | 2h (pair com Davi) |
 
-### 6.3 Ações Imediatas (Sprint 0)
+### 7.3 Ações Imediatas (Sprint 0)
 
 1. **Tech Lead (Francisco):** Criar template de code review com checklist multi-tenant. Designar tasks iniciais para Maria com escopo bem delimitado.
 2. **Full-Stack (Bolismar):** Setup inicial do frontend (Next.js + Tailwind) para EP-0001. Cobrir frontend até chegada de Tom.
@@ -283,7 +304,7 @@ Ele serve como:
 
 ---
 
-## 7. Referências
+## 8. Referências
 
 | Documento | Relação |
 |:---|:---|
@@ -307,3 +328,5 @@ Ele serve como:
 ---
 
 🤖 *Documentação gerada de forma automatizada pelo Agente: Arquiteto de Soluções/Claude. Validado e ajustado pelo Time de Arquitetura em 25/07/2026. Status: COMPLIANCE.*
+
+| 3.0 | 28/07/2026 | Renomeado para TEAM-SKILLS-MAP; adicionada Seção 2 — Discovery Team com 9 papéis de Upstream Architecture (TOGAF); seções renumeradas (2→3, 3→4, 4→5, 5→6, 6→7, 7→8); adicionada coluna "Profissional Designado" no mapeamento de papéis | Time de Arquitetura |

@@ -15,7 +15,14 @@ Este prompt implementa o **Gate de Validação da Definição de Arquitetura** p
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
 | `{TECHNICAL_DEFINITIONS_PATH}` | Caminho da pasta technical-definitions |
-| `{ARCHITECTURE_GLOBAL}` | Caminho da pasta de arquitetura global |
+| `{TECHNICAL_SOLUTION_PATH}` | Caminho base das soluções técnicas |
+| `{TECHNICAL_SOLUTION_NAMES}` | Lista de nomes das soluções técnicas do projeto |
+| `{ARCHITECTURE_GLOBAL}` | Caminho para a pasta de arquitetura global (ADRs, blueprints) |
+| `{SECURITY_GLOBAL}` | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) |
+| `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
+| `{PROJECT_PROMPT_INPUTS}` | (Opcional) Lista de caminhos para prompts auxiliares ou contextos adicionais |
+
+**Arquivos gerados pelo GENERATE:** `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md`
 
 ---
 
@@ -47,8 +54,51 @@ Ler `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md`, Catálogo de Sol
 | 3.1 | Alinhamento com blueprints | Soluções seguem blueprints da pasta architecture/ |
 | 3.2 | Consistência com PRD Definition | Funcionalidades cross-solution têm integração definida |
 
-### Passo 3 — Calcular Veredito
-### Passo 4 — Gerar Relatório de Falha (se REPROVADO)
+### Passo 3 — Emitir Veredito
+
+---
+
+## FORMATO OBRIGATÓRIO DE SAÍDA (O RELATÓRIO DO GATE)
+
+### 🚨 CENÁRIO A: SE FOREM ENCONTRADOS DESVIOS (NÃO COMPLIANCE)
+
+#### 📊 RELATÓRIO DE AUDITORIA DE ARQUITETURA: [Nome do Projeto]
+
+##### 🔍 Pontos Conflitantes Identificados:
+- **[ID-CONFLITO-ARCH-01] - [Título Curto]:**
+  - **O que foi gerado:** [Descrever o trecho problemático]
+  - **O que o catálogo/ADR/PRD determinava:** [Descrever a referência]
+  - **Impacto:** [O risco de solução desconectada ou integração quebrada]
+  - **Sugestão de tratativa:** [O que poderia ser feito para corrigir]
+
+##### ❓ Perguntas de Alinhamento para o Usuário:
+Para que possamos corrigir a definição de arquitetura, por favor, responda:
+1. Quanto ao **[ID-CONFLITO-ARCH-01]**, qual é a definição correta a ser aplicada?
+2. [Perguntas diretas para sanar os desvios encontrados]
+
+---
+### 🛑 STATUS DO GATE: [NÃO COMPLIANCE]
+*(Instrução: O processo pausa aqui. Assim que o humano responder, injete este relatório + respostas no PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md)*
+
+---
+
+### ✅ CENÁRIO B: SE A ARQUITETURA ESTIVER 100% CONFORME (PRÉ-COMPLIANCE)
+
+#### 📊 RELATÓRIO DE AUDITORIA DE ARQUITETURA: [Nome do Projeto]
+
+### 🛑 STATUS DO GATE: [PRÉ-COMPLIANCE INTERNO - AGUARDANDO VALIDAÇÃO HUMANA]
+
+- **DOCUMENTO:** `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md` gerado conforme catálogo e ADRs.
+- **AUDITORIA DA IA:** Cobertura completa verificada. Diagramas C4 L1/L2 presentes com todas as soluções. Matriz de integração documentada. ADRs cross-solution registrados. Nenhuma solução desconectada.
+- **DIRETRIZ:** Peço que leia a definição de arquitetura para verificar se os diagramas e integrações refletem a arquitetura esperada.
+
+Por favor, responda às seguintes perguntas para podermos prosseguir ou reajustar:
+
+1. A definição de arquitetura está em compliance e reflete corretamente como as soluções se integram?
+2. Deseja enviar mais documentos/arquivos para enriquecer a arquitetura?
+3. Deseja enviar mais informações ou novos direcionamentos via input de texto neste momento?
+
+*(Instrução de Orquestração: Se "Sim, Não, Não" → [STATUS: COMPLIANCE] e Fase 8 (SECURITY-DEFINITION). Se novos inputs → retrocede ao PROMPT-GENERATE).*
 
 ---
 
@@ -71,6 +121,8 @@ Ler `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md`, Catálogo de Sol
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: gate de validação da definição de arquitetura | Time de Arquitetura |
+| 2.0 | 28/07/2026 | Refatoração: adoção do padrão HITL com 3 perguntas obrigatórias e veredito binário | Time de Arquitetura |
+| 3.0 | 30/07/2026 | Atualização F3→F7: orquestração redirecionada para Fase 8 (SECURITY-DEFINITION) | Time de Arquitetura |
 
 ---
 

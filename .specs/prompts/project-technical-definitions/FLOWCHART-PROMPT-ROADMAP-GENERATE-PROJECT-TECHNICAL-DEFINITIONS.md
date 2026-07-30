@@ -1,10 +1,10 @@
 # FLOWCHART: ROADMAP DE DEFINIÇÕES TÉCNICAS DO PROJETO
 
-## Versão: 1.0 — Visualização Gráfica do Pipeline de Definições Técnicas
+## Versão: 5.0 — Ponte Negócio→TI + 6 Disciplinas Técnicas + Discovery Contínuo
 
-> **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` v1.0
+> **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` v5.0
 >
-> Este documento complementa o roadmap textual com diagramas Mermaid que visualizam o fluxo de execução, a arquitetura de blocos com barreiras de sincronização, o mecanismo de orquestração e as regras de gating.
+> Este documento complementa o roadmap textual com diagramas Mermaid que visualizam o fluxo de execução, a arquitetura de blocos sequenciais com barreiras de sincronização, o mecanismo de orquestração e as regras de gating.
 
 ---
 
@@ -12,71 +12,94 @@
 
 ```mermaid
 flowchart TB
-    START([🚀 Início]) --> F0[Fase 0: Bootstrap Inteligente]
-
-    F0 --> BLOCO_A
-
+    START([🚀 Início]) --> F0[Fase 0: Bootstrap]
+    F0 --> BLOCO_0
+    
+    subgraph BLOCO_0[Bloco 0: Product Def & Backlog & PRD]
+        F1[F1: INTAKE-LOG 🆕] --> F2[F2: DOR-ASSESSMENT 🆕]
+        F2 --> F3[F3: PRODUCT-BACKLOG-LIST 🆕]
+        F3 --> F4[F4: PRD-DEFINITION 🔄]
+    end
+    
+    BLOCO_0 --> G0{{⛔ Barreira 0}}
+    G0 --> BLOCO_A
+    
     subgraph BLOCO_A[Bloco A: People & Solutions]
-        direction LR
-        F1[Fase 1: TEAM-MAP] --> F2[Fase 2: SOLUTIONS-CATALOG]
-        F2 --> F3[Fase 3: SOLUTIONS-STACK-MATRIX]
+        F5[F5: TEAM-SKILLS-MAP] --> F6[F6: TEAM-CAPACITY]
     end
-
-    BLOCO_A --> BARREIRA_1{{⛔ Barreira A}}
-    BARREIRA_1 --> F4[Fase 4: PRD-DEFINITION 🆕]
-
-    F4 --> BLOCO_B
-
-    subgraph BLOCO_B[Bloco B: Architecture & Security]
-        direction LR
-        F5[Fase 5: ARCHITECTURE-DEFINITION] --> F6[Fase 6: SECURITY-DEFINITION]
+    
+    BLOCO_A --> GA{{⛔ Barreira A}}
+    GA --> BLOCO_B
+    
+    subgraph BLOCO_B[Bloco B: Architecture & Security & Specialists]
+        F7[F7: ARCHITECTURE] --> F8[F8: SECURITY]
+        F8 --> F9[F9: DATA-ARCH 🆕]
+        F9 --> F10[F10: DEVOPS-SRE 🆕]
+        F10 --> F11[F11: TEST-STRATEGY 🆕]
+        F11 --> F12[F12: INFRA-CLOUD 🆕]
     end
-
-    BLOCO_B --> BARREIRA_2{{⛔ Barreira de Sincronização}}
-
-    BARREIRA_2 --> BLOCO_C
-    BARREIRA_2 --> BLOCO_D
-
-    subgraph BLOCO_C[Bloco C: Specs & Milestones]
-        direction LR
-        F7[Fase 7: SPECS-DEFINITION] --> F8[Fase 8: MILESTONES]
+    
+    BLOCO_B --> GB{{⛔ Barreira B<br/>6 disciplinas}}
+    GB --> BLOCO_C
+    
+    subgraph BLOCO_C[Bloco C: Catálogo, Matriz, Stack, Specs & Milestones]
+        F13[F13: CATALOG] --> F14[F14: MATRIX]
+        F14 --> F15[F15: STACK-MATRIX]
+        F15 --> F16[F16: SPECS-DEFINITION]
+        F16 --> F17[F17: MILESTONES]
     end
-
-    subgraph BLOCO_D[Bloco D: Matriz, Sprints, Histórico]
-        direction LR
-        F9[Fase 9: SOLUTIONS-MATRIX] --> F10[Fase 10: Estrutura de Sprints ⚡]
-        F10 --> F11[Fase 11: EXECUTION-HISTORY 📊]
+    
+    BLOCO_C --> GC{{⛔ Barreira C<br/>Skills-gap?}}
+    GC -->|gap| BLOCO_A
+    GC -->|OK| BLOCO_D
+    
+    subgraph BLOCO_D[Bloco D: Sprints — Technical Discovery]
+        F18[F18: SPRINT-BACKLOG 🆕] --> F19[F19: DISCOVERY TÉCNICO 🆕]
+        F19 -.->|iterativo| F19
     end
-
-    BLOCO_C --> END([✅ Definições Técnicas Completas])
-    BLOCO_D --> END
-
-    F0 -.->|inputs| INPUTS[📥 PROJECT_PATH<br/>📥 PROJECT_ID_NAME<br/>📥 TECHNICAL_SOLUTION_PATH<br/>📥 TECHNICAL_SOLUTION_NAMES<br/>📥 ARCHITECTURE_GLOBAL<br/>📥 SECURITY_GLOBAL]
+    
+    BLOCO_D --> GD{{⛔ Barreira D}}
+    GD --> HIST[📊 EXECUTION-HISTORY]
+    HIST --> END([✅ Pipeline Completo])
 
     style F0 fill:#6c5ce7,color:#fff
     style F1 fill:#0984e3,color:#fff
     style F2 fill:#0984e3,color:#fff
     style F3 fill:#0984e3,color:#fff
-    style F4 fill:#e17055,color:#fff
+    style F4 fill:#0984e3,color:#fff
     style F5 fill:#0984e3,color:#fff
-    style F6 fill:#e17055,color:#fff
+    style F6 fill:#0984e3,color:#fff
     style F7 fill:#0984e3,color:#fff
     style F8 fill:#0984e3,color:#fff
     style F9 fill:#0984e3,color:#fff
-    style F10 fill:#fdcb6e,color:#333
-    style F11 fill:#00b894,color:#fff
-    style BARREIRA_1 fill:#d63031,color:#fff
-    style BARREIRA_2 fill:#d63031,color:#fff
+    style F10 fill:#0984e3,color:#fff
+    style F11 fill:#0984e3,color:#fff
+    style F12 fill:#0984e3,color:#fff
+    style F13 fill:#0984e3,color:#fff
+    style F14 fill:#0984e3,color:#fff
+    style F15 fill:#0984e3,color:#fff
+    style F16 fill:#0984e3,color:#fff
+    style F17 fill:#0984e3,color:#fff
+    style F18 fill:#0984e3,color:#fff
+    style F19 fill:#0984e3,color:#fff
+    style G0 fill:#d63031,color:#fff
+    style GA fill:#d63031,color:#fff
+    style GB fill:#d63031,color:#fff
+    style GC fill:#d63031,color:#fff
+    style GD fill:#d63031,color:#fff
+    style BLOCO_0 fill:#e3f2fd,stroke:#0984e3
     style BLOCO_A fill:#e3f2fd,stroke:#0984e3
     style BLOCO_B fill:#fff3e0,stroke:#e17055
     style BLOCO_C fill:#e8f5e9,stroke:#00b894
     style BLOCO_D fill:#f3e5f5,stroke:#6c5ce7
-    style INPUTS fill:#dfe6e9,stroke:#636e72
+    style HIST fill:#00b894,color:#fff
 ```
 
 ---
 
 ## 2. Fase 0 — Bootstrap Inteligente (Detalhado)
+
+(Mantido — igual à v4.0)
 
 ```mermaid
 flowchart TD
@@ -100,12 +123,12 @@ flowchart TD
         F0_3[mkdir -p TECHNICAL_DEFINITIONS_PATH] --> F0_4
     end
 
-    subgraph PASSO_04[Passo 0.4 — Migrar Templates]
-        F0_4[Migrar TECHNICAL-TEAM-MAP.md<br/>→ TEAM-CAPACITY.md se existir] --> F0_4B[Criar template<br/>TEAM-CAPACITY-EXCEPTIONS.md]
+    subgraph PASSO_04[Passo 0.4 — Criar Template de Exceções]
+        F0_4[Criar template<br/>TEAM-CAPACITY-EXCEPTIONS.md]
     end
 
     subgraph PASSO_05[Passo 0.5 — Auditar Artefatos]
-        F0_4B --> F0_5[Verificar existência e compliance<br/>de 9 artefatos de definição] --> F0_5_DEC{Status dos<br/>artefatos?}
+        F0_4 --> F0_5[Verificar existência e compliance<br/>de artefatos de definição] --> F0_5_DEC{Status dos<br/>artefatos?}
         F0_5_DEC -->|Todos ❌| F0_6A[🆕 Projeto Novo<br/>→ Iniciar Fase 1]
         F0_5_DEC -->|Alguns ✅| F0_6B[📋 Projeto em Andamento<br/>→ Iniciar da primeira fase pendente]
         F0_5_DEC -->|Todos ✅ Compliance| F0_6C[✅ Projeto Completo<br/>→ Revisar / Evoluir / Encerrar]
@@ -131,14 +154,14 @@ flowchart TD
 
 ## 3. Mecanismo de Orquestração Dinâmica (Loop Trifásico)
 
-Este é o coração do roadmap. **TODAS** as fases 1-9 executam este mesmo loop de validação. As fases 10 e 11 têm tratamento especial (ver seção 5).
+Este é o coração do roadmap. **TODAS** as fases 1-19 executam este mesmo loop de validação. As fases especiais (F19 iterativa e EXECUTION-HISTORY) têm tratamento diferenciado (ver seção 6).
 
 ```mermaid
 flowchart TD
     ORCH([Orquestrador: Iniciar Fase N]) --> GEN
 
-    subgraph LOOP[Loop de Validação Soberana — Fases 1 a 9]
-        GEN["1. GERAÇÃO / EVOLUÇÃO<br/>Executar PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-{FASE}.md<br/>Parâmetros: PROJECT_PATH, PROJECT_ID_NAME,<br/>TECHNICAL_SOLUTION_NAMES, + inputs da fase"] --> GATE
+    subgraph LOOP[Loop de Validação Soberana — Fases 1 a 19]
+        GEN["1. GERAÇÃO / EVOLUÇÃO<br/>Executar PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-{FASE}.md<br/>Parâmetros: todos os inputs do roadmap"] --> GATE
 
         GATE["2. AUDITORIA INTERNA DA IA<br/>Executar PROMPT-GATE-PROJECT-TECHNICAL-DEFINITIONS-{FASE}.md"] --> GATE_RESULT{Resultado<br/>da Auditoria?}
 
@@ -171,235 +194,344 @@ flowchart TD
 
 ---
 
-## 4. Fases 1-9 — Pipeline Sequencial com Blocos e Dependências
+## 4. Fases 1-19 — Pipeline Sequencial com Blocos
 
 ```mermaid
-flowchart LR
-    subgraph F1[Fase 1: TEAM-MAP]
+flowchart TB
+    subgraph F1[F1: INTAKE-LOG 🆕]
         direction TB
-        F1_GEN[GENERATE<br/>Skills Matrix] --> F1_GATE[GATE<br/>Valida skills] --> F1_FIX[FIX<br/>Corrige gaps]
+        F1_GEN[GENERATE<br/>Registro de Ingestão] --> F1_GATE[GATE<br/>Valida lote] --> F1_FIX[FIX<br/>Corrige entradas]
         F1_FIX -.->|loop| F1_GATE
         F1_GATE --> F1_OK[COMPLIANCE ✅]
     end
 
-    subgraph F2[Fase 2: SOLUTIONS-CATALOG]
+    subgraph F2[F2: DOR-ASSESSMENT 🆕]
         direction TB
-        F2_GEN[GENERATE<br/>Catálogo] --> F2_GATE[GATE<br/>Valida catálogo] --> F2_FIX[FIX<br/>Corrige entradas]
+        F2_GEN[GENERATE<br/>Avaliação DoR] --> F2_GATE[GATE<br/>Valida DoR] --> F2_FIX[FIX<br/>Corrige critérios]
         F2_FIX -.->|loop| F2_GATE
         F2_GATE --> F2_OK[COMPLIANCE ✅]
     end
 
-    subgraph F3[Fase 3: STACK-MATRIX]
+    subgraph F3[F3: PRODUCT-BACKLOG-LIST 🆕]
         direction TB
-        F3_GEN[GENERATE<br/>Stacks] --> F3_GATE[GATE<br/>Valida stacks] --> F3_FIX[FIX<br/>Corrige stacks]
+        F3_GEN[GENERATE<br/>Backlog Consolidado] --> F3_GATE[GATE<br/>Valida backlog] --> F3_FIX[FIX<br/>Corrige itens]
         F3_FIX -.->|loop| F3_GATE
         F3_GATE --> F3_OK[COMPLIANCE ✅]
     end
 
-    subgraph F4[Fase 4: PRD-DEFINITION 🆕]
+    subgraph F4[F4: PRD-DEFINITION 🔄]
         direction TB
-        F4_GEN[GENERATE<br/>Baseline PRD] --> F4_GATE[GATE<br/>Valida PRD] --> F4_FIX[FIX<br/>Corrige PRD]
+        F4_GEN[GENERATE<br/>PRD de Negócio] --> F4_GATE[GATE<br/>Valida PRD] --> F4_FIX[FIX<br/>Corrige PRD]
         F4_FIX -.->|loop| F4_GATE
         F4_GATE --> F4_OK[COMPLIANCE ✅]
     end
 
-    subgraph F5[Fase 5: ARCHITECTURE-DEFINITION]
+    subgraph F5[F5: TEAM-SKILLS-MAP]
         direction TB
-        F5_GEN[GENERATE<br/>Integração] --> F5_GATE[GATE<br/>Valida arquitetura] --> F5_FIX[FIX<br/>Corrige ADRs]
+        F5_GEN[GENERATE<br/>Discovery Team Skills] --> F5_GATE[GATE<br/>Valida skills] --> F5_FIX[FIX<br/>Corrige gaps]
         F5_FIX -.->|loop| F5_GATE
         F5_GATE --> F5_OK[COMPLIANCE ✅]
     end
 
-    subgraph F6[Fase 6: SECURITY-DEFINITION]
+    subgraph F6[F6: TEAM-CAPACITY]
         direction TB
-        F6_GEN[GENERATE<br/>Segurança] --> F6_GATE[GATE<br/>Valida segurança] --> F6_FIX[FIX<br/>Corrige controles]
+        F6_GEN[GENERATE<br/>Capacidade] --> F6_GATE[GATE<br/>Valida capacidade vs skills] --> F6_FIX[FIX<br/>Corrige alocação]
         F6_FIX -.->|loop| F6_GATE
         F6_GATE --> F6_OK[COMPLIANCE ✅]
     end
 
-    subgraph F7[Fase 7: SPECS-DEFINITION]
+    subgraph F7[F7: ARCHITECTURE]
         direction TB
-        F7_GEN[GENERATE<br/>Especificações] --> F7_GATE[GATE<br/>Valida specs] --> F7_FIX[FIX<br/>Corrige specs]
+        F7_GEN[GENERATE<br/>Arquitetura C4+ADRs] --> F7_GATE[GATE<br/>Valida arquitetura] --> F7_FIX[FIX<br/>Corrige ADRs]
         F7_FIX -.->|loop| F7_GATE
         F7_GATE --> F7_OK[COMPLIANCE ✅]
     end
 
-    subgraph F8[Fase 8: MILESTONES]
+    subgraph F8[F8: SECURITY]
         direction TB
-        F8_GEN[GENERATE<br/>Roadmap] --> F8_GATE[GATE<br/>Valida milestones] --> F8_FIX[FIX<br/>Corrige milestones]
+        F8_GEN[GENERATE<br/>Segurança] --> F8_GATE[GATE<br/>Valida segurança] --> F8_FIX[FIX<br/>Corrige controles]
         F8_FIX -.->|loop| F8_GATE
         F8_GATE --> F8_OK[COMPLIANCE ✅]
     end
 
-    subgraph F9[Fase 9: SOLUTIONS-MATRIX]
+    subgraph F9[F9: DATA-ARCH 🆕]
         direction TB
-        F9_GEN[GENERATE<br/>Matriz] --> F9_GATE[GATE<br/>Valida matriz] --> F9_FIX[FIX<br/>Corrige matriz]
+        F9_GEN[GENERATE<br/>Modelagem+Storage] --> F9_GATE[GATE<br/>Valida data arch] --> F9_FIX[FIX<br/>Corrige modelo]
         F9_FIX -.->|loop| F9_GATE
         F9_GATE --> F9_OK[COMPLIANCE ✅]
     end
 
-    F1_OK -->|destrava| F2_GEN
-    F2_OK -->|destrava| F3_GEN
-    F3_OK -->|barreira A| F4_GEN
-    F4_OK -->|destrava| F5_GEN
-    F5_OK -->|destrava| F6_GEN
-    F6_OK -->|barreira sinc.| F7_GEN
-    F6_OK -->|barreira sinc.| F9_GEN
-    F7_OK -->|destrava| F8_GEN
-    F9_OK -->|destrava| F10_ACTION
+    subgraph F10[F10: DEVOPS-SRE 🆕]
+        direction TB
+        F10_GEN[GENERATE<br/>CI/CD+Observabilidade] --> F10_GATE[GATE<br/>Valida DevOps/SRE] --> F10_FIX[FIX<br/>Corrige pipeline]
+        F10_FIX -.->|loop| F10_GATE
+        F10_GATE --> F10_OK[COMPLIANCE ✅]
+    end
 
-    F1 --> I1[📥 TEAM-CAPACITY.md<br/>+ Exceções]
-    F2 --> I2[📥 TEAM-MAP.md<br/>+ TECHNICAL_SOLUTION_NAMES]
-    F3 --> I3[📥 SOLUTIONS-CATALOG.md<br/>+ Stack definitions]
-    F4 --> I4[📥 STACK-MATRIX.md<br/>+ Project Documents]
-    F5 --> I5[📥 PRD-DEFINITION.md<br/>+ ARCHITECTURE_GLOBAL]
-    F6 --> I6[📥 ARCHITECTURE-DEFINITION.md<br/>+ SECURITY_GLOBAL]
-    F7 --> I7[📥 PRD + ARCH + SEC<br/>+ Stack definitions]
-    F8 --> I8[📥 SPECS-DEFINITION.md<br/>+ Project Charter]
-    F9 --> I9[📥 Todos os artefatos<br/>dos Blocos A e B]
+    subgraph F11[F11: TEST-STRATEGY 🆕]
+        direction TB
+        F11_GEN[GENERATE<br/>Pirâmide+Automação] --> F11_GATE[GATE<br/>Valida test strategy] --> F11_FIX[FIX<br/>Corrige estratégia]
+        F11_FIX -.->|loop| F11_GATE
+        F11_GATE --> F11_OK[COMPLIANCE ✅]
+    end
+
+    subgraph F12[F12: INFRA-CLOUD 🆕]
+        direction TB
+        F12_GEN[GENERATE<br/>Topologia+Networking] --> F12_GATE[GATE<br/>Valida infra/cloud] --> F12_FIX[FIX<br/>Corrige topologia]
+        F12_FIX -.->|loop| F12_GATE
+        F12_GATE --> F12_OK[COMPLIANCE ✅]
+    end
+
+    subgraph F13[F13: CATALOG]
+        direction TB
+        F13_GEN[GENERATE<br/>Catálogo] --> F13_GATE[GATE<br/>Valida catálogo] --> F13_FIX[FIX<br/>Corrige entradas]
+        F13_FIX -.->|loop| F13_GATE
+        F13_GATE --> F13_OK[COMPLIANCE ✅]
+    end
+
+    subgraph F14[F14: MATRIX]
+        direction TB
+        F14_GEN[GENERATE<br/>Matriz] --> F14_GATE[GATE<br/>Valida matriz] --> F14_FIX[FIX<br/>Corrige matriz]
+        F14_FIX -.->|loop| F14_GATE
+        F14_GATE --> F14_OK[COMPLIANCE ✅]
+    end
+
+    subgraph F15[F15: STACK-MATRIX]
+        direction TB
+        F15_GEN[GENERATE<br/>Stacks] --> F15_GATE[GATE<br/>Valida stacks] --> F15_FIX[FIX<br/>Corrige stacks]
+        F15_FIX -.->|loop| F15_GATE
+        F15_GATE --> F15_OK[COMPLIANCE ✅]
+    end
+
+    subgraph F16[F16: SPECS-DEFINITION]
+        direction TB
+        F16_GEN[GENERATE<br/>Consolidação Técnica] --> F16_GATE[GATE<br/>Valida specs] --> F16_FIX[FIX<br/>Corrige specs]
+        F16_FIX -.->|loop| F16_GATE
+        F16_GATE --> F16_OK[COMPLIANCE ✅]
+    end
+
+    subgraph F17[F17: MILESTONES]
+        direction TB
+        F17_GEN[GENERATE<br/>Milestones] --> F17_GATE[GATE<br/>Valida milestones] --> F17_FIX[FIX<br/>Corrige milestones]
+        F17_FIX -.->|loop| F17_GATE
+        F17_GATE --> F17_OK[COMPLIANCE ✅]
+    end
+
+    subgraph F18[F18: SPRINT-BACKLOG 🆕]
+        direction TB
+        F18_GEN[GENERATE<br/>Backlog Refinado] --> F18_GATE[GATE<br/>Valida backlog sprint] --> F18_FIX[FIX<br/>Corrige tarefas]
+        F18_FIX -.->|loop| F18_GATE
+        F18_GATE --> F18_OK[COMPLIANCE ✅]
+    end
+
+    subgraph F19[F19: DISCOVERY TÉCNICO 🆕]
+        direction TB
+        F19_GEN[GENERATE<br/>Contratos Técnicos] --> F19_GATE[GATE<br/>Valida contratos] --> F19_FIX[FIX<br/>Corrige contratos]
+        F19_FIX -.->|loop| F19_GATE
+        F19_GATE --> F19_OK[COMPLIANCE ✅]
+        F19_OK -.->|iterativo| F19_GEN
+    end
+
+    F1_OK --> F2_GEN
+    F2_OK --> F3_GEN
+    F3_OK --> F4_GEN
+    F4_OK -->|⛔ Barreira 0| F5_GEN
+    F5_OK --> F6_GEN
+    F6_OK -->|⛔ Barreira A| F7_GEN
+    F7_OK --> F8_GEN
+    F8_OK --> F9_GEN
+    F9_OK --> F10_GEN
+    F10_OK --> F11_GEN
+    F11_OK --> F12_GEN
+    F12_OK -->|⛔ Barreira B| F13_GEN
+    F13_OK --> F14_GEN
+    F14_OK --> F15_GEN
+    F15_OK --> F16_GEN
+    F16_OK --> F17_GEN
+    F17_OK -->|⛔ Barreira C| F18_GEN
+    F18_OK --> F19_GEN
+    F19_OK -->|⛔ Barreira D| HIST
 
     style F1 fill:#0984e3,color:#fff
     style F2 fill:#0984e3,color:#fff
     style F3 fill:#0984e3,color:#fff
-    style F4 fill:#e17055,color:#fff
+    style F4 fill:#0984e3,color:#fff
     style F5 fill:#0984e3,color:#fff
-    style F6 fill:#e17055,color:#fff
+    style F6 fill:#0984e3,color:#fff
     style F7 fill:#0984e3,color:#fff
     style F8 fill:#0984e3,color:#fff
     style F9 fill:#0984e3,color:#fff
+    style F10 fill:#0984e3,color:#fff
+    style F11 fill:#0984e3,color:#fff
+    style F12 fill:#0984e3,color:#fff
+    style F13 fill:#0984e3,color:#fff
+    style F14 fill:#0984e3,color:#fff
+    style F15 fill:#0984e3,color:#fff
+    style F16 fill:#0984e3,color:#fff
+    style F17 fill:#0984e3,color:#fff
+    style F18 fill:#0984e3,color:#fff
+    style F19 fill:#0984e3,color:#fff
+    style HIST fill:#00b894,color:#fff
 ```
 
 ### Artefatos Produzidos por Fase
 
 | Fase | Arquivo Gerado | Conteúdo |
 |------|----------------|----------|
-| 1 | `PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md` | Skills matrix do time, papéis e responsabilidades técnicas |
-| 2 | `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md` | Catálogo completo das soluções técnicas do projeto |
-| 3 | `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md` | Stack tecnológica de cada solução |
-| 4 | `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` | Baseline de PRD consolidando requisitos de negócio |
-| 5 | `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md` | Como as soluções se integram (ADRs, diagramas C4) |
-| 6 | `PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md` | Regras de segurança transversais do projeto |
-| 7 | `PROJECT-TECHNICAL-DEFINITIONS-SPECS-DEFINITION.md` | Baseline de especificações técnicas |
-| 8 | `PROJECT-TECHNICAL-DEFINITIONS-MILESTONES.md` | Roadmap alinhado ao negócio com milestones |
-| 9 | `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-MATRIX.md` | Matriz consolidada solução×stack×owner |
-| 10 | `sprints/` (estrutura de pastas) | Pastas de sprint criadas em cada solução técnica |
-| 11 | `PROJECT-TECHNICAL-DEFINITIONS-EXECUTION-HISTORY.md` | Dashboard de controle com estado de todos os documentos |
+| 1 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` | Registro versionado dos lotes de ingestão de requisitos |
+| 2 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md` | Critérios de Definition of Ready aplicados pelo PO/PM |
+| 3 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-PRODUCT-BACKLOG-LIST.md` | Backlog consolidado "Pronto para TI", priorizado |
+| 4 🔄 | `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` | PRD de Negócio — Visão, MVP Global, Glossário |
+| 5 | `PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md` | Skills matrix do Discovery Team |
+| 6 | `PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md` | Capacidade de trabalho do time (horas/semana) |
+| 7 | `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md` | Arquitetura — ADRs, diagramas C4, topologia |
+| 8 | `PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md` | Regras de segurança — threat model, IAM, compliance |
+| 9 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-DATA-ARCHITECTURE-DEFINITION.md` | Data Architecture — modelagem, pipelines, storage strategy |
+| 10 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-DEVOPS-SRE-DEFINITION.md` | DevOps/SRE — CI/CD, IaC, observabilidade, SLOs |
+| 11 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-TEST-STRATEGY-DEFINITION.md` | Test Strategy — pirâmide, automação, performance, SAST/DAST |
+| 12 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-INFRA-CLOUD-DEFINITION.md` | Infra/Cloud — topologia, compute, networking, DR |
+| 13 | `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md` | Catálogo completo das soluções técnicas do projeto |
+| 14 | `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-MATRIX.md` | Matriz solução×disciplina×owner |
+| 15 | `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md` | Stack tecnológica de cada solução |
+| 16 | `PROJECT-TECHNICAL-DEFINITIONS-SPECS-DEFINITION.md` | Consolidação técnica enxuta (sumariza + referencia) |
+| 17 | `PROJECT-TECHNICAL-DEFINITIONS-MILESTONES.md` | Roadmap alinhado ao negócio com milestones |
+| 18 🆕 | `technical-discovery/SPRINT-BACKLOG.md` | Backlog refinado com tarefas T-NNN → US-ID → Sprint-Alvo → CONTRACTS |
+| 19 🆕 | `technical-discovery/sprint-NNN/` | Contratos técnicos por sprint (API, Data, Security, SRE, Increments) |
+| — | `PROJECT-TECHNICAL-DEFINITIONS-EXECUTION-HISTORY.md` | Dashboard de controle com estado de todos os 20 artefatos |
 
 ---
 
-## 5. Arquitetura de Blocos e Regras de Paralelismo
+## 5. Arquitetura de Blocos — Pipeline Totalmente Sequencial
 
-Este roadmap introduz uma arquitetura de **5 blocos com barreiras de sincronização**, diferentemente dos pipelines puramente sequenciais.
+Este roadmap adota uma arquitetura de **6 blocos sequenciais** com barreiras de sincronização. **Não há paralelismo** — cada bloco aguarda a conclusão do anterior.
 
 ```mermaid
 flowchart TD
-    START([Fase 0: Bootstrap]) --> GATE_A
+    START([Fase 0: Bootstrap]) --> BLOCO_0
 
-    subgraph BLOCO_A[Bloco A: People & Solutions — Sequencial Interno]
+    subgraph BLOCO_0[Bloco 0: Product Def & Backlog & PRD — Sequencial]
         direction LR
-        A1[F1: TEAM-MAP] --> A2[F2: CATALOG]
-        A2 --> A3[F3: STACK-MATRIX]
+        B0_1[F1: INTAKE-LOG] --> B0_2[F2: DOR-ASSESSMENT]
+        B0_2 --> B0_3[F3: PRODUCT-BACKLOG-LIST]
+        B0_3 --> B0_4[F4: PRD-DEFINITION]
     end
 
-    GATE_A{{⛔ Barreira A<br/>Bloco A 100% COMPLIANCE?}} -->|SIM| F4
+    BLOCO_0 --> G0{{"⛔ Barreira 0<br/>Bloco 0 100% COMPLIANCE?"}}
+    G0 -->|SIM| BLOCO_A
 
-    subgraph F4_PHASE[Fase 4 Isolada]
-        F4[PRD-DEFINITION 🆕<br/>Baseline de PRD do projeto]
-    end
-
-    F4 --> GATE_B
-
-    subgraph BLOCO_B[Bloco B: Architecture & Security — Sequencial Interno]
+    subgraph BLOCO_A[Bloco A: People & Solutions — Sequencial]
         direction LR
-        B1[F5: ARCHITECTURE] --> B2[F6: SECURITY]
+        A1[F5: TEAM-SKILLS-MAP] --> A2[F6: TEAM-CAPACITY]
     end
 
-    GATE_B{{⛔ Barreira B<br/>Bloco B 100% COMPLIANCE?}} -->|SIM| GATE_SYNC
+    BLOCO_A --> GA{{"⛔ Barreira A<br/>Bloco A 100% COMPLIANCE?"}}
+    GA -->|SIM| BLOCO_B
 
-    GATE_SYNC{{⚡ Barreira de Sincronização<br/>Blocos C e D disparam em paralelo}}
-
-    GATE_SYNC --> BLOCO_C
-    GATE_SYNC --> BLOCO_D
-
-    subgraph BLOCO_C[Bloco C: Specs & Milestones]
+    subgraph BLOCO_B[Bloco B: Architecture & Security & Specialists — Sequencial]
         direction LR
-        C1[F7: SPECS] --> C2[F8: MILESTONES]
+        B1[F7: ARCHITECTURE] --> B2[F8: SECURITY]
+        B2 --> B3[F9: DATA-ARCH 🆕]
+        B3 --> B4[F10: DEVOPS-SRE 🆕]
+        B4 --> B5[F11: TEST-STRATEGY 🆕]
+        B5 --> B6[F12: INFRA-CLOUD 🆕]
     end
 
-    subgraph BLOCO_D[Bloco D: Matriz, Sprints, Histórico]
+    BLOCO_B --> GB{{"⛔ Barreira B<br/>Bloco B 100% COMPLIANCE?<br/>6 disciplinas"}}
+    GB -->|SIM| BLOCO_C
+
+    subgraph BLOCO_C[Bloco C: Catálogo, Matriz, Stack, Specs & Milestones — Sequencial]
         direction LR
-        D1[F9: MATRIX] --> D2[F10: SPRINTS ⚡]
-        D2 --> D3[F11: HISTORY 📊]
+        C1[F13: CATALOG] --> C2[F14: MATRIX]
+        C2 --> C3[F15: STACK-MATRIX]
+        C3 --> C4[F16: SPECS-DEFINITION]
+        C4 --> C5[F17: MILESTONES]
     end
 
-    BLOCO_C --> JOIN{{Junção}}
-    BLOCO_D --> JOIN
+    BLOCO_C --> GC{{"⛔ Barreira C<br/>Bloco C 100% COMPLIANCE?<br/>Skills-gap → Bloco A"}}
+    GC -->|gap detectado| BLOCO_A
+    GC -->|OK| BLOCO_D
 
-    JOIN --> END([✅ Pipeline Completo])
+    subgraph BLOCO_D[Bloco D: Sprints — Technical Discovery — Sequencial + Iterativo]
+        direction LR
+        D1[F18: SPRINT-BACKLOG 🆕] --> D2[F19: DISCOVERY TÉCNICO 🆕]
+        D2 -.->|iterativo| D2
+    end
 
+    BLOCO_D --> GD{{"⛔ Barreira D<br/>Bloco D 100% COMPLIANCE?"}}
+    GD -->|SIM| HIST[📊 EXECUTION-HISTORY]
+
+    HIST --> END([✅ Pipeline Completo])
+
+    style BLOCO_0 fill:#e3f2fd,stroke:#0984e3
     style BLOCO_A fill:#e3f2fd,stroke:#0984e3
     style BLOCO_B fill:#fff3e0,stroke:#e17055
     style BLOCO_C fill:#e8f5e9,stroke:#00b894
     style BLOCO_D fill:#f3e5f5,stroke:#6c5ce7
-    style F4_PHASE fill:#ffeaa7,stroke:#e17055
-    style GATE_A fill:#d63031,color:#fff
-    style GATE_B fill:#d63031,color:#fff
-    style GATE_SYNC fill:#6c5ce7,color:#fff
-    style JOIN fill:#00b894,color:#fff
+    style G0 fill:#d63031,color:#fff
+    style GA fill:#d63031,color:#fff
+    style GB fill:#d63031,color:#fff
+    style GC fill:#d63031,color:#fff
+    style GD fill:#d63031,color:#fff
+    style HIST fill:#00b894,color:#fff
 ```
 
-### Regras de Paralelismo
+### Regras de Blocos
 
 | Bloco | Fases | Modo | Dispara Quando |
 |-------|-------|------|----------------|
-| **A** | 1, 2, 3 | Sequencial | Imediatamente após Bootstrap |
-| **—** | 4 | Isolada | Barreira A: Bloco A 100% COMPLIANCE |
-| **B** | 5, 6 | Sequencial | Fase 4 COMPLIANCE |
-| **C** | 7, 8 | Sequencial | Barreira de Sincronização (Bloco B 100%) |
-| **D** | 9, 10, 11 | Sequencial | Barreira de Sincronização (Bloco B 100%) |
-| **C ∥ D** | — | **Paralelo** | Blocos C e D disparam simultaneamente |
+| **0** 🆕 | 1, 2, 3, 4 | Sequencial | Imediatamente após Bootstrap |
+| **A** | 5, 6 | Sequencial | Barreira 0: Bloco 0 100% COMPLIANCE |
+| **B** 🔄 | 7, 8, 9, 10, 11, 12 | Sequencial | Barreira A: Bloco A 100% COMPLIANCE |
+| **C** 🔄 | 13, 14, 15, 16, 17 | Sequencial | Barreira B: Bloco B 100% COMPLIANCE |
+| **D** 🆕 | 18, 19 | Sequencial (iterativo) | Barreira C: Bloco C 100% COMPLIANCE |
+| **History** | — | Standalone | Barreira D: Bloco D 100% COMPLIANCE |
+
+> **Nota:** Diferentemente da v4.0, **não há paralelismo entre blocos**. Cada barreira libera exatamente um bloco seguinte. O fluxo é 100% sequencial.
 
 ---
 
 ## 6. Fases Especiais — Tratamento Diferenciado
 
-As fases 10 e 11 não seguem o loop trifásico padrão (Generate→Gate→Fix).
+As fases F19 (Discovery Técnico) e EXECUTION-HISTORY não seguem o loop trifásico padrão em sua totalidade.
 
 ```mermaid
 flowchart TD
-    subgraph STANDARD[Fases 1-9: Loop Trifásico Padrão]
+    subgraph STANDARD[Fases 1-18: Loop Trifásico Padrão]
         S_GEN[GENERATE] --> S_GATE[GATE] --> S_FIX[FIX]
         S_FIX -.->|loop| S_GATE
         S_GATE --> S_HUMAN[VALIDAÇÃO HUMANA]
         S_HUMAN --> S_COMP[COMPLIANCE ✅]
     end
 
-    subgraph SPECIAL_10[Fase 10: Criação de Sprints — Ação Direta]
-        F10_START([Fase 9 COMPLIANCE]) --> F10_PROP[Orquestrador exibe<br/>estrutura de pastas proposta<br/>para cada TECHNICAL_SOLUTION_NAME]
-        F10_PROP --> F10_CONF{Usuário<br/>confirma?}
-        F10_CONF -->|SIM| F10_EXEC["Bash: mkdir -p em cada<br/>solução técnica"]
-        F10_CONF -->|NÃO| F10_ADJUST[Ajustar proposta<br/>conforme feedback]
-        F10_ADJUST --> F10_PROP
-        F10_EXEC --> F10_DONE([✅ Estrutura criada<br/>→ Destrava Fase 11])
+    subgraph SPECIAL_F19[F19: Discovery Técnico — Iterativo]
+        F19_START([F18 COMPLIANCE]) --> F19_GEN[GENERATE<br/>Contratos Técnicos]
+        F19_GEN --> F19_GATE[GATE<br/>Auditoria]
+        F19_GATE --> F19_FIX[FIX]
+        F19_FIX -.->|loop| F19_GATE
+        F19_GATE --> F19_HUMAN[VALIDAÇÃO HUMANA]
+        F19_HUMAN --> F19_APPROVED[✅ COMPLIANCE]
+        F19_APPROVED --> F19_NEXT{Próxima<br/>sprint?}
+        F19_NEXT -->|SIM| F19_GEN
+        F19_NEXT -->|NÃO| F19_DONE
     end
 
-    subgraph SPECIAL_11[Fase 11: Execution History — Dashboard]
-        F11_START([Fase 10 concluída]) --> F11_GEN[GENERATE<br/>PROMPT-GENERATE-...-EXECUTION-HISTORY.md]
-        F11_GEN --> F11_REVIEW[Revisão Humana Direta<br/>Sem gate automatizado]
-        F11_REVIEW --> F11_DEC{Status<br/>aceitável?}
-        F11_DEC -->|SIM| F11_DONE([✅ Dashboard atualizado<br/>Pipeline concluído])
-        F11_DEC -->|NÃO| F11_GEN
+    subgraph SPECIAL_HIST[EXECUTION-HISTORY — Dashboard]
+        HIST_START([Barreira D Aprovada]) --> HIST_GEN[GENERATE<br/>Dashboard de Controle]
+        HIST_GEN --> HIST_REVIEW[Revisão Humana Direta<br/>Sem gate automatizado]
+        HIST_REVIEW --> HIST_DEC{Status<br/>aceitável?}
+        HIST_DEC -->|SIM| HIST_DONE([✅ Dashboard atualizado<br/>Pipeline concluído])
+        HIST_DEC -->|NÃO| HIST_GEN
     end
 
     style STANDARD fill:#e3f2fd,stroke:#0984e3
-    style SPECIAL_10 fill:#fff3e0,stroke:#fdcb6e
-    style SPECIAL_11 fill:#e8f5e9,stroke:#00b894
+    style SPECIAL_F19 fill:#fff3e0,stroke:#fdcb6e
+    style SPECIAL_HIST fill:#e8f5e9,stroke:#00b894
 ```
 
 | Fase | Mecanismo | Motivo |
 |------|-----------|--------|
-| **10** | Ação Bash direta com confirmação humana | Operação de filesystem, sem artefato documental para auditar |
-| **11** | Generate → Revisão humana (sem Gate/Fix) | Dashboard de controle atualizado incrementalmente após cada fase |
+| **F19** 🆕 | Generate → Gate → Fix → COMPLIANCE (loop iterativo por sprint) | Discovery Técnico contínuo — ao final de cada sprint, orquestrador pergunta se continua |
+| **EXECUTION-HISTORY** | Generate → Revisão humana (sem Gate/Fix) | Dashboard de controle consolidado — atualizado incrementalmente após cada fase |
 
 ---
 
@@ -415,14 +547,14 @@ stateDiagram-v2
         ColetarOpcionais --> ConfirmarCaminhos: inputs coletados
         ConfirmarCaminhos --> ColetarInputs: NÃO confirma
         ConfirmarCaminhos --> CriarEstrutura: SIM confirma
-        CriarEstrutura --> MigrarTemplates
-        MigrarTemplates --> AuditarArtefatos
+        CriarEstrutura --> CriarTemplateExcecoes
+        CriarTemplateExcecoes --> AuditarArtefatos
         AuditarArtefatos --> ResumoInicial
     }
 
-    Bootstrap --> BlocoA_F1
+    Bootstrap --> Bloco0_F1
 
-    state BlocoA_F1 {
+    state Bloco0_F1 {
         [*] --> F1_Gen
         F1_Gen --> F1_Gate
         F1_Gate --> F1_Fix: NÃO COMPLIANCE
@@ -432,9 +564,9 @@ stateDiagram-v2
         F1_Human --> F1_Done: Aprovado
     }
 
-    BlocoA_F1 --> BlocoA_F2: COMPLIANCE
+    Bloco0_F1 --> Bloco0_F2: COMPLIANCE
 
-    state BlocoA_F2 {
+    state Bloco0_F2 {
         [*] --> F2_Gen
         F2_Gen --> F2_Gate
         F2_Gate --> F2_Fix: NÃO COMPLIANCE
@@ -444,9 +576,9 @@ stateDiagram-v2
         F2_Human --> F2_Done: Aprovado
     }
 
-    BlocoA_F2 --> BlocoA_F3: COMPLIANCE
+    Bloco0_F2 --> Bloco0_F3: COMPLIANCE
 
-    state BlocoA_F3 {
+    state Bloco0_F3 {
         [*] --> F3_Gen
         F3_Gen --> F3_Gate
         F3_Gate --> F3_Fix: NÃO COMPLIANCE
@@ -456,17 +588,9 @@ stateDiagram-v2
         F3_Human --> F3_Done: Aprovado
     }
 
-    BlocoA_F3 --> BarreiraA: COMPLIANCE
+    Bloco0_F3 --> Bloco0_F4: COMPLIANCE
 
-    state BarreiraA {
-        [*] --> CheckA
-        CheckA --> BlocoA_F1: Bloco A incompleto
-        CheckA --> Fase4_PRD: Bloco A 100% OK
-    }
-
-    BarreiraA --> Fase4_PRD
-
-    state Fase4_PRD {
+    state Bloco0_F4 {
         [*] --> F4_Gen
         F4_Gen --> F4_Gate
         F4_Gate --> F4_Fix: NÃO COMPLIANCE
@@ -476,9 +600,17 @@ stateDiagram-v2
         F4_Human --> F4_Done: Aprovado
     }
 
-    Fase4_PRD --> BlocoB_F5: COMPLIANCE
+    Bloco0_F4 --> Barreira0: COMPLIANCE
 
-    state BlocoB_F5 {
+    state Barreira0 {
+        [*] --> Check0
+        Check0 --> Bloco0_F1: Bloco 0 incompleto
+        Check0 --> BlocoA_F5: Bloco 0 100% OK
+    }
+
+    Barreira0 --> BlocoA_F5
+
+    state BlocoA_F5 {
         [*] --> F5_Gen
         F5_Gen --> F5_Gate
         F5_Gate --> F5_Fix: NÃO COMPLIANCE
@@ -488,9 +620,9 @@ stateDiagram-v2
         F5_Human --> F5_Done: Aprovado
     }
 
-    BlocoB_F5 --> BlocoB_F6: COMPLIANCE
+    BlocoA_F5 --> BlocoA_F6: COMPLIANCE
 
-    state BlocoB_F6 {
+    state BlocoA_F6 {
         [*] --> F6_Gen
         F6_Gen --> F6_Gate
         F6_Gate --> F6_Fix: NÃO COMPLIANCE
@@ -500,18 +632,17 @@ stateDiagram-v2
         F6_Human --> F6_Done: Aprovado
     }
 
-    BlocoB_F6 --> BarreiraSync: COMPLIANCE
+    BlocoA_F6 --> BarreiraA: COMPLIANCE
 
-    state BarreiraSync {
-        [*] --> CheckSync
-        CheckSync --> BlocoB_F5: Bloco B incompleto
-        CheckSync --> Fork: Bloco B 100% OK
+    state BarreiraA {
+        [*] --> CheckA
+        CheckA --> BlocoA_F5: Bloco A incompleto
+        CheckA --> BlocoB_F7: Bloco A 100% OK
     }
 
-    BarreiraSync --> BlocoC_F7
-    BarreiraSync --> BlocoD_F9
+    BarreiraA --> BlocoB_F7
 
-    state BlocoC_F7 {
+    state BlocoB_F7 {
         [*] --> F7_Gen
         F7_Gen --> F7_Gate
         F7_Gate --> F7_Fix: NÃO COMPLIANCE
@@ -521,9 +652,9 @@ stateDiagram-v2
         F7_Human --> F7_Done: Aprovado
     }
 
-    BlocoC_F7 --> BlocoC_F8: COMPLIANCE
+    BlocoB_F7 --> BlocoB_F8: COMPLIANCE
 
-    state BlocoC_F8 {
+    state BlocoB_F8 {
         [*] --> F8_Gen
         F8_Gen --> F8_Gate
         F8_Gate --> F8_Fix: NÃO COMPLIANCE
@@ -533,7 +664,9 @@ stateDiagram-v2
         F8_Human --> F8_Done: Aprovado
     }
 
-    state BlocoD_F9 {
+    BlocoB_F8 --> BlocoB_F9: COMPLIANCE
+
+    state BlocoB_F9 {
         [*] --> F9_Gen
         F9_Gen --> F9_Gate
         F9_Gate --> F9_Fix: NÃO COMPLIANCE
@@ -543,34 +676,157 @@ stateDiagram-v2
         F9_Human --> F9_Done: Aprovado
     }
 
-    BlocoD_F9 --> BlocoD_F10: COMPLIANCE
+    BlocoB_F9 --> BlocoB_F10: COMPLIANCE
 
-    state BlocoD_F10 {
-        [*] --> F10_Propor
-        F10_Propor --> F10_Confirmar
-        F10_Confirmar --> F10_Propor: NÃO confirma
-        F10_Confirmar --> F10_Executar: SIM confirma
-        F10_Executar --> F10_Done
+    state BlocoB_F10 {
+        [*] --> F10_Gen
+        F10_Gen --> F10_Gate
+        F10_Gate --> F10_Fix: NÃO COMPLIANCE
+        F10_Fix --> F10_Gate
+        F10_Gate --> F10_Human: SEM ERROS
+        F10_Human --> F10_Gen: Novos inputs
+        F10_Human --> F10_Done: Aprovado
     }
 
-    BlocoD_F10 --> BlocoD_F11
+    BlocoB_F10 --> BlocoB_F11: COMPLIANCE
 
-    state BlocoD_F11 {
+    state BlocoB_F11 {
         [*] --> F11_Gen
-        F11_Gen --> F11_Review
-        F11_Review --> F11_Gen: Ajustes solicitados
-        F11_Review --> F11_Done: OK
+        F11_Gen --> F11_Gate
+        F11_Gate --> F11_Fix: NÃO COMPLIANCE
+        F11_Fix --> F11_Gate
+        F11_Gate --> F11_Human: SEM ERROS
+        F11_Human --> F11_Gen: Novos inputs
+        F11_Human --> F11_Done: Aprovado
     }
 
-    BlocoC_F8 --> Join
-    BlocoD_F11 --> Join
+    BlocoB_F11 --> BlocoB_F12: COMPLIANCE
 
-    state Join {
-        [*] --> WaitAll
-        WaitAll --> Done: Blocos C e D concluídos
+    state BlocoB_F12 {
+        [*] --> F12_Gen
+        F12_Gen --> F12_Gate
+        F12_Gate --> F12_Fix: NÃO COMPLIANCE
+        F12_Fix --> F12_Gate
+        F12_Gate --> F12_Human: SEM ERROS
+        F12_Human --> F12_Gen: Novos inputs
+        F12_Human --> F12_Done: Aprovado
     }
 
-    Join --> [*]: ✅ Definições Técnicas Completas
+    BlocoB_F12 --> BarreiraB: COMPLIANCE
+
+    state BarreiraB {
+        [*] --> CheckB
+        CheckB --> BlocoB_F7: Bloco B incompleto
+        CheckB --> BlocoC_F13: Bloco B 100% OK
+    }
+
+    BarreiraB --> BlocoC_F13
+
+    state BlocoC_F13 {
+        [*] --> F13_Gen
+        F13_Gen --> F13_Gate
+        F13_Gate --> F13_Fix: NÃO COMPLIANCE
+        F13_Fix --> F13_Gate
+        F13_Gate --> F13_Human: SEM ERROS
+        F13_Human --> F13_Gen: Novos inputs
+        F13_Human --> F13_Done: Aprovado
+    }
+
+    BlocoC_F13 --> BlocoC_F14: COMPLIANCE
+
+    state BlocoC_F14 {
+        [*] --> F14_Gen
+        F14_Gen --> F14_Gate
+        F14_Gate --> F14_Fix: NÃO COMPLIANCE
+        F14_Fix --> F14_Gate
+        F14_Gate --> F14_Human: SEM ERROS
+        F14_Human --> F14_Gen: Novos inputs
+        F14_Human --> F14_Done: Aprovado
+    }
+
+    BlocoC_F14 --> BlocoC_F15: COMPLIANCE
+
+    state BlocoC_F15 {
+        [*] --> F15_Gen
+        F15_Gen --> F15_Gate
+        F15_Gate --> F15_Fix: NÃO COMPLIANCE
+        F15_Fix --> F15_Gate
+        F15_Gate --> F15_Human: SEM ERROS
+        F15_Human --> F15_Gen: Novos inputs
+        F15_Human --> F15_Done: Aprovado
+    }
+
+    BlocoC_F15 --> BlocoC_F16: COMPLIANCE
+
+    state BlocoC_F16 {
+        [*] --> F16_Gen
+        F16_Gen --> F16_Gate
+        F16_Gate --> F16_Fix: NÃO COMPLIANCE
+        F16_Fix --> F16_Gate
+        F16_Gate --> F16_Human: SEM ERROS
+        F16_Human --> F16_Gen: Novos inputs
+        F16_Human --> F16_Done: Aprovado
+    }
+
+    BlocoC_F16 --> BlocoC_F17: COMPLIANCE
+
+    state BlocoC_F17 {
+        [*] --> F17_Gen
+        F17_Gen --> F17_Gate
+        F17_Gate --> F17_Fix: NÃO COMPLIANCE
+        F17_Fix --> F17_Gate
+        F17_Gate --> F17_Human: SEM ERROS
+        F17_Human --> F17_Gen: Novos inputs
+        F17_Human --> F17_Done: Aprovado
+    }
+
+    BlocoC_F17 --> BarreiraC: COMPLIANCE
+
+    state BarreiraC {
+        [*] --> CheckC
+        CheckC --> BlocoC_F13: Bloco C incompleto
+        CheckC --> CheckGap: Bloco C 100% OK
+        CheckGap --> BlocoA_F5: Skills gap detectado
+        CheckGap --> BlocoD_F18: Sem gaps
+    }
+
+    BarreiraC --> BlocoD_F18
+
+    state BlocoD_F18 {
+        [*] --> F18_Gen
+        F18_Gen --> F18_Gate
+        F18_Gate --> F18_Fix: NÃO COMPLIANCE
+        F18_Fix --> F18_Gate
+        F18_Gate --> F18_Human: SEM ERROS
+        F18_Human --> F18_Gen: Novos inputs
+        F18_Human --> F18_Done: Aprovado
+    }
+
+    BlocoD_F18 --> BlocoD_F19: COMPLIANCE
+
+    state BlocoD_F19 {
+        [*] --> F19_Gen
+        F19_Gen --> F19_Gate
+        F19_Gate --> F19_Fix: NÃO COMPLIANCE
+        F19_Fix --> F19_Gate
+        F19_Gate --> F19_Human: SEM ERROS
+        F19_Human --> F19_Gen: Novos inputs
+        F19_Human --> F19_Done: Aprovado
+        F19_Done --> F19_Next: Sprint concluída
+        F19_Next --> F19_Gen: Continuar próxima sprint
+        F19_Next --> BarreiraD: Encerrar discovery
+    }
+
+    BarreiraD --> ExecutionHistory
+
+    state ExecutionHistory {
+        [*] --> HIST_Gen
+        HIST_Gen --> HIST_Review
+        HIST_Review --> HIST_Gen: Ajustes solicitados
+        HIST_Review --> HIST_Done: OK
+    }
+
+    ExecutionHistory --> [*]: ✅ Pipeline Completo
 ```
 
 ---
@@ -581,14 +837,14 @@ Diferentemente dos roadmaps de negócio e soluções técnicas, este roadmap val
 
 ```mermaid
 flowchart TD
-    CONS_START([Antes de marcar Fase 11 COMPLIANCE]) --> CONS_1
+    CONS_START([Antes da Barreira B<br/>— Bloco B COMPLIANCE]) --> CONS_1
 
-    subgraph CONS[Auditoria de Consistência Horizontal]
-        CONS_1[1. RASTREABILIDADE VERTICAL<br/>SOLUTIONS-MATRIX → MILESTONES → SPECS →<br/>SECURITY → ARCHITECTURE → PRD →<br/>STACK-MATRIX → CATALOG → TEAM-MAP] --> CONS_2
+    subgraph CONS[Auditoria de Consistência Horizontal — 6 Disciplinas]
+        CONS_1[1. RASTREABILIDADE VERTICAL<br/>SOLUTIONS-MATRIX → MILESTONES → SPECS →<br/>INFRA-CLOUD → DEVOPS-SRE → TEST-STRATEGY → DATA-ARCH →<br/>SECURITY → ARCHITECTURE → PRD →<br/>STACK-MATRIX → CATALOG → TEAM-SKILLS-MAP] --> CONS_2
 
-        CONS_2[2. DETECÇÃO DE INCONSISTÊNCIAS<br/>Solução no CATALOG sem entrada<br/>no TEAM-MAP? Stack no STACK-MATRIX<br/>inconsistente com ARCHITECTURE?] --> CONS_3
+        CONS_2[2. DETECÇÃO DE INCONSISTÊNCIAS<br/>ARCHITECTURE ↔ SECURITY: controles implementam padrões?<br/>ARCHITECTURE ↔ DATA: modelo alinhado com topologia?<br/>ARCHITECTURE ↔ DEVOPS-SRE: pipeline suporta topologia?<br/>SECURITY ↔ INFRA-CLOUD: rede e IAM consistentes?<br/>TEST-STRATEGY ↔ ARCHITECTURE: pirâmide cobre topologia?<br/>TEST-STRATEGY ↔ SECURITY: SAST/DAST alinhado com threat model?] --> CONS_3
 
-        CONS_3[3. VERIFICAÇÃO DE COMPLETUDE<br/>100% das soluções do CATALOG têm<br/>stack, arquitetura, segurança<br/>e milestones definidos?] --> CONS_4
+        CONS_3[3. VERIFICAÇÃO DE COMPLETUDE<br/>100% das soluções do CATALOG têm<br/>stack, arquitetura, segurança, data, devops,<br/>testes, infra e milestones definidos?] --> CONS_4
 
         CONS_4[4. ALINHAMENTO COM NEGÓCIO<br/>PRD-DEFINITION referencia todos<br/>os objetivos do Project Charter?<br/>MILESTONES alinha com Epics?]
     end
@@ -608,7 +864,7 @@ flowchart TD
 
 ## 9. Integração com os Demais Roadmaps
 
-Este roadmap preenche o **gap entre negócio e implementação**, conectando-se a dois outros pipelines.
+Este roadmap preenche o **gap entre negócio e implementação**, conectando-se a dois outros pipelines. O **Bloco 0** é a ponte formal de entrada dos documentos de negócio.
 
 ```mermaid
 flowchart LR
@@ -619,8 +875,8 @@ flowchart LR
 
     subgraph DEFS[Roadmap de Definições Técnicas — Este Documento]
         direction TB
-        D0[Fase 0: Bootstrap] --> D_BLOCOS[Blocos A → 4 → B → C∥D]
-        D_BLOCOS --> D_OUT[9 artefatos + sprints + history]
+        D0[Fase 0: Bootstrap] --> D_BLOCOS[Bloco 0 → A → B → C → D]
+        D_BLOCOS --> D_OUT[20 artefatos + technical-discovery/ + history]
     end
 
     subgraph TEC[Roadmap de Soluções Técnicas]
@@ -628,7 +884,7 @@ flowchart LR
         T1[PRD.md] --> T2[ARCHITECTURE.md] --> T3[SECURITY.md] --> T4[SPECS.md] --> T5[TASKS.md] --> T6[TEST_PLAN.md]
     end
 
-    N5 -->|"📥 Alimenta Fase 4<br/>(PRD-DEFINITION)"| DEFS
+    N5 -->|"📥 Alimenta Bloco 0<br/>(INTAKE-LOG, DoR, Backlog)"| DEFS
     D_OUT -->|"📤 Baseline para<br/>cada solução técnica"| T1
 
     style NEGOCIO fill:#e3f2fd,stroke:#0984e3
@@ -640,8 +896,8 @@ flowchart LR
 
 | Roadmap | Nível | Output | Consumido por |
 |---------|-------|--------|---------------|
-| **Project Documents** | Estratégico / Negócio | Charter, BRD, Epics, Features, US, RTM | → Definições Técnicas (Fase 4) |
-| **Technical Definitions** ← | Tático / Projeto | TEAM-MAP, CATALOG, STACK-MATRIX, PRD-DEF, ARCH-DEF, SEC-DEF, SPECS-DEF, MILESTONES, MATRIX | → Soluções Técnicas (Fase 1) |
+| **Project Documents** | Estratégico / Negócio | Charter, BRD, Epics, Features, US, RTM | → Definições Técnicas (Bloco 0) |
+| **Technical Definitions** ← | Tático / Projeto | 20 artefatos + `technical-discovery/` + EXECUTION-HISTORY | → Soluções Técnicas |
 | **Technical Solutions** | Tático / Implementação | PRD, ARCH, SEC, SPECS, TASKS, TEST_PLAN | → Times de Desenvolvimento |
 
 ---
@@ -650,15 +906,17 @@ flowchart LR
 
 | Símbolo/Cor | Significado |
 |-------------|-------------|
-| 🟣 Roxo (`#6c5ce7`) | Bootstrap / Validação Humana / Barreiras de Sincronização |
-| 🔵 Azul (`#0984e3`) | Fases de Geração padrão (1, 2, 3, 5, 7, 8, 9) |
-| 🟠 Laranja (`#e17055`) | Fases de transição (4: PRD-DEFINITION) / Segurança (6) / Correções |
-| 🟢 Verde (`#00b894`) | Compliance / Fase 11 (Execution History) / Pipeline concluído |
-| 🟡 Amarelo (`#fdcb6e`) | Auditoria Interna (Gate) / Fase 10 (Ação Bash) |
-| 🔴 Vermelho (`#d63031`) | Barreiras de bloqueio / Falhas |
-| 🔲 Linha tracejada | Loop de retrabalho (GATE→FIX→GATE) |
-| 🔲 Linha sólida | Fluxo sequencial normal |
-| ∥ | Execução paralela (Blocos C e D) |
+| 🟣 Roxo (`#6c5ce7`) | Bootstrap / Validação Humana |
+| 🔵 Azul (`#0984e3`) | Fases de Geração padrão (1-19) |
+| 🟠 Laranja (`#e17055`) | Correções (FIX) / Alertas |
+| 🟢 Verde (`#00b894`) | Compliance / EXECUTION-HISTORY / Pipeline concluído |
+| 🟡 Amarelo (`#fdcb6e`) | Auditoria Interna (Gate) |
+| 🔴 Vermelho (`#d63031`) | Barreiras de bloqueio (0, A, B, C, D) / Falhas |
+| 🔲 Linha tracejada (`-.->`) | Loop de retrabalho (GATE→FIX→GATE) / Iterativo (F19) |
+| 🔲 Linha sólida (`-->`) | Fluxo sequencial normal |
+| 🆕 | Fase nova na v5.0 |
+| 🔄 | Fase movida / repropositada |
+| ⛔ | Barreira de bloqueio |
 | ⚡ | Fase especial (não segue loop trifásico) |
 | 📊 | Fase de documentação/controle |
 
@@ -668,12 +926,13 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    subgraph GATING[Regras Críticas de Bloqueio — Technical Definitions]
+    subgraph GATING[Regras Críticas de Bloqueio — Technical Definitions v5.0]
         G1[⛔ Nenhuma fase<br/>avança sem<br/>COMPLIANCE humano]
-        G2[⛔ Barreira A:<br/>Bloco A 100% antes<br/>da Fase 4]
-        G3[⛔ Barreira B:<br/>Bloco B 100% antes<br/>dos Blocos C e D]
-        G4[⛔ Consistência horizontal<br/>validada antes do<br/>encerramento]
-        G5[⛔ Fase 10 NUNCA<br/>executada sem<br/>confirmação humana]
+        G2[⛔ Barreira 0:<br/>Bloco 0 100% antes<br/>do Bloco A]
+        G3[⛔ Barreira A:<br/>Bloco A 100% antes<br/>do Bloco B]
+        G4[⛔ Barreira B:<br/>6 disciplinas 100%<br/>antes do Bloco C]
+        G5[⛔ Barreira C:<br/>Skills-gap detection<br/>→ pode reabrir Bloco A]
+        G6[⛔ Barreira D:<br/>100% US com contratos<br/>antes do History]
     end
 
     style G1 fill:#d63031,color:#fff
@@ -681,14 +940,15 @@ flowchart LR
     style G3 fill:#d63031,color:#fff
     style G4 fill:#d63031,color:#fff
     style G5 fill:#d63031,color:#fff
+    style G6 fill:#d63031,color:#fff
 ```
 
 ---
 
 > **📁 Arquivos relacionados:**
-> - `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` — Documento fonte (v1.0)
+> - `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` — Documento fonte (v5.0)
 > - `../project-documents/FLOWCHART-ROADMAP-GENERATE-PROJECT-DOCUMENTS.md` — Visualização do roadmap de negócio
 > - `../technical-solutions/FLOWCHART-ROADMAP-GENERATE-TECHNICAL_SOLUTIONS.md` — Visualização do roadmap técnico
-> - `PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-*.md` — 10 prompts geradores (fases 1-9 + 11)
-> - `PROMPT-GATE-PROJECT-TECHNICAL-DEFINITIONS-*.md` — 9 prompts de auditoria (fases 1-9)
-> - `PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-*.md` — 9 prompts de correção (fases 1-9)
+> - `PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-*.md` — 20 prompts geradores (fases 1-19 + EXECUTION-HISTORY)
+> - `PROMPT-GATE-PROJECT-TECHNICAL-DEFINITIONS-*.md` — 19 prompts de auditoria (fases 1-19)
+> - `PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-*.md` — 19 prompts de correção (fases 1-19)

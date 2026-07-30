@@ -1,8 +1,8 @@
-# PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-MATRIX
+# PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-MATRIX (F14)
 
 ## Contexto
 
-Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-MATRIX.md`. O agente corretor aplica correções cirúrgicas com base no relatório de falha.
+Este prompt é acionado quando o gate (F14) reprova `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-MATRIX.md`. O agente corretor aplica correções cirúrgicas com base no relatório inline do gate, incluindo validação cruzada com as 6 disciplinas do Bloco B. **Nunca reescreve o documento do zero. Modifique estritamente as seções, tabelas ou linhas apontadas como Não Compliance.**
 
 ---
 
@@ -18,14 +18,14 @@ Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-SOL
 
 ## Fluxo de Execução
 
-### Passo 1 — Carregar Relatório de Falha e Artefatos
-Ler `SOLUTIONS_MATRIX_SCOPE_FAIL_REPORT.md`, a matriz atual, Catálogo de Soluções, Stack Matrix, TEAM-CAPACITY.md.
+### Passo 1 — Carregar Relatório do Gate e Artefatos
+Ler o **Relatório de Auditoria** emitido pelo gate (relatório inline com os IDs de conflito e respostas do humano), a matriz atual, Catálogo de Soluções (F13), artefatos do Bloco B, Stack Matrix, TEAM-CAPACITY.md.
 
 ### Passo 2 — Processar NCs por Prioridade
 | Prioridade | Tipo de NC | Ação Corretiva |
 |---|---|---|
 | P0 | Solução ausente da matriz | Adicionar linha completa para a solução |
-| P0 | Stack inconsistente | Alinhar com Stack Matrix (Fase 3) |
+| P0 | Stack inconsistente | Alinhar com STACK-MATRIX (F15) |
 | P1 | Campo obrigatório vazio | Preencher com dado da fase correspondente |
 | P2 | Indicador não calculado | Calcular cobertura de skills e risco |
 | P3 | RACI incompleto | Completar matriz RACI |
@@ -53,6 +53,7 @@ Ler `SOLUTIONS_MATRIX_SCOPE_FAIL_REPORT.md`, a matriz atual, Catálogo de Soluç
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: prompt de correção da matriz de soluções | Time de Arquitetura |
+| 2.0 | 30/07/2026 | Renumeração F9→F14; adicionadas referências às 6 disciplinas do Bloco B | Time de Arquitetura |
 
 ---
 
