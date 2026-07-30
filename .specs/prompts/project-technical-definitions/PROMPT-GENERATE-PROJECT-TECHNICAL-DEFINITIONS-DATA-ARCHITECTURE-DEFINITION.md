@@ -8,6 +8,8 @@ Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-DATA-ARCHITECTURE-DEF
 
 **Inputs upstream:** `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` (Fase 4) + `PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md` (Fase 5) + `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md` (Fase 7) + `PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md` (Fase 8) + `{ARCHITECTURE_GLOBAL}` (ADRs, blueprints, data standards).
 
+**Papel no Bloco B (Architecture & Security & Specialists):** Fase 9 de 6. Disciplina: Data Architect / Engenheiro de Dados.
+
 ---
 
 ## Parâmetros de Entrada

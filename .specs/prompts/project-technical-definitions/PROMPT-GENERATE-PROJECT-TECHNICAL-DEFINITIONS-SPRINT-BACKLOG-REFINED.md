@@ -9,6 +9,8 @@ Este prompt gera o artefato `technical-discovery/SPRINT-BACKLOG.md` — o **back
 **Estrutura do artefato:**
 - `technical-discovery/SPRINT-BACKLOG.md` — backlog T-NNN enriquecido com sprints, status, datas e contratos
 
+**Papel no Bloco D (Sprints — Technical Discovery):** Fase 18 de 2. Este artefato recebe insumos do Bloco C (SPECS-DEFINITION e MILESTONES) e prepara o backlog para o Discovery Técnico.
+
 **Inputs upstream (Bloco C → Bloco D):**
 - **PRODUCT-BACKLOG-LIST.md (F3):** Backlog priorizado de negócio para derivar tarefas técnicas
 - **SPECS-DEFINITION.md (F16):** Baseline de especificações técnicas que as tarefas devem respeitar
