@@ -29,7 +29,7 @@ Este prompt implementa o **Gate de Validação do PRD Definition** para o artefa
 ## Fluxo de Execução
 
 ### Passo 1 — Carregar Documentos Base
-Ler `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md`, documentos de negócio (Charter, BRD, Epics, Features, User Stories, RTM), INTAKE-LOG, DOR-ASSESSMENT, PRODUCT-BACKLOG-LIST (artefatos do Bloco 0 para validar cobertura do backlog), `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md`.
+Ler `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md`, TODOS os documentos de negócio: índices principais + TODOS os arquivos individuais nas subpastas `epics/*.md` (4 arquivos), `features/*.md` (18 arquivos) e `user-stories/*.md` (62 arquivos), INTAKE-LOG, DOR-ASSESSMENT, PRODUCT-BACKLOG-LIST (artefatos do Bloco 0), `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md`.
 
 ### Passo 2 — Executar Dimensões de Validação
 

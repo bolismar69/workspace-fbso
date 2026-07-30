@@ -38,7 +38,7 @@ Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-PRODUCT-BACKLOG-LIST.
 Verificar se TODOS os parâmetros obrigatórios foram informados.
 
 ### Passo 1 — Carregar Documentos Base
-Ler `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` (F1 — lotes), `PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md` (F2 — itens aprovados) e documentos de negócio (Charter, BRD, Epics, Features, User Stories) para referência de origem.
+Ler `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` (F1 — lotes), `PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md` (F2 — itens aprovados) e TODOS os documentos de negócio: índices principais + TODOS os arquivos individuais nas subpastas `epics/*.md`, `features/*.md` e `user-stories/*.md` para construir a referência de origem completa de cada item do backlog.
 
 ### Passo 2 — Invocar Skills Especializadas
 Invocar skills de product management, backlog management e priorização de requisitos.

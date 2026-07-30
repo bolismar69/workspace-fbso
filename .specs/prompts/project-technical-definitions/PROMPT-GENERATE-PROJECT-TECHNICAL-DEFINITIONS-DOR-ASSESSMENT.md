@@ -39,7 +39,7 @@ Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md` �
 Verificar se TODOS os parâmetros obrigatórios foram informados.
 
 ### Passo 1 — Carregar Documentos Base
-Ler `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` (F1) e documentos de negócio (Charter, BRD, Epics, Features, User Stories) para ter a relação completa de itens a avaliar.
+Ler `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` (F1) e TODOS os documentos de negócio do projeto: índices principais + TODOS os arquivos individuais nas subpastas `epics/*.md`, `features/*.md` e `user-stories/*.md` para ter a relação completa de itens a avaliar no DoR.
 
 ### Passo 2 — Invocar Skills Especializadas
 Invocar skills de análise de negócio, engenharia de requisitos, validação e critérios de aceitação.

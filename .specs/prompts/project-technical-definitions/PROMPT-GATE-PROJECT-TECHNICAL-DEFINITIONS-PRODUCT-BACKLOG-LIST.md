@@ -29,7 +29,7 @@ Este prompt implementa o **Gate de Validação do Backlog de Produto** para o ar
 ## Fluxo de Execução
 
 ### Passo 1 — Carregar Documentos Base
-Ler `PROJECT-TECHNICAL-DEFINITIONS-PRODUCT-BACKLOG-LIST.md` (artefato a validar), `PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md` (referência de itens aprovados) e `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` (referência de lotes).
+Ler `PROJECT-TECHNICAL-DEFINITIONS-PRODUCT-BACKLOG-LIST.md` (artefato a validar), `PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md` (referência de itens aprovados), `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` (referência de lotes) e TODOS os documentos de negócio: índices principais + TODOS os arquivos individuais nas subpastas `epics/*.md`, `features/*.md` e `user-stories/*.md`.
 
 ### Passo 2 — Executar Dimensões de Validação
 

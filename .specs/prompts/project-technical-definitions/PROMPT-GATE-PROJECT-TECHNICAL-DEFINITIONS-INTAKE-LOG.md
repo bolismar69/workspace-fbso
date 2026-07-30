@@ -29,7 +29,7 @@ Este prompt implementa o **Gate de Validação do Registro de Ingestão** para o
 ## Fluxo de Execução
 
 ### Passo 1 — Carregar Documentos Base
-Ler `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` (artefato a validar) e os documentos de negócio (Charter, BRD, Epics, Features, User Stories) como referência.
+Ler `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` (artefato a validar) e TODOS os documentos de negócio como referência: índices principais + TODOS os arquivos individuais nas subpastas `epics/*.md` (4 arquivos), `features/*.md` (18 arquivos) e `user-stories/*.md` (62 arquivos).
 
 ### Passo 2 — Executar Dimensões de Validação
 

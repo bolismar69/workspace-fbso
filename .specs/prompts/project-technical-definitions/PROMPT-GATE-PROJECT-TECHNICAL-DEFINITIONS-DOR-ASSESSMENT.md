@@ -29,7 +29,7 @@ Este prompt implementa o **Gate de Validação da Avaliação DoR** para o artef
 ## Fluxo de Execução
 
 ### Passo 1 — Carregar Documentos Base
-Ler `PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md` (artefato a validar) e `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` (referência de itens a avaliar).
+Ler `PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md` (artefato a validar), `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` (referência de itens a avaliar) e TODOS os documentos de negócio: índices principais + TODOS os arquivos individuais nas subpastas `epics/*.md`, `features/*.md` e `user-stories/*.md`.
 
 ### Passo 2 — Executar Dimensões de Validação
 

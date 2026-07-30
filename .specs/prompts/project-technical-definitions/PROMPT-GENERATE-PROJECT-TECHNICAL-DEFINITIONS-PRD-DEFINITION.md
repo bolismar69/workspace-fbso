@@ -44,7 +44,7 @@ Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` �
 ### Passo 0 — Validação de Parâmetros
 
 ### Passo 1 — Carregar Documentos Base
-Ler documentos de negócio (Charter, BRD, Epics, Features, User Stories, RTM) + INTAKE-LOG (F1) + DOR-ASSESSMENT (F2) + PRODUCT-BACKLOG-LIST (F3) + Catálogo de Soluções (Bloco A) + TECHNICAL-PLAN.md (referência).
+Ler TODOS os documentos de negócio do projeto: índices principais (`01-PROJECT-CHARTER-*.md`, `02-BRD-*.md`, `03-EPICS-*.md`, `04-FEATURES-*.md`, `05-USER-STORIES-*.md`) + documentos complementares (`DEFINITION_OF_DONE.md`, `MATRIZ-KPI.md`, `STAKEHOLDER-MAP.md`, `GLOSSARY.md`) + TODOS os arquivos individuais nas subpastas `epics/*.md`, `features/*.md` e `user-stories/*.md` + INTAKE-LOG (F1) + DOR-ASSESSMENT (F2) + PRODUCT-BACKLOG-LIST (F3) + Catálogo de Soluções (Bloco A) + TECHNICAL-PLAN.md (referência).
 
 ### Passo 2 — Invocar Skills Especializadas
 Invocar skills de produto, requisitos e análise de negócio para extrair e consolidar todos os requisitos, mapear para soluções e definir MVP global.

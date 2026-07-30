@@ -34,7 +34,7 @@ Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` 🆕 �
 Verificar se TODOS os parâmetros obrigatórios foram informados.
 
 ### Passo 1 — Carregar Documentos Base
-Ler documentos de negócio (Charter, BRD, Epics, Features, User Stories) para identificar o escopo de cada lote de ingestão.
+Ler TODOS os documentos de negócio do projeto: índices principais (`01-PROJECT-CHARTER-*.md`, `02-BRD-*.md`, `03-EPICS-*.md`, `04-FEATURES-*.md`, `05-USER-STORIES-*.md`) + documentos complementares (`DEFINITION_OF_DONE.md`, `MATRIZ-KPI.md`, `STAKEHOLDER-MAP.md`, `GLOSSARY.md`) + TODOS os arquivos individuais nas subpastas `epics/*.md`, `features/*.md` e `user-stories/*.md` para identificar o escopo completo de cada lote de ingestão.
 
 ### Passo 2 — Invocar Skills Especializadas
 Invocar skills de análise de negócio, product management e stakeholder analysis para estruturar os lotes.
