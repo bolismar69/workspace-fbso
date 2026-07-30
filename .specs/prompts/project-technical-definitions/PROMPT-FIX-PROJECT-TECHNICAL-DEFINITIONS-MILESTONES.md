@@ -1,8 +1,8 @@
-# PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-MILESTONES
+# PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-MILESTONES (F17)
 
 ## Contexto
 
-Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-MILESTONES.md`. O agente corretor aplica correções cirúrgicas com base no relatório de falha.
+Este prompt é acionado quando o gate (F17) reprova `PROJECT-TECHNICAL-DEFINITIONS-MILESTONES.md`. O agente corretor aplica correções cirúrgicas com base no relatório inline do gate, utilizando a SPECS-DEFINITION (F16) como referência primária para alinhamento técnico. **Nunca reescreve o documento do zero. Modifique estritamente as seções, tabelas ou linhas apontadas como Não Compliance.**
 
 ---
 
@@ -18,8 +18,8 @@ Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-MIL
 
 ## Fluxo de Execução
 
-### Passo 1 — Carregar Relatório de Falha e Artefatos
-Ler `MILESTONES_SCOPE_FAIL_REPORT.md`, o documento atual, Project Charter, Catálogo de Soluções.
+### Passo 1 — Carregar Relatório do Gate e Artefatos
+Ler o **Relatório de Auditoria** emitido pelo gate (relatório inline com os IDs de conflito e respostas do humano), o documento atual, SPECS-DEFINITION (F16), Project Charter, Catálogo de Soluções (F13).
 
 ### Passo 2 — Processar NCs por Prioridade
 | Prioridade | Tipo de NC | Ação Corretiva |
@@ -53,6 +53,7 @@ Ler `MILESTONES_SCOPE_FAIL_REPORT.md`, o documento atual, Project Charter, Catá
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: prompt de correção dos milestones | Time de Arquitetura |
+| 2.0 | 30/07/2026 | Renumeração F7→F17; SPECS-DEFINITION (F16) como insumo primário | Time de Arquitetura |
 
 ---
 

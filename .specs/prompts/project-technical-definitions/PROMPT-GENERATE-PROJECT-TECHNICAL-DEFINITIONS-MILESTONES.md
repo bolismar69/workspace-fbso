@@ -1,10 +1,16 @@
-# PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-MILESTONES
+# PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-MILESTONES (F17)
 
 ## Contexto
 
 Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-MILESTONES.md` — o **roadmap de milestones técnicos** do projeto alinhado com USER-STORIES, FEATURES, EPICS, BRD e PROJECT-CHARTER. Define quando cada solução será construída, em que ordem e com quais dependências.
 
-**Inputs upstream:** `PROJECT-TECHNICAL-DEFINITIONS-SPECS-DEFINITION.md` (Fase 7) + `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` (Fase 4) + Documentos de negócio (Charter, Features, User Stories) + Catálogo de Soluções (Fase 2) + Stack Matrix (Fase 3).
+**Inputs upstream (Bloco C — F17):** Este artefato é o último do Bloco C e consolida os insumos de todos os blocos anteriores:
+- **F16 (SPECS-DEFINITION):** `PROJECT-TECHNICAL-DEFINITIONS-SPECS-DEFINITION.md` — consolidação técnica enxuta (principal insumo)
+- **Bloco 0 (Product Def & Backlog & PRD):** `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` (F4) + `PROJECT-TECHNICAL-DEFINITIONS-PRODUCT-BACKLOG-LIST.md` (F3)
+- **Bloco A (People & Solutions):** `TEAM-SKILLS-MAP.md`, `TEAM-CAPACITY.md`
+- **Bloco B (6 Disciplinas Técnicas):** `ARCHITECTURE-DEFINITION.md`, `DATA-ARCHITECTURE-DEFINITION.md`, `SECURITY-DEFINITION.md`, `DEVOPS-SRE-DEFINITION.md`, `TEST-STRATEGY-DEFINITION.md`, `INFRA-CLOUD-DEFINITION.md`
+- **Bloco C:** `SOLUTIONS-CATALOG.md` (F13), `SOLUTIONS-MATRIX.md` (F14), `SOLUTIONS-STACK-MATRIX.md` (F15)
+- **Documentos de Negócio:** Charter (marcos M1-M7), Features, User Stories
 
 ---
 
@@ -15,6 +21,12 @@ Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-MILESTONES.md` — o 
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
 | `{TECHNICAL_DEFINITIONS_PATH}` | Caminho da pasta technical-definitions |
+| `{TECHNICAL_SOLUTION_PATH}` | Caminho base das soluções técnicas |
+| `{TECHNICAL_SOLUTION_NAMES}` | Lista de nomes das soluções técnicas do projeto |
+| `{ARCHITECTURE_GLOBAL}` | Caminho para a pasta de arquitetura global (ADRs, blueprints) |
+| `{SECURITY_GLOBAL}` | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) |
+| `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
+| `{PROJECT_PROMPT_INPUTS}` | (Opcional) Lista de caminhos para prompts auxiliares ou contextos adicionais |
 
 ---
 
