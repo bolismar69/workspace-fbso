@@ -131,11 +131,11 @@ Consolidação técnica enxuta — sumariza e referencia artefatos anteriores. P
 ### Fase 17 — PROJECT-TECHNICAL-DEFINITIONS-MILESTONES.md
 Roadmap alinhado ao negócio. Pipeline: `PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-MILESTONES.md` → Gate → Fix → COMPLIANCE
 
-### Fase 18 — PROJECT-TECHNICAL-DEFINITIONS-SPRINT-BACKLOG-REFINED.md 🆕
-Backlog refinado com tarefas T-NNN → US-ID → Sprint-Alvo → CONTRACTS. Pipeline: `PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-SPRINT-BACKLOG-REFINED.md` → Gate → Fix → COMPLIANCE
+### Fase 18 — technical-discovery/SPRINT-BACKLOG.md 🆕
+Backlog refinado com tarefas T-NNN → US-ID → Sprint-Alvo → CONTRACTS. Gerado em `technical-discovery/`. Pipeline: `PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-SPRINT-BACKLOG-REFINED.md` → Gate → Fix → COMPLIANCE
 
-### Fase 19 — PROJECT-TECHNICAL-DEFINITIONS-TECHNICAL-DISCOVERY.md 🆕
-Discovery Técnico Contínuo — contratos API/Data/Security/SRE por sprint + increments. Iterativo. Pipeline: `PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-TECHNICAL-DISCOVERY.md` → Gate → Fix → COMPLIANCE
+### Fase 19 — technical-discovery/sprint-NNN/ 🆕
+Discovery Técnico Contínuo — contratos API/Data/Security/SRE por sprint + increments. Iterativo. Gera a estrutura `technical-discovery/sprint-NNN/`. Pipeline: `PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-TECHNICAL-DISCOVERY.md` → Gate → Fix → COMPLIANCE
 
 ### Execution History — PROJECT-TECHNICAL-DEFINITIONS-EXECUTION-HISTORY.md 📊
 Dashboard de controle — estado de todos os documentos. Pipeline: Generate → Revisão humana (sem gate próprio).
