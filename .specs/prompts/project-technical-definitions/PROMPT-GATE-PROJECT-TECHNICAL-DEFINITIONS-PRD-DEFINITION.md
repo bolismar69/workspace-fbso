@@ -29,7 +29,7 @@ Este prompt implementa o **Gate de Validação do PRD Definition** para o artefa
 ## Fluxo de Execução
 
 ### Passo 1 — Carregar Documentos Base
-Ler `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md`, documentos de negócio (Charter, BRD, Epics, Features, User Stories, RTM), `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md`.
+Ler `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md`, documentos de negócio (Charter, BRD, Epics, Features, User Stories, RTM), INTAKE-LOG, DOR-ASSESSMENT, PRODUCT-BACKLOG-LIST (artefatos do Bloco 0 para validar cobertura do backlog), `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md`.
 
 ### Passo 2 — Executar Dimensões de Validação
 
@@ -91,7 +91,7 @@ Para que possamos corrigir o PRD Definition, por favor, responda:
 ### 🛑 STATUS DO GATE: [PRÉ-COMPLIANCE INTERNO - AGUARDANDO VALIDAÇÃO HUMANA]
 
 - **DOCUMENTO:** `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` gerado conforme os documentos de negócio.
-- **AUDITORIA DA IA:** Cobertura de requisitos verificada. 100% dos BRs, Features e User Stories mapeados para soluções. MVP Global definido, 8 seções completas. Nenhum requisito órfão detectado.
+- **AUDITORIA DA IA:** Cobertura de requisitos verificada. 100% dos BRs, Features e User Stories mapeados para soluções. MVP Global definido, 6 seções obrigatórias. Nenhum requisito órfão detectado.
 - **DIRETRIZ:** Peço que leia o PRD Definition para verificar se a baseline de produto atende às suas expectativas.
 
 Por favor, responda às seguintes perguntas para podermos prosseguir ou reajustar:
