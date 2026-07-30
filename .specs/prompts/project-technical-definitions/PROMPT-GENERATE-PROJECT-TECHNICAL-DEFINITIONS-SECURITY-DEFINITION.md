@@ -6,7 +6,9 @@ Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.m
 
 **Relação com GLOBAL-SECURITY.md:** O SECURITY-DEFINITION não repete o GLOBAL-SECURITY.md — ele o **especializa** para este projeto, aplicando as regras de ouro, checklist SDD e ferramentas de verificação ao contexto concreto das soluções, stacks e integrações do projeto.
 
-**Inputs upstream:** `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md` (Fase 5) + `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` (Fase 4) + `GLOBAL-SECURITY.md` + `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md` (Fase 2).
+**Inputs upstream:** `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md` (Fase 7) + `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` (Fase 4) + `GLOBAL-SECURITY.md` + `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md` (Fase 2).
+
+> **Nota sobre artefatos downstream:** As definições de arquitetura de dados, DevOps/SRE, testes e infraestrutura (F9-F12) especializam os controles de segurança definidos neste documento para seus respectivos contextos.
 
 ---
 
@@ -17,7 +19,12 @@ Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.m
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
 | `{TECHNICAL_DEFINITIONS_PATH}` | Caminho da pasta technical-definitions |
-| `{SECURITY_GLOBAL}` | Caminho do GLOBAL-SECURITY.md |
+| `{TECHNICAL_SOLUTION_PATH}` | Caminho base das soluções técnicas |
+| `{TECHNICAL_SOLUTION_NAMES}` | Lista de nomes das soluções técnicas do projeto |
+| `{ARCHITECTURE_GLOBAL}` | Caminho para a pasta de arquitetura global (ADRs, blueprints) |
+| `{SECURITY_GLOBAL}` | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) |
+| `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
+| `{PROJECT_PROMPT_INPUTS}` | (Opcional) Lista de caminhos para prompts auxiliares ou contextos adicionais |
 
 ---
 
@@ -78,6 +85,7 @@ Verificar: threat model preenchido, regras de ouro referenciadas, IAM definido, 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: prompt gerador da definição de segurança | Time de Arquitetura |
+| 2.0 | 30/07/2026 | Atualização F4→F8: referência ARCHITECTURE-DEFINITION atualizada para Fase 7; adicionada referência cruzada aos artefatos F9-F12 (Bloco B) | Time de Arquitetura |
 
 ---
 

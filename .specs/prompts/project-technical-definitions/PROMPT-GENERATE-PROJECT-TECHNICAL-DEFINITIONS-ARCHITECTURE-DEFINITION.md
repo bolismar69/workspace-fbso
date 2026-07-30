@@ -6,6 +6,8 @@ Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITI
 
 **Inputs upstream:** `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md` (Fase 2) + `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` (Fase 4) + `architecture/` (ADRs, blueprints, data standards globais) + TECHNICAL-PLAN.md (referência).
 
+> **Nota sobre artefatos downstream:** As decisões de arquitetura de dados, DevOps/SRE, testes e infraestrutura são detalhadas nos artefatos F9-F12. Este documento foca na integração entre soluções (C4, ADRs).
+
 ---
 
 ## Parâmetros de Entrada
@@ -15,7 +17,12 @@ Este prompt gera o artefato `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITI
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
 | `{TECHNICAL_DEFINITIONS_PATH}` | Caminho da pasta technical-definitions |
-| `{ARCHITECTURE_GLOBAL}` | Caminho da pasta de arquitetura global |
+| `{TECHNICAL_SOLUTION_PATH}` | Caminho base das soluções técnicas |
+| `{TECHNICAL_SOLUTION_NAMES}` | Lista de nomes das soluções técnicas do projeto |
+| `{ARCHITECTURE_GLOBAL}` | Caminho para a pasta de arquitetura global (ADRs, blueprints) |
+| `{SECURITY_GLOBAL}` | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) |
+| `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
+| `{PROJECT_PROMPT_INPUTS}` | (Opcional) Lista de caminhos para prompts auxiliares ou contextos adicionais |
 
 ---
 
@@ -78,6 +85,7 @@ Verificar: diagramas C4 presentes, matriz de integração completa, topologia de
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: prompt gerador da definição de arquitetura | Time de Arquitetura |
+| 2.0 | 30/07/2026 | Atualização F3→F7: adicionada referência cruzada aos artefatos F9-F12 (Bloco B) | Time de Arquitetura |
 
 ---
 

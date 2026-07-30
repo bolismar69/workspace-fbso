@@ -2,7 +2,7 @@
 
 ## Contexto
 
-Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md`. O agente corretor aplica correções cirúrgicas com base no relatório de falha, com atenção especial às Regras de Ouro (P0 — inegociáveis).
+Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md`. O agente corretor aplica correções cirúrgicas com base no relatório inline do gate, com atenção especial às Regras de Ouro (P0 — inegociáveis). **Nunca reescreve o documento do zero. Modifique estritamente as seções, tabelas ou linhas apontadas como Não Compliance.**
 
 ---
 
@@ -19,8 +19,8 @@ Este prompt é acionado quando o gate reprova `PROJECT-TECHNICAL-DEFINITIONS-SEC
 
 ## Fluxo de Execução
 
-### Passo 1 — Carregar Relatório de Falha e Artefatos
-Ler `SECURITY_DEFINITION_SCOPE_FAIL_REPORT.md`, o documento atual, GLOBAL-SECURITY.md, Architecture Definition.
+### Passo 1 — Carregar Relatório do Gate e Artefatos
+Ler o **Relatório de Auditoria** emitido pelo gate (relatório inline com os IDs de conflito e respostas do humano), o documento atual, GLOBAL-SECURITY.md, Architecture Definition.
 
 ### Passo 2 — Processar NCs por Prioridade
 | Prioridade | Tipo de NC | Ação Corretiva |
@@ -59,6 +59,7 @@ Para violações de Regra de Ouro (P0): citar textualmente a regra, descrever co
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: prompt de correção da definição de segurança | Time de Arquitetura |
+| 2.0 | 30/07/2026 | Atualização F4→F8: alinhamento com nova numeração do Bloco B | Time de Arquitetura |
 
 ---
 
