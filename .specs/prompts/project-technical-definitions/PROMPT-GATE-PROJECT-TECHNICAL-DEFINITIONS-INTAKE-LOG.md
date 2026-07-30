@@ -58,6 +58,14 @@ Ler `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` (artefato a validar) e TODOS o
 | 4.2 | Status | Cada lote possui status claro: Recebido, Em Refinamento, Pronto para TI, etc. |
 | 4.3 | Escopo | Descrição de escopo presente para cada lote |
 
+#### Dimensão 5: Arquivos em Subpastas
+| # | Verificação | Critério |
+|---|---|---|
+| 5.1 | Arquivos em `epics/` | INTAKE-LOG referencia corretamente a contagem de arquivos em `epics/*.md` (pasta com arquivos individuais de épicos) |
+| 5.2 | Arquivos em `features/` | INTAKE-LOG referencia corretamente a contagem de arquivos em `features/*.md` (pasta com arquivos individuais de features) |
+| 5.3 | Arquivos em `user-stories/` | INTAKE-LOG referencia corretamente a contagem de arquivos em `user-stories/*.md` (pasta com arquivos individuais de user stories) |
+| 5.4 | Documentos complementares | INTAKE-LOG referencia documentos adicionais do projeto (DoD, Matriz KPI, Stakeholder Map, Glossário) quando existentes |
+
 ### Passo 3 — Emitir Veredito
 
 ---
