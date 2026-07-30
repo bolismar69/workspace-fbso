@@ -1,10 +1,10 @@
-# PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP
+# PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP
 
 ## Contexto
 
-Este prompt é acionado quando o `PROMPT-GATE-PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md` reprova o artefato `PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md` com veredito `REPROVADO`.
+Este prompt é acionado quando o `PROMPT-GATE-PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md` emite `[NÃO COMPLIANCE]` para o artefato `PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md` (Bloco A — Fase 5).
 
-O agente corretor atua como **cirurgião de skills** — aplica correções pontuais na matriz com base no relatório de falha, preservando todas as seções aprovadas. **Nunca reescreve o documento do zero.**
+O agente corretor atua como **cirurgião de skills** — aplica correções pontuais na matriz com base no relatório do gate, preservando todas as seções aprovadas. **Nunca reescreve o documento do zero. Modifique estritamente as seções, tabelas ou linhas que foram apontadas como Não Compliance.**
 
 ---
 
@@ -20,8 +20,8 @@ O agente corretor atua como **cirurgião de skills** — aplica correções pont
 
 ## Fluxo de Execução
 
-### Passo 1 — Carregar Artefatos e Relatório de Falha
-Ler `TEAM_MAP_SCOPE_FAIL_REPORT.md` (relatório de falha), `PROJECT-TECHNICAL-DEFINITIONS-TEAM-MAP.md` (artefato a corrigir) e `PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md` (referência).
+### Passo 1 — Carregar Artefatos e Relatório do Gate
+Ler `PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md` (artefato a corrigir), `PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md` (referência) e o **Relatório de Auditoria** emitido pelo gate (relatório inline com os IDs de conflito e respostas do humano).
 
 ### Passo 2 — Processar Não-Conformidades por Prioridade
 | Prioridade | Tipo de NC | Ação Corretiva |
@@ -43,10 +43,10 @@ Verificar: 100% P0 resolvidas, todos os perfis cobertos, gaps documentados, cons
 
 | Ordem | Skill | Propósito | Categoria |
 |---|---|---|---|
-| 1 | `gap-analysis` | Analisar relatório de falha e priorizar | Análise |
+| 1 | `gap-analysis` | Analisar relatório do gate e priorizar | Análise |
 | 2 | `skill-audit` | Corrigir skills ausentes ou incompletas | Discovery |
 | 3 | `team-composition-analysis` | Validar correções de composição | People |
-| 4 | `documentation-writer` | Atualizar TEAM-MAP.md com correções | Documentação |
+| 4 | `documentation-writer` | Atualizar TEAM-SKILLS-MAP.md com correções | Documentação |
 
 > **🔄 Flexibilidade:** Substituir skills conforme aderência e justificar no changelog do artefato.
 
@@ -57,6 +57,7 @@ Verificar: 100% P0 resolvidas, todos os perfis cobertos, gaps documentados, cons
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: prompt de correção da matriz de skills | Time de Arquitetura |
+| 2.0 | 30/07/2026 | Atualização Bloco A (F5-F6): adicionado contexto de fase (Bloco A — Fase 5); alinhamento com novo roadmap | Time de Arquitetura |
 
 ---
 
