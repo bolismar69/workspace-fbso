@@ -44,11 +44,12 @@ Gerar `DISCOVERY-LEVEL-PRD.md` com:
 
 | Ordem | Skill | Propósito | Categoria |
 |---|---|---|---|
-| 1 | `product-manager` | Visão de produto high-level | Produto |
-| 2 | `business-analyst` | Análise dos épicos de negócio | Negócio |
-| 3 | `senior-architect` | Alinhamento com soluções técnicas | Arquitetura |
-| 4 | `requirements-engineering` | Estruturação de requisitos macro | Requisitos |
-| 5 | `documentation-writer` | Redigir o PRD Discovery-Level | Documentação |
+| 1 | `product-discovery` | Validar oportunidades de produto, mapear premissas, testar problem-solution fit | Discovery |
+| 2 | `product-manager` | Visão de produto high-level | Produto |
+| 3 | `business-analyst` | Análise dos épicos de negócio | Negócio |
+| 4 | `senior-architect` | Alinhamento com soluções técnicas | Arquitetura |
+| 5 | `requirements-engineering` | Estruturação de requisitos macro | Requisitos |
+| 6 | `documentation-writer` | Redigir o PRD Discovery-Level | Documentação |
 
 ## Registro de Alterações
 

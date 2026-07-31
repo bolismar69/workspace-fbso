@@ -81,10 +81,12 @@ FASE 0: BOOTSTRAP (sequencial)
 Workflow:
 1. Solicitar inputs ao usuário (se não fornecidos)
 2. Validar pré-condição: verificar existência de Charter, BRD, Épicos
-3. Exibir caminhos derivados e solicitar confirmação
-4. Criar estrutura: `mkdir -p {UPSTREAM_DISCOVERY_PATH}`
-5. Auditar artefatos existentes no diretório `upstream-architecture-discovery/`
-6. Apresentar resumo e iniciar a primeira fase pendente
+3. **Invocar `project-document-discovery`:** Classificar o projeto em 10 dimensões (4-signal algorithm) para determinar o escopo proporcional de documentos — projetos simples podem executar um subconjunto das 11 fases; projetos complexos executam todas
+4. **Invocar `discovery-process`:** Estruturar o ciclo de descoberta (framing → synthesis → experiments) adaptado ao escopo do projeto
+5. Exibir caminhos derivados e solicitar confirmação
+6. Criar estrutura: `mkdir -p {UPSTREAM_DISCOVERY_PATH}`
+7. Auditar artefatos existentes no diretório `upstream-architecture-discovery/`
+8. Apresentar resumo e iniciar a primeira fase pendente
 
 ### Fase 1 — DISCOVERY-LEVEL-PRD.md 🆕
 PRD Discovery-Level — visão do produto baseada nos Épicos. Pipeline: `PROMPT-GENERATE-UPSTREAM-ARCHITECTURE-DISCOVERY-PRD.md` → Gate → Fix → COMPLIANCE
@@ -121,7 +123,7 @@ Consolidação da estimativa ROM +-50%. Matriz de esforço, premissas, riscos, f
 
 ### Gate de Governança — GO / NO-GO 🚦
 
-Após a Barreira D, o orquestrador apresenta o **Resumo Executivo para o Comitê de Governança**:
+Após a Barreira D, o orquestrador invoca `product-discovery` para validar o **problem-solution fit** e apresenta o **Resumo Executivo para o Comitê de Governança**:
 
 1. **Visão do Projeto:** Resumo do PRD Discovery-Level
 2. **Desenho da Solução Macro:** Sumário do SPECS Discovery-Level
@@ -206,14 +208,17 @@ business-inputs/business-projects/{PROJECT_ID_NAME}/
 | 1 | `superpowers:brainstorming` | Brainstorming inicial da solução macro | Orquestração |
 | 2 | `superpowers:executing-plans` | Execução do plano de fases com gates | Orquestração |
 | 3 | `superpowers:writing-plans` | Escrita e refino do plano de execução | Orquestração |
-| 4 | `senior-architect` | Desenho de solução high-level | Arquitetura |
-| 5 | `cloud-architect` | Topologia de infra macro | Arquitetura |
-| 6 | `senior-devops` | Estratégia de deploy e CI/CD macro | DevOps |
-| 7 | `senior-security` | Threat model e compliance high-level | Segurança |
-| 8 | `senior-data-engineer` | Estratégia de dados macro | Dados |
-| 9 | `senior-qa` | Estratégia de testes macro | Qualidade |
-| 10 | `gap-analysis` | Análise de gaps e riscos | Análise |
-| 11 | `documentation-writer` | Documentação do roadmap | Documentação |
+| 4 | `discovery-process` | Estrutura o ciclo completo de descoberta: framing → synthesis → experiments | Discovery |
+| 5 | `project-document-discovery` | Classifica o projeto em 10 dimensões e determina escopo proporcional de documentos (4-signal algorithm) | Discovery |
+| 6 | `product-discovery` | Valida problem-solution fit e mapeia premissas para a decisão GO/NO-GO | Discovery |
+| 7 | `senior-architect` | Desenho de solução high-level | Arquitetura |
+| 8 | `cloud-architect` | Topologia de infra macro | Arquitetura |
+| 9 | `senior-devops` | Estratégia de deploy e CI/CD macro | DevOps |
+| 10 | `senior-security` | Threat model e compliance high-level | Segurança |
+| 11 | `senior-data-engineer` | Estratégia de dados macro | Dados |
+| 12 | `senior-qa` | Estratégia de testes macro | Qualidade |
+| 13 | `gap-analysis` | Análise de gaps e riscos | Análise |
+| 14 | `documentation-writer` | Documentação do roadmap | Documentação |
 
 ---
 

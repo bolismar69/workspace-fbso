@@ -8,6 +8,15 @@ Este prompt gera `DISCOVERY-LEVEL-SPECS.md` — documento enxuto que consolida a
 
 **Inputs upstream:** Todos os artefatos anteriores (F1 + Bloco B F2-F7 + F8 + F9).
 
-## Parâmetros de Entrada · ## Fluxo de Execução · ## Skills · ## Registro
+## Skills Utilizados
+
+| Ordem | Skill | Propósito | Categoria |
+|---|---|---|---|
+| 1 | `discovery-process` | Síntese das descobertas técnicas em um documento executivo consolidado | Discovery |
+| 2 | `senior-architect` | Consolidação arquitetural cross-discipline | Arquitetura |
+| 3 | `gap-analysis` | Identificação de gaps e inconsistências entre disciplinas | Análise |
+| 4 | `documentation-writer` | Documento executivo para o comitê | Documentação |
+
+## Registro de Alterações
 | 1.0 | 30/07/2026 | Criação inicial — F10 Bloco C Discovery-Level | Time de Arquitetura |
 🤖 *Upstream Architecture Discovery — Fase 10*

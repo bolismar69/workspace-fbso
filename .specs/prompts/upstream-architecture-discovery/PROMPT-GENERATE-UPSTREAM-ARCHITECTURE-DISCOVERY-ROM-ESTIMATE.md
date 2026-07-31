@@ -15,10 +15,16 @@ Este prompt gera `ROM-ESTIMATE.md` — documento que consolida a estimativa Roug
 4. **Faixa de Valores** — ROM consolidado (min, provável, máx) com +-50%
 5. **Recomendação Técnica** — parecer do time de arquitetura para o comitê
 
-## Parâmetros de Entrada · ## Fluxo de Execução · ## Skills
-| 1 | `senior-architect` | Estimativa de esforço técnico | 2 | `cloud-architect` | Custos de infra |
-| 3 | `senior-devops` | Esforço DevOps/SRE | 4 | `gap-analysis` | Análise de riscos |
-| 5 | `documentation-writer` | Documento executivo |
+## Skills Utilizados
+
+| Ordem | Skill | Propósito | Categoria |
+|---|---|---|---|
+| 1 | `product-discovery` | Mapear premissas e validar cenários de estimativa | Discovery |
+| 2 | `senior-architect` | Estimativa de esforço técnico | Arquitetura |
+| 3 | `cloud-architect` | Custos de infra | Cloud |
+| 4 | `senior-devops` | Esforço DevOps/SRE | DevOps |
+| 5 | `gap-analysis` | Análise de riscos | Análise |
+| 6 | `documentation-writer` | Documento executivo | Documentação |
 
 ## Registro de Alterações
 | 1.0 | 30/07/2026 | Criação inicial — F11 Bloco D Discovery-Level | Time de Arquitetura |
