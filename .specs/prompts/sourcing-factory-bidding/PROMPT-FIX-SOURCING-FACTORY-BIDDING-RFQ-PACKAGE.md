@@ -2,11 +2,11 @@
 
 ## Contexto
 
-Este prompt implementa o **FIX do RFQ-PACKAGE** para o processo de Sourcing & Factory Bidding (Fase 1).
+Este prompt implementa o **FIX do RFQ-PACKAGE** — Fase 1 do Sourcing & Factory Bidding. O FIX é acionado quando o GATE encontra não-conformidades no artefato.
 
-**Propósito:** Compila artefatos técnicos em um pacote RFQ padronizado para envio às fábricas.
+**Postura do FIX:** Cirúrgico e contido. Corrige APENAS as não-conformidades apontadas pelo GATE. NUNCA reescreve o documento inteiro. NUNCA altera seções não relacionadas às NCs.
 
-**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
+**Input:** Relatório de não-conformidades do GATE (IDs de conflito, localizações, sugestões).
 
 ## Parâmetros de Entrada
 
@@ -16,25 +16,30 @@ Este prompt implementa o **FIX do RFQ-PACKAGE** para o processo de Sourcing & Fa
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
 | `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
 | `{SOURCING_BIDDING_PATH}` | Pasta sourcing-factory-bidding-{mode} |
-| `{ESTIMATES_PATH}` | Pasta de estimativas recebidas |
 
-## Fluxo de Execução
+## Fluxo de Correção
 
-### Passo 0 — Validar Parâmetros e Modo
-### Passo 1 — Carregar Artefatos Base (conforme modo)
-### Passo 2 — Invocar Skills Especializadas
-### Passo 3 — FIX o Artefato
-### Passo 4 — Validação Pós-FIX
+### Passo 0 — Carregar Relatório do GATE
+Ler o relatório de NCs emitido pelo GATE. Identificar IDs de conflito, localizações exatas e sugestões.
+
+### Passo 1 — Priorizar NCs
+| Prioridade | Tipo | Ação |
+|---|---|---|
+| P0 | Bloqueante — artefato não pode ser usado | Corrigir imediatamente |
+| P1 | Importante — compromete qualidade | Corrigir |
+| P2 | Menor — ajuste cosmético ou documental | Corrigir se simples |
+
+### Passo 2 — Aplicar Correções Cirúrgicas
+Para cada NC: localizar seção/linha exata → aplicar correção mínima → verificar que a correção resolve o problema sem introduzir novos.
+
+### Passo 3 — Validar Correções
+Conferir que todas as NCs foram endereçadas. Se alguma NC não puder ser resolvida, reportar como `[NÃO RESOLVIDA]` com justificativa.
+
+**Regra de Ouro:** Nunca reescreva o documento do zero. Cada correção deve ser a menor mudança possível que resolve a NC.
 
 ## Skills Utilizados
 
-| 1 | `project-estimation` | Estrutura de estimativas | 2 | `senior-architect` | Validação técnica do pacote |
-| 3 | `documentation-writer` | Documentação do RFQ |
-
-## Registro de Alterações
-
-| Versão | Data | Alteração | Autor |
-|:---|:---|:---|:---|
-| 1.0 | 31/07/2026 | Criação inicial — Fase 1 Sourcing & Factory Bidding | Time de Arquitetura |
+| 1 | `documentation-writer` | Correção cirúrgica de documentos |
+| 2 | `code-reviewer` | Revisão das correções aplicadas |
 
 🤖 *Sourcing & Factory Bidding — Fase 1 FIX*

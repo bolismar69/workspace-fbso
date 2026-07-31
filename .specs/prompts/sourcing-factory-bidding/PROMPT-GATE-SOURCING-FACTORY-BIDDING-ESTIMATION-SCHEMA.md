@@ -1,40 +1,15 @@
 # PROMPT-GATE-SOURCING-FACTORY-BIDDING-ESTIMATION-SCHEMA
-
 ## Contexto
-
-Este prompt implementa o **GATE do ESTIMATION-SCHEMA** para o processo de Sourcing & Factory Bidding (Fase 2).
-
-**Propósito:** Gera o template CSV padronizado (DTA Estimation Schema) que as fábricas devem preencher e devolver.
-
-**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
-
-## Parâmetros de Entrada
-
-| Parâmetro | Descrição |
-|---|---|
-| `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
-| `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
-| `{SOURCING_BIDDING_PATH}` | Pasta sourcing-factory-bidding-{mode} |
-| `{ESTIMATES_PATH}` | Pasta de estimativas recebidas |
-
-## Fluxo de Execução
-
-### Passo 0 — Validar Parâmetros e Modo
-### Passo 1 — Carregar Artefatos Base (conforme modo)
-### Passo 2 — Invocar Skills Especializadas
-### Passo 3 — GATE o Artefato
-### Passo 4 — Validação Pós-GATE
-
-## Skills Utilizados
-
-| 1 | `estimate-builder` | Construção do template padronizado | 2 | `project-estimation` | Estrutura de colunas do schema |
-| 3 | `afrexai-construction-estimator` | Metodologia de estimativa detalhada | 4 | `documentation-writer` | Instruções de preenchimento |
-
-## Registro de Alterações
-
-| Versão | Data | Alteração | Autor |
-|:---|:---|:---|:---|
-| 1.0 | 31/07/2026 | Criação inicial — Fase 2 Sourcing & Factory Bidding | Time de Arquitetura |
-
-🤖 *Sourcing & Factory Bidding — Fase 2 GATE*
+Este prompt implementa o **GATE de Validação do ESTIMATION-SCHEMA** — Fase 2. O GATE audita criticamente o artefato, verificando critérios de qualidade e conformidade DTA.
+**Postura do GATE:** Cético e rigoroso. Cada NC deve ser específica, localizada e acionável.
+**Propósito:** Template CSV segue DTA Schema com colunas obrigatórias.
+## Dimensões de Validação
+| 1.1 | Colunas Obrigatórias | id_epico, titulo, solucoes, horas_dev, horas_arch, horas_qa, prazo_entrega_meses, complexidade, comentarios |
+| 1.2 | Separador | Ponto-e-vírgula (;) |
+| 2.1 | Schema Discovery vs Full | Colunas condizem com SOURCING_BIDDING_MODE |
+## Formato de Saída
+### 🚨 NÃO COMPLIANCE — Para cada NC: ID-CONFLITO, Localização, Problema, Impacto, Sugestão
+### ✅ PRÉ-COMPLIANCE — 3 perguntas obrigatórias; se Sim/Não/Não → COMPLIANCE
+## Skills
+| 1 | `gap-analysis` | Detecção de gaps | 2 | `requirements-validation` | Validação de critérios |
+🤖 *Fase 2 GATE*

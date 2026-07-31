@@ -1,39 +1,17 @@
 # PROMPT-GATE-SOURCING-FACTORY-BIDDING-FACTORY-NOTIFICATION
-
 ## Contexto
-
-Este prompt implementa o **GATE do FACTORY-NOTIFICATION** — Fase 7 do Sourcing & Factory Bidding.
-
-**Propósito:** Gerar notificações formais para todas as fábricas participantes informando o resultado do processo de seleção: carta de seleção para a vencedora, feedback técnico para as rejeitadas.
-
-**Inputs upstream:** FACTORY-COMPARISON (F6) + ESTIMATE-VALIDATION (F5).
-
-## Parâmetros de Entrada
-
-| Parâmetro | Descrição |
-|---|---|
-| `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
-| `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
-| `{SOURCING_BIDDING_PATH}` | Pasta sourcing-factory-bidding-{mode} |
-
-## Fluxo de Execução
-
-### Passo 0 — Validar Parâmetros
-### Passo 1 — Carregar FACTORY-COMPARISON e ESTIMATE-VALIDATION
-### Passo 2 — Invocar Skills
-### Passo 3 — Gerar notificações: (a) Carta de Seleção para vencedora, (b) Carta de feedback para cada rejeitada com motivo específico, (c) Carta de segundo colocado quando aplicável
-### Passo 4 — Validação Pós-Geração
-
-## Skills Utilizados
-
-| 1 | `documentation-writer` | Redação das cartas de notificação |
-| 2 | `business-analyst` | Linguagem adequada ao relacionamento com fornecedores |
-
-## Registro de Alterações
-
-| Versão | Data | Alteração | Autor |
-|:---|:---|:---|:---|
-| 1.0 | 31/07/2026 | Criação inicial — Fase 7 Sourcing & Factory Bidding | Time de Arquitetura |
-
-🤖 *Sourcing & Factory Bidding — Fase 7 GATE*
+Este prompt implementa o **GATE de Validação do FACTORY-NOTIFICATION** — Fase 7. O GATE audita criticamente o artefato, verificando critérios de qualidade e conformidade DTA.
+**Postura do GATE:** Cético e rigoroso. Cada NC deve ser específica, localizada e acionável.
+**Propósito:** Todas fábricas notificadas: seleção (vencedora), feedback (rejeitadas), agradecimento (2º).
+## Dimensões de Validação
+| 1.1 | 100% Notificadas | Todas fábricas da F3 têm notificação |
+| 1.2 | Tom Adequado | Vencedora: positivo+next steps. Rejeitadas: respeitoso+feedback construtivo |
+| 1.3 | Motivo Específico | Cada rejeitada tem motivo técnico exato da F5 |
+| 2.1 | Próximos Passos | Kickoff, contrato, acesso |
+| 2.2 | Recomendações | Para futuras participações |
+## Formato de Saída
+### 🚨 NÃO COMPLIANCE — Para cada NC: ID-CONFLITO, Localização, Problema, Impacto, Sugestão
+### ✅ PRÉ-COMPLIANCE — 3 perguntas obrigatórias; se Sim/Não/Não → COMPLIANCE
+## Skills
+| 1 | `gap-analysis` | Detecção de gaps | 2 | `requirements-validation` | Validação de critérios |
+🤖 *Fase 7 GATE*

@@ -1,39 +1,15 @@
 # PROMPT-GATE-SOURCING-FACTORY-BIDDING-FACTORY-DISTRIBUTION
-
 ## Contexto
-
-Este prompt implementa o **GATE do FACTORY-DISTRIBUTION** para o processo de Sourcing & Factory Bidding (Fase 3).
-
-**Propósito:** Registra as fábricas participantes, controla envio do RFQ e prazos de resposta.
-
-**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
-
-## Parâmetros de Entrada
-
-| Parâmetro | Descrição |
-|---|---|
-| `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
-| `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
-| `{SOURCING_BIDDING_PATH}` | Pasta sourcing-factory-bidding-{mode} |
-| `{ESTIMATES_PATH}` | Pasta de estimativas recebidas |
-
-## Fluxo de Execução
-
-### Passo 0 — Validar Parâmetros e Modo
-### Passo 1 — Carregar Artefatos Base (conforme modo)
-### Passo 2 — Invocar Skills Especializadas
-### Passo 3 — GATE o Artefato
-### Passo 4 — Validação Pós-GATE
-
-## Skills Utilizados
-
-| 1 | `project-estimation` | Gestão do processo de distribuição | 2 | `documentation-writer` | Registro de fábricas |
-
-## Registro de Alterações
-
-| Versão | Data | Alteração | Autor |
-|:---|:---|:---|:---|
-| 1.0 | 31/07/2026 | Criação inicial — Fase 3 Sourcing & Factory Bidding | Time de Arquitetura |
-
-🤖 *Sourcing & Factory Bidding — Fase 3 GATE*
+Este prompt implementa o **GATE de Validação do FACTORY-DISTRIBUTION** — Fase 3. O GATE audita criticamente o artefato, verificando critérios de qualidade e conformidade DTA.
+**Postura do GATE:** Cético e rigoroso. Cada NC deve ser específica, localizada e acionável.
+**Propósito:** Registro completo de fábricas com dados e rastreabilidade.
+## Dimensões de Validação
+| 1.1 | Fábricas | ≥ 2 cadastradas com nome, canal, prazo |
+| 1.2 | Material Vinculado | RFQ-PACKAGE e ESTIMATION-SCHEMA referenciados |
+| 2.1 | Status Consistente | Status reflete situação real |
+## Formato de Saída
+### 🚨 NÃO COMPLIANCE — Para cada NC: ID-CONFLITO, Localização, Problema, Impacto, Sugestão
+### ✅ PRÉ-COMPLIANCE — 3 perguntas obrigatórias; se Sim/Não/Não → COMPLIANCE
+## Skills
+| 1 | `gap-analysis` | Detecção de gaps | 2 | `requirements-validation` | Validação de critérios |
+🤖 *Fase 3 GATE*

@@ -1,39 +1,15 @@
 # PROMPT-GATE-SOURCING-FACTORY-BIDDING-ESTIMATE-RECEIPT
-
 ## Contexto
-
-Este prompt implementa o **GATE do ESTIMATE-RECEIPT** para o processo de Sourcing & Factory Bidding (Fase 4).
-
-**Propósito:** Guia para o time operacional salvar estimativas recebidas no padrão: nome-do-arquivo-csv-{fabrica}.md em estimates/.
-
-**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
-
-## Parâmetros de Entrada
-
-| Parâmetro | Descrição |
-|---|---|
-| `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
-| `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
-| `{SOURCING_BIDDING_PATH}` | Pasta sourcing-factory-bidding-{mode} |
-| `{ESTIMATES_PATH}` | Pasta de estimativas recebidas |
-
-## Fluxo de Execução
-
-### Passo 0 — Validar Parâmetros e Modo
-### Passo 1 — Carregar Artefatos Base (conforme modo)
-### Passo 2 — Invocar Skills Especializadas
-### Passo 3 — GATE o Artefato
-### Passo 4 — Validação Pós-GATE
-
-## Skills Utilizados
-
-| 1 | `analyst-estimates` | Análise de estimativas recebidas | 2 | `documentation-writer` | Guia de recebimento |
-
-## Registro de Alterações
-
-| Versão | Data | Alteração | Autor |
-|:---|:---|:---|:---|
-| 1.0 | 31/07/2026 | Criação inicial — Fase 4 Sourcing & Factory Bidding | Time de Arquitetura |
-
-🤖 *Sourcing & Factory Bidding — Fase 4 GATE*
+Este prompt implementa o **GATE de Validação do ESTIMATE-RECEIPT** — Fase 4. O GATE audita criticamente o artefato, verificando critérios de qualidade e conformidade DTA.
+**Postura do GATE:** Cético e rigoroso. Cada NC deve ser específica, localizada e acionável.
+**Propósito:** Guia atualizado com arquivos reais em estimates/ e nomenclatura correta.
+## Dimensões de Validação
+| 1.1 | Nomenclatura | Arquivos seguem padrão ESTIMATION-SCHEMA-{FABRICA}.csv |
+| 1.2 | Checklist | Tabela reflete arquivos em estimates/ |
+| 2.1 | Dados Preenchidos | Total de horas e data para cada fábrica |
+## Formato de Saída
+### 🚨 NÃO COMPLIANCE — Para cada NC: ID-CONFLITO, Localização, Problema, Impacto, Sugestão
+### ✅ PRÉ-COMPLIANCE — 3 perguntas obrigatórias; se Sim/Não/Não → COMPLIANCE
+## Skills
+| 1 | `gap-analysis` | Detecção de gaps | 2 | `requirements-validation` | Validação de critérios |
+🤖 *Fase 4 GATE*

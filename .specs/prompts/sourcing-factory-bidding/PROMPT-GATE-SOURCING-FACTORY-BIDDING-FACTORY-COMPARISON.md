@@ -1,41 +1,17 @@
 # PROMPT-GATE-SOURCING-FACTORY-BIDDING-FACTORY-COMPARISON
-
 ## Contexto
-
-Este prompt implementa o **GATE do FACTORY-COMPARISON** para o processo de Sourcing & Factory Bidding (Fase 6).
-
-**Propósito:** Consolida todas estimativas validadas em matriz comparativa com ranking e recomendação de seleção.
-
-**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
-
-## Parâmetros de Entrada
-
-| Parâmetro | Descrição |
-|---|---|
-| `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
-| `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
-| `{SOURCING_BIDDING_PATH}` | Pasta sourcing-factory-bidding-{mode} |
-| `{ESTIMATES_PATH}` | Pasta de estimativas recebidas |
-
-## Fluxo de Execução
-
-### Passo 0 — Validar Parâmetros e Modo
-### Passo 1 — Carregar Artefatos Base (conforme modo)
-### Passo 2 — Invocar Skills Especializadas
-### Passo 3 — GATE o Artefato
-### Passo 4 — Validação Pós-GATE
-
-## Skills Utilizados
-
-| 1 | `ads-budget` | Comparação orçamentária entre fábricas | 2 | `analyst-estimates` | Análise cross-fábrica |
-| 3 | `trade-show-budget-planner` | ROI e modelo go/no-go por fábrica | 4 | `gap-analysis` | Análise de outliers e discrepâncias |
-| 5 | `documentation-writer` | Relatório executivo de recomendação |
-
-## Registro de Alterações
-
-| Versão | Data | Alteração | Autor |
-|:---|:---|:---|:---|
-| 1.0 | 31/07/2026 | Criação inicial — Fase 6 Sourcing & Factory Bidding | Time de Arquitetura |
-
-🤖 *Sourcing & Factory Bidding — Fase 6 GATE*
+Este prompt implementa o **GATE de Validação do FACTORY-COMPARISON** — Fase 6. O GATE audita criticamente o artefato, verificando critérios de qualidade e conformidade DTA.
+**Postura do GATE:** Cético e rigoroso. Cada NC deve ser específica, localizada e acionável.
+**Propósito:** Matriz completa, ranking correto, pesos justificados, recomendação fundamentada.
+## Dimensões de Validação
+| 1.1 | Aprovadas | Apenas aprovadas na F5 |
+| 1.2 | Pesos | Somam 100% e justificados |
+| 1.3 | Cálculo | Notas ponderadas sem erro |
+| 2.1 | Justificativa | ≥ 3 razões para seleção |
+| 2.2 | Prazo | Coluna prazo_entrega_meses usada na comparação |
+## Formato de Saída
+### 🚨 NÃO COMPLIANCE — Para cada NC: ID-CONFLITO, Localização, Problema, Impacto, Sugestão
+### ✅ PRÉ-COMPLIANCE — 3 perguntas obrigatórias; se Sim/Não/Não → COMPLIANCE
+## Skills
+| 1 | `gap-analysis` | Detecção de gaps | 2 | `requirements-validation` | Validação de critérios |
+🤖 *Fase 6 GATE*
