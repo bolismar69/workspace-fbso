@@ -6,7 +6,25 @@ Este prompt implementa o **GENERATE do FACTORY-NOTIFICATION** — Fase 7 do Sour
 
 **Propósito:** Gerar notificações formais para todas as fábricas participantes informando o resultado do processo de seleção: carta de seleção para a vencedora, feedback técnico para as rejeitadas.
 
-**Inputs upstream:** FACTORY-COMPARISON (F6) + ESTIMATE-VALIDATION (F5).
+**Inputs upstream:** FACTORY-COMPARISON (F6) + ESTIMATE-VALIDATION (F5) + FACTORY-DISTRIBUTION (F3).
+
+## Padrão de Geração
+
+### Pasta de Destino
+As notificações são geradas em: `{SOURCING_BIDDING_PATH}/notifications/`
+
+### Padrão de Nomenclatura
+```
+FACTORY-NOTIFICATION-{NOME-DA-FABRICA}.md
+```
+**Exemplos:** `FACTORY-NOTIFICATION-STEFANINI.md`, `FACTORY-NOTIFICATION-CAPGEMINI.md`
+
+> ⚠️ **Confidencialidade:** O status da fábrica (selecionada, rejeitada, segundo colocado) NUNCA aparece no nome do arquivo. Essa informação é confidencial e consta apenas dentro do conteúdo do arquivo.
+
+### Conteúdo de Cada Notificação
+- **Fábrica selecionada:** Carta de Seleção com próximos passos (contrato, kickoff, acesso)
+- **Segundo colocado:** Carta de Agradecimento — proposta aprovada tecnicamente, manter contato para futuras oportunidades
+- **Fábricas rejeitadas:** Feedback técnico com motivo específico da rejeição (F5) e recomendação para futuras participações
 
 ## Parâmetros de Entrada
 
@@ -20,10 +38,10 @@ Este prompt implementa o **GENERATE do FACTORY-NOTIFICATION** — Fase 7 do Sour
 ## Fluxo de Execução
 
 ### Passo 0 — Validar Parâmetros
-### Passo 1 — Carregar FACTORY-COMPARISON e ESTIMATE-VALIDATION
-### Passo 2 — Invocar Skills
-### Passo 3 — Gerar notificações: (a) Carta de Seleção para vencedora, (b) Carta de feedback para cada rejeitada com motivo específico, (c) Carta de segundo colocado quando aplicável
-### Passo 4 — Validação Pós-Geração
+### Passo 1 — Carregar FACTORY-COMPARISON (F6) + ESTIMATE-VALIDATION (F5) + FACTORY-DISTRIBUTION (F3)
+### Passo 2 — Criar pasta `notifications/` se não existir
+### Passo 3 — Para cada fábrica na F3, gerar arquivo `FACTORY-NOTIFICATION-{NOME}.md` com o conteúdo adequado ao status (selecionada/segundo/rejeitada)
+### Passo 4 — Validação Pós-Geração: verificar que 100% das fábricas têm notificação e que nenhum nome de arquivo revela o status
 
 ## Skills Utilizados
 

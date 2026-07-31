@@ -2,7 +2,7 @@
 ## Contexto
 Este prompt implementa o **GATE de Validação do FACTORY-NOTIFICATION** — Fase 7. O GATE audita criticamente o artefato, verificando critérios de qualidade e conformidade DTA.
 **Postura do GATE:** Cético e rigoroso. Cada NC deve ser específica, localizada e acionável.
-**Propósito:** Todas fábricas notificadas: seleção (vencedora), feedback (rejeitadas), agradecimento (2º).
+**Propósito:** Todas fábricas notificadas com arquivos em `notifications/`. Padrão: `FACTORY-NOTIFICATION-{NOME}.md`. **Nomes de arquivo NUNCA revelam status** (selecionada/rejeitada) — informação confidencial consta apenas no conteúdo.
 ## Dimensões de Validação
 | 1.1 | 100% Notificadas | Todas fábricas da F3 têm notificação |
 | 1.2 | Tom Adequado | Vencedora: positivo+next steps. Rejeitadas: respeitoso+feedback construtivo |

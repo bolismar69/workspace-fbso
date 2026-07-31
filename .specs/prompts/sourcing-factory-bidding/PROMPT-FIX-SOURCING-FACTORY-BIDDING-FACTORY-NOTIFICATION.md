@@ -2,6 +2,7 @@
 ## Contexto
 Este prompt implementa o **FIX do FACTORY-NOTIFICATION** — Fase 7. Acionado quando o GATE encontra NCs.
 **Postura do FIX:** Cirúrgico e contido. Corrige APENAS as NCs apontadas. NUNCA reescreve o documento inteiro.
+**Padrão:** Arquivos em `notifications/FACTORY-NOTIFICATION-{NOME}.md`. Nomes NUNCA revelam status.
 ## Fluxo de Correção
 ### Passo 0 — Carregar Relatório do GATE (IDs de conflito, localizações, sugestões)
 ### Passo 1 — Priorizar: P0 Bloqueante, P1 Importante, P2 Menor
