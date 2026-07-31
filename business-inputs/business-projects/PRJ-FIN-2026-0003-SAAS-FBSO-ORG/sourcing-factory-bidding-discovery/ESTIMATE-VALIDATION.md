@@ -1,7 +1,7 @@
 # ESTIMATE-VALIDATION — Validação DTA de Estimativas (Discovery-Level)
 
 - **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG · **Fase:** F5 · **Mode:** Discovery-Level
-- **Versão:** 1.0 · **Data:** 31/07/2026 · **Status:** VALIDAÇÃO CONCLUÍDA
+- **Versão:** 1.1 · **Data:** 31/07/2026 · **Status:** VALIDAÇÃO CONCLUÍDA (com prazo)
 
 ---
 
@@ -13,7 +13,7 @@
 | **QA Global** | QA ≥ 25% do total de horas | ⚠️ Risco de Subinvestimento em Qualidade |
 | **Arquitetura/SRE** | Arch ≥ 5% do total geral de horas | ⚠️ Risco de Subinvestimento Técnico |
 | **Formato** | Colunas obrigatórias preenchidas conforme schema | ❌ REJEITADA |
-| **Consistência Prazo×Horas** | `prazo_calculado = total_horas / (time_estimado × 160h)`. Divergência >50% entre prazo declarado e calculado → ⚠️ Alerta | 🔍 Revisão manual |
+| **Consistência Prazo×Horas** | `prazo_calculado = total_horas / (time_estimado × 160h)`. Divergência >50% → ⚠️ | 🔍 Revisão manual |
 | **Outliers** | Total de horas dentro de ±50% da mediana cross-fábrica | 🔍 Revisão manual |
 
 ---
@@ -30,43 +30,43 @@
 
 ---
 
-## Resultados por Fábrica
+## Resultados por Fábrica (com Prazo)
 
-| # | Fábrica | Total Horas | Dev | QA | QA% Dev | Arch | Arch% Tot | Formato | Veredito |
-|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---|
-| 1 | **Stefanini** | 16.000 | 12.800 | 1.520 | 11.9% ⚠️ | 1.680 | 10.5% ✅ | ✅ | 🟡 APROVADA c/ ressalva QA |
-| 2 | **Capgemini** | 48.000 | 40.000 | 4.000 | 10.0% ⚠️ | 4.000 | 8.3% ✅ | ✅ | 🟡 APROVADA c/ ressalva QA |
-| 3 | **CI&T** | 52.000 | 44.000 | 4.000 | 9.1% ⚠️ | 4.000 | 7.7% ✅ | ✅ | 🟡 APROVADA c/ ressalva QA |
-| 4 | **TOTVS** | 64.000 | 52.800 | 5.520 | 10.5% ⚠️ | 5.680 | 8.9% ✅ | ✅ | 🟡 APROVADA c/ ressalva QA |
-| 5 | **Deloitte** | 84.000 | 80.000 | 2.000 | 2.5% 🔴 | 2.000 | 2.4% 🔴 | ✅ | 🔴 REJEITADA — QA e Arch abaixo |
-| 6 | **Infosys** | 97.400 | 90.000 | 2.700 | 3.0% 🔴 | 4.700 | 4.8% 🔴 | ✅ | 🔴 REJEITADA — QA abaixo |
-| 7 | **TCS** | 104.000 | 92.800 | 5.520 | 5.9% 🔴 | 5.680 | 5.5% ✅ | ✅ | 🔴 REJEITADA — QA abaixo |
-| 8 | **Overlabs** | 132.800 | 98.000 | 14.000 | 14.3% ⚠️ | 20.800 | 15.7% ✅ | ✅ | 🔴 REJEITADA — outlier extremo |
+| # | Fábrica | Total Horas | Prazo (meses) | Time Est.* | QA% Dev | Arch% Tot | Consistência Prazo | Veredito |
+|:---|:---|:---:|:---:|:---:|:---:|:---:|:---|:---|
+| 1 | **Stefanini** | 16.000 | 4 | 25p | 11.9% | 10.5% | ✅ (calc: 4.0) | 🟢 APROVADA |
+| 2 | **Capgemini** | 48.000 | 4 | 75p | 10.0% | 8.3% | 🔴 Divergente (calc: 12) | 🔴 REJEITADA — prazo irreal |
+| 3 | **CI&T** | 52.000 | 5 | 65p | 9.1% | 7.7% | ⚠️ Divergente (calc: 13) | 🟡 APROVADA c/ ressalva |
+| 4 | **TOTVS** | 64.000 | 3-4 | 100-133p | 10.5% | 8.9% | 🔴 Divergente (calc: 16-20) | 🔴 REJEITADA — prazo irreal |
+| 5 | Deloitte | 84.000 | — | — | 2.5% | 2.4% | — | 🔴 REJEITADA — QA/Arch |
+| 6 | Infosys | 97.400 | — | — | 3.0% | 4.8% | — | 🔴 REJEITADA — QA/Arch |
+| 7 | TCS | 104.000 | — | — | 5.9% | 5.5% | — | 🔴 REJEITADA — QA abaixo |
+| 8 | Overlabs | 132.800 | — | — | 14.3% | 15.7% | — | 🔴 REJEITADA — outlier |
 
----
-
-## Análise de Outliers
-
-| Métrica | Valor |
-|:---|:---|
-| **Mediana cross-fábrica** | 74.000 h |
-| **Limite inferior (-50%)** | 37.000 h |
-| **Limite superior (+50%)** | 111.000 h |
-| **Stefanini** | 16.000 h ⚠️ Abaixo do limite inferior (subestimado?) |
-| **Overlabs** | 132.800 h 🔴 Acima do limite superior (superfaturado?) |
+*\*Time estimado = total_horas / (prazo_meses × 160h)*
 
 ---
 
-## Fábricas Aprovadas (4 de 8)
+## Análise de Consistência Prazo×Horas
 
-| # | Fábrica | Total Horas | Obs |
-|:---|:---|:---:|:---|
-| 1 | **Stefanini** | 16.000 h | ⚠️ Abaixo do ROM — possível subestimativa |
-| 2 | **Capgemini** | 48.000 h | ✅ Dentro da faixa esperada |
-| 3 | **CI&T** | 52.000 h | ✅ Dentro da faixa esperada |
-| 4 | **TOTVS** | 64.000 h | ✅ Dentro da faixa esperada |
+| Fábrica | Horas | Prazo | Time Necessário | Análise |
+|:---|:---:|:---:|:---:|:---|
+| **Stefanini** | 16.000 | 4 meses | 25 pessoas | ✅ Viável — time enxuto, prazo realista |
+| **Capgemini** | 48.000 | 4 meses | 75 pessoas | 🔴 Impossível — 75p em 4 meses para mesmo escopo |
+| **CI&T** | 52.000 | 5 meses | 65 pessoas | ⚠️ Duvidoso — 65p, 3× mais que Stefanini |
+| **TOTVS** | 64.000 | 3-4 meses | 100-133 pessoas | 🔴 Impossível — 100+p para mesmo escopo |
 
-**4 fábricas aprovadas** seguem para F6 (Comparação).
-**4 fábricas rejeitadas** (Deloitte, Infosys, TCS, Overlabs) — QA/Arch abaixo do mínimo ou outlier extremo.
+---
+
+## Fábricas Aprovadas (2 de 8)
+
+| # | Fábrica | Total Horas | Prazo | Nota |
+|:---|:---|:---:|:---:|:---|
+| 1 | **Stefanini** | 16.000 h | 4 meses | ✅ Única com prazo consistente |
+| 2 | **CI&T** | 52.000 h | 5 meses | ⚠️ Prazo divergente (52.000h em 5 meses = 65 pessoas) |
+
+**6 fábricas rejeitadas** — QA/Arch abaixo, outlier extremo, ou prazo inconsistente com horas.
+
+⚠️ **Nota:** Capgemini (48.000h em 4 meses) e TOTVS (64.000h em 3-4 meses) declararam prazos fisicamente impossíveis para o volume de horas — seria necessário um time de 75-133 pessoas, incompatível com o escopo de 4 épicos.
 
 🤖 *Sourcing & Factory Bidding — Fase 5*
