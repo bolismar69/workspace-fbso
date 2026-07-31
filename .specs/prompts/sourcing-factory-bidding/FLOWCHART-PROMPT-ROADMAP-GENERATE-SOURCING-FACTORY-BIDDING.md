@@ -65,8 +65,8 @@ flowchart TB
     style BARREIRA_B fill:#d63031,color:#fff
     style BARREIRA_C fill:#d63031,color:#fff
     style MODE_DECISION fill:#fdcb6e,color:#333
-    style DISCOVERY_PATH fill:#dfe6e9,stroke:#636e72
-    style FULL_PATH fill:#dfe6e9,stroke:#636e72
+    style DISCOVERY_PATH fill:#808080,stroke:#636e72
+    style FULL_PATH fill:#808080,stroke:#636e72
 ```
 
 ---
@@ -155,9 +155,9 @@ flowchart TD
     style GATE fill:#fdcb6e,color:#333
     style FIX fill:#e17055,color:#fff
     style HUMAN_GATE fill:#6c5ce7,color:#fff
-    style P1 fill:#dfe6e9,stroke:#6c5ce7
-    style P2 fill:#dfe6e9,stroke:#6c5ce7
-    style P3 fill:#dfe6e9,stroke:#6c5ce7
+    style P1 fill:#dfe6e9,stroke:#6c5ce7,color:black
+    style P2 fill:#dfe6e9,stroke:#6c5ce7,color:black
+    style P3 fill:#dfe6e9,stroke:#6c5ce7,color:black
     style COMPLIANCE fill:#00b894,color:#fff
     style LOOP fill:#fff3e0,stroke:#f39c12
 ```
@@ -216,12 +216,12 @@ flowchart LR
     F4_OK -->|destrava| F5_GEN
     F5_OK -->|destrava| F6_GEN
 
-    F1 --> I1[📥 upstream-architecture-discovery/<br/>PRD + Bloco B + SPECS + ROM]
-    F2 --> I2[📥 DTA Estimation Schema<br/>+ BACKLOG-LIST.csv]
-    F3 --> I3[📥 RFQ-PACKAGE.md<br/>+ ESTIMATION-SCHEMA.csv]
-    F4 --> I4[📥 estimates/<br/>nome-do-arquivo-csv-{fabrica}.md]
-    F5 --> I5[📥 DTA Validation Rules<br/>QA ≥ 20% · Arch ≥ 5% · Outliers]
-    F6 --> I6[📥 Todas estimativas<br/>validadas (F5)]
+    F1 --> I1["📥 upstream-architecture-discovery/<br/>PRD + Bloco B + SPECS + ROM"]
+    F2 --> I2["📥 DTA Estimation Schema<br/>+ BACKLOG-LIST.csv"]
+    F3 --> I3["📥 RFQ-PACKAGE.md<br/>+ ESTIMATION-SCHEMA.csv"]
+    F4 --> I4["📥 estimates/<br/>nome-do-arquivo-csv-{fabrica}.md"]
+    F5 --> I5["📥 DTA Validation Rules<br/>QA ≥ 20% · Arch ≥ 5% · Outliers"]
+    F6 --> I6["📥 Todas estimativas<br/>validadas (F5)"]
 
     style F1 fill:#0984e3,color:#fff
     style F2 fill:#0984e3,color:#fff
@@ -267,8 +267,8 @@ flowchart TD
 
     style D_MODE fill:#fff3e0,stroke:#e65100
     style F_MODE fill:#f3e5f5,stroke:#7b1fa2
-    style D_PATH fill:#dfe6e9,stroke:#636e72
-    style F_PATH fill:#dfe6e9,stroke:#636e72
+    style D_PATH fill:#dfe6e9,stroke:#636e72,color:black
+    style F_PATH fill:#dfe6e9,stroke:#636e72,color:black
     style SELECTION fill:#00b894,color:#fff
 ```
 
@@ -291,9 +291,9 @@ flowchart LR
     end
 
     subgraph VALIDACAO[Validação DTA — F5]
-        EST_A --> VAL_A{QA ≥ 20%?<br/>Arch ≥ 5%?<br/>Formato OK?}
-        EST_B --> VAL_B{QA ≥ 20%?<br/>Arch ≥ 5%?<br/>Formato OK?}
-        EST_C --> VAL_C{QA ≥ 20%?<br/>Arch ≥ 5%?<br/>Formato OK?}
+        EST_A --> VAL_A{"QA ≥ 20%?<br/>Arch ≥ 5%?<br/>Formato OK?"}
+        EST_B --> VAL_B{"QA ≥ 20%?<br/>Arch ≥ 5%?<br/>Formato OK?"}
+        EST_C --> VAL_C{"QA ≥ 20%?<br/>Arch ≥ 5%?<br/>Formato OK?"}
         VAL_A -->|✅| OK_A[APROVADA]
         VAL_A -->|❌| REJ_A[REJEITADA]
         VAL_B -->|✅| OK_B[APROVADA]

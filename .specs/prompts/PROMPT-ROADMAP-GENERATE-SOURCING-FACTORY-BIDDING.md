@@ -44,7 +44,7 @@ ESTIMATES_PATH              = SOURCING_BIDDING_PATH + "/estimates"
 
 ## ARQUITETURA DE FASES
 
-O roadmap é organizado em **6 fases** agrupadas em **3 blocos**:
+O roadmap é organizado em **7 fases** agrupadas em **3 blocos**:
 
 ```
 FASE 0: BOOTSTRAP (detecta modo + pergunta ao humano)
@@ -57,8 +57,8 @@ FASE 0: BOOTSTRAP (detecta modo + pergunta ao humano)
   │     Fase 3 → Fase 4
   │     ⛔ Barreira B
   │
-  └─▶ BLOCO C: Validation & Comparison
-        Fase 5 → Fase 6
+  └─▶ BLOCO C: Validation, Comparison & Notification
+        Fase 5 → Fase 6 → Fase 7
         ⛔ Barreira C → Factory Selection
 ```
 
@@ -98,6 +98,9 @@ Validação DTA de cada estimativa recebida (formato, QA balanceado, outliers). 
 
 ### Fase 6 — FACTORY-COMPARISON.md 🆕
 Matriz comparativa cross-fábrica + ranking + recomendação de seleção. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-FACTORY-COMPARISON.md` → Gate → Fix → COMPLIANCE
+
+### Fase 7 — FACTORY-NOTIFICATION.md 🆕
+Notificações formais às fábricas: carta de seleção (vencedora), feedback técnico (rejeitadas), carta de segundo colocado. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-FACTORY-NOTIFICATION.md` → Gate → Fix → COMPLIANCE
 
 ---
 
