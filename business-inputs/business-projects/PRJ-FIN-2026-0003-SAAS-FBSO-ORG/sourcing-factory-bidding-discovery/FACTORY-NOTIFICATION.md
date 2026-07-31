@@ -7,16 +7,16 @@
 
 ## Registro de Envio
 
-| # | Fábrica | Status | Notificação | Data Envio |
-|:---|:---|:---|:---|:---|
-| 1 | Stefanini | 🏆 Selecionada | Carta de Seleção | ⚠️ Aguardando envio |
-| 2 | CI&T | 🥈 2º colocado | Carta de Agradecimento | ⚠️ Aguardando envio |
-| 3 | Capgemini | ❌ Rejeitada | Feedback técnico | ⚠️ Aguardando envio |
-| 4 | TOTVS | ❌ Rejeitada | Feedback técnico | ⚠️ Aguardando envio |
-| 5 | Deloitte | ❌ Rejeitada | Feedback técnico | ⚠️ Aguardando envio |
-| 6 | Infosys | ❌ Rejeitada | Feedback técnico | ⚠️ Aguardando envio |
-| 7 | TCS | ❌ Rejeitada | Feedback técnico | ⚠️ Aguardando envio |
-| 8 | Overlabs | ❌ Rejeitada | Feedback técnico | ⚠️ Aguardando envio |
+| # | Fábrica | Status | Data Envio | Canal | E-mail |
+|:---|:---|:---|:---|:---|:---|
+| 1 | Stefanini | 🏆 Selecionada | ⚠️ Aguardando envio | Email | ⚠️ |
+| 2 | CI&T | 🥈 2º colocado | ⚠️ Aguardando envio | Email | ⚠️ |
+| 3 | Capgemini | ❌ Rejeitada | ⚠️ Aguardando envio | Email | ⚠️ |
+| 4 | TOTVS | ❌ Rejeitada | ⚠️ Aguardando envio | Email | ⚠️ |
+| 5 | Deloitte | ❌ Rejeitada | ⚠️ Aguardando envio | Email | ⚠️ |
+| 6 | Infosys | ❌ Rejeitada | ⚠️ Aguardando envio | Email | ⚠️ |
+| 7 | TCS | ❌ Rejeitada | ⚠️ Aguardando envio | Email | ⚠️ |
+| 8 | Overlabs | ❌ Rejeitada | ⚠️ Aguardando envio | Email | ⚠️ |
 
 ---
 

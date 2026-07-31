@@ -5,16 +5,16 @@
 
 ## Fábricas Participantes
 
-| # | Fábrica | Data Envio | Canal | Prazo | Status |
-|:---|:---|:---|:---|:---|:---|
-| 1 | Tata Consultancy Services (TCS) | 31/07/2026 | Email | 14/08/2026 | ⚠️ Aguardando cadastro |
-| 2 | Capgemini | 31/07/2026 | Email | 14/08/2026 | ⚠️ Aguardando cadastro |
-| 3 | Infosys | 31/07/2026 | Email | 14/08/2026 | ⚠️ Aguardando cadastro |
-| 4 | Deloitte | 31/07/2026 | Email | 14/08/2026 | ⚠️ Aguardando cadastro |
-| 5 | TOTVS Consulting | 31/07/2026 | Email | 14/08/2026 | ⚠️ Aguardando cadastro |
-| 6 | Stefanini | 31/07/2026 | Email | 14/08/2026 | ⚠️ Aguardando cadastro |
-| 7 | CI&T | 31/07/2026 | Email | 14/08/2026 | ⚠️ Aguardando cadastro |
-| 8 | Overlabs | 31/07/2026 | Email | 14/08/2026 | ⚠️ Aguardando cadastro |
+| # | Fábrica | Data Envio | Canal | E-mail | Telefone | Prazo | Status |
+|:---|:---|:---|:---|:---|:---|:---|:---|
+| 1 | TCS | 31/07/2026 | Email | ⚠️ | ⚠️ | 14/08/2026 | ✅ Respondido |
+| 2 | Capgemini | 31/07/2026 | Email | ⚠️ | ⚠️ | 14/08/2026 | ✅ Respondido |
+| 3 | Infosys | 31/07/2026 | Email | ⚠️ | ⚠️ | 14/08/2026 | ✅ Respondido |
+| 4 | Deloitte | 31/07/2026 | Email | ⚠️ | ⚠️ | 14/08/2026 | ✅ Respondido |
+| 5 | TOTVS | 31/07/2026 | Email | ⚠️ | ⚠️ | 14/08/2026 | ✅ Respondido |
+| 6 | Stefanini | 31/07/2026 | Email | ⚠️ | ⚠️ | 14/08/2026 | ✅ Respondido |
+| 7 | CI&T | 31/07/2026 | Email | ⚠️ | ⚠️ | 14/08/2026 | ✅ Respondido |
+| 8 | Overlabs | 31/07/2026 | Email | ⚠️ | ⚠️ | 14/08/2026 | ✅ Respondido |
 
 ## Material Enviado
 - [RFQ-PACKAGE.md](./RFQ-PACKAGE.md) — Carta convite + instruções

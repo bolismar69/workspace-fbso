@@ -4,7 +4,7 @@ Este prompt implementa o **GATE de Validação do FACTORY-DISTRIBUTION** — Fas
 **Postura do GATE:** Cético e rigoroso. Cada NC deve ser específica, localizada e acionável.
 **Propósito:** Registro completo de fábricas com dados e rastreabilidade.
 ## Dimensões de Validação
-| 1.1 | Fábricas | ≥ 2 cadastradas com nome, canal, prazo |
+| 1.1 | Fábricas | ≥ 2 cadastradas com nome, canal, e-mail, telefone, prazo |
 | 1.2 | Material Vinculado | RFQ-PACKAGE e ESTIMATION-SCHEMA referenciados |
 | 2.1 | Status Consistente | Status reflete situação real |
 ## Formato de Saída

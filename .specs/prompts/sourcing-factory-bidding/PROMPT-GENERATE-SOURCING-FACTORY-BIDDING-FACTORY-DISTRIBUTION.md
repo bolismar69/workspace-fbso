@@ -4,7 +4,7 @@
 
 Este prompt implementa o **GENERATE do FACTORY-DISTRIBUTION** para o processo de Sourcing & Factory Bidding (Fase 3).
 
-**Propósito:** Registra as fábricas participantes, controla envio do RFQ e prazos de resposta.
+**Propósito:** Registra as fábricas participantes com dados de contato (Canal, E-mail, Telefone), controla envio do RFQ e prazos de resposta. Colunas: Fábrica, Data Envio, Canal, E-mail, Telefone, Prazo, Status.
 
 **Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
 
