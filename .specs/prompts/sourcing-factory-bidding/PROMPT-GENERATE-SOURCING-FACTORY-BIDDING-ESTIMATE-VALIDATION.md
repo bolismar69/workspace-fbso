@@ -4,7 +4,7 @@
 
 Este prompt implementa o **GENERATE do ESTIMATE-VALIDATION** para o processo de Sourcing & Factory Bidding (Fase 5).
 
-**Propósito:** Valida cada estimativa recebida contra as regras definidas em `DTA-VALIDATION-STANDARDS.md` §2: QA Balanceado, Arquitetura/SRE, Consistência Prazo×Horas, Outliers, Formato.
+**Propósito:** Valida cada estimativa recebida contra as regras definidas em `.specs/standards/DTA-VALIDATION-STANDARDS.md` §2: QA Balanceado, Arquitetura/SRE, Consistência Prazo×Horas, Outliers, Formato.
 
 **Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
 

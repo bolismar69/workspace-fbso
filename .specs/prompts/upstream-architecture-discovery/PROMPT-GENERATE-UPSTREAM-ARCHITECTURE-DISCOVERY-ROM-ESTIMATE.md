@@ -2,7 +2,7 @@
 ## Contexto
 > 📐 **Discovery-Level:** Consolidação da estimativa ROM +-50% para o comitê de governança.
 
-Este prompt gera `ROM-ESTIMATE.md` — documento que consolida a estimativa Rough Order of Magnitude com faixa de +-50%. Inclui matriz de esforço por solução, premissas, riscos e faixa de valores. Este é o output final do Discovery para decisão GO/NO-GO.
+Este prompt gera `DISCOVERY-LEVEL-ROM-ESTIMATE.md` — documento que consolida a estimativa Rough Order of Magnitude com faixa de +-50%. Inclui matriz de esforço por solução, premissas, riscos e faixa de valores. Este é o output final do Discovery para decisão GO/NO-GO.
 
 **Papel no Bloco D (Estimativa & ROM):** Fase 11 de 1. Consome todos os artefatos anteriores.
 
