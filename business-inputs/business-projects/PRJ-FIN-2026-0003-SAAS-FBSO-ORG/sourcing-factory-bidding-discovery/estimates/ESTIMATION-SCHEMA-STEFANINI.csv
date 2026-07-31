@@ -1,0 +1,5 @@
+id_epico;titulo_epico;solucoes;horas_desenvolvimento;horas_arquitetura;horas_qa;complexidade;comentarios
+EP-0001;Portal Administrativo Interno;S01,S02,S03;3200;420;380;Media;
+EP-0002;Gestão de Clientes e Assinaturas;S01,S02,S03;3200;420;380;Alta;
+EP-0003;Governança de Acessos e Permissões (RBAC);S01,S02,S04;3200;420;380;Alta;
+EP-0004;Experiência do Cliente e Autoatendimento;S01,S02,S04;3200;420;380;Alta;

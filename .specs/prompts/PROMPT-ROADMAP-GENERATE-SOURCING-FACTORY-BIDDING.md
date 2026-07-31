@@ -85,7 +85,7 @@ Workflow:
 Pacote RFQ compilando artefatos técnicos conforme o modo. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-RFQ-PACKAGE.md` → Gate → Fix → COMPLIANCE
 
 ### Fase 2 — ESTIMATION-SCHEMA.csv 🆕
-Template CSV padronizado (DTA Estimation Schema) que as fábricas devem preencher. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-ESTIMATION-SCHEMA.md` → Gate → Fix → COMPLIANCE
+Template CSV padronizado (DTA Estimation Schema) que as fábricas devem preencher. Colunas: id_epico, titulo, solucoes, horas_dev, horas_arch, horas_qa, **prazo_entrega_meses**, complexidade, comentarios. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-ESTIMATION-SCHEMA.md` → Gate → Fix → COMPLIANCE
 
 ### Fase 3 — FACTORY-DISTRIBUTION.md 🆕
 Registro de fábricas participantes, envio do RFQ e prazos. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-FACTORY-DISTRIBUTION.md` → Gate → Fix → COMPLIANCE
