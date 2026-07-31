@@ -237,7 +237,7 @@ onde Fator_Esforço: Alta = 8-14 h-m, Média = 6-10 h-m, Baixa = 2-5 h-m
 
 | Documento | Relação |
 |:---|:---|
-| `.specs/DTA-Engine-de-Bidding-e-Estimativas.md` | Schema original e regras de ouro |
+| `.specs/standards/DTA-Engine-de-Bidding-e-Estimativas.md` | Schema original e regras de ouro |
 | `PROMPT-ROADMAP-GENERATE-SOURCING-FACTORY-BIDDING.md` | Roadmap de orquestração |
 | `ESTIMATE-VALIDATION.md` (F5) | Aplicação das regras neste projeto |
 | `FACTORY-COMPARISON.md` (F6) | Aplicação dos critérios neste projeto |
