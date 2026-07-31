@@ -9,7 +9,9 @@ Objetivo Principal: Produzir uma **Matriz Comparativa de Fábricas + Recomendaç
 
 Regra Crítica de Execução (Gating Rule): O processo é estritamente sequencial em todas as fases. Nenhuma fase subsequente pode ser iniciada sem a aprovação formal, soberana e explícita do usuário humano na fase anterior.
 
-**Base técnica:** DTA Engine de Bidding e Estimativas (`/home/bolismar/work/workspace-fbso/.specs/DTA-Engine-de-Bidding-e-Estimativas.md`).
+**Base técnica:** 
+- `DTA-Engine-de-Bidding-e-Estimativas.md` — Schema original e regras de ouro
+- `DTA-VALIDATION-STANDARDS.md` — **Documento canônico:** TODAS as regras, fórmulas e padrões de validação e comparação. Consulta obrigatória antes de executar qualquer fase.
 
 ---
 
