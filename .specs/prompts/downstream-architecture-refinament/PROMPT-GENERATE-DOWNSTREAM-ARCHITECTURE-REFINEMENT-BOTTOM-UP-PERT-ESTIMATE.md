@@ -18,7 +18,7 @@ Se o arquivo `upstream-architecture-discovery/DISCOVERY-LEVEL-ROM-ESTIMATE.md` e
 
 ## INPUTS
 
-1. **User Stories:** Ler TODOS os arquivos em `user-stories/` (62 arquivos para o projeto atual)
+1. **User Stories:** Ler TODOS os arquivos em `user-stories/`
 2. **Features:** `04-FEATURES-{PROJECT_ID_NAME}.md` e `features/*.md`
 3. **Épicos:** `03-EPICS-{PROJECT_ID_NAME}.md`
 4. **Artefatos Detail-Level (Bloco A):** F1-F7 (PRD, Arquitetura, Segurança, Dados, DevOps, Testes, Infra) — use para entender complexidades técnicas

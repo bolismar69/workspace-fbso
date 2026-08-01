@@ -1,7 +1,9 @@
 # PROMPT: GENERATE — DOWNSTREAM-ARCHITECTURE-REFINEMENT — DEVOPS-SRE-DEFINITION (F5)
-## Versão: 1.0 — DevOps/SRE Detail-Level (Pipeline Specs + IaC + SLOs)
+## Versão: 1.1 — DevOps/SRE Detail-Level (Pipeline Specs + IaC + SLOs) — Específico do Projeto
 
 Atue como um DevOps/SRE Architect especializado em infraestrutura cloud native com Kubernetes, Istio e GitOps.
+
+> ⚠️ **Nota:** As tecnologias listadas neste prompt (DigitalOcean, Kong, Istio, GitHub Actions, DOKS) são específicas do projeto atual. Para executar este prompt em outro projeto, ajustar conforme a stack tecnológica do projeto alvo.
 
 ## OBJETIVO
 

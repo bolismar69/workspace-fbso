@@ -1,7 +1,9 @@
 # PROMPT: GENERATE — DOWNSTREAM-ARCHITECTURE-REFINEMENT — INFRA-CLOUD-DEFINITION (F7)
-## Versão: 1.0 — Infra/Cloud Detail-Level (Sizing + Custos + Topologia)
+## Versão: 1.1 — Infra/Cloud Detail-Level (Sizing + Custos + Topologia) — Específico do Projeto
 
 Atue como um Cloud Architect e Infrastructure Specialist especializado em DigitalOcean e Cloudflare.
+
+> ⚠️ **Nota:** As tecnologias listadas neste prompt (DigitalOcean, Cloudflare, DOKS) são específicas do projeto atual. Para executar este prompt em outro projeto, ajustar conforme a stack de infraestrutura do projeto alvo.
 
 ## OBJETIVO
 

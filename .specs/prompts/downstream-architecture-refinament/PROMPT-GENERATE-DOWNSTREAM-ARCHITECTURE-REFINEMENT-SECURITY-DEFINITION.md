@@ -13,7 +13,7 @@ Produzir a definição de segurança em nível de implementação: threat model 
 
 1. **Arquitetura Detail-Level** (F2)
 2. **GLOBAL-SECURITY.md** — padrões corporativos de segurança
-3. **Features de segurança:** EP-0003 (RBAC), EP-0004 (autenticação)
+3. **Features de segurança:** EP-0003 (RBAC) e aspectos de autenticação cross-épico (Keycloak, OIDC, MFA)
 
 ## ESTRUTURA DO DOCUMENTO
 

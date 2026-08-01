@@ -227,7 +227,7 @@ Toda fase (1-12) deve rodar sob o ecossistema trifásico de prompts (Gerador, Au
 
 | Barreira | Posição | Validação | Regra Especial |
 |---|---|---|---|
-| ⛔ Barreira A | Após Bloco A (F7) | 7 disciplinas OK. Consistência horizontal entre os 7 artefatos. **Detalhamento suficiente para o time de TI validar viabilidade** — cada artefato deve conter análise técnica que permita identificar riscos e complexidades. Se upstream existir, artefatos podem referenciá-lo como baseline, mas devem ir além. | Artefato muito similar ao Discovery-Level (sem refinamento real) = NÃO COMPLIANCE |
+| ⛔ Barreira A | Após Bloco A (F7) | PRD (F1) + 6 disciplinas técnicas (F2-F7) OK. Consistência horizontal entre os 6 artefatos técnicos. **Detalhamento suficiente para o time de TI validar viabilidade** — cada artefato deve conter análise técnica que permita identificar riscos e complexidades. Se upstream existir, artefatos podem referenciá-lo como baseline, mas devem ir além. | Artefato muito similar ao Discovery-Level (sem refinamento real) = NÃO COMPLIANCE |
 | ⛔ Barreira B | Após Bloco B (F10) | **PERT com todas as US estimadas individualmente.** QA ≥ 25%. Arch ≥ 5%. Consistência Prazo×Horas validada. Outliers identificados. **Estimativa 100% independente — não pode ter usado ROM upstream como baseline.** Confiança alvo: ±15-25%. | US sem estimativa individual = NÃO COMPLIANCE. PERT sem IC 95% = NÃO COMPLIANCE. Evidência de contaminação pelo ROM = NÃO COMPLIANCE |
 | ⛔ Barreira C | Após Bloco C (F12) | Scope Snapshot cobre 100% das US estimadas. Se upstream existe: relatório comparativo gerado. Se upstream não existe: F12 pulada, barreira satisfeita. Relatório NÃO altera estimativa PERT. | Scope Snapshot incompleto = NÃO COMPLIANCE |
 
@@ -372,7 +372,7 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `downstr
 |:---|:---|:---|
 | **Quando executar** | Pré-GO/NO-GO (decisão de investimento) | A qualquer momento (pré ou pós-GO) quando precisar de estimativa detalhada |
 | **Dependência** | Requer só docs de negócio (Charter+BRD+Épicos) | Requer docs de negócio completos (Charter+BRD+Épicos+Features+US) |
-| **Upstream é pré-requisito?** | — | **Não.** Opcional. Se existir, vira referência para design (Bloco A) e comparação (Fase 13) |
+| **Upstream é pré-requisito?** | — | **Não.** Opcional. Se existir, vira referência para design (Bloco A) e comparação (Fase 12) |
 | **Input** | Charter + BRD + Épicos (escopo macro) | Charter + BRD + Épicos + Features + US (escopo completo) |
 | **Arquitetura** | C4 L1 (System Context), containers macro | C4 L2/L3 (Container/Component), ADRs detalhados |
 | **Estimativa** | ROM ±50% (manual, por solução) | **PERT Bottom-Up ±15-25% (US individuais, independente)** |
@@ -383,7 +383,7 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `downstr
 | **Gate final** | GO/NO-GO (decisão de investimento) | ESTIMATE-READY (estimativa aprovada como baseline) |
 | **Confiança** | ±50% (suficiente para aprovar orçamento) | ±15-25% (suficiente para compromisso de prazo) |
 | **Diretório** | `upstream-architecture-discovery/` | `downstream-architecture-refinement/` |
-| **Vínculo entre roadmaps** | — | **Apenas Fase 13 (Cross-Check Report)** — condicional, não altera estimativa |
+| **Vínculo entre roadmaps** | — | **Apenas Fase 12 (Cross-Check Report)** — condicional, não altera estimativa |
 
 ---
 
@@ -394,6 +394,7 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `downstr
 | 1.0 | 31/07/2026 | Criação inicial: roadmap de Downstream Architecture Refinement com 13 fases em 5 blocos + Gate READY-FOR-EXECUTION. | Time de Arquitetura |
 | 1.1 | 31/07/2026 | Independência do upstream: removida pré-condição obrigatória, adicionado Bloco D com Fase 13 (Cross-Check Report) condicional, estimativa 100% independente. | Time de Arquitetura |
 | 2.0 | 31/07/2026 | **Foco em viabilidade e estimativa:** Removido Bloco C (Sprint-Ready Contracts). F11 renomeada para SCOPE-SNAPSHOT (foto do escopo, sem planejamento de sprints). F12 absorve Cross-Check (era F13). Gate renomeado para ESTIMATE-READY. Removida pasta contracts/. 12 fases em 4 blocos, 36 prompts. O planejamento de sprints e contratos técnicos são responsabilidade do PROJECT-TECHNICAL-DEFINITIONS. | Time de Arquitetura |
+| 2.1 | 01/08/2026 | **Auditoria de integridade (8 NCs):** "Fase 13"→"Fase 12" na tabela comparativa. Barreira A ajustada (PRD + 6 disciplinas). Notas de tecnologia específica adicionadas aos GENERATEs F5/F7. Hardcode "62" removido do GENERATE F8. Referência EP-0004 corrigida no GENERATE F3. Versões F5/F7 atualizadas para 1.1. | Time de Arquitetura |
 
 ---
 
