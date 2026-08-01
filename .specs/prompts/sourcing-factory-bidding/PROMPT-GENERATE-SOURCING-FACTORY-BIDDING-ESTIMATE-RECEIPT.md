@@ -4,7 +4,7 @@
 
 Este prompt implementa o **GENERATE do ESTIMATE-RECEIPT** para o processo de Sourcing & Factory Bidding (Fase 4).
 
-**Propósito:** Guia para o time operacional salvar estimativas recebidas no padrão: nome-do-arquivo-csv-{fabrica}.md em estimates/.
+**Propósito:** Guia para o time operacional salvar estimativas recebidas no padrão: `ESTIMATION-SCHEMA-{NOME-DA-FABRICA}.csv` em `estimates/`.
 
 **Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
 
@@ -21,10 +21,27 @@ Este prompt implementa o **GENERATE do ESTIMATE-RECEIPT** para o processo de Sou
 ## Fluxo de Execução
 
 ### Passo 0 — Validar Parâmetros e Modo
-### Passo 1 — Carregar Artefatos Base (conforme modo)
+Confirmar `{PROJECT_PATH}`, `{PROJECT_ID_NAME}`, `{SOURCING_BIDDING_MODE}`.
+
+### Passo 1 — Carregar Artefatos Base
+- FACTORY-DISTRIBUTION.md (F3) — lista de fábricas participantes
+
 ### Passo 2 — Invocar Skills Especializadas
+- `analyst-estimates` — Análise de estimativas recebidas
+- `documentation-writer` — Guia de recebimento
+
 ### Passo 3 — GENERATE o Artefato
+
+**Especificações do Artefato:**
+
+1. **Padrão de nomenclatura:** `ESTIMATION-SCHEMA-{NOME-DA-FABRICA}.csv` (extensão `.csv`)
+2. **Pasta destino:** `estimates/`
+3. **Checklist de recebimento** com colunas: `# | Fábrica | Arquivo | Data Recebimento | Total Horas | Status`
+4. **Uma linha por fábrica** da F3, com nome de arquivo previsto
+5. **Resumo** com total de fábricas contactadas, recebidas e mediana de horas
+
 ### Passo 4 — Validação Pós-GENERATE
+Verificar: checklist reflete F3, padrão de arquivo `.csv`, pasta `estimates/` referenciada.
 
 ## Skills Utilizados
 

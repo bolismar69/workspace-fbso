@@ -8,7 +8,7 @@ Este prompt implementa o **GATE de Validação do ESTIMATE-RECEIPT** — Fase 4.
 | 1.2 | Checklist | Tabela reflete arquivos em estimates/ |
 | 2.1 | Dados Preenchidos | Total de horas e data para cada fábrica |
 ## Formato de Saída
-### 🚨 NÃO COMPLIANCE — Para cada NC: ID-CONFLITO, Localização, Problema, Impacto, Sugestão
+### 🚨 NÃO COMPLIANCE — Para cada NC: ID-CONFLITO-[RECEIPT-XX], Localização, Problema, Impacto, Sugestão
 ### ✅ PRÉ-COMPLIANCE — 3 perguntas obrigatórias; se Sim/Não/Não → COMPLIANCE
 ## Skills
 | 1 | `gap-analysis` | Detecção de gaps | 2 | `requirements-validation` | Validação de critérios |

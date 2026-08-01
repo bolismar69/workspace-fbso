@@ -108,12 +108,56 @@ Limite_Superior = Mediana × 1.50
 
 **Critério:** Todas as colunas obrigatórias preenchidas conforme `ESTIMATION-SCHEMA.csv`.
 
-**Colunas obrigatórias (Discovery-Level):**
+**Colunas obrigatórias (Schema Unificado — Discovery e Full):**
 ```
-id_epico; titulo_epico; solucoes; horas_desenvolvimento; horas_arquitetura; horas_qa; prazo_entrega_meses; complexidade; comentarios
+fabrica; id_epico; titulo; features_codigos; qtd_features; user_stories_codigos; qtd_user_stories; horas_dev; horas_qa; horas_arch; horas_devops; horas_gestao; total_horas; prazo_entrega_meses; time_estimado_pessoas; valor_estimado; complexidade; stack_aderencia; premissas; comentarios
 ```
 
+> 💡 Schema unificado para ambos os modos. `time_estimado_pessoas` e `valor_estimado` são **obrigatórios** — a FBSO.ORG NÃO infere esses valores. No modo discovery, `features_codigos` e `user_stories_codigos` podem ser preenchidos com os épicos (nível de detalhe disponível).
+
 **Ação:** Coluna ausente ou vazia → ❌ REJEITADA.
+
+### 2.6 Regra de Proximidade à Baseline Interna — PIB (Internal Baseline Proximity Gate) 🆕
+
+**Origem:** `analyst-estimates` — Cross-source variance analysis + `project-estimation` — Analogous estimation
+
+**Objetivo:** Medir o quão próxima a estimativa da fábrica está da estimativa interna de referência da empresa (baseline). A baseline interna **NÃO é enviada às fábricas** no RFQ para evitar viés de ancoragem (anchoring bias).
+
+**Fórmula:**
+```
+PIB_Score = 1 − (|Factory_Hours − Internal_Baseline| / Internal_Baseline)
+Clampado em [0, 1] onde:
+  1.0 = correspondência exata com a baseline
+  0.0 = 2× ou mais de desvio da baseline
+```
+
+**Fontes da Baseline Interna por Modo:**
+
+| Modo | Baseline | Arquivo | Precisão |
+|:---|:---|:---|:---|
+| `discovery` | ROM Upstream | `upstream-architecture-discovery/DISCOVERY-LEVEL-ROM-ESTIMATE.md` | ±50% |
+| `full` | PERT Downstream | `downstream-architecture-refinement/BOTTOM-UP-PERT-ESTIMATE.md` | ±15-25% |
+
+> ⚠️ A baseline usada é o valor **total do cenário recomendado** (com contingência). Para o modo Full, é o valor da linha "Total Recomendado" do `RISK-ADJUSTED-ESTIMATE.md` se existir, ou o valor "TOTAL com Contingência" do `BOTTOM-UP-PERT-ESTIMATE.md`.
+
+**Escala de Pontuação:**
+
+| Desvio da Baseline | PIB Score | Nota | Significado |
+|:---|---:|:---:|:---|
+| 0–15% | 0.85–1.00 | **9–10** | Excelente — muito próximo da baseline interna |
+| 15–30% | 0.70–0.85 | **7–8** | Bom — dentro da margem esperada |
+| 30–50% | 0.50–0.70 | **5–6** | Regular — desvio significativo; revisar |
+| 50–100% | 0.00–0.50 | **2–4** | Ruim — muito distante da baseline |
+| >100% | 0.00 | **1** | Inaceitável — mais que o dobro da baseline |
+
+**Critério DTA:**
+| PIB Score | Veredito |
+|:---|:---|
+| ≥ 0.50 | ✅ Aceitável |
+| 0.25 – 0.50 | ⚠️ Alerta — justificar divergência |
+| < 0.25 | 🔴 Rejeitada — descolamento extremo da baseline interna |
+
+**Observação:** Fábricas com PIB Score < 0.25 NÃO são automaticamente rejeitadas se todos os outros critérios (QA, Arch, Prazo, Formato) forem atendidos — mas a divergência deve ser justificada detalhadamente na coluna `comentarios`. Isso permite que uma fábrica demonstre que sua estimativa mais alta se justifica por abordagem técnica superior, escopo adicional identificado ou riscos não considerados na baseline.
 
 ---
 
@@ -135,12 +179,13 @@ onde Σ Pesos = 100%
 
 | Critério | Peso (Discovery) | Peso (Full) | Skill Base |
 |:---|:---:|:---:|:---|
-| **Custo Total** | 30% | 35% | `ads-budget` |
-| **Prazo de Entrega** | 30% | 25% | `project-estimation` |
-| **Qualidade Técnica** | 25% | 25% | `estimate-builder-qmohd` |
-| **QA/Arch Balanceado** | 15% | 15% | `analyst-estimates` |
+| **Custo Total** | 25% | 30% | `ads-budget` |
+| **Prazo de Entrega** | 25% | 20% | `project-estimation` |
+| **Qualidade Técnica (QA+Arch)** | 20% | 20% | `estimate-builder-qmohd` |
+| **Proximidade à Baseline Interna (PIB)** 🆕 | **15%** | **15%** | `analyst-estimates` |
+| **Consistência Prazo×Horas** | 15% | 15% | `analyst-estimates` |
 
-**Justificativa (Discovery-Level):** No modo Discovery, prazo e custo têm peso igual (30% cada) porque o time-to-market é tão crítico quanto o orçamento na fase de viabilidade.
+**Justificativa:** O PIB recebe 15% — suficiente para valorizar fábricas alinhadas com a referência interna sem dominar os critérios técnicos. Se o peso fosse >20%, fábricas poderiam "chutar" próximo da baseline sem qualidade real. Se fosse <10%, a baseline interna não teria efeito prático no ranking.
 
 ### 3.3 Escala de Notas (trade-show-budget-planner)
 
@@ -191,10 +236,12 @@ Se `Viabilidade = FALSE` → Fábrica entra na lista de rejeitadas independente 
 ├── FACTORY-DISTRIBUTION.md
 ├── ESTIMATE-RECEIPT.md
 ├── ESTIMATE-VALIDATION.md
+├── [ESTIMATE-RETROSPECTIVE-PIB.md]          (F5b — condicional)
 ├── FACTORY-COMPARISON.md
 ├── FACTORY-NOTIFICATION.md
 ├── estimates/
-│   └── ESTIMATION-SCHEMA-{FABRICA}.csv
+│   ├── ESTIMATION-SCHEMA-{FABRICA}.csv
+│   └── ESTIMATE-VALIDATION-{FABRICA}.md
 └── notifications/
     └── FACTORY-NOTIFICATION-{FABRICA}.md
 
@@ -205,17 +252,31 @@ Se `Viabilidade = FALSE` → Fábrica entra na lista de rejeitadas independente 
 
 ---
 
-## 5. ROM Baseline — Estimativa Interna de Referência
+## 5. Internal Baseline — Estimativa Interna de Referência
 
-**Skill base:** `project-estimation` — Analogous estimation
+**Skill base:** `project-estimation` — Analogous estimation + Bottom-up estimation
 
-O ROM interno é calculado pelo time de arquitetura durante o Upstream Discovery e serve como **baseline de comparação** — não é enviado às fábricas para evitar ancoragem (anchoring bias).
+A baseline interna é a estimativa de referência calculada pelo time de TI da empresa e serve como **parâmetro de comparação** na validação (F5) e comparação (F6). **Não é enviada às fábricas** no RFQ para evitar viés de ancoragem (anchoring bias).
 
-**Fórmula:**
-```
-ROM_Interno = Σ (Complexidade_Épico × Fator_Esforço)
-onde Fator_Esforço: Alta = 8-14 h-m, Média = 6-10 h-m, Baixa = 2-5 h-m
-```
+### 5.1 Fontes por Modo
+
+| Modo | Baseline | Arquivo | Método | Precisão |
+|:---|:---|:---|:---|:---|
+| **discovery** | ROM Upstream | `upstream-architecture-discovery/DISCOVERY-LEVEL-ROM-ESTIMATE.md` | Top-down por solução (S01-S15) | ±50% |
+| **full** | PERT Downstream | `downstream-architecture-refinement/BOTTOM-UP-PERT-ESTIMATE.md` | Bottom-up PERT por US (62 US) | ±15-25% |
+
+### 5.2 Valor de Referência
+
+O valor usado como baseline é o **total do cenário recomendado** (com contingência):
+
+| Modo | Fonte do Valor | Exemplo (PRJ-FIN-2026-0003) |
+|:---|:---|:---|
+| **discovery** | Linha "Provável" do ROM | 6,080h / 38 h-m |
+| **full** | `RISK-ADJUSTED-ESTIMATE.md` → "Total Recomendado", ou `BOTTOM-UP-PERT-ESTIMATE.md` → "TOTAL com Contingência" | 7,300h / 46 h-m |
+
+### 5.3 Uso na Validação (Regra PIB — §2.6)
+
+A baseline alimenta a **Regra de Proximidade à Baseline Interna (PIB)** que mede o quão próxima a estimativa da fábrica está da referência interna. Ver §2.6 para fórmula completa, escala de pontuação e critérios de aceitação.
 
 ---
 
@@ -224,11 +285,11 @@ onde Fator_Esforço: Alta = 8-14 h-m, Média = 6-10 h-m, Baixa = 2-5 h-m
 | Aspecto | Discovery-Level | Full-Documentation |
 |:---|:---|:---|
 | **Unidade de estimativa** | Épico | Feature + User Story |
-| **Schema columns** | 9 colunas (macro) | 9 colunas (detalhado) |
-| **QA validation** | Por épico (QA ≥ 20%) | Por US (QA ≥ 20%) |
+| **Schema columns** | 20 colunas (schema unificado — §2.5) | 20 colunas (schema unificado — §2.5) |
+| **QA validation** | Por épico (QA ≥ 20% dev) | Por US (QA ≥ 20% dev) |
 | **Outlier detection** | Total cross-fábrica | Por US cross-fábrica |
-| **Precisão ROM** | ±50% | ±30% |
-| **Pesos comparação** | Custo 30% / Prazo 30% | Custo 35% / Prazo 25% |
+| **Precisão ROM** | ±50% | ±30% (PERT) |
+| **Pesos comparação (§3.2)** | Custo 25% / Prazo 25% / Qualidade 20% / PIB 15% / Consistência 15% | Custo 30% / Prazo 20% / Qualidade 20% / PIB 15% / Consistência 15% |
 | **Pasta** | `sourcing-factory-bidding-discovery/` | `sourcing-factory-bidding-full/` |
 
 ---
@@ -249,6 +310,7 @@ onde Fator_Esforço: Alta = 8-14 h-m, Média = 6-10 h-m, Baixa = 2-5 h-m
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 31/07/2026 | Criação inicial: consolidação de regras, fórmulas e padrões de validação e comparação. Baseado nos skills project-estimation, estimate-builder, estimate-builder-qmohd, analyst-estimates, ads-budget, trade-show-budget-planner, afrexai-construction-estimator. | Time de Arquitetura |
+| 1.1 | 31/07/2026 | **Auditoria de integridade:** §6 corrigido (9→20 colunas, pesos 30%→25% alinhados com §3.2). §4.3 atualizado com ESTIMATE-RETROSPECTIVE-PIB.md e ESTIMATE-VALIDATION-{FAB}.md na estrutura de diretórios. | Time de Arquitetura |
 
 ---
 

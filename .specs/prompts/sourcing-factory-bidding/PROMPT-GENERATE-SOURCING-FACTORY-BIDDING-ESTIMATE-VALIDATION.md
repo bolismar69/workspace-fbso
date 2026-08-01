@@ -21,10 +21,31 @@ Este prompt implementa o **GENERATE do ESTIMATE-VALIDATION** para o processo de 
 ## Fluxo de Execução
 
 ### Passo 0 — Validar Parâmetros e Modo
-### Passo 1 — Carregar Artefatos Base (conforme modo)
+Confirmar `{PROJECT_PATH}`, `{PROJECT_ID_NAME}`, `{SOURCING_BIDDING_MODE}`.
+
+### Passo 1 — Carregar Artefatos Base
+- CSVs das fábricas em `estimates/ESTIMATION-SCHEMA-{FAB}.csv`
+- Baseline PIB conforme modo: `DISCOVERY-LEVEL-ROM-ESTIMATE.md` (discovery) ou `BOTTOM-UP-PERT-ESTIMATE.md` (full)
+- DTA-VALIDATION-STANDARDS.md §2 (regras de validação)
+
 ### Passo 2 — Invocar Skills Especializadas
+- `estimate-builder-qmohd` — QA gate validation
+- `analyst-estimates` — Cross-source variance + PIB
+- `gap-analysis` — Detecção de outliers
+
 ### Passo 3 — GENERATE o Artefato
+
+**Especificações do Artefato:**
+
+1. **Seção 1 — Regras:** Tabela com regras DTA+PIB: QA Balanceado, QA Global, Arquitetura, Formato, Consistência Prazo×Horas, Outliers, PIB
+2. **Seção 2 — Resultados por Fábrica:** Tabela com `Fábrica | Total Horas | QA% | Arch% | Prazo | PIB Score | Veredito`. Uma linha por fábrica.
+3. **Seção 3 — PIB por Épico:** Tabela cross-fábrica com baseline ROM por épico e PIB individual
+4. **Seção 4 — Análise PIB Total:** Desvio da baseline, PIB Score, Nota para cada fábrica
+5. **Arquivos individuais:** Gerar `estimates/ESTIMATE-VALIDATION-{FABRICA}.md` para cada fábrica com racional de não-compliance
+6. **Veredito claro:** APROVADA / REJEITADA / APROVADA COM RESSALVA para cada fábrica
+
 ### Passo 4 — Validação Pós-GENERATE
+Verificar: 100% fábricas validadas, PIB calculado, baseline do modo correto, vereditos explícitos.
 
 ## Skills Utilizados
 

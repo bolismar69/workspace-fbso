@@ -6,7 +6,7 @@ Este prompt implementa o **GENERATE do FACTORY-NOTIFICATION** — Fase 7 do Sour
 
 **Propósito:** Gerar notificações formais para todas as fábricas participantes informando o resultado do processo de seleção: carta de seleção para a vencedora, feedback técnico para as rejeitadas.
 
-**Inputs upstream:** FACTORY-COMPARISON (F6) + ESTIMATE-VALIDATION (F5) + FACTORY-DISTRIBUTION (F3).
+**Inputs upstream:** FACTORY-COMPARISON (F6) + ESTIMATE-VALIDATION (F5) + FACTORY-DISTRIBUTION (F3) + ESTIMATE-RETROSPECTIVE-PIB (F5b, se aplicável).
 
 ## Padrão de Geração
 

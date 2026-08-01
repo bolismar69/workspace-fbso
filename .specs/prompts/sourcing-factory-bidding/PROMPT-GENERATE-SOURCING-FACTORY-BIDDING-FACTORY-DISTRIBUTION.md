@@ -21,10 +21,28 @@ Este prompt implementa o **GENERATE do FACTORY-DISTRIBUTION** para o processo de
 ## Fluxo de Execução
 
 ### Passo 0 — Validar Parâmetros e Modo
-### Passo 1 — Carregar Artefatos Base (conforme modo)
+Confirmar `{PROJECT_PATH}`, `{PROJECT_ID_NAME}`, `{SOURCING_BIDDING_MODE}`.
+
+### Passo 1 — Carregar Artefatos Base
+- RFQ-PACKAGE.md (F1) — lista de artefatos enviados
+- ESTIMATION-SCHEMA.csv (F2) — template enviado
+
 ### Passo 2 — Invocar Skills Especializadas
+- `project-estimation` — Gestão do processo de distribuição
+- `documentation-writer` — Registro de fábricas
+
 ### Passo 3 — GENERATE o Artefato
+
+**Especificações do Artefato:**
+
+1. **Tabela de fábricas** com colunas: `# | Fábrica | Data Envio | Canal | E-mail | Telefone | Prazo | Status`
+2. **Mínimo 2 fábricas** cadastradas
+3. **E-mail e Telefone** preenchidos com ⚠️ se não informados (placeholder para time operacional)
+4. **Material Enviado:** lista RFQ-PACKAGE.md + ESTIMATION-SCHEMA.csv + artefatos upstream
+5. **Instruções para o Time Operacional** com passos claros
+
 ### Passo 4 — Validação Pós-GENERATE
+Verificar: ≥ 2 fábricas, colunas Canal/E-mail/Telefone presentes, prazos definidos.
 
 ## Skills Utilizados
 

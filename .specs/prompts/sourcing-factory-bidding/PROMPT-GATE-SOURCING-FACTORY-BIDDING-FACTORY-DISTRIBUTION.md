@@ -8,7 +8,7 @@ Este prompt implementa o **GATE de Validação do FACTORY-DISTRIBUTION** — Fas
 | 1.2 | Material Vinculado | RFQ-PACKAGE e ESTIMATION-SCHEMA referenciados |
 | 2.1 | Status Consistente | Status reflete situação real |
 ## Formato de Saída
-### 🚨 NÃO COMPLIANCE — Para cada NC: ID-CONFLITO, Localização, Problema, Impacto, Sugestão
+### 🚨 NÃO COMPLIANCE — Para cada NC: ID-CONFLITO-[DIST-XX], Localização, Problema, Impacto, Sugestão
 ### ✅ PRÉ-COMPLIANCE — 3 perguntas obrigatórias; se Sim/Não/Não → COMPLIANCE
 ## Skills
 | 1 | `gap-analysis` | Detecção de gaps | 2 | `requirements-validation` | Validação de critérios |

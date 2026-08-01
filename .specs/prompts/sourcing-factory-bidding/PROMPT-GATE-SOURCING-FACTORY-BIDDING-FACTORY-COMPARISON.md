@@ -10,7 +10,7 @@ Este prompt implementa o **GATE de Validação do FACTORY-COMPARISON** — Fase 
 | 2.1 | Justificativa | ≥ 3 razões para seleção |
 | 2.2 | Prazo | Coluna prazo_entrega_meses usada na comparação |
 ## Formato de Saída
-### 🚨 NÃO COMPLIANCE — Para cada NC: ID-CONFLITO, Localização, Problema, Impacto, Sugestão
+### 🚨 NÃO COMPLIANCE — Para cada NC: ID-CONFLITO-[COMP-XX], Localização, Problema, Impacto, Sugestão
 ### ✅ PRÉ-COMPLIANCE — 3 perguntas obrigatórias; se Sim/Não/Não → COMPLIANCE
 ## Skills
 | 1 | `gap-analysis` | Detecção de gaps | 2 | `requirements-validation` | Validação de critérios |

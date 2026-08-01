@@ -1,5 +1,5 @@
 # PROMPT: ROADMAP DE SOURCING & FACTORY BIDDING
-## Versão: 1.0 — RFQ Package + DTA Estimation Schema + Factory Selection
+## Versão: 1.3 — Schema Unificado + Time/Valor Obrigatórios + Fórmulas DTA
 
 Atue como um Especialista em Gestão de Processos (BPM), PMO e Tech Lead, especializado em Sourcing de Fábricas de Software, Bidding e Estimativas.
 
@@ -11,7 +11,7 @@ Regra Crítica de Execução (Gating Rule): O processo é estritamente sequencia
 
 **Base técnica:** 
 - `.specs/standards/DTA-Engine-de-Bidding-e-Estimativas.md` — Schema original e regras de ouro
-- `.specs/standards/DTA-VALIDATION-STANDARDS.md` — **Documento canônico:** TODAS as regras, fórmulas e padrões de validação e comparação. Consulta obrigatória antes de executar qualquer fase.
+- `.specs/standards/DTA-VALIDATION-STANDARDS.md` — **Documento canônico:** TODAS as regras, fórmulas e padrões de validação e comparação. Inclui regra PIB (§2.6), matriz de decisão com 5 critérios (§3.2), e Internal Baseline por modo (§5). Consulta obrigatória antes de executar qualquer fase.
 
 ---
 
@@ -46,7 +46,7 @@ ESTIMATES_PATH              = SOURCING_BIDDING_PATH + "/estimates"
 
 ## ARQUITETURA DE FASES
 
-O roadmap é organizado em **7 fases** agrupadas em **3 blocos**:
+O roadmap é organizado em **8 fases** agrupadas em **3 blocos**:
 
 ```
 FASE 0: BOOTSTRAP (detecta modo + pergunta ao humano)
@@ -60,8 +60,10 @@ FASE 0: BOOTSTRAP (detecta modo + pergunta ao humano)
   │     ⛔ Barreira B
   │
   └─▶ BLOCO C: Validation, Comparison & Notification
-        Fase 5 → Fase 6 → Fase 7
+        Fase 5 → [Fase 5b] → Fase 6 → Fase 7
         ⛔ Barreira C → Factory Selection
+        
+        [Fase 5b] = condicional: executa apenas se 0 fábricas aprovadas na F5
 ```
 
 ---
@@ -87,7 +89,14 @@ Workflow:
 Pacote RFQ compilando artefatos técnicos conforme o modo. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-RFQ-PACKAGE.md` → Gate → Fix → COMPLIANCE
 
 ### Fase 2 — ESTIMATION-SCHEMA.csv 🆕
-Template CSV padronizado (DTA Estimation Schema) que as fábricas devem preencher. Colunas: id_epico, titulo, solucoes, horas_dev, horas_arch, horas_qa, **prazo_entrega_meses**, complexidade, comentarios. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-ESTIMATION-SCHEMA.md` → Gate → Fix → COMPLIANCE
+Template CSV padronizado (DTA Estimation Schema) que as fábricas devem preencher. Schema unificado para ambos os modos com colunas individuais de horas, prazo, time, e valor.
+
+**Colunas (Discovery e Full — schema unificado):**
+`fabrica; id_epico; titulo; features_codigos; qtd_features; user_stories_codigos; qtd_user_stories; horas_dev; horas_qa; horas_arch; horas_devops; horas_gestao; total_horas; prazo_entrega_meses; time_estimado_pessoas; valor_estimado; complexidade; stack_aderencia; premissas; comentarios`
+
+> 💡 O discovery usa as mesmas colunas do full para padronização. No discovery, `features_codigos` e `user_stories_codigos` podem ser preenchidos com os épicos (o nível de detalhe disponível). `time_estimado_pessoas` e `valor_estimado` são **obrigatórios** — a FBSO.ORG não infere esses valores.
+
+Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-ESTIMATION-SCHEMA.md` → Gate → Fix → COMPLIANCE
 
 ### Fase 3 — FACTORY-DISTRIBUTION.md 🆕
 Registro de fábricas participantes, envio do RFQ e prazos. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-FACTORY-DISTRIBUTION.md` → Gate → Fix → COMPLIANCE
@@ -96,19 +105,51 @@ Registro de fábricas participantes, envio do RFQ e prazos. Pipeline: `PROMPT-GE
 Guia para o time operacional salvar estimativas recebidas. Padrão: `nome-do-arquivo-csv-{nome-da-fabrica}.md` em `estimates/`. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-ESTIMATE-RECEIPT.md` → Gate → Fix → COMPLIANCE
 
 ### Fase 5 — ESTIMATE-VALIDATION.md 🆕
-Validação DTA de cada estimativa recebida (formato, QA balanceado, outliers). Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-ESTIMATE-VALIDATION.md` → Gate → Fix → COMPLIANCE
+Validação DTA de cada estimativa recebida: formato, QA balanceado (≥25%), Arquitetura (≥5%), consistência Prazo×Horas, outliers, e **PIB — Proximidade à Baseline Interna** (comparação com estimativa de referência da empresa). A baseline interna NÃO é enviada às fábricas — usada apenas na validação.
+
+**Fontes da baseline por modo:**
+- `discovery` → `upstream-architecture-discovery/DISCOVERY-LEVEL-ROM-ESTIMATE.md`
+- `full` → `downstream-architecture-refinement/BOTTOM-UP-PERT-ESTIMATE.md`
+
+Gera também arquivos individuais `ESTIMATE-VALIDATION-{FABRICA}.md` em `estimates/` com o racional detalhado de não-compliance. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-ESTIMATE-VALIDATION.md` → Gate → Fix → COMPLIANCE
+
+### Fase 5b — ESTIMATE-RETROSPECTIVE-PIB.md 🆕 (CONDICIONAL)
+
+**Condição de execução:** Esta fase é executada **apenas quando 0 fábricas são aprovadas** na Fase 5. Se pelo menos 1 fábrica for aprovada, esta fase é pulada.
+
+**Objetivo:** Análise retrospectiva aprofundada usando a métrica PIB para identificar observações adicionais de não-compliance que devem ser comunicadas às fábricas no realinhamento. Esta fase complementa a validação DTA com uma análise qualitativa que nenhuma regra automatizada captura sozinha.
+
+**Dimensões analisadas:**
+
+| Dimensão | O que verifica | Ação se detectado |
+|:---|:---|:---|
+| **PIB por Épico** | Qual fábrica mais se aproxima da baseline por épico? | Identificar se a melhor fábrica por épico ainda está muito distante |
+| **Flat Estimates** | Mesmo valor para todos os épicos (CV entre épicos < 10%) | ⚠️ Alerta — fábrica não analisou escopo por épico |
+| **QA/Arch como Overhead Fixo** | QA e Arch com valores absolutos iguais em todos os épicos | ⚠️ Alerta — devem ser percentuais do esforço |
+| **Comentários Genéricos** | Textos idênticos entre fábricas ou genéricos na coluna `comentarios` | ⚠️ Alerta — solicitar racional detalhado |
+| **Independência** | Valores idênticos entre fábricas diferentes em múltiplas colunas | 🔴 Crítico — possível violação de independência |
+
+**Output:** `ESTIMATE-RETROSPECTIVE-PIB.md` com observações adicionais e recomendações para o realinhamento. As notificações da Fase 7 devem incorporar estas observações.
+
+Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-ESTIMATE-RETROSPECTIVE-PIB.md` → Gate → Fix → COMPLIANCE
 
 ### Fase 6 — FACTORY-COMPARISON.md 🆕
-Matriz comparativa cross-fábrica + ranking + recomendação de seleção. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-FACTORY-COMPARISON.md` → Gate → Fix → COMPLIANCE
+Matriz comparativa cross-fábrica + ranking ponderado com **5 critérios**: Custo Total (25-30%), Prazo (20-25%), Qualidade Técnica QA+Arch (20%), **PIB — Proximidade à Baseline Interna (15%)** 🆕, Consistência Prazo×Horas (15%). Recomendação de seleção justificada. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-FACTORY-COMPARISON.md` → Gate → Fix → COMPLIANCE
 
-### Fase 7 — FACTORY-NOTIFICATION.md 🆕
-Notificações formais às fábricas: carta de seleção (vencedora), feedback técnico (rejeitadas), carta de segundo colocado. Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-FACTORY-NOTIFICATION.md` → Gate → Fix → COMPLIANCE
+### Fase 7 — FACTORY-NOTIFICATION-{FAB}.md 🆕
+Notificações formais individuais para cada fábrica em `notifications/`. Conteúdo:
+- Se **aprovada:** carta de seleção (vencedora) ou segundo colocado
+- Se **rejeitada:** feedback técnico detalhado com não-conformidades DTA + PIB + observações da retrospectiva (F5b, se aplicável)
+- Orientações para realinhamento (6 itens: QA%, Arch%, diferenciação entre épicos, consistência prazo, comentários detalhados, reenvio)
+- Confidencialidade: nome do arquivo NUNCA revela status da fábrica
+
+Pipeline: `PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-FACTORY-NOTIFICATION.md` → Gate → Fix → COMPLIANCE
 
 ---
 
 ## MECANISMO DE ORQUESTRAÇÃO DINÂMICA
 
-Toda fase (1-6) segue o ecossistema trifásico Generate→Gate→Fix com validação humana:
+Toda fase (1-7) segue o ecossistema trifásico Generate→Gate→Fix com validação humana. A Fase 5b é condicional — só executa se 0 fábricas aprovadas na F5:
 
 1. **Geração:** IA executa o prompt gerador
 2. **Auditoria Interna:** Gate valida. Se erros → FIX → Gate. Se OK → Validação Humana
@@ -123,7 +164,7 @@ Toda fase (1-6) segue o ecossistema trifásico Generate→Gate→Fix com valida�
 |---|---|---|
 | ⛔ Barreira A | Após Bloco A (F2) | RFQ completo. Schema CSV gerado conforme modo. |
 | ⛔ Barreira B | Após Bloco B (F4) | Fábricas registradas. Estimativas recebidas salvas em `estimates/`. |
-| ⛔ Barreira C | Após Bloco C (F6) | Todas estimativas validadas. Matriz comparativa preenchida. Recomendação justificada. |
+| ⛔ Barreira C | Após Bloco C (F7) | Todas estimativas validadas (DTA + PIB). Se 0 aprovadas → F5b executada (retrospectiva). Matriz comparativa com 5 critérios (incluindo PIB 15%). Notificações geradas com observações da retrospectiva. Baseline interna consultada do modo correto (discovery→ROM, full→PERT). |
 
 ---
 
@@ -133,16 +174,19 @@ Toda fase (1-6) segue o ecossistema trifásico Generate→Gate→Fix com valida�
 ```
 business-inputs/business-projects/{PROJECT_ID_NAME}/
 └── sourcing-factory-bidding-discovery/
-    ├── RFQ-PACKAGE.md                    (F1)
-    ├── ESTIMATION-SCHEMA.csv             (F2)
-    ├── FACTORY-DISTRIBUTION.md           (F3)
-    ├── ESTIMATE-RECEIPT.md               (F4)
-    ├── ESTIMATE-VALIDATION-FABRICA-*.md  (F5 — por fábrica)
-    ├── FACTORY-COMPARISON.md             (F6)
-    └── estimates/
-        ├── nome-do-arquivo-csv-fabrica-A.md
-        ├── nome-do-arquivo-csv-fabrica-B.md
-        └── nome-do-arquivo-csv-fabrica-C.md
+    ├── RFQ-PACKAGE.md                         (F1)
+    ├── ESTIMATION-SCHEMA.csv                  (F2)
+    ├── FACTORY-DISTRIBUTION.md                (F3)
+    ├── ESTIMATE-RECEIPT.md                    (F4)
+    ├── ESTIMATE-VALIDATION.md                 (F5)
+    ├── [ESTIMATE-RETROSPECTIVE-PIB.md]        (F5b — condicional)
+    ├── FACTORY-COMPARISON.md                  (F6)
+    ├── FACTORY-NOTIFICATION.md                (F7 — guia de notificações)
+    ├── estimates/
+    │   ├── ESTIMATION-SCHEMA-{FABRICA}.csv
+    │   └── ESTIMATE-VALIDATION-{FABRICA}.md   (F5 — por fábrica)
+    └── notifications/
+        └── FACTORY-NOTIFICATION-{FABRICA}.md  (F7 — por fábrica)
 ```
 
 ### Mode 2 — Full
@@ -150,7 +194,9 @@ business-inputs/business-projects/{PROJECT_ID_NAME}/
 business-inputs/business-projects/{PROJECT_ID_NAME}/
 └── sourcing-factory-bidding-full/
     ├── ... (mesma estrutura acima)
-    └── estimates/
+    ├── estimates/
+    │   └── ...
+    └── notifications/
         └── ...
 ```
 
@@ -194,10 +240,13 @@ business-inputs/business-projects/{PROJECT_ID_NAME}/
 ├── PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-ESTIMATE-VALIDATION.md
 ├── PROMPT-GATE-SOURCING-FACTORY-BIDDING-ESTIMATE-VALIDATION.md
 ├── PROMPT-FIX-SOURCING-FACTORY-BIDDING-ESTIMATE-VALIDATION.md
+├── PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-ESTIMATE-RETROSPECTIVE-PIB.md  🆕 F5b
+├── PROMPT-GATE-SOURCING-FACTORY-BIDDING-ESTIMATE-RETROSPECTIVE-PIB.md      🆕 F5b
+├── PROMPT-FIX-SOURCING-FACTORY-BIDDING-ESTIMATE-RETROSPECTIVE-PIB.md       🆕 F5b
 ├── PROMPT-GENERATE-SOURCING-FACTORY-BIDDING-FACTORY-COMPARISON.md
 ├── PROMPT-GATE-SOURCING-FACTORY-BIDDING-FACTORY-COMPARISON.md
 ├── PROMPT-FIX-SOURCING-FACTORY-BIDDING-FACTORY-COMPARISON.md
-└── (18 prompts: 6 GENERATE + 6 GATE + 6 FIX)
+└── (24 prompts: 8 GENERATE + 8 GATE + 8 FIX, incluindo F5b condicional)
 ```
 
 ---
@@ -207,6 +256,10 @@ business-inputs/business-projects/{PROJECT_ID_NAME}/
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 31/07/2026 | Criação inicial: roadmap de Sourcing & Factory Bidding com 6 fases em 3 blocos, 2 modos (discovery/full), DTA Engine integration. | Time de Arquitetura |
+| 1.1 | 31/07/2026 | **Regra PIB adicionada:** F5 inclui validação PIB (Proximidade à Baseline Interna) com fontes por modo. F6 atualizada para 5 critérios de comparação (PIB com peso 15%). Barreira C inclui verificação PIB. Skills `analyst-estimates` e `project-estimation` referenciados para PIB. Regra documentada em DTA-VALIDATION-STANDARDS.md §2.6. | Time de Arquitetura |
+| 1.2 | 31/07/2026 | **Fase 5b — ESTIMATE-RETROSPECTIVE-PIB.md:** Nova fase condicional (executa apenas se 0 aprovadas na F5). Análise aprofundada: PIB por épico, detecção de flat estimates, QA/Arch como overhead fixo, comentários genéricos, independência. F7 atualizada para incorporar observações da retrospectiva nas notificações. Estrutura de diretórios inclui `notifications/`. Barreira C movida para após F7. 8 fases no total (F0-F7). | Time de Arquitetura |
+| 1.3 | 31/07/2026 | **Schema Unificado:** Discovery e Full usam as mesmas colunas (20 colunas). `time_estimado_pessoas` e `valor_estimado` agora são **obrigatórios** — FBSO.ORG não infere. Colunas individuais de horas (dev/qa/arch/devops/gestao) padronizadas para ambos os modos. Modelos de exemplo salvos em `standards/`. Fórmulas DTA padronizadas: QA = qa/total, Arch = arch/total. | Time de Arquitetura |
+| 1.4 | 31/07/2026 | **Auditoria de integridade:** 15 NCs corrigidas. RFQ-PACKAGE §4-5 atualizados para schema unificado de 20 colunas e 5 critérios. DTA-VALIDATION-STANDARDS §6 corrigido (contradição com §2.5/§3.2). GATEs com prefixos de ID de conflito ([SCHEMA-XX], [DIST-XX], etc.). GENERATEs F2-F7 expandidos com especificações detalhadas. FIXes F2-F7 expandidos com tabelas de priorização P0-P2. Contagem de prompts corrigida (21→24). Estruturas de diretório incluem FACTORY-NOTIFICATION.md, ESTIMATE-RETROSPECTIVE-PIB.md e ESTIMATE-VALIDATION-{FAB}.md. | Time de Arquitetura |
 
 ---
 

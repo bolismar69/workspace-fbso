@@ -49,37 +49,80 @@ A FBSO Platform é um portal administrativo SaaS multi-produto com RBAC. A plata
 
 ---
 
-## 4. Instruções para Preenchimento do Schema
+## 4. Instruções para Preenchimento do Schema (Schema Unificado v1.3)
 
-A fábrica deve preencher o arquivo **ESTIMATION-SCHEMA.csv** (fornecido na Fase 2) seguindo o formato DTA Estimation Schema:
+A fábrica deve preencher o arquivo **ESTIMATION-SCHEMA.csv** (fornecido na Fase 2) seguindo o **DTA Estimation Schema — 20 colunas padronizadas** (conforme `.specs/standards/DTA-VALIDATION-STANDARDS.md` §2.5):
 
-| Coluna | Descrição | Obrigatório |
-|:---|:---|:---:|
-| `id_epico` | Identificador do épico (EP-0001 a EP-0004) | ✅ |
-| `titulo_epico` | Título do épico conforme PRD | ✅ |
-| `solucoes` | Soluções envolvidas (IDs S01-S15) | ✅ |
-| `horas_desenvolvimento` | Horas estimadas de desenvolvimento | ✅ |
-| `horas_arquitetura` | Horas estimadas de arquitetura/SRE | ✅ |
-| `horas_qa` | Horas estimadas de QA/testes | ✅ |
-| `prazo_entrega_meses` | Prazo de entrega em meses (ex: 6.5 para 6 meses e 2 semanas) | ✅ |
-| `complexidade` | Alta / Média / Baixa | ✅ |
-| `comentarios` | Observações técnicas relevantes | — |
+### Bloco A: Identificação
 
-**Regras de validação DTA que serão aplicadas:**
-- QA ≥ 20% do total de horas de desenvolvimento por épico
-- Arquitetura/SRE ≥ 5% do total geral
-- Outliers detectados por comparação cross-fábrica
+| # | Coluna | Descrição | Obrigatório |
+|:---:|:---|:---|:---:|
+| 1 | `fabrica` | Nome da fábrica | ✅ |
+| 2 | `id_epico` | Identificador do épico (EP-0001 a EP-0004) | ✅ |
+| 3 | `titulo` | Título do épico conforme PRD | ✅ |
+
+### Bloco B: Escopo
+
+| # | Coluna | Descrição | Obrigatório |
+|:---:|:---|:---|:---:|
+| 4 | `features_codigos` | Códigos das features (ex: FEAT-EP-0001-0001) | ✅ |
+| 5 | `qtd_features` | Quantidade de features no épico | ✅ |
+| 6 | `user_stories_codigos` | Códigos das User Stories (ex: US-0001 a US-0007) | ✅ |
+| 7 | `qtd_user_stories` | Quantidade de User Stories no épico | ✅ |
+
+> 💡 No modo Discovery, `features_codigos` e `user_stories_codigos` podem ser preenchidos com os épicos (nível de detalhe disponível).
+
+### Bloco C: Horas (por disciplina)
+
+| # | Coluna | Descrição | Obrigatório |
+|:---:|:---|:---|:---:|
+| 8 | `horas_dev` | Horas estimadas de desenvolvimento | ✅ |
+| 9 | `horas_qa` | Horas estimadas de QA/testes | ✅ |
+| 10 | `horas_arch` | Horas estimadas de arquitetura | ✅ |
+| 11 | `horas_devops` | Horas estimadas de DevOps/SRE | ✅ |
+| 12 | `horas_gestao` | Horas estimadas de gestão | ✅ |
+| 13 | `total_horas` | Soma das horas (dev+qa+arch+devops+gestao) | ✅ |
+
+### Bloco D: Prazo, Time e Valor (OBRIGATÓRIOS)
+
+| # | Coluna | Descrição | Obrigatório |
+|:---:|:---|:---|:---:|
+| 14 | `prazo_entrega_meses` | Prazo de entrega em meses (ex: 4.0) | ✅ |
+| 15 | `time_estimado_pessoas` | Tamanho do time estimado (nº de pessoas) | ✅ |
+| 16 | `valor_estimado` | Valor total estimado (R$) | ✅ |
+
+> ⚠️ **Importante:** `time_estimado_pessoas` e `valor_estimado` são **obrigatórios**. A FBSO.ORG **NÃO infere** esses valores — devem ser declarados pela fábrica.
+
+### Bloco E: Metadados
+
+| # | Coluna | Descrição | Obrigatório |
+|:---:|:---|:---|:---:|
+| 17 | `complexidade` | Alta / Média / Baixa | ✅ |
+| 18 | `stack_aderencia` | Aderência à stack proposta (Alta / Média / Baixa) | ✅ |
+| 19 | `premissas` | Premissas consideradas na estimativa | ✅ |
+| 20 | `comentarios` | Observações técnicas, metodologia, riscos | ✅ |
+
+**Regras de validação DTA que serão aplicadas (F5):**
+- **QA Balanceado:** QA ≥ 20% do desenvolvimento por épico; QA ≥ 25% do total global
+- **Arquitetura:** Arch ≥ 5% do total geral de horas
+- **Consistência Prazo×Horas:** `prazo_calculado = total_horas / (time × 160h)`. Divergência > 50% entre prazo declarado e calculado → rejeitada
+- **Outliers:** Total de horas dentro de ±50% da mediana cross-fábrica
+- **PIB (Proximidade à Baseline Interna):** Comparação com estimativa de referência da FBSO.ORG. PIB Score < 0.25 → rejeitada
+- **Formato:** Todas as 20 colunas obrigatórias preenchidas; separador ponto-e-vírgula (;)
 
 ---
 
-## 5. Critérios de Avaliação
+## 5. Critérios de Avaliação (5 critérios — DTA-VALIDATION-STANDARDS §3.2)
 
-| Critério | Peso | Descrição |
-|:---|:---:|:---|
-| **Custo total** | 35% | Homem-hora × taxa informada |
-| **Prazo estimado** | 25% | Tempo total para conclusão |
-| **Qualidade técnica** | 25% | Completude dos comentários, aderência ao schema |
-| **QA/Arch balanceado** | 15% | Proporção adequada de QA e Arquitetura |
+| # | Critério | Peso | Descrição |
+|:---:|:---|:---:|:---|
+| 1 | **Custo Total** | 25% | `valor_estimado` declarado pela fábrica |
+| 2 | **Prazo de Entrega** | 25% | `prazo_entrega_meses` declarado pela fábrica |
+| 3 | **Qualidade Técnica (QA+Arch)** | 20% | Percentual de QA e Arquitetura sobre o total de horas |
+| 4 | **PIB — Proximidade à Baseline Interna** 🆕 | 15% | Comparação com estimativa de referência da FBSO.ORG (baseline interna não divulgada) |
+| 5 | **Consistência Prazo×Horas** | 15% | Coerência entre `total_horas`, `prazo_entrega_meses` e `time_estimado_pessoas` |
+
+> 💡 O critério PIB compara a estimativa da fábrica com uma **baseline interna da FBSO.ORG** (não divulgada no RFQ para evitar viés de ancoragem). Fábricas que se aproximam da baseline recebem pontuação mais alta neste critério. |
 
 ---
 
