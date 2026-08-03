@@ -212,17 +212,23 @@ Verificar existência e status de cada um dos 20 documentos. Para arquivos exist
 
 Para cada documento `{DOC}` na ordem sequencial acima:
 
-### STEP 1: Computar inputs para GENERATE
+### STEP 1: Computar inputs para GENERATE (por documento)
+
+Cada GENERATE recebe APENAS as variáveis de domínio relevantes ao seu escopo, conforme a Matriz de Roteamento abaixo. NUNCA passar variáveis que o documento não utiliza.
 
 ```
 DOC_PATH              = {PROJECT_COMPLETE_PATH_NAME}/{NN}-{DOC-SLUG}-{PROJECT_ID_NAME}.md
 UPSTREAM_DOCS         = [lista de paths de documentos upstream já em COMPLIANCE]
-PROJECT_CTX           = { PROJECT_ID_NAME, PROJECT-STACK, ARCHITECTURE_GLOBAL, SECURITY_GLOBAL }
-TECHNICAL_SOLUTIONS   = TECHNICAL_SOLUTION_NAMES (lista de soluções técnicas do projeto)
-TEAM_SKILLS           = PROJECT-TEAM-SKILLS-MAP
-TEAM_CAPACITY         = PROJECT-TEAM-CAPACITY
 EXTRA_INPUTS          = PROJECT_DOCUMENTS_INPUTS (documentos brutos de entrada)
 SKILLS                = [lista de skills para este documento — vide tabela abaixo]
+
+# Variáveis de domínio — passar APENAS as marcadas com ✅ para este documento:
+{ARCHITECTURE_GLOBAL}  → somente se documento está na coluna ARCH
+{SECURITY_GLOBAL}      → somente se documento está na coluna SEC
+{TECHNICAL_SOLUTIONS}  → somente se documento está na coluna SOL
+{TEAM_SKILLS}          → somente se documento está na coluna TEAM
+{TEAM_CAPACITY}        → somente se documento está na coluna TEAM
+{PROJECT-STACK}        → somente se documento está na coluna STACK
 ```
 
 ### STEP 2: Invocar GENERATE
@@ -295,6 +301,44 @@ Apresentar o documento e fazer 4 perguntas:
 | 18 | Manuais Operacionais | `documentation-generation-doc-generate` | ✅ |
 | 19 | Termo de Aceite | `contract-and-proposal-writer` | ✅ |
 | 20 | Lições Aprendidas | — | ✅ |
+
+---
+
+## MATRIZ DE ROTEAMENTO DE DOMÍNIO (quais variáveis cada documento recebe)
+
+Cada linha mostra quais variáveis de domínio o GENERATE daquele documento deve receber. Variáveis não marcadas NÃO devem ser passadas.
+
+| # | Documento | ARCH | SEC | SOL | TEAM | STACK | Fundamentação |
+|---|---|---|---|---|---|---|---|
+| 1 | PROJECT-CHARTER | — | — | — | ✅ | ✅ | Documenta time e stack no plano de negócio (Seção 11 Orçamento + Seção 5 RACI) |
+| 2 | BRD | — | — | — | — | — | Requisitos de negócio puros — sem detalhes técnicos |
+| 3 | SRS | — | — | — | — | — | Especificação funcional — sem acoplamento com stack |
+| 4 | RTM | — | — | — | — | — | Matriz de rastreabilidade — puramente relacional |
+| 5 | EAP/WBS | — | — | — | ✅ | — | Decomposição de trabalho por perfil de time |
+| 6 | Cronograma/Gantt | — | — | — | ✅ | — | Alocação de recursos e durações por capacidade |
+| 7 | Orçamento | — | — | — | ✅ | ✅ | Custo por recurso (RH × stack) |
+| 8 | Plano de Comunicação | — | — | — | — | — | Stakeholders e canais — sem dependência técnica |
+| 9 | Plano de Riscos | — | — | — | — | — | Riscos de projeto — sem dependência técnica |
+| 10 | SAD | ✅ | ✅ | ✅ | — | ✅ | 6 visões arquiteturais — requer ARCH global, SEC global, stack e soluções |
+| 11 | HLD | ✅ | ✅ | ✅ | — | ✅ | Design de alto nível — requer ARCH (ADRs), SEC (decisões) e stack (tecnologias) |
+| 12 | LLD | ✅ | — | ✅ | — | ✅ | Design de baixo nível — requer ARCH (padrões), stack (frameworks) e soluções |
+| 13 | TEST-PLAN | — | ✅ | ✅ | — | ✅ | Estratégia de testes — requer stack (ferramentas), SEC (testes segurança) e soluções |
+| 14 | TEST-CASES | — | — | ✅ | — | — | Casos de teste por feature/solução |
+| 15 | Relatório de Qualidade | — | — | — | — | — | Métricas de qualidade — sem dependência técnica direta |
+| 16 | DEPLOYMENT-PLAN | ✅ | ✅ | ✅ | — | ✅ | Deploy — requer ARCH (topologia), SEC (secure deploy) e stack |
+| 17 | Manuais de Usuário | — | — | ✅ | — | — | Documentação por solução |
+| 18 | Manuais Operacionais | ✅ | — | ✅ | — | ✅ | Runbooks — requer ARCH (visão ops), stack e soluções |
+| 19 | Termo de Aceite | — | — | — | — | — | Aceite formal — sem dependência técnica |
+| 20 | Lições Aprendidas | — | — | — | — | — | Retrospectiva — sem dependência técnica |
+
+**Legenda das colunas:**
+- **ARCH** = `ARCHITECTURE_GLOBAL` — ADRs, blueprints, padrões globais de arquitetura
+- **SEC** = `SECURITY_GLOBAL` — GLOBAL-SECURITY.md (regras de ouro, checklist SDD)
+- **SOL** = `TECHNICAL_SOLUTIONS` + `TECHNICAL_SOLUTION_NAMES` — lista de soluções técnicas do projeto
+- **TEAM** = `PROJECT-TEAM-SKILLS-MAP` + `PROJECT-TEAM-CAPACITY` — skills e capacidade do time
+- **STACK** = `PROJECT-STACK` — stack tecnológica validada
+
+**Regra:** O orquestrador DEVE consultar esta matriz antes de cada STEP 2 e passar APENAS as variáveis marcadas com ✅ para o documento corrente. Variáveis não marcadas NÃO devem ser injetadas no GENERATE.
 
 ---
 

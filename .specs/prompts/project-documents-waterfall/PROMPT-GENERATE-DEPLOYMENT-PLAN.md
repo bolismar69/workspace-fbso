@@ -9,17 +9,17 @@ Atue como DevOps Engineer Sênior especializado em estratégias de deployment.
 |---|---|
 | `DOC_PATH` | Caminho completo onde o arquivo será criado |
 | `PROJECT_ID_NAME` | Identificador do projeto |
-| `PROJECT_CTX` | Contexto do projeto: stack (`PROJECT-STACK`), arquitetura global (`ARCHITECTURE_GLOBAL`), segurança global (`SECURITY_GLOBAL`) |
-| `TECHNICAL_SOLUTIONS` | Lista de nomes das soluções técnicas do projeto (`TECHNICAL_SOLUTION_NAMES`) |
+| `ARCHITECTURE_GLOBAL` | Caminho para a pasta de arquitetura global — ADRs, blueprints, padrões corporativos |
+| `SECURITY_GLOBAL` | Caminho para o GLOBAL-SECURITY.md — regras de ouro, checklist SDD, threat model global |
+| `TECHNICAL_SOLUTIONS` | Lista de soluções técnicas do projeto (`TECHNICAL_SOLUTION_NAMES`) — nomes dos microsserviços, frontends, batches |
+| `PROJECT-STACK` | Stack tecnológica validada contra baseline corporativa em `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md` |
 | `UPSTREAM_DOCS` | Lista de caminhos para documentos upstream já em COMPLIANCE |
-| `TEAM_SKILLS` | Skills mapeados para o time de implementação (`PROJECT-TEAM-SKILLS-MAP`) |
-| `TEAM_CAPACITY` | Capacidade do time: seniores, plenos, juniores, duração (`PROJECT-TEAM-CAPACITY`) |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: ["deployment-engineer", "devops-rollout-plan"] |
 
 ## Regras
 
-1. **NUNCA** procure por inputs em diretórios — use apenas o que foi passado nos parâmetros acima. O contexto completo do projeto está em `PROJECT_CTX`, `TECHNICAL_SOLUTIONS`, `TEAM_SKILLS` e `TEAM_CAPACITY`
+1. **NUNCA** procure por inputs em diretórios — use apenas o que foi passado nos parâmetros acima. Os parâmetros listados na tabela de Inputs são a única fonte de dados — não leia outros arquivos além dos explicitamente fornecidos
 2. **LEIA** os documentos em `UPSTREAM_DOCS` — todos os artefatos devem rastrear de volta a eles
 3. Skills: tente usar as skills listadas em `SKILLS` via `Skill` tool. Se falharem, use o template de fallback abaixo
 4. Crie o arquivo em `DOC_PATH` com o status inicial `[STATUS: Em análise]`

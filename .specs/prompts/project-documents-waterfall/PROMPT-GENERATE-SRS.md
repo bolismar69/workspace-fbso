@@ -9,17 +9,13 @@ Atue como um Engenheiro de Requisitos Sênior, especializado em especificação 
 |---|---|
 | `DOC_PATH` | Caminho completo onde o arquivo será criado |
 | `PROJECT_ID_NAME` | Identificador do projeto |
-| `PROJECT_CTX` | Contexto do projeto: stack (`PROJECT-STACK`), arquitetura global (`ARCHITECTURE_GLOBAL`), segurança global (`SECURITY_GLOBAL`) |
-| `TECHNICAL_SOLUTIONS` | Lista de nomes das soluções técnicas do projeto (`TECHNICAL_SOLUTION_NAMES`) |
 | `UPSTREAM_DOCS` | Lista: `[{PROJECT_COMPLETE_PATH_NAME}/01-PROJECT-CHARTER-{PROJECT_ID_NAME}.md, {PROJECT_COMPLETE_PATH_NAME}/02-BRD-{PROJECT_ID_NAME}.md]` |
-| `TEAM_SKILLS` | Skills mapeados para o time de implementação (`PROJECT-TEAM-SKILLS-MAP`) |
-| `TEAM_CAPACITY` | Capacidade do time: seniores, plenos, juniores, duração (`PROJECT-TEAM-CAPACITY`) |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: `["frs-creation", "requirements-engineering"]` |
 
 ## Regras
 
-1. **NUNCA** procure por inputs em diretórios — use apenas o que foi passado nos parâmetros acima. O contexto completo do projeto está em `PROJECT_CTX`, `TECHNICAL_SOLUTIONS`, `TEAM_SKILLS` e `TEAM_CAPACITY`
+1. **NUNCA** procure por inputs em diretórios — use apenas o que foi passado nos parâmetros acima. Os parâmetros listados na tabela de Inputs são a única fonte de dados — não leia outros arquivos além dos explicitamente fornecidos
 2. **LEIA** o PROJECT-CHARTER e o BRD em `UPSTREAM_DOCS` — cada FR deve rastrear a uma REQ do BRD, que por sua vez rastreia a uma OBJ do Charter
 3. Skills: tente usar as skills listadas em `SKILLS` via `Skill` tool. Se falharem, use o template de fallback abaixo
 4. Crie o arquivo em `DOC_PATH` com o status inicial `[STATUS: Em análise]`
