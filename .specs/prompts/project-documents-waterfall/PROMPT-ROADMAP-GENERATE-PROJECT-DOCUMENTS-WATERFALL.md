@@ -25,17 +25,22 @@ Regra Crítica de Execução (Gating Rule): O processo é estritamente sequencia
 
 ## VARIÁVEIS DE ENTRADA E BOOTSTRAP DO PROJETO (FASE 0)
 
-### Tabela de Inputs Obrigatórios
+### Tabela de Inputs
 
-| Variável | Descrição | Exemplo |
-|---|---|---|
-| `PROJECT_PATH` | Caminho base onde os projetos residem | `/home/bolismar/work/workspace-fbso/business-inputs/business-projects` |
-| `PROJECT_ID` | Identificador único do projeto (ID corporativo) | `PRJ-FIN-2026-0003` |
-| `PROJECT_NAME` | Nome curto do produto/projeto | `SAAS-FBSO-ORG` |
-| `PROJECT_BRIEFING` | Briefing do projeto (texto inline ou caminho de arquivo) | `"Portal de autoatendimento..."` ou `/tmp/briefing.md` |
-| `PROJECT_DOCUMENTS_INPUTS` | Lista de caminhos para documentos brutos de entrada | `[]` |
-| `PROJECT_PROMPT_INPUTS` | Lista de caminhos para prompts auxiliares ou contextos adicionais | `[]` |
-| `PROMPT_BRANCH` | Nome da branch Git. **Não pode** ser `main`, `master` ou `develop`. | `feature/PRJ-FIN-2026-0003-docs` |
+| Variável | Obrig. | Descrição | Exemplo |
+|---|---|---|---|
+| `PROJECT_PATH` | ✅ | Caminho base onde os projetos de negócio residem | `/home/bolismar/work/workspace-fbso/business-inputs/business-projects` |
+| `PROJECT_ID` | ✅ | Identificador único do projeto (ID corporativo) | `PRJ-FIN-2026-0003` |
+| `PROJECT_NAME` | ✅ | Nome curto do produto/projeto | `SAAS-FBSO-ORG` |
+| `TECHNICAL_SOLUTION_PATH` | ✅ | Caminho base onde as soluções técnicas residem | `/home/bolismar/work/workspace-fbso/backend/java/spring/microservices` |
+| `TECHNICAL_SOLUTION_NAMES` | ✅ | Lista de nomes das soluções técnicas do projeto | `["ms-fbso-platform-admin", "web-app-fbso-platform-portal"]` |
+| `ARCHITECTURE_GLOBAL` | ✅ | Caminho para a pasta de arquitetura global (ADRs, blueprints, padrões) | `/home/bolismar/work/workspace-fbso/architecture/` |
+| `SECURITY_GLOBAL` | ✅ | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) | `/home/bolismar/work/workspace-fbso/.specs/security/GLOBAL-SECURITY.md` |
+| `PROJECT_DOCUMENTS_INPUTS` | ❌ | Lista de caminhos para documentos brutos de entrada adicionais (atas, PDFs, especificações) | `[]` |
+| `PROJECT_PROMPT_INPUTS` | ❌ | **(Diretiva comportamental)** Checkpoint HITL: sempre solicitar ao usuário, no início e durante a execução, se deseja fornecer informações adicionais, contextos ou novos direcionamentos via prompt. Não é um caminho de arquivo — é uma porta sempre aberta para input humano | `{checkpoint HITL}` |
+| `PROJECT-TEAM-SKILLS-MAP` | ❌ | Skills necessários para o time de implementação. Obtido do contexto do projeto + questionário ao usuário | `{obter e validar com usuario}` |
+| `PROJECT-TEAM-CAPACITY` | ❌ | Capacidade esperada do time (seniores, plenos, juniores, duração). Obtido do contexto + questionário | `{obter e validar com usuario}` |
+| `PROJECT-STACK` | ❌ | Stack tecnológica da solução. Baseline corporativa em `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica | `{obter do contexto, complementar com usuario, validar contra padroes}` |
 
 ### Variáveis Derivadas (calculadas automaticamente)
 
@@ -48,38 +53,83 @@ PROJECT_COMPLETE_PATH_NAME = PROJECT_PATH + "/" + PROJECT_ID_NAME
 
 #### Passo 0.1 — Solicitar Inputs ao Usuário
 
-Se alguma das 7 variáveis não tiver sido fornecida, pergunte:
+Se alguma das 7 variáveis obrigatórias (✅) não tiver sido fornecida, pergunte de forma clara e objetiva:
 
-> "Para iniciar o Roadmap WATERFALL, preciso das seguintes informações:
-> 1. **PROJECT_PATH** — Caminho base dos projetos
-> 2. **PROJECT_ID** — ID do projeto
-> 3. **PROJECT_NAME** — Nome do produto
-> 4. **PROJECT_BRIEFING** — Briefing (texto ou caminho de arquivo)
-> 5. **PROJECT_DOCUMENTS_INPUTS** — Documentos de entrada (deixe `[]` se não houver)
-> 6. **PROJECT_PROMPT_INPUTS** — Prompts auxiliares (deixe `[]` se não houver)
-> 7. **PROMPT_BRANCH** — Nome da branch Git. **Não pode** ser `main`, `master` ou `develop`."
+> "Para iniciar o Roadmap WATERFALL, preciso das seguintes informações obrigatórias:
+> 1. **PROJECT_PATH** — Caminho base dos projetos de negócio (ex: `/home/bolismar/work/workspace-fbso/business-inputs/business-projects`)
+> 2. **PROJECT_ID** — ID corporativo do projeto (ex: `PRJ-FIN-2026-0003`)
+> 3. **PROJECT_NAME** — Nome curto do produto (ex: `SAAS-FBSO-ORG`)
+> 4. **TECHNICAL_SOLUTION_PATH** — Caminho base das soluções técnicas (ex: `/home/bolismar/work/workspace-fbso/backend/java/spring/microservices`)
+> 5. **TECHNICAL_SOLUTION_NAMES** — Lista de nomes das soluções técnicas (ex: `["ms-fbso-platform-admin", "web-app-fbso-platform-portal"]`)
+> 6. **ARCHITECTURE_GLOBAL** — Caminho da pasta de arquitetura global (ex: `/home/bolismar/work/workspace-fbso/architecture/`)
+> 7. **SECURITY_GLOBAL** — Caminho do GLOBAL-SECURITY.md (ex: `/home/bolismar/work/workspace-fbso/.specs/security/GLOBAL-SECURITY.md`)
+>
+> Opcionais (pressione Enter para pular):
+> 8. **PROJECT_DOCUMENTS_INPUTS** — Documentos brutos de entrada adicionais (deixe `[]` se não houver)
+> 9. **PROJECT-STACK** — Stack tecnológica. Posso extrair do contexto do projeto, mas preciso que você valide contra a baseline corporativa em `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`
+> 10. **PROJECT-TEAM-SKILLS-MAP** — Skills necessários para o time (deixe em branco para eu inferir do contexto)
+> 11. **PROJECT-TEAM-CAPACITY** — Capacidade do time: seniores, plenos, juniores e duração prevista"
 
-**Validar PROMPT_BRANCH:** Se `main`, `master` ou `develop`, aplicar bloqueio:
+**NOTA SOBRE `PROJECT_PROMPT_INPUTS`:** Esta NÃO é uma variável de arquivo. É um checkpoint HITL (Human-in-the-Loop). No início de CADA fase e durante a execução, o orquestrador DEVE perguntar ao usuário:
+> "Antes de prosseguir para a [Fase X — Documento Y]: deseja fornecer informações adicionais, novos contextos, direcionamentos ou ajustes de escopo?"
 
-> ⛔ **Branch Inválida.** O processo NÃO pode ser executado em branches protegidas. Informe um nome de branch de trabalho.
+Esta porta NUNCA se fecha — o humano pode injetar novos inputs a qualquer momento.
 
-#### Passo 0.2 — Exibir Caminho Derivado e Solicitar Confirmação
+#### Passo 0.2 — Validar Stack Contra Baseline Corporativa
+
+Se `PROJECT-STACK` foi fornecida:
+1. Ler `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`
+2. Comparar cada tecnologia informada com a baseline
+3. Para tecnologias dentro do padrão → ✅ Aprovado
+4. Para tecnologias fora do padrão → ⚠️ Solicitar justificativa técnica ao usuário
+
+> **🛠️ Validação de Stack:**
+> - ☑️ Java 25 — ✅ Padrão corporativo
+> - ☑️ Spring Boot 4.x — ✅ Padrão corporativo
+> - ⚠️ MongoDB — ❌ Fora do padrão (padrão é PostgreSQL). Justificativa técnica?
+
+Se `PROJECT-STACK` NÃO foi fornecida: inferir do contexto do projeto (briefing, documentos de entrada) e apresentar para validação do usuário.
+
+#### Passo 0.3 — Solicitar e Validar PROJECT-TEAM-SKILLS-MAP
+
+Se não fornecido, perguntar:
+> "Com base no escopo do projeto e nas tecnologias identificadas, sugiro os seguintes skills para o time:
+> - [lista inferida]
+>
+> Confirma? Deseja adicionar ou remover algum?"
+
+#### Passo 0.4 — Solicitar e Validar PROJECT-TEAM-CAPACITY
+
+Se não fornecido, perguntar:
+> "Para dimensionar o cronograma e orçamento, preciso da capacidade do time:
+> - Quantos seniores?
+> - Quantos plenos?
+> - Quantos juniores?
+> - Duração prevista do projeto?"
+
+#### Passo 0.5 — Exibir Caminhos Derivados e Solicitar Confirmação
 
 > **📁 Caminho do Projeto:** `{PROJECT_COMPLETE_PATH_NAME}`
 > **🏷️ Identificador:** `{PROJECT_ID_NAME}`
-> **🌿 Branch Git:** `{PROMPT_BRANCH}`
+> **⚙️ Soluções Técnicas:** `{TECHNICAL_SOLUTION_NAMES}` ({N} solução(ões))
+> **🏗️ Arquitetura Global:** `{ARCHITECTURE_GLOBAL}`
+> **🛡️ Segurança Global:** `{SECURITY_GLOBAL}`
+> **🛠️ Stack:** `{PROJECT-STACK}`
+> **👥 Time:** `{PROJECT-TEAM-CAPACITY}`
 >
-> Confirma?
-> - **SIM** → Prosseguir
-> - **NÃO** → Corrigir inputs e repetir
+> Confirma que estas informações estão corretas?
+> - **SIM** → Prosseguir para criação/verificação da estrutura de diretórios
+> - **NÃO** → Solicitar correção dos inputs e repetir
 
-#### Passo 0.3 — Criar Estrutura de Diretórios
+**Regra:** Não avance sem a confirmação explícita do humano.
+
+#### Passo 0.6 — Criar Estrutura de Diretórios
 
 ```bash
 mkdir -p {PROJECT_COMPLETE_PATH_NAME}
 ```
 
-#### Passo 0.4 — Verificar Status dos Arquivos
+#### Passo 0.7 — Verificar Status dos Arquivos
 
 Verificar existência e status de cada um dos 20 documentos. Para arquivos existentes, ler o cabeçalho e buscar por `[STATUS: COMPLIANCE]`.
 
@@ -95,11 +145,17 @@ Verificar existência e status de cada um dos 20 documentos. Para arquivos exist
 - Parcial → Iniciar do primeiro documento sem `[STATUS: COMPLIANCE]`
 - Todos ✅ → Perguntar: revisar, novo ciclo ou encerrar
 
-#### Passo 0.5 — Apresentar Resumo e Iniciar
+#### Passo 0.8 — Apresentar Resumo e Iniciar
 
-> **📊 Resumo:** `{PROJECT_ID_NAME}` em `{PROJECT_COMPLETE_PATH_NAME}`
-> **📝 Próximo:** Fase X, Documento Y — {NOME}
-> Iniciando...
+> **📊 Resumo do Projeto:** `{PROJECT_ID_NAME}`
+> **📁 Localização:** `{PROJECT_COMPLETE_PATH_NAME}`
+> **⚙️ Soluções Técnicas:** `{TECHNICAL_SOLUTION_NAMES}`
+> **🛠️ Stack Validada:** `{PROJECT-STACK}`
+> **👥 Time:** `{PROJECT-TEAM-CAPACITY}`
+> **📝 Próxima Fase:** Fase X, Documento Y — {NOME}
+> **📄 Artefatos Existentes:** X de 20 ({Y} com COMPLIANCE)
+>
+> Iniciando a Fase X...
 
 ---
 
@@ -159,22 +215,23 @@ Para cada documento `{DOC}` na ordem sequencial acima:
 ### STEP 1: Computar inputs para GENERATE
 
 ```
-DOC_PATH    = {PROJECT_COMPLETE_PATH_NAME}/{NN}-{DOC-SLUG}-{PROJECT_ID_NAME}.md
-UPSTREAM_DOCS = [lista de paths de documentos upstream já em COMPLIANCE]
-BRIEFING    = PROJECT_BRIEFING
-EXTRA_INPUTS = PROJECT_DOCUMENTS_INPUTS + PROJECT_PROMPT_INPUTS
-SKILLS      = [lista de skills para este documento — vide tabela abaixo]
+DOC_PATH              = {PROJECT_COMPLETE_PATH_NAME}/{NN}-{DOC-SLUG}-{PROJECT_ID_NAME}.md
+UPSTREAM_DOCS         = [lista de paths de documentos upstream já em COMPLIANCE]
+PROJECT_CTX           = { PROJECT_ID_NAME, PROJECT-STACK, ARCHITECTURE_GLOBAL, SECURITY_GLOBAL }
+TECHNICAL_SOLUTIONS   = TECHNICAL_SOLUTION_NAMES (lista de soluções técnicas do projeto)
+TEAM_SKILLS           = PROJECT-TEAM-SKILLS-MAP
+TEAM_CAPACITY         = PROJECT-TEAM-CAPACITY
+EXTRA_INPUTS          = PROJECT_DOCUMENTS_INPUTS (documentos brutos de entrada)
+SKILLS                = [lista de skills para este documento — vide tabela abaixo]
 ```
 
 ### STEP 2: Invocar GENERATE
 
 Invocar `project-documents-waterfall/PROMPT-GENERATE-{DOC-SLUG}.md` passando **explicitamente**:
-- `DOC_PATH`, `PROJECT_ID_NAME`, `BRIEFING`, `UPSTREAM_DOCS`, `EXTRA_INPUTS`, `SKILLS`
+- `DOC_PATH`, `PROJECT_ID_NAME`, `PROJECT_CTX`, `TECHNICAL_SOLUTIONS`, `UPSTREAM_DOCS`, `TEAM_SKILLS`, `TEAM_CAPACITY`, `EXTRA_INPUTS`, `SKILLS`
 
-GENERATE deve:
-- Criar o arquivo em `DOC_PATH`
-- Escrever `[STATUS: Em análise]` como status inicial
-- Retornar `{DOC_PATH}`
+**Antes de cada GENERATE:** Checkpoint HITL — perguntar ao usuário se deseja fornecer novos inputs (diretiva `PROJECT_PROMPT_INPUTS`):
+> "Antes de gerar [Documento X]: deseja fornecer informações adicionais, novos contextos ou ajustes de escopo?"
 
 ### STEP 3: Invocar GATE
 
@@ -199,16 +256,18 @@ FIX deve:
 - Retornar `{DOC_PATH}`
 - → Voltar ao STEP 3 (re-executar GATE)
 
-### STEP 4b: Se GATE retornar PASS → Validação Humana
+### STEP 4b: Se GATE retornar PASS → Validação Humana + Checkpoint HITL
 
-Apresentar o documento e fazer 3 perguntas:
+Apresentar o documento e fazer 4 perguntas:
 
 > **P1:** "O conteúdo deste documento está aderente às necessidades do projeto?"
 > **P2:** "Existem novos documentos de entrada que devem ser incorporados a esta fase?"
-> **P3:** "Há novas informações textuais, mudanças de escopo ou ajustes a serem considerados?"
+> **P3:** "Há novas informações textuais, mudanças de escopo ou ajustes técnicos a serem considerados?"
+> **P4 (HITL):** "Deseja fornecer novas informações, contextos adicionais ou direcionamentos antes de prosseguir para o próximo documento?"
 
-- Se humano aprovar (SIM para P1, NÃO para P2/P3): `[STATUS: COMPLIANCE]`, documento congelado, próximo documento liberado
-- Se humano fornecer novos inputs: Voltar ao STEP 2 (re-executar GENERATE com novo contexto)
+- Se humano aprovar (SIM para P1, NÃO para P2/P3/P4): `[STATUS: COMPLIANCE]`, documento congelado, próximo documento liberado
+- Se humano fornecer novos inputs (P2, P3 ou P4): Voltar ao STEP 2 (re-executar GENERATE com novo contexto)
+- **A porta HITL NUNCA se fecha:** mesmo após aprovação, o orquestrador deve aceitar novos inputs e reabrir qualquer fase
 
 ---
 
@@ -285,7 +344,15 @@ Quando um documento já em COMPLIANCE é modificado:
 
 ## FINALIZAÇÃO — GIT WORKFLOW
 
-Quando os 20 documentos estiverem em COMPLIANCE e o humano confirmar a conclusão:
+Quando os 20 documentos estiverem em COMPLIANCE e o humano confirmar a conclusão, executar o pipeline Git abaixo. O nome da branch de trabalho é derivado automaticamente:
+
+```
+WORK_BRANCH = "feature/" + PROJECT_ID_NAME + "-waterfall-docs"
+```
+
+Exemplo: `feature/PRJ-FIN-2026-0003-SAAS-FBSO-ORG-waterfall-docs`
+
+**Regra de segurança:** Validar que `WORK_BRANCH` não é `main`, `master` ou `develop`. Se houver colisão, adicionar sufixo numérico.
 
 ### Passo F.1 — Git Add e Commit
 
@@ -296,15 +363,17 @@ git commit -m "docs: documentação WATERFALL completa — ${PROJECT_ID_NAME}
 - 20 documentos WATERFALL gerados e validados
 - Status: COMPLIANCE em todos os documentos
 - Gerado pelo Waterfall Orchestrator v1.0
-- Branch: ${PROMPT_BRANCH}
+- Branch: ${WORK_BRANCH}
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
 ```
 
+**Regra:** Se não houver alterações para commitar, informar e encerrar.
+
 ### Passo F.2 — Git Push
 
 ```bash
-git push origin ${PROMPT_BRANCH}
+git push origin ${WORK_BRANCH}
 ```
 
 Se falhar (branch remota existe): perguntar sobre `--force`.
@@ -312,7 +381,7 @@ Se falhar (branch remota existe): perguntar sobre `--force`.
 ### Passo F.3 — Criar e Mergear PR
 
 ```bash
-gh pr create --base main --head ${PROMPT_BRANCH} --title "docs: documentação WATERFALL — ${PROJECT_ID_NAME}" --body "Documentação WATERFALL completa para ${PROJECT_ID_NAME}. 20 documentos validados."
+gh pr create --base main --head ${WORK_BRANCH} --title "docs: documentação WATERFALL — ${PROJECT_ID_NAME}" --body "Documentação WATERFALL completa para ${PROJECT_ID_NAME}. 20 documentos validados."
 gh pr merge --merge --delete-branch
 ```
 
@@ -320,7 +389,7 @@ gh pr merge --merge --delete-branch
 
 ```bash
 git checkout main
-git branch -d ${PROMPT_BRANCH}
+git branch -d ${WORK_BRANCH}
 ```
 
 **Regra de segurança:** Nunca deletar branch local se o merge falhar.
