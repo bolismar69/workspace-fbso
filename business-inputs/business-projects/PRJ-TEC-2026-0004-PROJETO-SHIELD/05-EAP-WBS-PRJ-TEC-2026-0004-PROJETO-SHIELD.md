@@ -4,7 +4,7 @@
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
-| **Documentos Base** | 01-PROJECT-CHARTER, 02-BRD |
+| **Documentos Base** | 01-PROJECT-CHARTER, 12-LLD, 14-TEST-CASES |
 | **Data** | 03/08/2026 | **Versão** | 1.0 | **Metodologia** | WATERFALL |
 
 ---
