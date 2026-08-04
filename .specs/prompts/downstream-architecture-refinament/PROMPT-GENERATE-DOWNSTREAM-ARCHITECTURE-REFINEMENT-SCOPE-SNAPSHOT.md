@@ -53,6 +53,8 @@ Produzir uma FOTO IMUTÁVEL do escopo que foi incluído na estimativa PERT. Este
 
 ## 6. Registro de Imutabilidade
 Este documento foi congelado em {data}. Qualquer alteração no escopo após esta data deve ser registrada como CHANGE REQUEST e requer reestimativa.
+
+🤖 *Documento gerado pelo Configuration Manager — Fase 11 do Downstream Architecture Refinement · Skills utilizados: [lista de skills efetivamente acionados] · Padrões Corporativos FBSO.ORG*
 ```
 
-🤖 *Prompt gerador — Fase 11 do Downstream Architecture Refinement · Scope Snapshot*
+🤖 *Prompt gerador — Fase 11 do Downstream Architecture Refinement · Scope Snapshot · Skills: `engineering-skills`, `context-manager`, `documentation-writer` · Padrões Corporativos FBSO.ORG*

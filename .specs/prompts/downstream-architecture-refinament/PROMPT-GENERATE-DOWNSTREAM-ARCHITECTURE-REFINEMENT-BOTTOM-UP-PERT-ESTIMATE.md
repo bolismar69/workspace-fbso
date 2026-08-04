@@ -22,8 +22,9 @@ Se o arquivo `upstream-architecture-discovery/DISCOVERY-LEVEL-ROM-ESTIMATE.md` e
 2. **Features:** `04-FEATURES-{PROJECT_ID_NAME}.md` e `features/*.md`
 3. **Épicos:** `03-EPICS-{PROJECT_ID_NAME}.md`
 4. **Artefatos Detail-Level (Bloco A):** F1-F7 (PRD, Arquitetura, Segurança, Dados, DevOps, Testes, Infra) — use para entender complexidades técnicas
-5. **TEAM-SKILLS-MAP e TEAM-CAPACITY:** `technical-definitions/PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md` e `TEAM-CAPACITY.md` (se existirem)
-6. **Stack tecnológica:** `technical-definitions/PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md` (se existir)
+5. **TEAM-SKILLS-MAP:** {obter a partir do contexto do projeto, e questionar o usuario sobre skills necessários para serem foco da solução}
+6. **TEAM-CAPACITY:** {obter a partir do contexto do projeto, e questionar o usuario sobre as capacidades esperadas para o time necessário para o foco da solução}
+7. **Stack tecnológica:** {obter a partir do contexto do projeto, e questionar o usuario sobre todas as tecnologias a serem foco da solução}
 
 ## METODOLOGIA
 
@@ -38,7 +39,7 @@ Se o arquivo `upstream-architecture-discovery/DISCOVERY-LEVEL-ROM-ESTIMATE.md` e
 ### 2. Cálculo PERT por US
 
 Para cada US:
-```
+```math
 PERT = (O + 4×ML + P) / 6
 σ = (P - O) / 6
 IC 95% = PERT ± 1.96×σ
@@ -101,6 +102,8 @@ Após estimar cada US individualmente:
 [QA≥25%, Arch≥5%, consistência prazo×horas, independência comprovada]
 
 ## 7. Documentos Relacionados
+
+🤖 *Documento gerado pelo Tech Lead / Especialista em Estimativas — Fase 8 do Downstream Architecture Refinement · Skills utilizados: [lista de skills efetivamente acionados] · Padrões Corporativos FBSO.ORG*
 ```
 
 ## VALIDAÇÃO DTA (pré-gate)
@@ -116,6 +119,7 @@ Antes de enviar ao gate, verificar:
 
 ## SKILLS RECOMENDADOS
 
+- `engineering-skills`, `engineering-advanced-skills`
 - `project-estimation` — core da estimativa
 - Referências: `bottom-up-estimation.md`, `three-point-estimation-pert.md`
 - `gap-analysis` — identificação de outliers e riscos
@@ -128,4 +132,4 @@ Antes de enviar ao gate, verificar:
 - US "Should Have" são estimadas mas marcadas como opcionais no sumário
 - O documento final é um snapshot — não deve ser alterado após aprovação na Barreira B
 
-🤖 *Prompt gerador — Fase 8 do Downstream Architecture Refinement · PERT Three-Point Bottom-Up*
+🤖 *Prompt gerador — Fase 8 do Downstream Architecture Refinement · PERT Three-Point Bottom-Up · Skills: `engineering-skills`, `engineering-advanced-skills`, `project-estimation`, `gap-analysis`, `context-manager` · Padrões Corporativos FBSO.ORG*

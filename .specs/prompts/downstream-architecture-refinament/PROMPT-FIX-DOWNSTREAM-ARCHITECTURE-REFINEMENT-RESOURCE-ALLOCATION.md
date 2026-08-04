@@ -19,7 +19,7 @@ Acionado quando o gate reprova `RESOURCE-ALLOCATION-PLAN.md`.
 | P0 | Fonte externa detectada | Remover referência a ROM/factory bids |
 | P1 | Capacidade efetiva irrealista | Recalcular com cargas parciais corretas |
 | P1 | Gargalo não identificado | Adicionar gargalo com recomendação |
-| P2 | Perfil de time incompleto | Adicionar papel faltante |
+| P2 | Papel necessário ausente | Adicionar papel/perfil necessário faltante |
 | P2 | Duração inconsistente | Recalcular: horas ÷ capacidade |
 
 ## Skills Recomendados

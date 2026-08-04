@@ -1,24 +1,39 @@
-# Carta de Seleção — Stefanini
+# NOTIFICAÇÃO FORMAL — Processo de Sourcing FBSO.ORG
 
-**Para:** Stefanini
-**Assunto:** FBSO Platform — Resultado do Processo de Seleção
+| Campo | Detalhe |
+|-------|---------|
+| **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG — FBSO Platform Core |
+| **Documento** | FACTORY-NOTIFICATION-STEFANINI |
+| **Data** | 03 de agosto de 2026 |
+| **Confidencialidade** | Este documento é direcionado exclusivamente à STEFANINI |
 
-Prezados,
+---
 
-É com satisfação que informamos que a **Stefanini foi selecionada** como parceira de desenvolvimento para o projeto **FBSO Platform — Portal Administrativo SaaS Multi-Tenant**.
+Prezada equipe STEFANINI,
 
-**Resumo da proposta vencedora:**
-- Total: 16.000 horas
-- Prazo: 4 meses
-- QA: 11.9% · Arquitetura: 10.5%
+Após análise técnica das estimativas recebidas no processo de Sourcing & Factory Bidding para o projeto **FBSO Platform — Portal Administrativo SaaS Core**, comunicamos o resultado:
 
-**Próximos passos:**
-1. Assinatura do contrato de prestação de serviços
-2. Reunião de kickoff (data a definir)
-3. Acesso ao repositório e documentação detalhada
-4. Início do Sprint 0
+## 🥈 RESULTADO: SEGUNDA COLOCADA
 
-Solicitamos contato para agendamento da reunião de kickoff.
+A STEFANINI ficou em **2º lugar** no ranking ponderado, sendo considerada a **fábrica backup** deste processo.
 
-Atenciosamente,
-**FBSO.ORG — PMO**
+### Seus Resultados
+
+| Critério | Sua Pontuação | Comparação com Vencedor |
+|----------|:------------:|:----------------------:|
+| **Custo Total** | R$ 842.220 | +R$ 127.020 (17,8% acima) |
+| **Prazo** | 7 meses | +1 mês |
+| **QA** | 30,0% ✅ | Acima do vencedor (24,9%) |
+| **Arch** | 7,1% ✅ | Similar ao vencedor (7,3%) |
+| **PIB** | 71,4% | Vencedor: 31,0% |
+| **Consistência Prazo×Horas** | 59,2% | Vencedor: 54,1% |
+
+### Status
+
+Sua proposta permanece **ativa como backup**. Caso a negociação com a fábrica vencedora não prospere nas próximas 2 semanas, a STEFANINI será acionada para continuidade do processo.
+
+Agradecemos a participação e manteremos contato sobre os próximos passos.
+
+---
+
+**FBSO.ORG — Time de Arquitetura**

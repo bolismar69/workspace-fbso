@@ -58,12 +58,15 @@ Produzir um **PRD Detail-Level criado pelo Negócio (PO/PM/Funcional)** que apre
 
 ## 7. Referências aos Documentos de Projeto
 [Lista completa de documentos de negócio referenciados, com paths relativos]
+
+🤖 *Documento gerado pelo Product Manager / PO (Negócio) — Fase 1 do Downstream Architecture Refinement · Skills utilizados: [lista de skills efetivamente acionados] · Padrões Corporativos FBSO.ORG*
 ```
 
 ### Skills Recomendados
 - `business-analyst`, `agile-ba-practices`
 - `product-manager`, `prd-development`, `prd`
+- `engineering-skills`
 - `discovery-process`
 - `documentation-writer`, `documentation`
 
-🤖 *Prompt gerador — Fase 1 do Downstream Architecture Refinement · Documento de Negócio Independente*
+🤖 *Prompt gerador — Fase 1 do Downstream Architecture Refinement · Documento de Negócio Independente · Skills: `business-analyst`, `agile-ba-practices`, `product-manager`, `prd-development`, `prd`, `engineering-skills`, `discovery-process`, `documentation-writer` · Padrões Corporativos FBSO.ORG*

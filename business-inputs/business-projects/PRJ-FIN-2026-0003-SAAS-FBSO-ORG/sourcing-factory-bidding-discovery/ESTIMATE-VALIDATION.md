@@ -1,98 +1,153 @@
-# ESTIMATE-VALIDATION — Validação DTA + PIB (Discovery Mode)
+# ESTIMATE-VALIDATION.md — Validação DTA + PIB
+## Sourcing & Factory Bidding — Fase 5 — Bloco C
 
-- **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Modo:** Discovery — Alto Nível (Épicos)
-- **Data:** 31/07/2026 (atualizado com regra PIB v1.1)
-- **Baseline PIB:** ROM Upstream 6,080h (provavel) — `upstream-architecture-discovery/DISCOVERY-LEVEL-ROM-ESTIMATE.md`
+| Campo | Detalhe |
+|-------|---------|
+| **Projeto** | PRJ-FIN-2026-0003-SAAS-FBSO-ORG |
+| **Documento** | ESTIMATE-VALIDATION-v1.0 |
+| **Versão** | 1.0 — Discovery-Level |
+| **Data** | 03 de agosto de 2026 |
+| **Modo** | `discovery` |
+| **Baseline PIB** | `DISCOVERY-LEVEL-ROM-ESTIMATE.md` — {3.180-4.508}h |
+| **Status** | [STATUS: COMPLIANCE] — Aprovado em 03/08/2026 |
 
 ---
 
-## 1. Regras de Validação DTA + PIB (v1.1)
+## 1. Regras de Validação DTA + PIB
 
-| Regra | Critério | Ação se não atender |
-|:---|:---|:---|
-| **QA Balanceado** | QA ≥ 20% por épico | ⚠️ Risco de Débito Técnico |
-| **QA Global** | QA ≥ 25% do total de horas | ❌ REJEITADA |
-| **Arquitetura/SRE** | Arch ≥ 5% do total geral de horas | ❌ REJEITADA |
-| **Formato** | Colunas obrigatórias preenchidas conforme schema | ❌ REJEITADA |
-| **Consistência Prazo×Horas** | `prazo_calculado = total_horas / (time × 160h)`. Divergência >50% → ❌ | ❌ REJEITADA |
-| **Outliers** | Total de horas dentro de ±50% da mediana cross-fábrica (78,500h discovery) | 🔍 Revisão manual |
-| **PIB (Proximidade Baseline)** 🆕 | PIB Score ≥ 0.25. Baseline: ROM Upstream 6,080h | ⚠️ <0.50 alerta / 🔴 <0.25 rejeitada |
+| Regra | Fórmula (Discovery) | Limite |
+|-------|---------------------|--------|
+| **QA Balanceado (Global)** | `Σhoras_qa / Σhoras_dev` | ≥ 25% ✅ / 10-25% ⚠️ / < 10% ❌ |
+| **QA por Épico** | `horas_qa / horas_dev` por épico | ≥ 20% ✅ / < 20% ⚠️ |
+| **Arquitetura/SRE** | `(Σarch + Σdevops) / (Σdev + Σarch + Σdevops + Σqa)` | ≥ 5% ✅ / 2-5% ⚠️ / < 2% ❌ |
+| **Consistência Prazo×Horas** | `|prazo - prazo_calc| / prazo_calc` onde `prazo_calc = total_horas / (time × 160)` | ≤ 30% ✅ / 30-50% ⚠️ / > 50% 🔴 |
+| **Outliers Cross-Fábrica** | `total_horas < mediana×0.5` ou `> mediana×1.5` | Dentro do limite ✅ / Fora ⚠️ |
+| **PIB — Proximidade à Baseline** | `|total_fabrica - baseline_midpoint| / baseline_midpoint` | Menor = melhor |
+
+**Baseline ROM (midpoints):**
+| Épico | Baseline Midpoint |
+|-------|:-----------------:|
+| EP-0001 — Portal Admin Interno | 490h |
+| EP-0002 — Clientes e Assinaturas | 840h |
+| EP-0003 — Governança e Permissões | 700h |
+| EP-0004 — Experiência do Cliente | 700h |
+| **Total Baseline** | **2.730h** |
 
 ---
 
 ## 2. Resultados por Fábrica
 
-| # | Fábrica | Total Horas | QA% | Arch% | Prazo | PIB Score 🆕 | Veredito Original | Veredito c/ PIB |
-|:---|:---|:---:|:---:|:---:|:---:|:---:|:---|:---|
-| 1 | **Stefanini** | 16,000h | 9.5% | 10.5% | 4 meses | 0.00 🔴 | 🟢 APROVADA | 🔴 REJEITADA (PIB) |
-| 2 | **Capgemini** | 48,000h | 8.3% | 8.3% | 4 meses | 0.00 🔴 | 🔴 REJEITADA | 🔴 REJEITADA |
-| 3 | **CI&T** | 52,000h | 7.7% | 7.7% | 5 meses | 0.00 🔴 | 🟡 APROVADA c/ ressalva | 🔴 REJEITADA (PIB) |
-| 4 | **TOTVS** | 64,000h | 8.6% | 8.9% | 3-4 meses | 0.00 🔴 | 🔴 REJEITADA | 🔴 REJEITADA |
-| 5 | **Deloitte** | 84,000h | 2.4% | 2.4% | — | 0.00 🔴 | 🔴 REJEITADA | 🔴 REJEITADA |
-| 6 | **Infosys** | 97,400h | 2.8% | 4.8% | — | 0.00 🔴 | 🔴 REJEITADA | 🔴 REJEITADA |
-| 7 | **TCS** | 104,000h | 5.3% | 5.5% | — | 0.00 🔴 | 🔴 REJEITADA | 🔴 REJEITADA |
-| 8 | **Overlabs** | 132,800h | 10.5% | 15.7% | — | 0.00 🔴 | 🔴 REJEITADA | 🔴 REJEITADA |
+### 2.1 Tabela Consolidada
 
-> ⚠️ **Nota:** O PIB Score de todas as fábricas é 0.00 porque mesmo a menor estimativa (Stefanini, 16,000h) está 163% acima da baseline ROM de 6,080h. No modo discovery, com ROM ±50%, espera-se que estimativas fiquem entre 3,040h e 9,120h.
+| Fábrica | Total Horas | QA% (Global) | Arch% | PIB Score | Veredito |
+|---------|:----------:|:------------:|:-----:|:---------:|----------|
+| **CAPGEMINI** | 5.193h | 34,9% ✅ | 10,0% ✅ | 90,2% | ⚠️ APROVADA COM RESSALVA |
+| **INFOSYS** | 7.259h | 40,0% ✅ | 12,5% ✅ | 165,9% | ⚠️ APROVADA COM RESSALVA |
+| **STEFANINI** | 4.679h | 30,0% ✅ | 7,1% ✅ | 71,4% | ⚠️ APROVADA COM RESSALVA |
+| **TOTVS** | 3.576h | 24,9% ⚠️ | 7,3% ✅ | 31,0% | ⚠️ APROVADA COM RESSALVA |
 
----
+### 2.2 QA por Épico
 
-## 3. PIB por Épico (Discovery Mode)
+| Fábrica | EP-0001 | EP-0002 | EP-0003 | EP-0004 | Global |
+|---------|:-------:|:-------:|:-------:|:-------:|:------:|
+| CAPGEMINI | 34,9% ✅ | 35,0% ✅ | 35,0% ✅ | 34,9% ✅ | 34,9% ✅ |
+| INFOSYS | 40,0% ✅ | 40,0% ✅ | 40,0% ✅ | 40,0% ✅ | 40,0% ✅ |
+| STEFANINI | 30,0% ✅ | 30,0% ✅ | 30,0% ✅ | 29,9% ✅ | 30,0% ✅ |
+| TOTVS | 24,9% ✅ | 25,0% ✅ | 24,9% ✅ | 24,9% ✅ | 24,9% ⚠️ |
 
-Baseline ROM por épico (extraída do `DISCOVERY-LEVEL-ROM-ESTIMATE.md` §2):
+### 2.3 Consistência Prazo×Horas por Épico
 
-| Épico | ROM Baseline | % do Total |
-|:---|---:|---:|
-| EP-0001 Portal Admin | ~1,280h | 21% |
-| EP-0002 Clientes e Assinaturas | ~1,760h | 29% |
-| EP-0003 RBAC e Permissões | ~1,520h | 26% |
-| EP-0004 Portal do Cliente | ~1,760h | 29% |
+| Fábrica | Time | EP-0001 | EP-0002 | EP-0003 | EP-0004 |
+|---------|:----:|:-------:|:-------:|:-------:|:-------:|
+| CAPGEMINI | 7 | 222% 🔴 | 32,6% ⚠️ | 84,0% 🔴 | 76,0% 🔴 |
+| INFOSYS | 8 | 83,1% 🔴 | 37,9% ⚠️ | 39,1% ⚠️ | 30,6% ⚠️ |
+| STEFANINI | 6 | 130,5% 🔴 | 34,4% ⚠️ | 18,1% ✅ | 53,9% 🔴 |
+| TOTVS | 5 | 115,7% 🔴 | 21,9% ✅ | 8,2% ✅ | 70,6% 🔴 |
 
-### PIB Score por Épico e Fábrica
+### 2.4 Valor por Épico (R$)
 
-| Fábrica | EP-0001 | EP-0002 | EP-0003 | EP-0004 | PIB Total |
-|:---|---:|---:|---:|---:|:---:|
-| Stefanini | 4,000h (0.00) | 4,000h (0.00) | 4,000h (0.00) | 4,000h (0.00) | 0.00 |
-| Capgemini | 12,000h (0.00) | 12,000h (0.00) | 12,000h (0.00) | 12,000h (0.00) | 0.00 |
-| CI&T | 13,000h (0.00) | 13,000h (0.00) | 13,000h (0.00) | 13,000h (0.00) | 0.00 |
-| Deloitte | 21,000h (0.00) | 21,000h (0.00) | 21,000h (0.00) | 21,000h (0.00) | 0.00 |
-| Infosys | 34,400h (0.00) | 21,000h (0.00) | 21,000h (0.00) | 21,000h (0.00) | 0.00 |
-| Overlabs | 33,200h (0.00) | 33,200h (0.00) | 33,200h (0.00) | 33,200h (0.00) | 0.00 |
-| TCS | 26,000h (0.00) | 26,000h (0.00) | 26,000h (0.00) | 26,000h (0.00) | 0.00 |
-| TOTVS | 16,000h (0.00) | 16,000h (0.00) | 16,000h (0.00) | 16,000h (0.00) | 0.00 |
-
-> 🔴 **PIB por épico zerado em todas as fábricas.** A menor estimativa por épico (Stefanini, 4,000h) está 127-212% acima da baseline ROM (1,280-1,760h por épico). Além disso, **todas as 8 fábricas** apresentam flat estimates — mesmo valor para os 4 épicos, indicando que nenhuma analisou o escopo individualmente. Apenas Infosys diferenciou EP-0001 (34,400h) dos demais (21,000h).
+| Fábrica | EP-0001 | EP-0002 | EP-0003 | EP-0004 | **Total** |
+|---------|--------:|--------:|--------:|--------:|----------:|
+| CAPGEMINI | 417.600 | 664.400 | 486.400 | 508.800 | **2.077.200** |
+| INFOSYS | 420.000 | 617.700 | 552.000 | 588.000 | **2.177.700** |
+| STEFANINI | 149.760 | 257.040 | 210.960 | 224.460 | **842.220** |
+| TOTVS | 148.200 | 204.600 | 174.600 | 187.800 | **715.200** |
 
 ---
 
-## 4. Análise PIB Total (Discovery Mode)
+## 3. PIB — Proximidade à Baseline Interna
 
-| Fábrica | Horas | Desvio ROM | PIB Score | Nota |
-|:---|---:|---:|:---:|:---:|
-| Stefanini | 16,000h | +163% | 0.00 | 1 |
-| Capgemini | 48,000h | +689% | 0.00 | 1 |
-| CI&T | 52,000h | +755% | 0.00 | 1 |
-| TOTVS | 64,000h | +953% | 0.00 | 1 |
-| Deloitte | 84,000h | +1,282% | 0.00 | 1 |
-| Infosys | 97,400h | +1,502% | 0.00 | 1 |
-| TCS | 104,000h | +1,611% | 0.00 | 1 |
-| Overlabs | 132,800h | +2,084% | 0.00 | 1 |
+### 3.1 PIB por Épico (desvio do midpoint)
 
-**Conclusão PIB:** Nenhuma fábrica atinge PIB ≥ 0.25 no modo discovery. Todas superestimaram significativamente em relação ao ROM interno. Isso é esperado no modo discovery (ROM ±50% é uma estimativa inicial de baixa precisão), mas o descolamento de 163-2,084% indica que as fábricas não se basearam no escopo macro (épicos) com a mesma interpretação do time de arquitetura.
+| Fábrica | EP-0001 (490h) | EP-0002 (840h) | EP-0003 (700h) | EP-0004 (700h) | Média PIB |
+|---------|:-------------:|:-------------:|:-------------:|:-------------:|:---------:|
+| CAPGEMINI | 113,1% | 97,7% | 73,7% | 81,7% | 91,6% |
+| INFOSYS | 185,7% | 145,1% | 162,9% | 180,0% | 168,4% |
+| STEFANINI | 69,8% | 70,0% | 67,4% | 78,1% | 71,3% |
+| TOTVS | **51,2%** | **21,8%** | **24,7%** | **34,1%** | **33,0%** 🏆 |
 
----
+### 3.2 PIB Total
 
-## 5. Comparação com Rodada Full
+| Fábrica | Total Horas | Baseline Midpoint | Desvio | PIB Score | Nota |
+|---------|:----------:|:-----------------:|:------:|:---------:|:----:|
+| CAPGEMINI | 5.193h | 2.730h | +2.463h | 90,2% | 3 |
+| INFOSYS | 7.259h | 2.730h | +4.529h | 165,9% | 1 |
+| STEFANINI | 4.679h | 2.730h | +1.949h | 71,4% | 4 |
+| **TOTVS** | **3.576h** | **2.730h** | **+846h** | **31,0%** 🏆 | **5** |
 
-| Métrica | Discovery (ROM) | Full (PERT) |
-|:---|---:|:---|
-| Baseline Interna | 6,080h | 7,300h |
-| Fábricas aprovadas (original) | 2/8 | 0/8 |
-| Fábricas aprovadas (c/ PIB) | 0/8 | 0/8 |
-| Menor estimativa | Stefanini 16,000h | Capgemini/Deloitte/Infosys 11,680h |
-| Mediana cross-fábrica | 78,500h | 27,855h |
+> 🏆 **Melhor PIB:** TOTVS — apenas 31% acima da baseline interna, consistente em todos os épicos.
+> ⚠️ **Pior PIB:** INFOSYS — 166% acima da baseline, com todos os épicos acima de 145% de desvio.
 
 ---
 
-🤖 *Validação DTA + PIB — Atualizada com regra PIB v1.1. Baseline: ROM Upstream 6,080h.*
+## 4. Detecção de Outliers
+
+| Métrica | Valor |
+|---------|-------|
+| **Mediana Cross-Fábrica** | 4.936h |
+| **Limite Inferior (×0,5)** | 2.468h |
+| **Limite Superior (×1,5)** | 7.404h |
+
+| Fábrica | Total Horas | Status Outlier |
+|---------|:----------:|:--------------:|
+| CAPGEMINI | 5.193h | ✅ Dentro |
+| INFOSYS | 7.259h | ✅ Dentro |
+| STEFANINI | 4.679h | ✅ Dentro |
+| TOTVS | 3.576h | ✅ Dentro |
+
+> Nenhuma fábrica detectada como outlier cross-fábrica. Todas dentro da faixa [2.468h, 7.404h].
+
+---
+
+## 5. Resumo de Não-Conformidades
+
+| # | ID | Regra | Fábricas Afetadas | Severidade |
+|---|-----|------|-------------------|:----------:|
+| NC1 | QA Global < 25% | QA Balanceado §2.1 | TOTVS (24,9%) | ⚠️ Borderline |
+| NC2 | Prazo inconsistente > 50% | Consistência Prazo×Horas §2.3 | CAPGEMINI (3 épicos), INFOSYS (1), STEFANINI (2), TOTVS (2) | 🔴 Crítico |
+| NC3 | PIB > 100% | Proximidade à Baseline §2.6 | INFOSYS (165,9%) | 🟡 Moderado |
+
+---
+
+## 6. Veredito Final
+
+| Fábrica | Veredito | Justificativa |
+|---------|----------|---------------|
+| **CAPGEMINI** | ⚠️ APROVADA COM RESSALVA | QA e Arch passam. Prazo severamente inconsistente (3/4 épicos >50%). Horas 90% acima da baseline. Precisa revisar prazos por épico. |
+| **INFOSYS** | ⚠️ APROVADA COM RESSALVA | QA (40%) e Arch (12,5%) excelentes. Horas 166% acima da baseline — mais que o dobro. Prazo inconsistente em 1 épico. Precisa justificar dimensionamento. |
+| **STEFANINI** | ⚠️ APROVADA COM RESSALVA | QA (30%) e Arch (7,1%) passam. Horas 71% acima da baseline. Prazo inconsistente em 2 épicos. |
+| **TOTVS** | ⚠️ APROVADA COM RESSALVA | 🏆 Melhor PIB (31%). QA no limite (24,9% — precisa de +1h de QA para atingir 25%). Prazo inconsistente em 2 épicos. Melhor relação custo×aderência. |
+
+> **Nota:** Nenhuma fábrica foi REJEITADA nesta rodada. Todas passam nos gates críticos (QA ≥ 10%, Arch ≥ 2%). As ressalvas concentram-se em inconsistência de prazo e superestimação vs. baseline interna. A Fase 5b (Retrospectiva PIB) **não é necessária** (há fábricas aprovadas).
+
+---
+
+## Registro de Alterações
+
+| Versão | Data | Alteração | Autor |
+|:---|:---|:---|:---|
+| 1.0 | 03/08/2026 | Criação inicial: validação DTA+PIB das 4 fábricas. Regras aplicadas: QA, Arch, Prazo×Horas, Outliers, PIB. Arquivos individuais gerados. | PMO / Tech Lead |
+
+---
+
+🤖 *Sourcing & Factory Bidding — Fase 5. Validação DTA completa das estimativas recebidas.*

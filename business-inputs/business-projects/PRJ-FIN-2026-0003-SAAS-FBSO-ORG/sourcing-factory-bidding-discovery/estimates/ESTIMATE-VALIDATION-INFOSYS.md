@@ -1,62 +1,46 @@
-# ESTIMATE-VALIDATION-INFOSYS — Validação DTA + PIB (Discovery)
+# ESTIMATE-VALIDATION-INFOSYS.md
 
-- **Fábrica:** Infosys
-- **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Modo:** Discovery — Alto Nível (Épicos)
-- **Data:** 31/07/2026
-- **Baseline PIB:** ROM Upstream 6,080h (provavel)
-
----
-
-## 1. Estimativa Apresentada
-
-| Métrica | Valor |
-|:---|---:|
-| Total de Horas | 97,400h |
-| QA Global | 2.8% |
-| Arquitetura/SRE | 4.8% |
-| Prazo Declarado | 10 meses |
+| Campo | Detalhe |
+|-------|---------|
+| **Fábrica** | INFOSYS |
+| **Arquivo** | ESTIMATION-SCHEMA-INFOSYS.csv |
+| **Total Horas** | 7.259h |
+| **Valor Total** | R$ 2.177.700 |
+| **Time** | 8 pessoas |
+| **Veredito** | ⚠️ APROVADA COM RESSALVA |
 
 ---
 
-## 2. Métricas DTA + PIB
+## Resultados DTA
 
-| Regra | Valor | Threshold | Status |
-|:---|---:|---:|:---|
-| QA Global | 2.8% | ≥25% | ❌ |
-| Arquitetura | 4.8% | ≥5% | ❌ |
-| PIB (Proximidade Baseline) 🆕 | 0.00 (Nota 1) | ≥0.50 | 🔴 |
+| Regra | Resultado | Status |
+|-------|-----------|:------:|
+| QA Balanceado (Global) | 1.452h QA / 3.630h Dev = 40,0% | ✅ |
+| QA por Épico | Todos épicos = 40,0% | ✅ |
+| Arquitetura/SRE | (544+181) / (3630+544+181+1452) = 12,5% | ✅ |
+| Outliers Cross-Fábrica | 7.259h dentro de [2.468h, 7.404h] | ✅ |
+| Consistência Prazo×Horas | 1/4 épicos > 50% divergência | 🔴 |
+| PIB vs Baseline | 165,9% acima (7.259h vs 2.730h baseline) | 🔴 |
 
----
+## Detalhamento por Épico
 
----
+| Épico | Horas | QA% | Prazo | Prazo Calc | Divergência |
+|-------|:-----:|:---:|:-----:|:----------:|:-----------:|
+| EP-0001 | 1.400h | 40,0% | 2 meses | 1,09 meses | 83,1% 🔴 |
+| EP-0002 | 2.059h | 40,0% | 1 mês | 1,61 meses | 37,9% ⚠️ |
+| EP-0003 | 1.840h | 40,0% | 2 meses | 1,44 meses | 39,1% ⚠️ |
+| EP-0004 | 1.960h | 40,0% | 2 meses | 1,53 meses | 30,6% ⚠️ |
 
-## 3. PIB por Épico 🆕
+## Não-Conformidades
 
-| Épico | ROM Baseline | Infosys | Desvio | PIB Score |
-|:---|---:|---:|---:|:---:|
-| EP-0001 | 1,280h | 34,400h | +2588% | 0.00 |
-| EP-0002 | 1,760h | 21,000h | +1093% | 0.00 |
-| EP-0003 | 1,520h | 21,000h | +1282% | 0.00 |
-| EP-0004 | 1,760h | 21,000h | +1093% | 0.00 |
+| ID | Descrição | Severidade |
+|----|-----------|:----------:|
+| NC-INF-01 | Prazo EP-0001 declarado 2 meses vs calculado 1,09 meses (83,1%) | 🔴 |
+| NC-INF-02 | Horas totais 166% acima da baseline (7.259h vs 2.730h) — mais que o dobro | 🔴 |
+| NC-INF-03 | Maior custo total entre as 4 fábricas (R$ 2.177.700) | 🟡 |
 
-> 🔴 PIB por épico zerado — a menor estimativa está 1093% acima da baseline ROM.
+## Ações Recomendadas
 
-## 3. Análise PIB
-
-| Métrica | Valor |
-|:---|---:|
-| Baseline ROM Upstream | 6,080h |
-| Estimativa Infosys | 97,400h |
-| Desvio | +1502% |
-| PIB Score | 0.00 |
-
----
-
-## 4. Veredito
-
-**🔴 REJEITADA**
-
----
-
-🤖 *Validação DTA + PIB — Discovery Mode. Baseline: ROM Upstream 6,080h.*
+1. **Justificar dimensionamento:** 7.259h é 2,66× a baseline. Apresentar racional técnico detalhado — o que justifica 7.259h para 18 funcionalidades discovery-level?
+2. **Revisar prazo EP-0001:** 2 meses declarados para 1.400h com 8 pessoas — prazo calculado é 1,1 meses.
+3. **QA e Arch excelentes:** 40% QA e 12,5% Arch estão acima dos mínimos. Manter.

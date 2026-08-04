@@ -34,7 +34,7 @@ Gate de Validação do Plano de Alocação de Recursos (`RESOURCE-ALLOCATION-PLA
 ### Dimensão 3: Completude
 | # | Verificação | Critério |
 |---|---|---|
-| 3.1 | Time completo | Todos os perfis listados |
+| 3.1 | Papéis necessários | Todos os papéis/perfis necessários listados (sem nomeação individual — estimativa) |
 | 3.2 | Alocação por épico | Distribuição de horas documentada |
 
 ## FORMATO OBRIGATÓRIO DE SAÍDA

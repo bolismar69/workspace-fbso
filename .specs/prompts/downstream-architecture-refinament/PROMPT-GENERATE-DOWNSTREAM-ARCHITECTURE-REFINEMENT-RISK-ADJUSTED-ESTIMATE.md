@@ -47,6 +47,8 @@ Aplicar a matriz de riscos do projeto sobre a estimativa PERT (Fase 8), produzin
 
 ## 4. Recomendações
 [Ações de mitigação priorizadas]
+
+🤖 *Documento gerado pelo Risk Manager — Fase 10 do Downstream Architecture Refinement · Skills utilizados: [lista de skills efetivamente acionados] · Padrões Corporativos FBSO.ORG*
 ```
 
-🤖 *Prompt gerador — Fase 10 do Downstream Architecture Refinement*
+🤖 *Prompt gerador — Fase 10 do Downstream Architecture Refinement · Skills: `engineering-skills`, `project-estimation`, `gap-analysis` · Padrões Corporativos FBSO.ORG*

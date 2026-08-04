@@ -1,5 +1,5 @@
 # PROMPT: ROADMAP DE DOWNSTREAM ARCHITECTURE REFINEMENT
-## Versão: 2.0 — Análise de Viabilidade + Estimativa Bottom-Up PERT Independente + Scope Snapshot
+## Versão: 2.3 — +Skills Map +Team Capacity +Stack Validation (Padrões Corporativos FBSO)
 
 Atue como um Especialista em Gestão de Processos (BPM), Arquiteto de Soluções Ágeis e Tech Lead, especializado em Refinamento Técnico, Design Detalhado e Estimativas de Precisão.
 
@@ -32,11 +32,14 @@ Regra Crítica de Execução (Gating Rule): O processo é estritamente sequencia
 | `ARCHITECTURE_GLOBAL` | ✅ | Caminho para a pasta de arquitetura global (ADRs, blueprints, padrões) | `/home/bolismar/work/workspace-fbso/architecture/` |
 | `SECURITY_GLOBAL` | ✅ | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) | `/home/bolismar/work/workspace-fbso/.specs/security/GLOBAL-SECURITY.md` |
 | `PROJECT_DOCUMENTS_INPUTS` | ❌ | Lista de caminhos para documentos brutos de entrada adicionais | `[]` |
-| `PROJECT_PROMPT_INPUTS` | ❌ | Lista de caminhos para prompts auxiliares ou contextos adicionais | `[]` |
+| `PROJECT_PROMPT_INPUTS` | ❌ | **(Diretiva comportamental)** Checkpoint HITL: sempre solicitar ao usuário, no início e durante a execução, se deseja fornecer informações adicionais, contextos ou novos direcionamentos via prompt. Não é um caminho de arquivo — é uma porta sempre aberta para input humano | `{checkpoint HITL}` |
+| `PROJECT-TEAM-SKILLS-MAP` | ❌ | Skills necessários para o time de implementação. Obtido do contexto do projeto + questionário ao usuário | `{obter e validar com usuario}` |
+| `PROJECT-TEAM-CAPACITY` | ❌ | Capacidade esperada do time (seniores, plenos, juniores, duração). Obtido do contexto + questionário | `{obter e validar com usuario}` |
+| `PROJECT-STACK` | ❌ | Stack tecnológica da solução. Baseline corporativa em `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica | `{obter do contexto, complementar com usuario, validar contra padroes}` |
 
 ### Variáveis Derivadas (calculadas automaticamente)
 
-```
+```bash
 PROJECT_COMPLETE_PATH_NAME       = PROJECT_PATH + "/" + PROJECT_ID_NAME
 DOWNSTREAM_REFINEMENT_PATH       = PROJECT_COMPLETE_PATH_NAME + "/downstream-architecture-refinement"
 UPSTREAM_DISCOVERY_PATH          = PROJECT_COMPLETE_PATH_NAME + "/upstream-architecture-discovery"
@@ -69,24 +72,21 @@ O roadmap **`PROMPT-ROADMAP-GENERATE-UPSTREAM-ARCHITECTURE-DISCOVERY.md`** é **
 
 O roadmap é organizado em **12 fases** agrupadas em **4 blocos**:
 
-```
-FASE 0: BOOTSTRAP (sequencial)
-  │
-  ├─▶ BLOCO A: Architecture Deep-Dive (Detail-Level)
-  │     Fase 1 → Fase 2 → Fase 3 → Fase 4 → Fase 5 → Fase 6 → Fase 7
-  │     ⛔ Barreira A
-  │
-  ├─▶ BLOCO B: Bottom-Up Estimation — INDEPENDENTE (PERT ±15-25%)
-  │     Fase 8 → Fase 9 → Fase 10
-  │     ⛔ Barreira B
-  │
-  ├─▶ BLOCO C: Scope Snapshot + Cross-Check
-  │     Fase 11 → Fase 12 (condicional: só executa se upstream existir)
-  │     ⛔ Barreira C
-  │
-  └─▶ GATE DE ESTIMATIVA: ESTIMATE-READY 📊
-        ├── Estimativa aprovada → Time de TI valida viabilidade
-        └── Pendências → Retorna ao bloco com gaps
+```mermaid
+flowchart TD
+    F0["FASE 0: BOOTSTRAP (sequencial)"]
+    F0 --> BA["BLOCO A: Architecture Deep-Dive (Detail-Level)"]
+    BA --> F1["Fase 1"] --> F2["Fase 2"] --> F3["Fase 3"] --> F4["Fase 4"] --> F5["Fase 5"] --> F6["Fase 6"] --> F7["Fase 7"]
+    F7 --> BARREIRA_A["⛔ Barreira A"]
+    BARREIRA_A --> BB["BLOCO B: Bottom-Up Estimation — INDEPENDENTE (PERT ±15-25%)"]
+    BB --> F8["Fase 8"] --> F9["Fase 9"] --> F10["Fase 10"]
+    F10 --> BARREIRA_B["⛔ Barreira B"]
+    BARREIRA_B --> BC["BLOCO C: Scope Snapshot + Cross-Check"]
+    BC --> F11["Fase 11"] --> F12["Fase 12 (condicional)"]
+    F12 --> BARREIRA_C["⛔ Barreira C"]
+    BARREIRA_C --> GATE["GATE DE ESTIMATIVA: ESTIMATE-READY 📊"]
+    GATE --> APPROVED["✅ Estimativa aprovada → Time de TI valida viabilidade"]
+    GATE --> PENDING["⚠️ Pendências → Retorna ao bloco com gaps"]
 ```
 
 ---
@@ -106,6 +106,12 @@ Workflow:
 8. Criar estrutura: `mkdir -p {DOWNSTREAM_REFINEMENT_PATH}`
 9. Auditar artefatos existentes no diretório `downstream-architecture-refinement/`
 10. Apresentar resumo da situação atual e iniciar a primeira fase pendente
+11. **Coletar `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK`:**
+    - Apresentar stack corporativa FBSO como baseline (`STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`)
+    - Questionar usuário sobre skills adicionais necessários além dos avaliados
+    - Questionar usuário sobre capacidade e senioridade do time previsto
+    - Questionar usuário sobre tecnologias adicionais fora do padrão corporativo (exigem justificativa técnica)
+    - **Aguardar validação do usuário antes de prosseguir**
 
 ### Fase 1 — DETAIL-LEVEL-PRD.md 🆕
 PRD Detail-Level — **alinhamento negócio↔TI com escopo completo**. Visão do produto consolidada com as 62 US, personas detalhadas, jornadas mapeadas por feature, restrições de negócio, glossário estendido. Referencia os documentos de negócio e o PRD Discovery-Level. **Mais detalhado que o Discovery-Level PRD:** inclui mapeamento US↔Jornada, priorização por entrega, e critérios de aceite de negócio sumarizados.
@@ -113,22 +119,34 @@ PRD Detail-Level — **alinhamento negócio↔TI com escopo completo**. Visão d
 Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-PRD.md` → Gate → Fix → COMPLIANCE
 
 ### Fase 2 — DETAIL-LEVEL-ARCHITECTURE-DEFINITION.md 🆕
-Solution Architect — **C4 Level 2 (Container) e Level 3 (Component)** para as soluções S01 e S02. ADRs detalhados com diagramas de sequência, matriz de integração refinada (com contratos de API), estratégia de multi-tenancy (RLS + discriminator column), padrões de código (packages, naming, design patterns). Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-ARCHITECTURE-DEFINITION.md` → Gate → Fix → COMPLIANCE
+Solution Architect — **C4 Level 2 (Container) e Level 3 (Component)** para as soluções S01 e S02. ADRs detalhados com diagramas de sequência, matriz de integração refinada (com contratos de API), estratégia de multi-tenancy (RLS + discriminator column), padrões de código (packages, naming, design patterns). **Inclui seção 'Padrões Corporativos FBSO'** ao final do documento com a baseline tecnológica obrigatória. Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-ARCHITECTURE-DEFINITION.md` → Gate → Fix → COMPLIANCE
+
+> 📋 **Validação de Stack e Time:** Este prompt técnico coleta e valida `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK` com o usuário. As tecnologias propostas devem estar em conformidade com `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica documentada.
 
 ### Fase 3 — DETAIL-LEVEL-SECURITY-DEFINITION.md 🆕
-Security Architect — **threat model detalhado** (STRIDE por componente), matriz de controles (OWASP ASVS L1+L2), especificação de IAM (Keycloak realms, OIDC clients, protocol mappers, JWT claims), política de senhas, RBAC granular (role↔permission matrix), data protection (AES-256, RLS policies), compliance (LGPD artigo por artigo). Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-SECURITY-DEFINITION.md` → Gate → Fix → COMPLIANCE
+Security Architect — **threat model detalhado** (STRIDE por componente), matriz de controles (OWASP ASVS L1+L2), especificação de IAM (Keycloak realms, OIDC clients, protocol mappers, JWT claims), política de senhas, RBAC granular (role↔permission matrix), data protection (AES-256, RLS policies), compliance (LGPD artigo por artigo). **Inclui seção 'Padrões Corporativos FBSO'** ao final do documento (Keycloak, Kong, Service-ID/Token-ID). Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-SECURITY-DEFINITION.md` → Gate → Fix → COMPLIANCE
+
+> 📋 **Validação de Stack e Time:** Este prompt técnico coleta e valida `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK` com o usuário. As tecnologias propostas devem estar em conformidade com `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica documentada.
 
 ### Fase 4 — DETAIL-LEVEL-DATA-ARCHITECTURE-DEFINITION.md 🆕
-Data Architect — **ERD completo** (todas as tabelas com colunas, tipos, constraints, índices), estratégia de particionamento (audit_log por mês), política de retenção (5 anos PostgreSQL + S3), migration strategy (Flyway versionado com baseline), query patterns otimizadas (índices para dashboard, filtros de tenant). Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-DATA-ARCHITECTURE-DEFINITION.md` → Gate → Fix → COMPLIANCE
+Data Architect — **ERD completo** (todas as tabelas com colunas, tipos, constraints, índices), estratégia de particionamento (audit_log por mês), política de retenção (5 anos PostgreSQL + S3), migration strategy (Flyway versionado com baseline), query patterns otimizadas (índices para dashboard, filtros de tenant). **Inclui seção 'Padrões Corporativos FBSO'** ao final do documento (PostgreSQL 17, RLS, Flyway). Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-DATA-ARCHITECTURE-DEFINITION.md` → Gate → Fix → COMPLIANCE
+
+> 📋 **Validação de Stack e Time:** Este prompt técnico coleta e valida `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK` com o usuário. As tecnologias propostas devem estar em conformidade com `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica documentada.
 
 ### Fase 5 — DETAIL-LEVEL-DEVOPS-SRE-DEFINITION.md 🆕
-DevOps/SRE Architect — **pipeline specs detalhadas** (GitHub Actions workflow por ambiente), IaC templates (Terraform DOKS + Ansible playbooks), observabilidade stack (Prometheus alert rules, Grafana dashboards, Loki log queries, Jaeger sampling strategy, OpenTelemetry instrumentation), SLOs com SLIs (99.9% backend p99<500ms, 99.5% frontend LCP<2.5s), estratégia de deploy (blue-green, canary). Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-DEVOPS-SRE-DEFINITION.md` → Gate → Fix → COMPLIANCE
+DevOps/SRE Architect — **pipeline specs detalhadas** (GitHub Actions workflow por ambiente), IaC templates (Terraform DOKS + Ansible playbooks), observabilidade stack (Prometheus alert rules, Grafana dashboards, Loki log queries, Jaeger sampling strategy, OpenTelemetry instrumentation), SLOs com SLIs (99.9% backend p99<500ms, 99.5% frontend LCP<2.5s), estratégia de deploy (blue-green, canary). **Inclui seção 'Padrões Corporativos FBSO'** ao final do documento (Prometheus, Grafana, Loki, Jaeger, OTel, Elastic Stack, Terraform, Ansible, DOKS, Istio, Keda, Karpenter, GitHub Actions). Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-DEVOPS-SRE-DEFINITION.md` → Gate → Fix → COMPLIANCE
+
+> 📋 **Validação de Stack e Time:** Este prompt técnico coleta e valida `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK` com o usuário. As tecnologias propostas devem estar em conformidade com `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica documentada.
 
 ### Fase 6 — DETAIL-LEVEL-TEST-STRATEGY-DEFINITION.md 🆕
-Test Specialist — **matriz de cobertura por US** (62 US × tipo de teste), casos de teste de aceitação (baseados nos cenários Gherkin das US), estratégia de automação (JUnit 5 + Mockito + Testcontainers para backend, Jest + Testing Library para frontend, Playwright para E2E, k6 para carga), quality gates por ambiente (PR/Staging/Release). Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-TEST-STRATEGY-DEFINITION.md` → Gate → Fix → COMPLIANCE
+Test Specialist — **matriz de cobertura por US** (62 US × tipo de teste), casos de teste de aceitação (baseados nos cenários Gherkin das US), estratégia de automação (JUnit 5 + Mockito + Testcontainers para backend, Jest + Testing Library para frontend, Playwright para E2E, k6 para carga), quality gates por ambiente (PR/Staging/Release). **Inclui seção 'Padrões Corporativos FBSO'** ao final do documento. Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-TEST-STRATEGY-DEFINITION.md` → Gate → Fix → COMPLIANCE
+
+> 📋 **Validação de Stack e Time:** Este prompt técnico coleta e valida `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK` com o usuário. As tecnologias propostas devem estar em conformidade com `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica documentada.
 
 ### Fase 7 — DETAIL-LEVEL-INFRA-CLOUD-DEFINITION.md 🆕
-Infra/Cloud Specialist — **sizing detalhado** (DOKS node pools, PostgreSQL tiers, Redis tiers), cálculo de custos mensais (DigitalOcean + Cloudflare + Kong), topologia de rede (VPC, subnets, security groups), disaster recovery (RPO 1h, RTO 4h, procedimentos), estratégia de backup (PostgreSQL WAL + pg_dump, retenção 30 dias). Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-INFRA-CLOUD-DEFINITION.md` → Gate → Fix → COMPLIANCE
+Infra/Cloud Specialist — **sizing detalhado** (DOKS node pools, PostgreSQL tiers, Redis tiers), cálculo de custos mensais (DigitalOcean + Cloudflare + Kong), topologia de rede (VPC, subnets, security groups), disaster recovery (RPO 1h, RTO 4h, procedimentos), estratégia de backup (PostgreSQL WAL + pg_dump, retenção 30 dias). **Inclui seção 'Padrões Corporativos FBSO'** ao final do documento (DigitalOcean, Cloudflare). Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-INFRA-CLOUD-DEFINITION.md` → Gate → Fix → COMPLIANCE
+
+> 📋 **Validação de Stack e Time:** Este prompt técnico coleta e valida `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK` com o usuário. As tecnologias propostas devem estar em conformidade com `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica documentada.
 
 ### Fase 8 — BOTTOM-UP-PERT-ESTIMATE.md 🆕 ⭐
 **O coração do downstream — estimativa bottom-up PERT.** Cada uma das 62 User Stories é estimada individualmente com three-point estimation (O/ML/P). Skills específicos de estimativa são usados (`project-estimation`, referências `bottom-up-estimation.md` e `three-point-estimation-pert.md`). O resultado substitui o ROM ±50% do upstream por uma estimativa PERT ±15-25%.
@@ -143,7 +161,7 @@ Conteúdo:
 Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-BOTTOM-UP-PERT-ESTIMATE.md` → Gate → Fix → COMPLIANCE
 
 ### Fase 9 — RESOURCE-ALLOCATION-PLAN.md 🆕
-**Plano de alocação de recursos** baseado na estimativa PERT. Capacidade do time (9 pessoas, cargas parciais), projeção de duração (PERT ÷ capacidade mensal), perfil alocado por milestone, identificação de gargalos (frontend M5, RBAC M4), recomendações de reforço.
+**Plano de alocação de recursos** baseado na estimativa PERT. Seção **"Time Necessário"** (sem nomeação individual — papéis/perfis necessários para a estimativa), capacidade do time, projeção de duração (PERT ÷ capacidade mensal), alocação por épico com perfil crítico, identificação de gargalos, recomendações de reforço.
 
 Pipeline: `PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-RESOURCE-ALLOCATION.md` → Gate → Fix → COMPLIANCE
 
@@ -221,13 +239,50 @@ Toda fase (1-12) deve rodar sob o ecossistema trifásico de prompts (Gerador, Au
 
 ---
 
+## PADRÕES DE DOCUMENTO (MODELO E RODAPÉ)
+
+Todos os artefatos gerados neste roadmap devem seguir padrões consistentes de documentação.
+
+### Modelo de Documento
+
+Cada prompt GENERATE define a estrutura do documento no bloco `ESTRUTURA DO DOCUMENTO`. O agente gerador deve seguir estritamente esse modelo, produzindo documentos com:
+- Cabeçalho padronizado (título, projeto, data, fase)
+- Seções numeradas conforme o template
+- Para F2-F7: seção **"Padrões Corporativos FBSO"** ao final do documento (após a última seção numerada), contendo as tabelas de tecnologias corporativas obrigatórias e a regra de compliance
+- Rodapé padronizado (ver abaixo)
+
+### Rodapé Padrão
+
+Todo documento gerado deve terminar com o rodapé:
+
+```
+🤖 *Documento gerado pelo [Agent Role] — Fase X do Downstream Architecture Refinement · Skills utilizados: [lista de skills efetivamente acionados] · Padrões Corporativos FBSO.ORG*
+```
+
+Onde `[Agent Role]` é o papel responsável pela fase (ex: Solution Architect, Security Architect, Data Architect, etc.) e `[lista de skills efetivamente acionados]` são os skills que o agente efetivamente utilizou durante a geração.
+
+### Convenções de Formatação
+
+| Elemento | Bloco de Código | Exemplo |
+|:---|:---|:---|
+| Diagramas (C4, flowchart, ERD, Gantt, etc.) | ````mermaid` | `C4Container`, `graph TB`, `erDiagram`, `gantt`, `flowchart LR` |
+| Fórmulas matemáticas | ````math` | `PERT = (O + 4×ML + P) / 6` |
+| Comandos de linha de comando | ````bash` | `mkdir -p`, `git clone`, `kubectl apply` |
+| Estrutura de diretórios (scaffold) | ````bash` | Árvore de pastas com comentários |
+| Templates de documento | ````markdown` | Template da estrutura do documento |
+| SQL / HCL / outros | Bloco com linguagem específica | ````sql`, ````hcl` |
+
+> ⚠️ **Regra:** Diagramas NUNCA devem usar blocos sem linguagem (````text` ou ```` ` sem label). Sempre usar ````mermaid` com o tipo de diagrama apropriado.
+
+---
+
 ## REGRAS DE BLOQUEIO (GATING RULES)
 
 ### Barreiras de Bloco
 
 | Barreira | Posição | Validação | Regra Especial |
 |---|---|---|---|
-| ⛔ Barreira A | Após Bloco A (F7) | PRD (F1) + 6 disciplinas técnicas (F2-F7) OK. Consistência horizontal entre os 6 artefatos técnicos. **Detalhamento suficiente para o time de TI validar viabilidade** — cada artefato deve conter análise técnica que permita identificar riscos e complexidades. Se upstream existir, artefatos podem referenciá-lo como baseline, mas devem ir além. | Artefato muito similar ao Discovery-Level (sem refinamento real) = NÃO COMPLIANCE |
+| ⛔ Barreira A | Após Bloco A (F7) | PRD (F1) + 6 disciplinas técnicas (F2-F7) OK. Consistência horizontal entre os 6 artefatos técnicos. **Seção Padrões Corporativos FBSO presente em todos os 6 artefatos técnicos (F2-F7)** e aderente às definições corporativas. **Detalhamento suficiente para o time de TI validar viabilidade** — cada artefato deve conter análise técnica que permita identificar riscos e complexidades. Se upstream existir, artefatos podem referenciá-lo como baseline, mas devem ir além. | Artefato muito similar ao Discovery-Level (sem refinamento real) = NÃO COMPLIANCE. Artefato técnico sem a seção Padrões Corporativos FBSO = NÃO COMPLIANCE |
 | ⛔ Barreira B | Após Bloco B (F10) | **PERT com todas as US estimadas individualmente.** QA ≥ 25%. Arch ≥ 5%. Consistência Prazo×Horas validada. Outliers identificados. **Estimativa 100% independente — não pode ter usado ROM upstream como baseline.** Confiança alvo: ±15-25%. | US sem estimativa individual = NÃO COMPLIANCE. PERT sem IC 95% = NÃO COMPLIANCE. Evidência de contaminação pelo ROM = NÃO COMPLIANCE |
 | ⛔ Barreira C | Após Bloco C (F12) | Scope Snapshot cobre 100% das US estimadas. Se upstream existe: relatório comparativo gerado. Se upstream não existe: F12 pulada, barreira satisfeita. Relatório NÃO altera estimativa PERT. | Scope Snapshot incompleto = NÃO COMPLIANCE |
 
@@ -260,7 +315,7 @@ A Barreira B aplica as regras DTA de validação de estimativas:
 
 ## ESTRUTURA DE DIRETÓRIOS GERADA
 
-```
+```bash
 business-inputs/business-projects/{PROJECT_ID_NAME}/
 └── downstream-architecture-refinement/
     ├── DETAIL-LEVEL-PRD.md                       (F1)  🆕
@@ -277,6 +332,8 @@ business-inputs/business-projects/{PROJECT_ID_NAME}/
     └── UPSTREAM-COMPARISON-REPORT.md              (F12) 🔗 (condicional)
 ```
 
+> 📌 A estrutura acima representa o diretório de saída dos artefatos gerados. O diretório `downstream-architecture-refinement/` é criado dentro do projeto alvo (ex: `PRJ-FIN-2026-0003-SAAS-FBSO-ORG/`).
+
 ---
 
 ## Skills Utilizados
@@ -289,22 +346,24 @@ business-inputs/business-projects/{PROJECT_ID_NAME}/
 | 2 | `superpowers:executing-plans` | Execução do plano de fases com gates | Orquestração |
 | 3 | `superpowers:writing-plans` | Escrita e refino do plano de execução | Orquestração |
 | 4 | `superpowers:verification-before-completion` | Verificação de completude antes de cada COMPLIANCE | Qualidade |
-| 5 | `project-estimation` | **Estimativa bottom-up com PERT three-point** — o core do downstream. Usa referências `bottom-up-estimation.md` e `three-point-estimation-pert.md` | Estimativa ⭐ |
-| 6 | `discovery-process` | Estrutura o ciclo de refinamento: framing → synthesis → experiments | Discovery |
-| 7 | `project-document-discovery` | Classifica o projeto em 10 dimensões e determina escopo proporcional | Discovery |
-| 8 | `senior-architect` | Design detalhado de solução (C4 L2/L3) | Arquitetura |
-| 9 | `c4-code` | Diagramas C4 Level 3 (Component) para serviços Java | Arquitetura |
-| 10 | `c4-component` | Diagramas C4 Level 2 (Container) refinados | Arquitetura |
-| 11 | `java-spring-boot` | Padrões Spring Boot para design detalhado | Tecnologia |
-| 12 | `java-architect` | Padrões de arquitetura Java (packages, design patterns) | Tecnologia |
-| 13 | `cloud-architect` | Topologia de infra detalhada com sizing | Infraestrutura |
-| 14 | `senior-devops` | Pipeline specs, IaC detalhado, SLOs | DevOps |
-| 15 | `senior-security` | Threat model STRIDE, OWASP ASVS, IAM specs | Segurança |
-| 16 | `senior-data-engineer` | ERD completo, query patterns, particionamento | Dados |
-| 17 | `senior-qa` | Matriz de cobertura por US, casos de teste | Qualidade |
-| 18 | `gap-analysis` | Análise de gaps entre upstream e downstream | Análise |
-| 19 | `documentation-writer` | Documentação do roadmap e execution history | Documentação |
-| 20 | `context-manager` | Gestão de contexto entre fases longas (62 US) | Contexto |
+| 5 | `engineering-skills` | **Hub de 32 skills especialistas** — engenharia, arquitetura, frontend, backend, QA, DevOps, segurança, AI/ML, dados | Engenharia ⭐ |
+| 6 | `engineering-advanced-skills` | **Skills avançados de engenharia** — design de sistemas, refatoração, performance, segurança avançada | Engenharia ⭐ |
+| 7 | `project-estimation` | **Estimativa bottom-up com PERT three-point** — o core do downstream. Usa referências `bottom-up-estimation.md` e `three-point-estimation-pert.md` | Estimativa ⭐ |
+| 8 | `discovery-process` | Estrutura o ciclo de refinamento: framing → synthesis → experiments | Discovery |
+| 9 | `project-document-discovery` | Classifica o projeto em 10 dimensões e determina escopo proporcional | Discovery |
+| 10 | `senior-architect` | Design detalhado de solução (C4 L2/L3) | Arquitetura |
+| 11 | `c4-code` | Diagramas C4 Level 3 (Component) para serviços Java | Arquitetura |
+| 12 | `c4-component` | Diagramas C4 Level 2 (Container) refinados | Arquitetura |
+| 13 | `java-spring-boot` | Padrões Spring Boot para design detalhado | Tecnologia |
+| 14 | `java-architect` | Padrões de arquitetura Java (packages, design patterns) | Tecnologia |
+| 15 | `cloud-architect` | Topologia de infra detalhada com sizing | Infraestrutura |
+| 16 | `senior-devops` | Pipeline specs, IaC detalhado, SLOs | DevOps |
+| 17 | `senior-security` | Threat model STRIDE, OWASP ASVS, IAM specs | Segurança |
+| 18 | `senior-data-engineer` | ERD completo, query patterns, particionamento | Dados |
+| 19 | `senior-qa` | Matriz de cobertura por US, casos de teste | Qualidade |
+| 20 | `gap-analysis` | Análise de gaps entre upstream e downstream | Análise |
+| 21 | `documentation-writer` | Documentação do roadmap e execution history | Documentação |
+| 22 | `context-manager` | Gestão de contexto entre fases longas (62 US) | Contexto |
 
 ### Skills Exclusivos do Downstream (não usados no Upstream)
 
@@ -323,7 +382,7 @@ business-inputs/business-projects/{PROJECT_ID_NAME}/
 
 Os prompts de geração, gate e correção de cada fase estão na pasta `downstream-architecture-refinament/`:
 
-```
+```bash
 .specs/prompts/downstream-architecture-refinament/
 ├── PROMPT-GENERATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-PRD.md                     🆕 F1
 ├── PROMPT-GATE-DOWNSTREAM-ARCHITECTURE-REFINEMENT-PRD.md                         🆕 F1
@@ -387,6 +446,22 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `downstr
 
 ---
 
+## 📊 Diagramas de Fluxo (Flowchart)
+
+Os diagramas Mermaid completos do processo estão documentados em:
+
+📁 **`FLOWCHART-DOWNSTREAM-ARCHITECTURE-REFINEMENT.md`** — contém 5 diagramas:
+
+| # | Diagrama | Descrição |
+|---|---|---|
+| 1 | **Diagrama Macro** | Fluxo completo: Bootstrap → Bloco A → Barreira A → Bloco B → Barreira B → Bloco C → Barreira C → Gate ESTIMATE-READY, com pré-condições, regra de independência da estimativa e todas as decisões |
+| 2 | **Ciclo HITL** | O loop Generate → Gate → Fix → Human Validation que se repete em cada uma das 12 fases, com destaque para o passo de validação de Stack nos GENERATEs F2-F7 |
+| 3 | **Barreiras de Bloco** | Regras de validação de cada barreira (A, B, C) com critérios de COMPLIANCE, NÃO COMPLIANCE e ⚠️ Warnings (ex: QA < 25%, Divergência Prazo×Horas) |
+| 4 | **Gate de Estimativa** | Decisão ESTIMATE-READY com os 5 componentes do Resumo Executivo (Escopo, Design, PERT, Cross-Check, Parecer) e ações disparadas |
+| 5 | **SIPOC** | Visão consolidada: Suppliers → Inputs → Process → Outputs → Customers, incluindo os 12 outputs Detail-Level e a independência da estimativa |
+
+---
+
 ## Registro de Alterações do Documento
 
 | Versão | Data | Alteração | Autor |
@@ -395,6 +470,9 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `downstr
 | 1.1 | 31/07/2026 | Independência do upstream: removida pré-condição obrigatória, adicionado Bloco D com Fase 13 (Cross-Check Report) condicional, estimativa 100% independente. | Time de Arquitetura |
 | 2.0 | 31/07/2026 | **Foco em viabilidade e estimativa:** Removido Bloco C (Sprint-Ready Contracts). F11 renomeada para SCOPE-SNAPSHOT (foto do escopo, sem planejamento de sprints). F12 absorve Cross-Check (era F13). Gate renomeado para ESTIMATE-READY. Removida pasta contracts/. 12 fases em 4 blocos, 36 prompts. O planejamento de sprints e contratos técnicos são responsabilidade do PROJECT-TECHNICAL-DEFINITIONS. | Time de Arquitetura |
 | 2.1 | 01/08/2026 | **Auditoria de integridade (8 NCs):** "Fase 13"→"Fase 12" na tabela comparativa. Barreira A ajustada (PRD + 6 disciplinas). Notas de tecnologia específica adicionadas aos GENERATEs F5/F7. Hardcode "62" removido do GENERATE F8. Referência EP-0004 corrigida no GENERATE F3. Versões F5/F7 atualizadas para 1.1. | Time de Arquitetura |
+| 2.2 | 02/08/2026 | **Padrões Corporativos FBSO + Padronização de Documentos:** Seção "Padrões Corporativos FBSO" formalizada nos templates F2-F7 (ao final do documento). Rodapé padrão de documento com agent/skills em todos os 12 GENERATE. `engineering-skills` + `engineering-advanced-skills` adicionados aos GENERATE F3-F7, F9 e à tabela de skills do roadmap. F9 renomeado "Time Disponível"→"Time Necessário" com coluna "Nome" removida (papéis necessários, sem nomeação). Fences padronizados: diagramas→mermaid, fórmulas→math, diretórios/CLI→bash. Diagrama de fases convertido para mermaid flowchart. Barreira A agora valida presença da seção FBSO nos 6 artefatos técnicos. Seção "Padrões de Documento" adicionada ao roadmap. | Time de Arquitetura |
+| 2.3 | 02/08/2026 | **Skills Map + Team Capacity + Stack Validation:** Adicionados 3 novos inputs opcionais: `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY`, `PROJECT-STACK`. `PROJECT_PROMPT_INPUTS` atualizado para diretiva comportamental HITL (checkpoint interativo, não lista de arquivos). Fase 0 Bootstrap: step 11 para coleta e validação de skills/capacity/stack contra baseline corporativa `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Fases 2-7: notas de validação de Stack e Time (📋) em cada fase técnica. Alinhamento com os conceitos introduzidos no Upstream Architecture Discovery v2.0. | Time de Arquitetura |
+| 2.4 | 02/08/2026 | **Diagramas de Fluxo:** Adicionada seção 📊 Diagramas de Fluxo referenciando `FLOWCHART-DOWNSTREAM-ARCHITECTURE-REFINEMENT.md` com 5 diagramas Mermaid (Diagrama Macro, Ciclo HITL, Barreiras de Bloco, Gate de Estimativa, SIPOC). Inclui regra de independência da estimativa, F12 condicional, e validações DTA na Barreira B. | Time de Arquitetura |
 
 ---
 

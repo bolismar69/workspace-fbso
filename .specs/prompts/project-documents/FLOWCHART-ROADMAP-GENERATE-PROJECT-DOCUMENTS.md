@@ -194,10 +194,10 @@ flowchart TD
     RTM_START([Antes de aprovar Fase 5]) --> RTM_1
 
     subgraph RTM[Auditoria de Rastreabilidade Bidirecional]
-        RTM_1[1. Mapeamento de Dependência:<br/>US → Feature → Epic → BRD → Charter] --> RTM_2
-        RTM_2[2. Identificação de Órfãos:<br/>Alguma US sem objetivo<br/>correspondente no Charter?] --> RTM_3
-        RTM_3[3. Verificação de Cobertura:<br/>100% dos Objetivos do Charter<br/>têm pelo menos 1 US?] --> RTM_4
-        RTM_4[4. Auto-Análise:<br/>Comparar user-stories/*.md + RTM.md<br/>contra 01-PROJECT-CHARTER]
+        RTM_1["1. Mapeamento de Dependência:<br/>US → Feature → Epic → BRD → Charter"] --> RTM_2
+        RTM_2["2. Identificação de Órfãos:<br/>Alguma US sem objetivo<br/>correspondente no Charter?"] --> RTM_3
+        RTM_3["3. Verificação de Cobertura:<br/>100% dos Objetivos do Charter<br/>têm pelo menos 1 US?"] --> RTM_4
+        RTM_4["4. Auto-Análise:<br/>Comparar user-stories/*.md + RTM.md<br/>contra 01-PROJECT-CHARTER"]
     end
 
     RTM_4 --> RTM_RESULT{Relatório de<br/>Conformidade?}

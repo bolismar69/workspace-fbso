@@ -61,6 +61,8 @@ Se NÃO existir: gerar documento informando "Upstream discovery não encontrado 
 
 ## 7. Nota de Imutabilidade
 A estimativa PERT (Fase 8) permanece inalterada. Este relatório é um artefato de governança para apoiar a decisão do comitê.
+
+🤖 *Documento gerado pelo Engineering Manager / Tech Lead — Fase 12 do Downstream Architecture Refinement · Skills utilizados: [lista de skills efetivamente acionados] · Padrões Corporativos FBSO.ORG*
 ```
 
-🤖 *Prompt gerador — Fase 12 do Downstream Architecture Refinement · Cross-Check Condicional*
+🤖 *Prompt gerador — Fase 12 do Downstream Architecture Refinement · Cross-Check Condicional · Skills: `engineering-skills`, `gap-analysis`, `project-estimation` · Padrões Corporativos FBSO.ORG*

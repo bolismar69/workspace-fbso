@@ -10,8 +10,9 @@ Produzir um plano de alocação de recursos baseado exclusivamente na estimativa
 ## INPUTS
 
 1. **BOTTOM-UP-PERT-ESTIMATE.md** (F8) — estimativa concluída e aprovada
-2. **TEAM-SKILLS-MAP** e **TEAM-CAPACITY** (technical-definitions/) — se existirem
-3. **Project Charter** — time previsto e restrições
+2. **TEAM-SKILLS-MAP:** {obter a partir do contexto do projeto, e questionar o usuario sobre skills necessários para serem foco da solução}
+3. **TEAM-CAPACITY:** {obter a partir do contexto do projeto, e questionar o usuario sobre as capacidades esperadas para o time necessário para o foco da solução}
+4. **Project Charter** — time previsto e restrições
 
 ## REGRA CRÍTICA
 
@@ -22,8 +23,11 @@ Produzir um plano de alocação de recursos baseado exclusivamente na estimativa
 ```markdown
 # RESOURCE-ALLOCATION-PLAN — Plano de Alocação de Recursos
 
-## 1. Time Disponível
-[Tabela: Nome | Papel | Disponibilidade % | Atuação Principal | Observações]
+## 1. Time Necessário
+
+> 📌 Como este roadmap é para estimativa, a tabela lista os **Papéis Necessários** (sem nomeação individual — trata-se de dimensionamento de perfis para a estimativa). As colunas de Disponibilidade, Atuação Principal, Épicos e Observações são mantidas pois são relevantes para o dimensionamento da estimativa.
+
+[Tabela: Papel | Disponibilidade % | Atuação Principal | Épicos | Observações]
 
 ## 2. Capacidade Mensal
 - Capacidade bruta: N pessoas × 160h = X h/mês
@@ -44,6 +48,12 @@ Produzir um plano de alocação de recursos baseado exclusivamente na estimativa
 
 ## 6. Recomendações
 [Reforços, treinamentos, ajustes de cronograma]
+
+🤖 *Documento gerado pelo Tech Lead / Resource Manager — Fase 9 do Downstream Architecture Refinement · Skills utilizados: [lista de skills efetivamente acionados] · Padrões Corporativos FBSO.ORG*
 ```
 
-🤖 *Prompt gerador — Fase 9 do Downstream Architecture Refinement*
+### Skills Recomendados
+- `engineering-skills`, `engineering-advanced-skills`
+- `project-estimation`, `context-manager`, `senior-architect`
+
+🤖 *Prompt gerador — Fase 9 do Downstream Architecture Refinement · Skills: `engineering-skills`, `engineering-advanced-skills`, `project-estimation`, `context-manager`, `senior-architect` · Padrões Corporativos FBSO.ORG*

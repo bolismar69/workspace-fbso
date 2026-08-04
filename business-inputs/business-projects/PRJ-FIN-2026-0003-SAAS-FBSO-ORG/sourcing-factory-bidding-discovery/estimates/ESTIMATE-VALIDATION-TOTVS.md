@@ -1,62 +1,54 @@
-# ESTIMATE-VALIDATION-TOTVS — Validação DTA + PIB (Discovery)
+# ESTIMATE-VALIDATION-TOTVS.md
 
-- **Fábrica:** TOTVS
-- **Projeto:** PRJ-FIN-2026-0003-SAAS-FBSO-ORG
-- **Modo:** Discovery — Alto Nível (Épicos)
-- **Data:** 31/07/2026
-- **Baseline PIB:** ROM Upstream 6,080h (provavel)
-
----
-
-## 1. Estimativa Apresentada
-
-| Métrica | Valor |
-|:---|---:|
-| Total de Horas | 64,000h |
-| QA Global | 8.6% |
-| Arquitetura/SRE | 8.9% |
-| Prazo Declarado | 4 meses |
+| Campo | Detalhe |
+|-------|---------|
+| **Fábrica** | TOTVS |
+| **Arquivo** | ESTIMATION-SCHEMA-TOTVS.csv |
+| **Total Horas** | 3.576h |
+| **Valor Total** | R$ 715.200 |
+| **Time** | 5 pessoas |
+| **Veredito** | ⚠️ APROVADA COM RESSALVA |
 
 ---
 
-## 2. Métricas DTA + PIB
+## Resultados DTA
 
-| Regra | Valor | Threshold | Status |
-|:---|---:|---:|:---|
-| QA Global | 8.6% | ≥25% | ❌ |
-| Arquitetura | 8.9% | ≥5% | ✅ |
-| PIB (Proximidade Baseline) 🆕 | 0.00 (Nota 1) | ≥0.50 | 🔴 |
+| Regra | Resultado | Status |
+|-------|-----------|:------:|
+| QA Balanceado (Global) | 541h QA / 2.170h Dev = 24,9% | ⚠️ Borderline |
+| QA por Épico | Todos épicos ≥ 24,9% | ✅ |
+| Arquitetura/SRE | (107+107) / (2170+107+107+541) = 7,3% | ✅ |
+| Outliers Cross-Fábrica | 3.576h dentro de [2.468h, 7.404h] | ✅ |
+| Consistência Prazo×Horas | 2/4 épicos > 50% divergência | 🔴 |
+| PIB vs Baseline | 31,0% acima (3.576h vs 2.730h baseline) | 🏆 MELHOR |
 
----
+## Detalhamento por Épico
 
----
+| Épico | Horas | QA% | Prazo | Prazo Calc | Divergência |
+|-------|:-----:|:---:|:-----:|:----------:|:-----------:|
+| EP-0001 | 741h | 24,9% | 2 meses | 0,93 meses | 115,7% 🔴 |
+| EP-0002 | 1.023h | 25,0% | 1 mês | 1,28 meses | 21,9% ✅ |
+| EP-0003 | 873h | 24,9% | 1 mês | 1,09 meses | 8,2% ✅ |
+| EP-0004 | 939h | 24,9% | 2 meses | 1,17 meses | 70,6% 🔴 |
 
-## 3. PIB por Épico 🆕
+## Não-Conformidades
 
-| Épico | ROM Baseline | TOTVS | Desvio | PIB Score |
-|:---|---:|---:|---:|:---:|
-| EP-0001 | 1,280h | 16,000h | +1150% | 0.00 |
-| EP-0002 | 1,760h | 16,000h | +809% | 0.00 |
-| EP-0003 | 1,520h | 16,000h | +953% | 0.00 |
-| EP-0004 | 1,760h | 16,000h | +809% | 0.00 |
+| ID | Descrição | Severidade |
+|----|-----------|:----------:|
+| NC-TOT-01 | QA Global 24,9% — 0,1pp abaixo do limite de 25% | ⚠️ Borderline |
+| NC-TOT-02 | Prazo EP-0001 declarado 2 meses vs calculado 0,93 meses (115,7%) | 🔴 |
+| NC-TOT-03 | Prazo EP-0004 declarado 2 meses vs calculado 1,17 meses (70,6%) | 🔴 |
 
-> 🔴 PIB por épico zerado — a menor estimativa está 809% acima da baseline ROM.
+## Pontos Fortes
 
-## 3. Análise PIB
+| ID | Descrição |
+|----|-----------|
+| PF-TOT-01 | 🏆 **Melhor PIB:** 31% de desvio da baseline — o menor entre as 4 fábricas |
+| PF-TOT-02 | 🏆 **Menor custo total:** R$ 715.200 |
+| PF-TOT-03 | **Melhor consistência Prazo×Horas:** EP-0002 (21,9%) e EP-0003 (8,2%) dentro do limite |
+| PF-TOT-04 | **Melhor relação custo×hora:** ~R$ 200/h |
 
-| Métrica | Valor |
-|:---|---:|
-| Baseline ROM Upstream | 6,080h |
-| Estimativa TOTVS | 64,000h |
-| Desvio | +953% |
-| PIB Score | 0.00 |
+## Ações Recomendadas
 
----
-
-## 4. Veredito
-
-**🔴 REJEITADA**
-
----
-
-🤖 *Validação DTA + PIB — Discovery Mode. Baseline: ROM Upstream 6,080h.*
+1. **Ajustar QA:** Adicionar 2h de QA em qualquer épico para atingir 25% global. Impacto: ~R$ 400 no orçamento total.
+2. **Corrigir prazo EP-0001 e EP-0004:** Alinhar com o prazo calculado ou aumentar o time declarado.

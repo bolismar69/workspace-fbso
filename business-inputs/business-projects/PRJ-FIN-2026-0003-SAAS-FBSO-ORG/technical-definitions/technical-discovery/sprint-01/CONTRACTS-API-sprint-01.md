@@ -1,1 +1,0 @@
-# CONTRACTS-API-sprint-01 — Placeholder · F19 Technical Discovery

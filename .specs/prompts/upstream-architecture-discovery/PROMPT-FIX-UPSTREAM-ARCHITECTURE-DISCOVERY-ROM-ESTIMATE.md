@@ -2,9 +2,21 @@
 
 ## Contexto
 
-Este prompt implementa o **FIX do ROM-ESTIMATE Discovery-Level** — Fase do Bloco C/D do Upstream Architecture Discovery.
+Este prompt é acionado quando o gate reprova `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-ROM-ESTIMATE.md`. O agente corretor aplica correções cirúrgicas com base no relatório inline do gate. **Nunca reescreve o documento do zero. Modifique estritamente as seções, tabelas ou linhas apontadas como Não Compliance.**
 
 **Princípio fundamental:** O artefato Discovery-Level deve conter informações suficientes para embasar a análise de viabilidade e estimativa ROM 50%, sem detalhamento excessivo de implementação.
+
+**Inputs upstream:**
+1. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-PRD.md` — PRD Discovery-Level (F1)
+2. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-ARCHITECTURE-DEFINITION.md` — Definição de Arquitetura (F2)
+3. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SECURITY-DEFINITION.md` — Definição de Segurança (F3)
+4. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-DATA-ARCHITECTURE-DEFINITION.md` — Definição de Dados (F4)
+5. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-DEVOPS-SRE-DEFINITION.md` — Definição DevOps/SRE (F5)
+6. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-TEST-STRATEGY-DEFINITION.md` — Estratégia de Testes (F6)
+7. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-INFRA-CLOUD-DEFINITION.md` — Definição Infra/Cloud (F7)
+8. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SOLUTIONS-CATALOG.md` — Catálogo de Soluções (F8)
+9. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SOLUTIONS-MATRIX.md` — Matriz Solução×Disciplina (F9)
+10. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SPECS.md` — Consolidação Técnica (F10)
 
 ## Parâmetros de Entrada
 
@@ -12,32 +24,74 @@ Este prompt implementa o **FIX do ROM-ESTIMATE Discovery-Level** — Fase do Blo
 |---|---|
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{UPSTREAM_DISCOVERY_PATH}` | Caminho upstream-architecture-discovery |
+| `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Documentos brutos adicionais |
+| `{PROJECT_PROMPT_INPUTS}` | (Diretiva) Checkpoint HITL: sempre solicitar ao usuário se deseja fornecer informações adicionais ou novos direcionamentos via prompt |
 
-**Arquivos gerados pelo GENERATE:** `DISCOVERY-LEVEL-ROM-ESTIMATE.md`
+### Variáveis Derivadas (calculadas automaticamente)
+
+```
+PROJECT_COMPLETE_PATH_NAME    = PROJECT_PATH + "/" + PROJECT_ID_NAME
+UPSTREAM_DISCOVERY_PATH       = PROJECT_COMPLETE_PATH_NAME + "/upstream-architecture-discovery"
+```
+
+---
+
+**Arquivos gerados pelo GENERATE:** `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-ROM-ESTIMATE.md`
 
 ## Fluxo de Execução
 
-### Passo 1 — Carregar Documentos Base
-Ler `DISCOVERY-LEVEL-ROM-ESTIMATE.md` e artefatos upstream do Discovery.
+### Passo 0 — Validação de Parâmetros
+Confirmar os parâmetros de entrada recebidos e seu foco:
+- `PROJECT_PATH={PROJECT_PATH}` — base dos projetos de negócio
+- `PROJECT_ID_NAME={PROJECT_ID_NAME}` — identificador do projeto
+- `PROJECT_DOCUMENTS_INPUTS` — documentos adicionais (se fornecidos)
+- `PROJECT_PROMPT_INPUTS` — solicitar input adicional do usuário (checkpoint HITL)
+Validar que o artefato a ser corrigido `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-ROM-ESTIMATE.md` existe e que os artefatos upstream (F1-F10) estão acessíveis.
 
-### Passo 2 — Executar Dimensões de Validação
+### Passo 1 — Carregar Relatório do Gate e Artefatos
+Ler o **Relatório de Auditoria** emitido pelo gate (relatório inline com os IDs de conflito e respostas do humano), o documento atual e os artefatos upstream do Discovery (F1–F10).
 
-#### Dimensão 1: Completude — seções obrigatórias preenchidas
-#### Dimensão 2: Consistência — alinhamento com artefatos upstream do Discovery
-#### Dimensão 3: Nível de Detalhe — adequado para ROM 50% (nem raso demais, nem detalhado demais)
+### Passo 2 — Processar NCs por Prioridade
+| Prioridade | Tipo de NC | Ação Corretiva |
+|---|---|---|
+| P0 | Estimativa não derivada dos artefatos upstream | Recalcular com base nos artefatos F1–F10 |
+| P0 | Faixa de valores fora de ±50% | Corrigir faixa ROM para ±50% |
+| P1 | Matriz de esforço por solução incompleta | Completar matriz com todas as soluções |
+| P1 | Premissas ausentes | Adicionar premissas e critérios |
+| P2 | Riscos não listados | Adicionar riscos e mitigações |
+| P3 | Detalhamento excessivo de implementação | Reduzir para visão macro ROM 50% |
 
-### Passo 3 — Emitir Veredito
+### Passo 3 — Aplicar Correções Cirúrgicas
+Aplicar as correções somente nas seções, tabelas ou linhas apontadas como NC, preservando o restante do documento.
 
-## FORMATO OBRIGATÓRIO DE SAÍDA
-
-### 🚨 CENÁRIO A: NÃO COMPLIANCE — lista conflitos
-### ✅ CENÁRIO B: PRÉ-COMPLIANCE — 3 perguntas obrigatórias
+### Passo 4 — Validar Correções
+Revalidar cada NC contra o relatório do gate e garantir que todas foram resolvidas sem introduzir novas inconsistências.
 
 ## Skills Utilizados
-| 1 | `requirements-validation` | 2 | `gap-analysis` | 3 | `senior-architect` |
+
+| Ordem | Skill | Propósito |
+|---|---|---|
+| 1 | `requirements-validation` | Validar completude da estimativa |
+| 2 | `gap-analysis` | Identificar lacunas entre artefatos |
+| 3 | `senior-architect` | Avaliar nível de detalhe da estimativa |
 
 ## Registro de Alterações
+
+| Versão | Data | Alteração | Autor |
+|:---|:---|:---|:---|
 | 1.0 | 30/07/2026 | Criação inicial — Upstream Architecture Discovery | Time de Arquitetura |
+
+## Arquivos Utilizados na Tarefa
+
+| # | Arquivo | Propósito |
+|---|---|---|
+| 1 | `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-ROM-ESTIMATE.md` | Artefato corrigido (F11) |
+| 2 | `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SPECS.md` | Consolidação Técnica (F10) — referência |
+| 3 | `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SOLUTIONS-MATRIX.md` | Matriz Solução×Disciplina (F9) — referência |
+| 4 | `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-PRD.md` | PRD Discovery-Level (F1) — referência de escopo |
+| 5 | `{PROJECT_DOCUMENTS_INPUTS}` | Documentos adicionais (se fornecidos) |
+| 6 | `{PROJECT_PROMPT_INPUTS}` | Checkpoint HITL — input adicional do usuário |
+
+---
 
 🤖 *Upstream Architecture Discovery — ROM-ESTIMATE FIX*

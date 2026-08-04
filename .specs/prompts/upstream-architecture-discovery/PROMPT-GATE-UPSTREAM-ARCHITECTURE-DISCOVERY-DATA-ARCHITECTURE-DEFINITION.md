@@ -2,9 +2,15 @@
 
 ## Contexto
 
-Este prompt implementa o **Gate de Validação da Definição de Arquitetura de Dados** para o artefato `UPSTREAM-ARCHITECTURE-DISCOVERY-DATA-ARCHITECTURE-DEFINITION.md`. Verifica se a arquitetura de dados do projeto está completa, consistente com as definições de arquitetura e segurança, e cobre armazenamento, pipelines, governança e tecnologias.
+Este prompt implementa o **Gate de Validação da Definição de Arquitetura de Dados** para o artefato `{UPSTREAM_DISCOVERY_PATH}/UPSTREAM-ARCHITECTURE-DISCOVERY-DATA-ARCHITECTURE-DEFINITION.md`. Verifica se a arquitetura de dados do projeto está completa, consistente com as definições de arquitetura e segurança, e cobre armazenamento, pipelines, governança e tecnologias.
 
 **Princípio fundamental:** Todo dado produzido ou consumido por uma solução deve ter sua origem, armazenamento, pipeline e governança documentados. Nenhum fluxo de dados pode ficar sem rastreabilidade.
+
+**Inputs upstream:**
+1. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-DATA-ARCHITECTURE-DEFINITION.md` — artefato auditado (F4)
+2. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-ARCHITECTURE-DEFINITION.md` — Definição de Arquitetura (F2)
+3. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SECURITY-DEFINITION.md` — Definição de Segurança (F3)
+4. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-PRD.md` — PRD Discovery-Level (F1)
 
 ---
 
@@ -14,22 +20,45 @@ Este prompt implementa o **Gate de Validação da Definição de Arquitetura de 
 |---|---|
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{TECHNICAL_DEFINITIONS_PATH}` | Caminho da pasta technical-definitions |
 | `{TECHNICAL_SOLUTION_PATH}` | Caminho base das soluções técnicas |
 | `{TECHNICAL_SOLUTION_NAMES}` | Lista de nomes das soluções técnicas do projeto |
 | `{ARCHITECTURE_GLOBAL}` | Caminho para a pasta de arquitetura global (ADRs, blueprints, data standards) |
 | `{SECURITY_GLOBAL}` | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) |
 | `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
-| `{PROJECT_PROMPT_INPUTS}` | (Opcional) Lista de caminhos para prompts auxiliares ou contextos adicionais |
+| `{PROJECT_PROMPT_INPUTS}` | (Diretiva) Checkpoint HITL: sempre solicitar ao usuário se deseja fornecer informações adicionais ou novos direcionamentos via prompt |
+| `{PROJECT-TEAM-SKILLS-MAP}` | Skills do time (obter e validar com usuário) |
+| `{PROJECT-TEAM-CAPACITY}` | Capacidade esperada do time (obter e validar com usuário) |
+| `{PROJECT-STACK}` | Stack tecnológica. Baseline: `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md` |
 
-**Arquivos gerados pelo GENERATE:** `UPSTREAM-ARCHITECTURE-DISCOVERY-DATA-ARCHITECTURE-DEFINITION.md`
+### Variáveis Derivadas (calculadas automaticamente)
+
+```
+PROJECT_COMPLETE_PATH_NAME    = PROJECT_PATH + "/" + PROJECT_ID_NAME
+UPSTREAM_DISCOVERY_PATH       = PROJECT_COMPLETE_PATH_NAME + "/upstream-architecture-discovery"
+```
+
+**Arquivos gerados pelo GENERATE:** `{UPSTREAM_DISCOVERY_PATH}/UPSTREAM-ARCHITECTURE-DISCOVERY-DATA-ARCHITECTURE-DEFINITION.md`
 
 ---
 
 ## Fluxo de Execução
 
+### Passo 0 — Validação de Parâmetros
+Confirmar os parâmetros de entrada recebidos e seu foco:
+- `PROJECT_PATH={PROJECT_PATH}` — base dos projetos de negócio
+- `PROJECT_ID_NAME={PROJECT_ID_NAME}` — identificador do projeto
+- `PROJECT_DOCUMENTS_INPUTS` — documentos adicionais (se fornecidos)
+- `PROJECT_PROMPT_INPUTS` — solicitar input adicional do usuário (checkpoint HITL)
+- `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY`, `PROJECT-STACK` — se fornecidos
+Validar que o artefato auditado `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-DATA-ARCHITECTURE-DEFINITION.md` existe.
+
 ### Passo 1 — Carregar Documentos Base
-Ler `UPSTREAM-ARCHITECTURE-DISCOVERY-DATA-ARCHITECTURE-DEFINITION.md`, Architecture Definition (F7), Security Definition (F8), PRD Definition (F4), ADRs globais e data standards.
+Confirmar leitura dos seguintes artefatos:
+1. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-DATA-ARCHITECTURE-DEFINITION.md` — artefato auditado (F4)
+2. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-ARCHITECTURE-DEFINITION.md` — Definição de Arquitetura (F2)
+3. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SECURITY-DEFINITION.md` — Definição de Segurança (F3)
+4. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-PRD.md` — PRD Discovery-Level (F1)
+5. `{ARCHITECTURE_GLOBAL}/` — ADRs globais e data standards
 
 ### Passo 2 — Executar Dimensões de Validação
 
@@ -61,6 +90,15 @@ Ler `UPSTREAM-ARCHITECTURE-DISCOVERY-DATA-ARCHITECTURE-DEFINITION.md`, Architect
 | 4.1 | Data Governance | Qualidade, linhagem e catálogo definidos |
 | 4.2 | Privacidade | LGPD/GDPR — anonimização, retenção, purge |
 | 4.3 | Rastreabilidade | Linhagem de dados documentada |
+
+#### Dimensão 5: Alinhamento com Stack Corporativa e Time
+
+| # | Verificação | Critério |
+|---|---|---|
+| 5.1 | Skills mapeados | Skills necessários para esta disciplina estão documentados no artefato |
+| 5.2 | Capacidade estimada | Capacidade do time está dimensionada proporcionalmente à complexidade |
+| 5.3 | Stack corporativa | Tecnologias propostas constam no `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md` |
+| 5.4 | Tecnologias adicionais | Tecnologias fora do padrão corporativo têm justificativa técnica documentada e aprovada |
 
 ### Passo 3 — Emitir Veredito
 
@@ -130,6 +168,22 @@ Por favor, responda às seguintes perguntas para podermos prosseguir ou reajusta
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 30/07/2026 | Criação inicial: gate de validação da definição de arquitetura de dados | Time de Arquitetura |
+
+---
+
+## Arquivos Utilizados na Tarefa
+
+| # | Arquivo | Propósito |
+|---|---|---|
+| 1 | `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-DATA-ARCHITECTURE-DEFINITION.md` | Artefato auditado (F4) |
+| 2 | `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-ARCHITECTURE-DEFINITION.md` | Definição de Arquitetura (F2) |
+| 3 | `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SECURITY-DEFINITION.md` | Definição de Segurança (F3) |
+| 4 | `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-PRD.md` | PRD Discovery-Level (F1) |
+| 5 | `{PROJECT_DOCUMENTS_INPUTS}` | Documentos adicionais (se fornecidos) |
+| 6 | `{PROJECT_PROMPT_INPUTS}` | Checkpoint HITL — input adicional do usuário |
+| 7 | `{PROJECT-TEAM-SKILLS-MAP}` | Skills do time (obter e validar com usuário) |
+| 8 | `{PROJECT-TEAM-CAPACITY}` | Capacidade esperada do time (obter e validar com usuário) |
+| 9 | `{PROJECT-STACK}` | Stack tecnológica. Baseline: `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md` |
 
 ---
 

@@ -1,5 +1,5 @@
 # PROMPT: ROADMAP DE UPSTREAM ARCHITECTURE DISCOVERY
-## Versão: 1.1 — Validado com projeto real + Padrões Corporativos + Skills Discovery
+## Versão: 2.1 — +Layout Documentos (Modelo Estrutural) nos Prompts GENERATE
 
 Atue como um Especialista em Gestão de Processos (BPM), Arquiteto de Soluções Ágeis e Tech Lead, especializado em Discovery Técnico, Upstream Architecture e Análise de Viabilidade.
 
@@ -24,7 +24,10 @@ Regra Crítica de Execução (Gating Rule): O processo é estritamente sequencia
 | `ARCHITECTURE_GLOBAL` | ✅ | Caminho para a pasta de arquitetura global (ADRs, blueprints, padrões) | `/home/bolismar/work/workspace-fbso/architecture/` |
 | `SECURITY_GLOBAL` | ✅ | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) | `/home/bolismar/work/workspace-fbso/.specs/security/GLOBAL-SECURITY.md` |
 | `PROJECT_DOCUMENTS_INPUTS` | ❌ | Lista de caminhos para documentos brutos de entrada adicionais | `[]` |
-| `PROJECT_PROMPT_INPUTS` | ❌ | Lista de caminhos para prompts auxiliares ou contextos adicionais | `[]` |
+| `PROJECT_PROMPT_INPUTS` | ❌ | **(Diretiva comportamental)** Checkpoint HITL: sempre solicitar ao usuário, no início e durante a execução, se deseja fornecer informações adicionais, contextos ou novos direcionamentos via prompt. Não é um caminho de arquivo — é uma porta sempre aberta para input humano | `{checkpoint HITL}` |
+| `PROJECT-TEAM-SKILLS-MAP` | ❌ | Skills necessários para o time de implementação. Obtido do contexto do projeto + questionário ao usuário | `{obter e validar com usuario}` |
+| `PROJECT-TEAM-CAPACITY` | ❌ | Capacidade esperada do time (seniores, plenos, juniores, duração). Obtido do contexto + questionário | `{obter e validar com usuario}` |
+| `PROJECT-STACK` | ❌ | Stack tecnológica da solução. Baseline corporativa em `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica | `{obter do contexto, complementar com usuario, validar contra padroes}` |
 
 ### Variáveis Derivadas (calculadas automaticamente)
 
@@ -87,6 +90,12 @@ Workflow:
 6. Criar estrutura: `mkdir -p {UPSTREAM_DISCOVERY_PATH}`
 7. Auditar artefatos existentes no diretório `upstream-architecture-discovery/`
 8. Apresentar resumo e iniciar a primeira fase pendente
+9. **Coletar `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK`:**
+   - Apresentar stack corporativa FBSO como baseline (`STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`)
+   - Questionar usuário sobre skills adicionais necessários além dos avaliados
+   - Questionar usuário sobre capacidade e senioridade do time previsto
+   - Questionar usuário sobre tecnologias adicionais fora do padrão corporativo (exigem justificativa técnica)
+   - **Aguardar validação do usuário antes de prosseguir**
 
 ### Fase 1 — DISCOVERY-LEVEL-PRD.md 🆕
 PRD Discovery-Level — **documento de negócio puro** (briefing executivo do PM/PO/Analista de Negócios para o time de TI). Visão do produto, épicos, MVP macro, restrições de negócio, glossário. **Zero citações técnicas.** Deve referenciar os documentos de negócio vinculados (Charter, BRD, Épicos). Pipeline: `PROMPT-GENERATE-UPSTREAM-ARCHITECTURE-DISCOVERY-PRD.md` → Gate → Fix → COMPLIANCE
@@ -94,20 +103,32 @@ PRD Discovery-Level — **documento de negócio puro** (briefing executivo do PM
 ### Fase 2 — DISCOVERY-LEVEL-ARCHITECTURE-DEFINITION.md 🆕
 Solution Architect — C4 Level 1 (System Context), containers macro, matriz de integração, ADRs de decisões arquiteturais (Kong↔Keycloak Service-ID, Trust Boundary, RLS, Multi-Tenant), riscos e estimativa de esforço. Pipeline: `PROMPT-GENERATE-UPSTREAM-ARCHITECTURE-DISCOVERY-ARCHITECTURE-DEFINITION.md` → Gate → Fix → COMPLIANCE
 
+> 📋 **Validação de Stack e Time:** Este prompt técnico coleta e valida `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK` com o usuário. As tecnologias propostas devem estar em conformidade com `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica documentada.
+
 ### Fase 3 — DISCOVERY-LEVEL-SECURITY-DEFINITION.md 🆕
 Security Architect — threat model high-level, requisitos de compliance (LGPD), estratégia de segurança macro (Kong como trust boundary, Cloudflare WAF, Keycloak IAM), riscos e estimativa de esforço. Pipeline: `PROMPT-GENERATE-UPSTREAM-ARCHITECTURE-DISCOVERY-SECURITY-DEFINITION.md` → Gate → Fix → COMPLIANCE
+
+> 📋 **Validação de Stack e Time:** Este prompt técnico coleta e valida `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK` com o usuário. As tecnologias propostas devem estar em conformidade com `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica documentada.
 
 ### Fase 4 — DISCOVERY-LEVEL-DATA-ARCHITECTURE-DEFINITION.md 🆕
 Data Architect — entidades macro, volumes estimados, estratégia de armazenamento (PostgreSQL + Redis + Object Storage), crescimento projetado, riscos e estimativa de esforço. Pipeline: `PROMPT-GENERATE-UPSTREAM-ARCHITECTURE-DISCOVERY-DATA-ARCHITECTURE-DEFINITION.md` → Gate → Fix → COMPLIANCE
 
+> 📋 **Validação de Stack e Time:** Este prompt técnico coleta e valida `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK` com o usuário. As tecnologias propostas devem estar em conformidade com `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica documentada.
+
 ### Fase 5 — DISCOVERY-LEVEL-DEVOPS-SRE-DEFINITION.md 🆕
 DevOps/SRE Architect — CI/CD (GitHub Actions), IaC (Terraform + Ansible), observabilidade (Prometheus + Grafana + Loki + Jaeger + OpenTelemetry + Elastic Stack), orquestração (K8s/Istio/Keda/Karpenter), SLOs, estimativa de esforço. Pipeline: `PROMPT-GENERATE-UPSTREAM-ARCHITECTURE-DISCOVERY-DEVOPS-SRE-DEFINITION.md` → Gate → Fix → COMPLIANCE
+
+> 📋 **Validação de Stack e Time:** Este prompt técnico coleta e valida `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK` com o usuário. As tecnologias propostas devem estar em conformidade com `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica documentada.
 
 ### Fase 6 — DISCOVERY-LEVEL-TEST-STRATEGY-DEFINITION.md 🆕
 Test Specialist — pirâmide de testes macro (unitário/integração/E2E/performance), ambientes de teste, quality gates, ferramentas (JUnit/Jest/Playwright/k6), riscos e estimativa de esforço. Pipeline: `PROMPT-GENERATE-UPSTREAM-ARCHITECTURE-DISCOVERY-TEST-STRATEGY-DEFINITION.md` → Gate → Fix → COMPLIANCE
 
+> 📋 **Validação de Stack e Time:** Este prompt técnico coleta e valida `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK` com o usuário. As tecnologias propostas devem estar em conformidade com `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica documentada.
+
 ### Fase 7 — DISCOVERY-LEVEL-INFRA-CLOUD-DEFINITION.md 🆕
 Infra/Cloud Specialist — provedor e topologia (DigitalOcean + Cloudflare), recursos estimados com custos, fluxo de acesso (Cloudflare → Kong → Backend), disaster recovery (RPO/RTO), riscos e estimativa de esforço. Pipeline: `PROMPT-GENERATE-UPSTREAM-ARCHITECTURE-DISCOVERY-INFRA-CLOUD-DEFINITION.md` → Gate → Fix → COMPLIANCE
+
+> 📋 **Validação de Stack e Time:** Este prompt técnico coleta e valida `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY` e `PROJECT-STACK` com o usuário. As tecnologias propostas devem estar em conformidade com `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. Tecnologias fora do padrão exigem justificativa técnica documentada.
 
 ### Fase 8 — DISCOVERY-LEVEL-SOLUTIONS-CATALOG.md 🆕
 Catálogo macro de soluções — nomes, tipos, propósito high-level. Pipeline: `PROMPT-GENERATE-UPSTREAM-ARCHITECTURE-DISCOVERY-SOLUTIONS-CATALOG.md` → Gate → Fix → COMPLIANCE
@@ -266,12 +287,31 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `upstrea
 
 ---
 
+## 📊 Diagramas de Fluxo (Flowchart)
+
+Os diagramas Mermaid completos do processo estão documentados em:
+
+📁 **`FLOWCHART-UPSTREAM-ARCHITECTURE-DISCOVERY.md`** — contém 5 diagramas:
+
+| # | Diagrama | Descrição |
+|---|---|---|
+| 1 | **Diagrama Macro** | Fluxo completo: Bootstrap → Bloco 0 → Bloco B → Bloco C → Bloco D → Governança, com todas as barreiras e decisões |
+| 2 | **Ciclo HITL** | O loop Generate → Gate → Fix → Human Validation que se repete em cada fase |
+| 3 | **Barreiras de Bloco** | Regras de validação de cada barreira (0, B, C, D) com critérios de COMPLIANCE/NÃO COMPLIANCE |
+| 4 | **Gate de Governança** | Decisão GO/NO-GO com os 4 componentes do Resumo Executivo |
+| 5 | **SIPOC** | Visão consolidada: Suppliers → Inputs → Process → Outputs → Customers |
+
+---
+
 ## Registro de Alterações do Documento
 
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 30/07/2026 | Criação inicial: roadmap de Upstream Architecture Discovery com 11 fases em 5 blocos + Gate de Governança GO/NO-GO. Baseado no DTA Framework V2. | Time de Arquitetura |
 | 1.1 | 30/07/2026 | Validação com projeto real PRJ-FIN-2026-0003: F1 ajustado para viés 100% negócio (zero citações técnicas); Bloco B alinhado com padrões corporativos (DigitalOcean, Cloudflare, Kong↔Keycloak Service-ID, stack SRE Prometheus/Loki/Jaeger/OTel, IaC Terraform/Ansible, Istio/Keda/Karpenter); skills discovery-process, project-document-discovery, product-discovery integrados ao orquestrador e fases; Barreira 0 valida ausência de citações técnicas; Barreira B valida padrões corporativos. | Time de Arquitetura |
+| 1.2 | 02/08/2026 | Adicionada seção 📊 Diagramas de Fluxo referenciando FLOWCHART-UPSTREAM-ARCHITECTURE-DISCOVERY.md com 5 diagramas Mermaid. | Time de Arquitetura |
+| 2.0 | 02/08/2026 | Adicionados 3 novos inputs opcionais: `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY`, `PROJECT-STACK`. Fase 0 Bootstrap: step 9 para coleta e validação. Fases 2-7: notas de validação de Stack e Time. Referência ao padrão corporativo `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md`. | Time de Arquitetura |
+| 2.1 | 03/08/2026 | Adicionada seção **Layout do Documento (Modelo Estrutural)** em todos os 11 prompts GENERATE (F1-F11). Cada layout descreve a estrutura esperada do artefato com seções, tabelas e placeholders, usando o documento existente em `PRJ-FIN-2026-0003-SAAS-FBSO-ORG/upstream-architecture-discovery/` como modelo de formato e organização. Placeholders como `{PROJECT_ID_NAME}`, `{DATA_ATUAL}`, `{NOME_DO_PRODUTO}` indicam onde os dados do projeto corrente devem ser injetados. | Time de Arquitetura |
 
 ---
 

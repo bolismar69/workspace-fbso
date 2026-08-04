@@ -2,9 +2,15 @@
 
 ## Contexto
 
-Este prompt implementa o **Gate de Validação da Definição de Segurança** para o artefato `UPSTREAM-ARCHITECTURE-DISCOVERY-SECURITY-DEFINITION.md`. Verifica se as regras de segurança do projeto estão alinhadas com o GLOBAL-SECURITY.md e cobrem todas as soluções.
+Este prompt implementa o **Gate de Validação da Definição de Segurança** para o artefato `{UPSTREAM_DISCOVERY_PATH}/UPSTREAM-ARCHITECTURE-DISCOVERY-SECURITY-DEFINITION.md`. Verifica se as regras de segurança do projeto estão alinhadas com o GLOBAL-SECURITY.md e cobrem todas as soluções.
 
 **Princípio fundamental:** As 3 Regras de Ouro do GLOBAL-SECURITY.md são inegociáveis. Qualquer violação resulta em NÃO COMPLIANCE automático.
+
+**Inputs upstream:**
+1. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SECURITY-DEFINITION.md` — artefato auditado (F3)
+2. `{SECURITY_GLOBAL}` — GLOBAL-SECURITY.md (regras de ouro corporativas)
+3. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-ARCHITECTURE-DEFINITION.md` — Definição de Arquitetura (F2)
+4. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SOLUTIONS-CATALOG.md` — Catálogo de Soluções (F8)
 
 ---
 
@@ -14,22 +20,45 @@ Este prompt implementa o **Gate de Validação da Definição de Segurança** pa
 |---|---|
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{TECHNICAL_DEFINITIONS_PATH}` | Caminho da pasta technical-definitions |
 | `{TECHNICAL_SOLUTION_PATH}` | Caminho base das soluções técnicas |
 | `{TECHNICAL_SOLUTION_NAMES}` | Lista de nomes das soluções técnicas do projeto |
 | `{ARCHITECTURE_GLOBAL}` | Caminho para a pasta de arquitetura global (ADRs, blueprints) |
 | `{SECURITY_GLOBAL}` | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) |
 | `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
-| `{PROJECT_PROMPT_INPUTS}` | (Opcional) Lista de caminhos para prompts auxiliares ou contextos adicionais |
+| `{PROJECT_PROMPT_INPUTS}` | (Diretiva) Checkpoint HITL: sempre solicitar ao usuário se deseja fornecer informações adicionais ou novos direcionamentos via prompt |
+| `{PROJECT-TEAM-SKILLS-MAP}` | Skills do time (obter e validar com usuário) |
+| `{PROJECT-TEAM-CAPACITY}` | Capacidade esperada do time (obter e validar com usuário) |
+| `{PROJECT-STACK}` | Stack tecnológica. Baseline: `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md` |
 
-**Arquivos gerados pelo GENERATE:** `UPSTREAM-ARCHITECTURE-DISCOVERY-SECURITY-DEFINITION.md`
+### Variáveis Derivadas (calculadas automaticamente)
+
+```
+PROJECT_COMPLETE_PATH_NAME    = PROJECT_PATH + "/" + PROJECT_ID_NAME
+UPSTREAM_DISCOVERY_PATH       = PROJECT_COMPLETE_PATH_NAME + "/upstream-architecture-discovery"
+```
+
+**Arquivos gerados pelo GENERATE:** `{UPSTREAM_DISCOVERY_PATH}/UPSTREAM-ARCHITECTURE-DISCOVERY-SECURITY-DEFINITION.md`
 
 ---
 
 ## Fluxo de Execução
 
+### Passo 0 — Validação de Parâmetros
+Confirmar os parâmetros de entrada recebidos e seu foco:
+- `PROJECT_PATH={PROJECT_PATH}` — base dos projetos de negócio
+- `PROJECT_ID_NAME={PROJECT_ID_NAME}` — identificador do projeto
+- `SECURITY_GLOBAL={SECURITY_GLOBAL}` — documento de segurança global
+- `PROJECT_DOCUMENTS_INPUTS` — documentos adicionais (se fornecidos)
+- `PROJECT_PROMPT_INPUTS` — solicitar input adicional do usuário (checkpoint HITL)
+- `PROJECT-TEAM-SKILLS-MAP`, `PROJECT-TEAM-CAPACITY`, `PROJECT-STACK` — se fornecidos
+Validar que o artefato auditado `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SECURITY-DEFINITION.md` e `{SECURITY_GLOBAL}` existem.
+
 ### Passo 1 — Carregar Documentos Base
-Ler `UPSTREAM-ARCHITECTURE-DISCOVERY-SECURITY-DEFINITION.md`, GLOBAL-SECURITY.md, Architecture Definition, Catálogo de Soluções.
+Confirmar leitura dos seguintes artefatos:
+1. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SECURITY-DEFINITION.md` — artefato auditado (F3)
+2. `{SECURITY_GLOBAL}` — GLOBAL-SECURITY.md (referência normativa)
+3. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-ARCHITECTURE-DEFINITION.md` — Definição de Arquitetura (F2)
+4. `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SOLUTIONS-CATALOG.md` — Catálogo de Soluções (F8)
 
 ### Passo 2 — Executar Dimensões de Validação
 
@@ -54,6 +83,15 @@ Ler `UPSTREAM-ARCHITECTURE-DISCOVERY-SECURITY-DEFINITION.md`, GLOBAL-SECURITY.md
 | 3.1 | Pipeline DevSecOps | SAST, SCA, Secret Scanning configurados |
 | 3.2 | Matriz de compliance | LGPD, PCI, SOC2 mapeados por solução |
 | 3.3 | Controles acionáveis | Cada controle: o quê, quem, como verificar |
+
+#### Dimensão 4: Alinhamento com Stack Corporativa e Time
+
+| # | Verificação | Critério |
+|---|---|---|
+| 4.1 | Skills mapeados | Skills necessários para esta disciplina estão documentados no artefato |
+| 4.2 | Capacidade estimada | Capacidade do time está dimensionada proporcionalmente à complexidade |
+| 4.3 | Stack corporativa | Tecnologias propostas constam no `STACK-PADROES-CORPORATIVOS-FBSO-ORG.md` |
+| 4.4 | Tecnologias adicionais | Tecnologias fora do padrão corporativo têm justificativa técnica documentada e aprovada |
 
 ### Passo 3 — Emitir Veredito
 
@@ -128,6 +166,22 @@ Por favor, responda às seguintes perguntas para podermos prosseguir ou reajusta
 | 1.0 | 25/07/2026 | Criação inicial: gate de validação da definição de segurança | Time de Arquitetura |
 | 2.0 | 28/07/2026 | Refatoração: adoção do padrão HITL com 3 perguntas obrigatórias e veredito binário | Time de Arquitetura |
 | 3.0 | 30/07/2026 | Atualização F4→F8: orquestração redirecionada para Fase 9 (DATA-ARCHITECTURE-DEFINITION) | Time de Arquitetura |
+
+---
+
+## Arquivos Utilizados na Tarefa
+
+| # | Arquivo | Propósito |
+|---|---|---|
+| 1 | `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SECURITY-DEFINITION.md` | Artefato auditado (F3) |
+| 2 | `{SECURITY_GLOBAL}` | GLOBAL-SECURITY.md — regras de ouro |
+| 3 | `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-ARCHITECTURE-DEFINITION.md` | Definição de Arquitetura (F2) |
+| 4 | `{UPSTREAM_DISCOVERY_PATH}/DISCOVERY-LEVEL-SOLUTIONS-CATALOG.md` | Catálogo de Soluções (F8) |
+| 5 | `{PROJECT_DOCUMENTS_INPUTS}` | Documentos adicionais (se fornecidos) |
+| 6 | `{PROJECT_PROMPT_INPUTS}` | Checkpoint HITL — input adicional do usuário |
+| 7 | `{PROJECT-TEAM-SKILLS-MAP}` | Skills do time (obter e validar com usuário) |
+| 8 | `{PROJECT-TEAM-CAPACITY}` | Capacidade esperada do time (obter e validar com usuário) |
+| 9 | `{PROJECT-STACK}` | Stack tecnológica. Baseline: `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md` |
 
 ---
 
