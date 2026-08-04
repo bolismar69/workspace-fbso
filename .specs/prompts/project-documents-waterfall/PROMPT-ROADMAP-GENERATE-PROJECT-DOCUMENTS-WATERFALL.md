@@ -167,18 +167,13 @@ Verificar existência e status de cada um dos 20 documentos. Para arquivos exist
 |---|---|---|
 | 1 | PROJECT-CHARTER | `01-PROJECT-CHARTER-{PROJECT_ID_NAME}.md` |
 
-### FASE 2 — PLANEJAMENTO E REQUISITOS
+### FASE 2 — REQUISITOS
 
 | # | Documento | Arquivo |
 |---|---|---|
 | 2 | BRD | `02-BRD-{PROJECT_ID_NAME}.md` |
 | 3 | SRS | `03-SRS-{PROJECT_ID_NAME}.md` |
 | 4 | RTM | `04-RTM-{PROJECT_ID_NAME}.md` |
-| 5 | EAP/WBS | `05-EAP-WBS-{PROJECT_ID_NAME}.md` |
-| 6 | Cronograma/Gantt | `06-CRONOGRAMA-GANTT-{PROJECT_ID_NAME}.md` |
-| 7 | Orçamento | `07-ORCAMENTO-{PROJECT_ID_NAME}.md` |
-| 8 | Plano de Comunicação | `08-PLANO-COMUNICACAO-{PROJECT_ID_NAME}.md` |
-| 9 | Plano de Riscos | `09-PLANO-RISCOS-{PROJECT_ID_NAME}.md` |
 
 ### FASE 3 — DESIGN E ARQUITETURA
 
@@ -196,7 +191,17 @@ Verificar existência e status de cada um dos 20 documentos. Para arquivos exist
 | 14 | TEST-CASES | `14-TEST-CASES-{PROJECT_ID_NAME}.md` |
 | 15 | Relatório de Qualidade | `15-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md` |
 
-### FASE 5 — IMPLANTAÇÃO E ENCERRAMENTO
+### FASE 5 — PLANEJAMENTO (pós-arquitetura e testes)
+
+| # | Documento | Arquivo |
+|---|---|---|
+| 5 | EAP/WBS | `05-EAP-WBS-{PROJECT_ID_NAME}.md` |
+| 6 | Cronograma/Gantt | `06-CRONOGRAMA-GANTT-{PROJECT_ID_NAME}.md` |
+| 7 | Orçamento | `07-ORCAMENTO-{PROJECT_ID_NAME}.md` |
+| 8 | Plano de Comunicação | `08-PLANO-COMUNICACAO-{PROJECT_ID_NAME}.md` |
+| 9 | Plano de Riscos | `09-PLANO-RISCOS-{PROJECT_ID_NAME}.md` |
+
+### FASE 6 — IMPLANTAÇÃO E ENCERRAMENTO
 
 | # | Documento | Arquivo |
 |---|---|---|
@@ -352,9 +357,9 @@ Cada GENERATE recebe em `UPSTREAM_DOCS` a lista de documentos anteriores que já
 | 2 | BRD | `[01-PROJECT-CHARTER]` |
 | 3 | SRS | `[01-PROJECT-CHARTER, 02-BRD]` |
 | 4 | RTM | `[01-PROJECT-CHARTER, 02-BRD, 03-SRS]` |
-| 5 | EAP/WBS | `[01-PROJECT-CHARTER, 02-BRD]` |
-| 6 | Cronograma/Gantt | `[01-PROJECT-CHARTER, 05-EAP-WBS]` |
-| 7 | Orçamento | `[01-PROJECT-CHARTER, 05-EAP-WBS, 06-Cronograma]` |
+| 5 | EAP/WBS | `[01-PROJECT-CHARTER, 12-LLD, 14-TEST-CASES]` |
+| 6 | Cronograma/Gantt | `[01-PROJECT-CHARTER, 05-EAP-WBS, 14-TEST-CASES]` |
+| 7 | Orçamento | `[01-PROJECT-CHARTER, 05-EAP-WBS, 06-Cronograma, 13-TEST-PLAN]` |
 | 8 | Plano de Comunicação | `[01-PROJECT-CHARTER]` |
 | 9 | Plano de Riscos | `[01-PROJECT-CHARTER]` |
 | 10 | SAD | `[01-PROJECT-CHARTER, 02-BRD, 03-SRS]` |
@@ -373,14 +378,20 @@ Cada GENERATE recebe em `UPSTREAM_DOCS` a lista de documentos anteriores que já
 
 ## EFEITOS CASCATA
 
-Quando um documento já em COMPLIANCE é modificado:
+Quando um documento já em COMPLIANCE é modificado, todos os documentos downstream que dependem dele devem ser regenerados e revalidados. A ordem de dependência agora segue: **Requisitos → Arquitetura → Testes → Planejamento → Deploy**.
 
-| Se modificar... | Regenerar e revalidar... |
+| Se modificar... | Impacta (regenerar + revalidar)... |
 |---|---|
-| 01-PROJECT-CHARTER | Documentos 2-20 (19 docs) |
-| 02-BRD | Documentos 3-20 (18 docs downstream do BRD) |
-| 10-SAD | Documentos 11-20 (10 docs downstream do SAD) |
-| (regra geral) | Todos os documentos com numeração maior que dependem do modificado |
+| 01-PROJECT-CHARTER | Todos os 19 documentos downstream |
+| 02-BRD | 03-SRS, 04-RTM, 10-SAD, 11-HLD, 12-LLD, 13-TEST-PLAN, 14-TEST-CASES, 05-EAP, 06-Cronograma, 07-Orçamento, 16-DEPLOYMENT-PLAN, 17-Manuais, 19-Termo |
+| 10-SAD | 11-HLD, 12-LLD, 13-TEST-PLAN, 16-DEPLOYMENT-PLAN, 18-Manuais Ops |
+| 12-LLD | 13-TEST-PLAN, 14-TEST-CASES, **05-EAP**, **06-Cronograma**, **07-Orçamento**, 16-DEPLOYMENT-PLAN |
+| 13-TEST-PLAN | 14-TEST-CASES, 15-Relatório, **05-EAP**, **06-Cronograma**, **07-Orçamento**, 19-Termo Aceite |
+| 14-TEST-CASES | 15-Relatório, **05-EAP**, **06-Cronograma** |
+| 05-EAP/WBS | 06-Cronograma, 07-Orçamento |
+| (regra geral) | Todos os documentos listados como UPSTREAM_DOCS do modificado e seus dependentes transitivos |
+
+**Destaque:** A alteração mais impactante é no 12-LLD, que agora cascateia para Planejamento (EAP, Cronograma, Orçamento) via Testes. Modificações no design de baixo nível ou nos planos de teste **exigem reestimativa de esforço, prazo e custo**.
 
 **Ação:** Alertar o humano, listar documentos afetados, perguntar: (A) regeneração completa, ou (B) marcar como "potencialmente desatualizados."
 

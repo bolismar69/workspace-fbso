@@ -1,12 +1,12 @@
 # Manuais Operacionais: Plataforma Shield
-## [STATUS: COMPLIANCE]
+## [STATUS: Em revisão]
 
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Documentos Base** | 01-PROJECT-CHARTER, 10-SAD, 16-DEPLOYMENT-PLAN |
-| **Stack** | DOKS + Istio + Kong + Argo CD + PostgreSQL + Redis |
-| **Data** | 03/08/2026 | **Versão** | 1.0 | **Metodologia** | WATERFALL |
+| **Stack** | DOKS + Kong + Shield + Istio + Argo CD + PostgreSQL + Redis |
+| **Data** | 03/08/2026 | **Versão** | 2.0 — Revisão Integração | **Metodologia** | WATERFALL |
 
 ---
 
@@ -14,72 +14,63 @@
 
 ```mermaid
 flowchart TB
-    CF["Cloudflare — DNS + WAF"] --> Kong["Kong Gateway — /auth/*"]
-    Kong --> Istio["Istio — mTLS"]
-    Istio --> BFF["Shield BFF Pods — 2:50"]
-    BFF --> KC["Keycloak — StatefulSet 2 pods"]
-    BFF --> PG["PostgreSQL HA — 2 nodes"]
-    BFF --> Redis["Redis Managed"]
-    Argo["Argo CD — GitOps Sync"] -.-> BFF
-    KEDA["KEDA — Autoscaling"] -.-> BFF
-    Prometheus --> Grafana
-    BFF -.-> Prometheus
+    CF["Cloudflare — DNS + WAF + Proxy"] --> SPA["App Platform — SPA Estática"]
+    SPA -.->|"GET /api/*"| CF
+    CF --> Kong["Kong Gateway"]
+    Kong -->|"POST /internal/session/validate"| Shield["Shield BFF Pods — 2:50\nSessionFilter + JWT Injector"]
+    Shield --> Redis["Redis — Session Store"]
+    Shield -.->|"302"| KC["Keycloak — 2 pods"]
+    Shield -->|"Injeta Authorization: Bearer JWT"| Kong
+    Kong -->|"JWT"| MS["Microserviços Negócio"]
+    MS --> PG["PostgreSQL HA — RLS"]
+    Argo["Argo CD"] -.-> Shield
+    KEDA["KEDA"] -.-> Shield
 ```
 
 ## 2. Runbooks
 
-| Operação | Procedimento | Comando | Tempo |
-|----------|-------------|---------|-------|
-| **Health Check** | Verificar status dos pods | `kubectl get pods -n shield-system` | < 30s |
-| **Restart Shield BFF** | Rolling restart dos pods | `kubectl rollout restart deployment/ms-shield-identity-auth -n shield-system` | < 2min |
-| **Scale Up Manual** | Aumentar réplicas (emergência) | `kubectl scale deployment/ms-shield-identity-auth --replicas=10 -n shield-system` | < 30s |
-| **View Logs** | Visualizar logs do BFF | `kubectl logs -l app=shield-bff -n shield-system --tail=100` | < 10s |
-| **Check RLS** | Verificar política de tenant ativa | `SELECT tablename, policyname FROM pg_policies WHERE schemaname='shield'` | < 5s |
-| **Flush Redis Cache** | Limpar cache de mapeamento | `redis-cli -h $REDIS_HOST FLUSHDB` | < 1s |
-| **View Metrics** | Dashboard Grafana Shield | `https://grafana.fbso.org/d/shield-overview` | — |
+| Operação | Procedimento | Comando |
+|----------|-------------|---------|
+| **Health Check — Shield** | Verificar status dos pods | `kubectl get pods -n shield-system` |
+| **Health Check — Kong+Shield** | Testar validação de sessão | `curl -s -b "SHIELD_SESSION=test" -w "%{http_code}" http://kong-admin:8001/...` |
+| **Verificar sessões ativas no Redis** | Contar chaves de sessão | `redis-cli -h $REDIS_HOST --scan --pattern 'session:*' \| wc -l` |
+| **Invalidar sessão específica** | Remover chave do Redis | `redis-cli -h $REDIS_HOST DEL session:<session_id>` |
+| **Restart Shield** | Rolling restart | `kubectl rollout restart deployment/ms-shield-identity-auth -n shield-system` |
+| **Verificar Kong routes** | Listar rotas configuradas | `curl -s http://kong-admin:8001/routes \| jq '.data[].name'` |
+| **Verificar Redis connectivity** | Testar conexão Shield→Redis | `kubectl exec -n shield-system deploy/ms-shield-identity-auth -- redis-cli -h $REDIS_HOST PING` |
 
 ## 3. Alert & Escalation Procedures
 
 | Alerta | Severity | Procedimento | Escalar para |
 |--------|---------|-------------|-------------|
-| Shield BFF pod CrashLoop | Critical | `kubectl describe pod` → verificar logs → restart | DevOps on-call |
-| Latência p95 > 50ms | Warning | Verificar carga no Redis/PostgreSQL; verificar KEDA scaling | DevOps |
-| Erro > 1% por 5min | Critical | Verificar dependências (Keycloak, PostgreSQL, Redis); preparar rollback | DevOps + Tech Lead |
-| Cross-Tenant alert (QA) | Critical | War room imediata; blocker de deploy | Tech Lead + IAM + QA |
-| Certificado TLS expirando | Warning | Renovar no Cloudflare/Kong | DevOps |
-| PostgreSQL low disk space | Warning | Verificar retenção de logs; escalar storage | DevOps + DBA |
+| Shield pod CrashLoop | Critical | `kubectl describe pod` → logs → restart | DevOps on-call |
+| **Kong→Shield validation timeout** | Critical | Verificar latência Shield; verificar Redis; checar network policy | DevOps + Tech Lead |
+| **Redirect loop detectado** (302 → 302 → ...) | Critical | Cookie não está sendo setado. Verificar flags HttpOnly/Secure/SameSite. Verificar domínio do cookie | DevOps + Tech Lead |
+| **JWT injection failure** (MS recebe sem Authorization) | Critical | Shield SessionFilter retornando INJECT mas Kong não injetando. Verificar Kong plugin config | DevOps |
+| Latência Shield p95 > 50ms | Warning | Verificar Redis latency; verificar KEDA scaling | DevOps |
+| Redis memory > 75% | Warning | Aumentar TTL de sessões ou escalar instância | DevOps |
+| **Frontend recebe JWT no body** | Critical | Regressão de segurança. Rollback imediato. Verificar Kong plugin | Tech Lead + IAM + DevOps |
 
 ## 4. Disaster Recovery Runbook
 
 | Cenário | RPO | RTO | Procedimento |
 |---------|-----|-----|-------------|
-| Falha de 1 nó DOKS | 0 (stateless) | < 5min | KEDA reescala pods em nó saudável; sem ação manual |
-| Falha de 2+ nós DOKS | 0 | < 15min | DOKS auto-recovery; verificar node pool |
-| Falha PostgreSQL primário | < 1h (backup autom.) | < 30min | Failover automático para réplica (HA); verificar aplicação |
-| Perda total região DO | < 24h | < 4h | 1. Terraform apply nova região; 2. Restore PostgreSQL backup; 3. Repopular Redis; 4. Apontar Cloudflare DNS |
-| Deleção acidental de schema | < 1h | < 30min | PITR (Point-in-Time Recovery) do PostgreSQL |
+| Falha do Shield (todos pods down) | 0 (stateless, JWT no Redis) | < 2min | KEDA/Kubernetes reescala pods. Kong retorna 503 até Shield recuperar |
+| Falha do Redis | 0 (cache local TTL curto) | < 5min | Shield opera com cache local em memória. Restaurar Redis. Sessões perdidas → usuários refazem login |
+| **Kong+Shield dessincronizados** (rotas erradas) | 0 | < 5min | Argo CD rollback para última configuração válida do Kong |
+| Perda total região DO | < 24h | < 4h | Terraform apply + restore PostgreSQL + Redis + Kong config |
 
 ## 5. Maintenance Procedures
 
 | Procedimento | Frequência | Janela | Impacto |
 |-------------|-----------|--------|---------|
-| Atualização de imagem Shield BFF | Por release | Qualquer (RollingUpdate) | Zero downtime |
-| Atualização Keycloak | Mensal | Domingo 02:00-04:00 | Indisponibilidade de login (~5min) |
-| PostgreSQL minor upgrade | Conforme DO agenda | Janela de manutenção DO | Zero (HA failover) |
-| Rotação de secrets (client secrets, DB passwords) | Trimestral | Sábado 22:00-23:00 | Rolling restart necessário |
-| Limpeza de sessões expiradas | Semanal (automatizado) | N/A | Zero |
-| Teste de DR | Trimestral | Sábado 08:00-12:00 | Nenhum (ambiente isolado) |
-
-## 6. Capacity Planning Guide
-
-| Métrica | Threshold | Ação |
-|---------|----------|------|
-| CPU pods > 70% | 3+ réplicas | Revisar KEDA thresholds |
-| Memória pods > 40MB | Normal (Native) | Alerta se > 80MB |
-| Conexões PostgreSQL > 80% pool | PgBouncer configurado | Aumentar pool size |
-| Redis memory > 75% | Configurado 2GB | Aumentar instância ou TTL |
-| Sessões ativas > 1000 | Verificar comportamento | Considerar sharding de tenant |
+| Atualização Shield BFF | Por release | Qualquer (RollingUpdate) | Zero downtime. Sessões no Redis preservadas |
+| **Atualização Kong config (rotas/plugins)** | Por release | Qualquer | RollingUpdate do Kong. Sessões preservadas |
+| Atualização Keycloak | Mensal | Domingo 02:00-04:00 | ~5min indisponibilidade de login. Sessões ativas mantidas |
+| Rotação de secrets (Redis password, client secrets) | Trimestral | Sábado 22:00 | Rolling restart do Shield necessário |
+| Limpeza de sessões expiradas | Automático (TTL Redis) | N/A | Zero |
+| Teste de DR | Trimestral | Sábado 08:00-12:00 | Ambiente isolado |
 
 ---
 
-**[STATUS: SUCESSO]** — Manual com 6 seções: diagrama ops, 7 runbooks, 6 alertas, 5 cenários DR, 6 manutenções, 5 métricas de capacidade.
+**[STATUS: SUCESSO]** — Manual operacional atualizado com runbooks Kong+Shield, alertas de redirect loop e JWT injection failure, DR para dessincronização Kong+Shield.

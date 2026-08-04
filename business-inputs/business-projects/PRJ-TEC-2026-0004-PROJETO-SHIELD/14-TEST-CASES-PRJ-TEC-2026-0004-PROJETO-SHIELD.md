@@ -1,98 +1,105 @@
 # Casos de Teste: PROJETO SHIELD
-## [STATUS: COMPLIANCE]
+## [STATUS: Em revisão]
 
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Documentos Base** | 01-PROJECT-CHARTER, 03-SRS, 13-TEST-PLAN |
 | **Solução Técnica** | ms-shield-identity-auth |
-| **Data** | 03/08/2026 | **Versão** | 1.0 | **Metodologia** | WATERFALL |
+| **Data** | 03/08/2026 | **Versão** | 2.0 — Revisão Integração | **Metodologia** | WATERFALL |
 
 ---
 
 ## 1. Test Case Catalog
 
-| ID | Feature (SRS) | Precondition | Steps | Expected Result | Postcondition | Priority |
-|----|-------------|-------------|-------|----------------|--------------|----------|
-| TC-001 | F-01 — Reconhecimento | Redis com mapeamento `escola-alfa.com` → `realm-escola-alfa` | 1. GET /auth/login com header `X-Tenant-Host: escola-alfa.com` 2. Verificar response | 302 redirect para Keycloak `/realms/realm-escola-alfa/...` | Browser redirecionado | High |
-| TC-002 | F-01 — Domínio não mapeado | Redis sem mapeamento para `desconhecido.com` | 1. GET /auth/login com header `X-Tenant-Host: desconhecido.com` | 401 com mensagem padronizada, sem detalhes internos | — | High |
-| TC-003 | F-02 — Login PKCE | Tenant `escola-alfa` ativo | 1. Seguir redirect 302 do TC-001 2. Login no Keycloak com credenciais válidas 3. Callback com code | 302 para /app; cookies setados com HttpOnly, Secure, SameSite=Strict | Sessão criada no PostgreSQL | High |
-| TC-004 | F-02 — Cookies inacessíveis via JS | Sessão ativa após TC-003 | 1. No browser: `document.cookie` 2. No browser: `fetch('/auth/me')` com `credentials: 'include'` | `document.cookie` não retorna tokens; `/auth/me` retorna perfil | — | High |
-| TC-005 | F-02 — PKCE state inválido | — | 1. GET /auth/callback?code=xyz&state=invalid | 401 — state não confere (CSRF bloqueado) | — | High |
-| TC-006 | F-03 — Perfil do Usuário | Sessão ativa | 1. GET /auth/me com cookie de sessão válido | 200 {user_id, email, roles, tenant_id}. Latência <15ms | — | High |
-| TC-007 | F-03 — Refresh Token | Sessão ativa, refresh_token não expirado | 1. POST /auth/refresh com cookie refresh_token | 200; novos cookies setados; expires_in > 0 | Sessão estendida | Medium |
-| TC-008 | F-03 — Refresh Token expirado | Sessão expirada (>30min inativa) | 1. POST /auth/refresh com cookie refresh_token expirado | 401; redirecionar para /auth/login | Sessão terminada | Medium |
-| TC-009 | F-03 — Logout | Sessão ativa | 1. POST /auth/logout | 200; cookies limpos (Max-Age=0); sessão Keycloak invalidada | Sessão destruída | High |
-| TC-010 | F-03 — Logout com Keycloak indisponível | Sessão ativa, Keycloak inacessível | 1. Simular Keycloak down 2. POST /auth/logout | 200; cookies locais limpos mesmo sem Keycloak | Cookies limpos | Medium |
-| TC-011 | F-04 — Cross-Tenant Block | Tenant A (escola-alfa) logado, dados Tenant B no banco | 1. GET /api/dados com token Tenant A 2. Query filtra por escola=B | 200 {data: []} — 0 linhas retornadas | Sem vazamento | Critical |
-| TC-012 | F-04 — Same-Tenant OK | Tenant A logado, dados Tenant A no banco | 1. GET /api/dados com token Tenant A 2. Query filtra por escola=A | 200 {data: [...]} — dados retornados | — | Critical |
-| TC-013 | F-08 — Suspensão de Tenant | Tenant `escola-alfa` ativo, depois suspenso | 1. GET /auth/me → 200 2. Marcar tenant como suspenso 3. GET /auth/me | 403 — acesso bloqueado em <1s | Sessão revogada | High |
-| TC-014 | F-08 — Sessões ativas revogadas | Tenant com 10 sessões ativas, depois suspenso | 1. Criar 10 sessões 2. Suspender tenant 3. Todas as 10 chamadas /auth/me | 403 em todas as 10 | Todas sessões revogadas | High |
+| ID | Cenário | Precondition | Steps | Expected Result | Priority |
+|----|---------|-------------|-------|----------------|----------|
+| TC-001 | **SPA carrega sem sessão → API interceptada → redirect Keycloak** | Redis com mapeamento `escola-alfa.com` → `realm-escola-alfa`. Zero cookies | 1. SPA faz GET /api/v1/alunos (sem cookie) 2. Kong encaminha para Shield | 302 → Keycloak /realms/realm-escola-alfa/auth | High |
+| TC-002 | **Host não mapeado → 401** | Redis sem mapeamento para `desconhecido.com` | 1. SPA faz GET /api/v1/alunos com header Host: desconhecido.com | 401 — "Domínio não configurado", sem detalhes internos | High |
+| TC-003 | **Login completo via Keycloak → cookie setado → JWT no Redis** | Tenant ativo. Zero cookies | 1. Seguir redirect 302 do TC-001 2. Login no Keycloak 3. Callback processado pelo Shield | 302 → escola-alfa.com. Cookie SHIELD_SESSION setado: HttpOnly, Secure, SameSite=Strict. JWT armazenado no Redis | High |
+| TC-004 | **Cookie válido → Kong+Shield injetam JWT → MS recebe Authorization** | Sessão ativa (TC-003) | 1. SPA faz GET /api/v1/alunos (com cookie SHIELD_SESSION) 2. Kong → Shield valida 3. Shield recupera JWT do Redis → injeta header 4. MS recebe requisição | MS recebe GET /api/v1/alunos com header `Authorization: Bearer <JWT>`. Claims: tenant_id, roles, user_id | High |
+| TC-005 | **Frontend NUNCA vê o JWT** | Sessão ativa | 1. No browser: `document.cookie` 2. No browser: inspecionar todas as responses de API | `document.cookie` não retorna SHIELD_SESSION (HttpOnly). Nenhuma response contém JWT no body ou headers | Critical |
+| TC-006 | **Cookie expirado → refresh OK → novo JWT** | Sessão com access_token expirado, refresh_token válido | 1. SPA faz GET /api/v1/alunos (cookie com sessão expirada) 2. Shield tenta refresh | 200. Novo JWT armazenado no Redis. MS recebe Authorization header com novo token | Medium |
+| TC-007 | **Cookie expirado → refresh falhou → redirect Keycloak** | Sessão totalmente expirada (>30min) | 1. SPA faz GET /api/v1/alunos (cookie expirado) 2. Shield tenta refresh → Keycloak retorna 400 | 302 → Keycloak /auth. Cookie de sessão removido | Medium |
+| TC-008 | **Logout → sessão removida do Redis** | Sessão ativa | 1. SPA remove cookie local 2. Próxima chamada API → Shield detecta cookie ausente → 302 Keycloak. Sessão anterior expira no Redis por TTL | Usuário redirecionado para login. JWT anterior inacessível | High |
+| TC-009 | **Cross-Tenant Block — MS recebe JWT tenant A, query dados tenant B** | Tenant A logado, dados Tenant B no banco | 1. Shield injeta JWT com tenant_id=A 2. MS faz GET /api/v1/dados?escola=B 3. MS executa SET LOCAL app.current_tenant = 'A' 4. PostgreSQL RLS filtra | 200 {data: []} — 0 linhas retornadas. Sem vazamento | Critical |
+| TC-010 | **Same-Tenant OK — MS recebe JWT tenant A, query dados tenant A** | Tenant A logado | 1. Shield injeta JWT tenant_id=A 2. MS faz GET /api/v1/dados?escola=A | 200 {data: [...]} — dados do tenant A retornados | Critical |
+| TC-011 | **JWT forjado/tampered → Kong rejeita** | — | 1. Enviar GET /api/v1/alunos com header `Authorization: Bearer <jwt_invalido>` (sem passar pelo Shield) | 401 — assinatura JWT inválida. Kong rejeita antes de chegar ao MS | High |
+| TC-012 | **Tenant suspenso → Shield bloqueia** | Tenant `escola-alfa` suspenso | 1. SPA com cookie SHIELD_SESSION do tenant suspenso 2. Shield valida → tenant_id está suspenso | 403 — acesso bloqueado. Cookie invalidado | High |
+| TC-013 | **KEDA escala Shield sob carga** | 200+ req/s simultâneas | 1. Disparar 200+ req/s para /api/v1/alunos com cookies válidos 2. Observar KEDA ScaledObject | Shield escala 2→N pods. Zero erros 5xx. Latência p95 <15ms | Medium |
+| TC-014 | **Redis indisponível → Shield degrada com cache local** | Redis fora do ar | 1. Derrubar Redis 2. SPA faz GET /api/v1/alunos com cookie válido | Shield valida JWT localmente (cache em memória, TTL curto). Alerta Prometheus disparado. 200 OK | Medium |
+
+---
 
 ## 2. Happy Path Cases
 
-| Fluxo | Passos | Resultado Esperado |
-|-------|--------|-------------------|
-| Acesso normal | Acessar app → redirecionar login → autenticar → usar app → sair | Login transparente, sessão mantida, logout completo |
-| Renovação silenciosa | Usar app por 2h sem fechar | Sessão renovada automaticamente, sem novas interações de login |
-| Onboarding novo cliente | Provisionar Realm + DNS + Redis → validar acesso | Novo cliente funcional em <4h |
+| Fluxo | Gatilho | Resultado Esperado |
+|-------|---------|-------------------|
+| Acesso normal | SPA faz chamada API. Kong+Shield injetam JWT. MS responde | Usuário não percebe autenticação — transparente |
+| Primeiro acesso | SPA chamada API sem cookie → redirect Keycloak → login → callback → cookie setado | Usuário vê tela de login uma vez. Depois sessão automática |
+| Renovação silenciosa | Cookie com JWT expirado → Shield faz refresh → novo JWT no Redis | Sessão estendida sem intervenção do usuário |
 
 ## 3. Edge Cases
 
 | Cenário | Condição | Resultado Esperado |
 |---------|---------|-------------------|
-| Cache Redis vazio | Primeiro acesso após restart do Redis | Fallback para consulta Keycloak; cache repopulado |
-| Dois tenants mesmo domínio | Configuração incorreta | Erro na validação de unicidade; provisionamento bloqueado |
-| Cookie corrompido | Cookie alterado manualmente | 401 — sessão inválida; redirecionar login |
-| Concorrência de refresh | 2 chamadas simultâneas POST /auth/refresh | Ambas retornam 200; apenas 1 novo token válido |
+| Cache Redis vazio | Primeiro acesso após restart | Host resolvido via fallback Keycloak; cache repopulado |
+| Cookie corrompido | SHIELD_SESSION alterado manualmente | 302 → Keycloak login (cookie inválido = sem sessão) |
+| Concorrência de refresh | 2 chamadas simultâneas com cookie expirado | Ambas recebem novo JWT; apenas 1 session_id prevalece |
+| SPA em múltiplas abas | 2 abas da mesma escola | Compartilham cookie SHIELD_SESSION — ambas funcionam |
 
 ## 4. Negative Test Cases
 
 | Cenário | Ação | Resultado Esperado |
 |---------|------|-------------------|
-| Code OIDC reutilizado | /auth/callback com mesmo code 2x | 1ª OK, 2ª 401 (code já consumido) |
-| Token expirado manual | POST /auth/me com cookie de token expirado | 401 |
-| SQL Injection no redirect_uri | GET /auth/login?redirect_uri=javascript:alert(1) | 400 — input sanitizado |
-| Header X-Tenant-Host forjado | Forjar header sem passar pela Cloudflare | Rejeitado — IP de origem não é Cloudflare |
+| Header Authorization forjado | Enviar JWT falso diretamente para MS (bypass Kong) | Topologia impede — MS só recebe tráfego do Kong (network policy) |
+| Tentativa de ler cookie via JS | `document.cookie` no console | Cookie SHIELD_SESSION não aparece (HttpOnly) |
+| Replay de callback OIDC | /auth/callback com mesmo code 2x | 1ª OK, 2ª 401 (code já consumido) |
+| SQL Injection no host header | Header X-Tenant-Host com SQL injection | Input sanitizado antes da consulta Redis |
 
 ## 5. Gherkin Scenarios
 
 ```gherkin
-Feature: Login Multi-Tenant
-  Como usuário de uma escola
-  Quero fazer login no sistema da minha instituição
-  Para acessar as funcionalidades do produto
+Feature: Autenticação Transparente via Kong+Shield
+  Como SPA frontend
+  Quero fazer chamadas de API normalmente
+  Para que a autenticação seja gerenciada pelo Kong+Shield sem meu conhecimento
 
-  Scenario: Login bem-sucedido com reconhecimento automático de tenant
-    Given que o domínio "escola-alfa.com" está mapeado para o Realm "realm-escola-alfa"
-    When eu acesso "https://escola-alfa.com/app"
-    Then sou redirecionado para a tela de login da Escola Alfa
-    When informo minhas credenciais corretas
-    Then sou redirecionado para a aplicação
-    And minha sessão está ativa e protegida por cookies HttpOnly
+  Scenario: Primeira visita — API interceptada, login via Keycloak
+    Given que não tenho cookie SHIELD_SESSION
+    When faço GET /api/v1/alunos
+    Then recebo 302 para a tela de login do Keycloak da minha escola
+    When autentico com sucesso
+    Then recebo cookie SHIELD_SESSION HttpOnly
+    And minhas próximas chamadas API recebem os dados normalmente
 
-  Scenario: Acesso entre tenants é bloqueado
+  Scenario: Sessão ativa — JWT injetado transparentemente
+    Given que tenho cookie SHIELD_SESSION válido
+    When faço GET /api/v1/alunos
+    Then recebo 200 com os dados da minha escola
+    And em nenhum momento vejo o JWT no frontend
+
+  Scenario: Isolamento entre tenants
     Given que estou logado na Escola Alfa
-    When tento acessar dados da Escola Beta
-    Then recebo uma lista vazia
+    When o MS consulta dados da Escola Beta
+    Then o PostgreSQL RLS retorna 0 linhas
     And nenhum dado da Escola Beta vazou
-
-  Scenario: Tenant suspenso tem acesso bloqueado imediatamente
-    Given que estou logado na Escola Alfa
-    When a Escola Alfa é suspensa
-    Then meu próximo acesso é bloqueado com erro 403
 ```
 
-## 6. Traceability TC → FR(SRS) → Test Plan
+## 6. Traceability TC → SRS → Test Plan
 
-| TC | FR (SRS) | Seção Test Plan | Status |
-|----|---------|----------------|--------|
-| TC-001, TC-002 | FR-01 — Extração de domínio | Functional/System | ✅ |
-| TC-003, TC-004, TC-005 | FR-03, FR-04 — Login + Cookies | Functional/System + Security | ✅ |
-| TC-006, TC-007, TC-008, TC-009, TC-010 | FR-05, FR-06, FR-07 — Sessão | Functional/System | ✅ |
-| TC-011, TC-012 | FR-08 — Isolamento | Integration + Security | ✅ |
-| TC-013, TC-014 | FR-12 — Suspensão | Functional/System | ✅ |
+| TC | Componente Shield (LLD) | Seção Test Plan | Status |
+|----|------------------------|----------------|--------|
+| TC-001, TC-002 | SessionFilter, TenantResolver | Functional/System | ✅ |
+| TC-003, TC-004, TC-005 | SessionFilter, SessionStore, JWTInjector | Functional + Security | ✅ |
+| TC-006, TC-007 | SessionFilter, KeycloakClient | Integration | ✅ |
+| TC-008 | SessionStore.delete() | Functional | ✅ |
+| TC-009, TC-010 | PostgreSQL RLS (via MS) | Integration + Security | ✅ |
+| TC-011 | Kong JWTInjector | Security | ✅ |
+| TC-012 | SessionFilter.validate() | Functional | ✅ |
+| TC-013 | KEDA ScaledObject | Performance | ✅ |
+| TC-014 | SessionStore (fallback local) | Integration | ✅ |
 
 ---
 
-**[STATUS: SUCESSO]** — 14 casos de teste, 4 happy paths, 4 edge cases, 4 negative cases, 3 Gherkin scenarios. Cobertura: 7/12 FRs com TCs diretos.
+**[STATUS: SUCESSO]** — 14 casos de teste alinhados com arquitetura Kong Filter. Nenhum TC chama /auth/* diretamente. TC-005 verifica propriedade crítica: frontend nunca vê o JWT.

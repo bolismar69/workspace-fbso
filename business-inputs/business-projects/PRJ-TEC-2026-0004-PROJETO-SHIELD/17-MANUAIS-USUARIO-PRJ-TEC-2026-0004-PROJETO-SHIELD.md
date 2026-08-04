@@ -1,87 +1,69 @@
-# Manuais de Usuário: Plataforma Shield
-## [STATUS: COMPLIANCE]
+# Manuais de Usuário: Plataforma Shield — Integração para Times de Produto
+## [STATUS: Em revisão]
 
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Documentos Base** | 01-PROJECT-CHARTER, 03-SRS |
 | **Solução Técnica** | ms-shield-identity-auth |
-| **Data** | 03/08/2026 | **Versão** | 1.0 | **Metodologia** | WATERFALL |
+| **Data** | 03/08/2026 | **Versão** | 2.0 — Revisão Integração | **Metodologia** | WATERFALL |
 
 ---
 
-## 1. Getting Started
+## 1. Getting Started — Para Times de Produto
 
-### Para Times de Produto (Consumidores da Plataforma)
+A Plataforma Shield gerencia autenticação de forma **transparente para o frontend**. Seu produto **não precisa implementar fluxo de login** — apenas fazer chamadas de API normalmente.
 
-A Plataforma Shield é a camada de identidade centralizada da FBSO.ORG. Para integrar seu produto:
+### O que seu frontend SPA precisa fazer:
 
-1. **Registre seu produto** — solicite ao Product Owner o cadastro da sua aplicação como cliente OIDC
-2. **Configure redirect URIs** — informe as URLs de callback do seu frontend
-3. **Implemente o fluxo de login** — redirecione usuários não autenticados para `/auth/login?redirect_uri=SEU_CALLBACK`
-4. **Consuma o perfil** — após autenticação, chame `/auth/me` para obter dados do usuário
-5. **Implemente o logout** — redirecione para `/auth/logout`
+1. **Nada relacionado a autenticação.** A SPA faz chamadas de API como `GET /api/v1/alunos` sem se preocupar com sessão
+2. **Enviar cookies automaticamente** — usar `credentials: 'include'` no fetch/axios
+3. **Tratar redirect 302** — se a API retornar 302, o navegador segue o redirect para o Keycloak (tela de login). Após autenticação, o navegador volta para a URL original
+4. **NUNCA tentar ler ou armazenar tokens JWT** — o JWT é injetado pelo Kong no header `Authorization` da requisição interna. O frontend não tem acesso a ele
 
-### Para Administradores de Cliente (Escola/Universidade)
-
-1. Acesse `https://[seu-dominio].fbso.org`
-2. A plataforma reconhece automaticamente sua instituição
-3. Faça login com as credenciais fornecidas
-4. Acesse os produtos contratados
-
-## 2. Feature Walkthrough
-
-| Feature (SRS) | Como usar |
-|--------------|----------|
-| F-01 — Reconhecimento | Acesse o domínio da sua escola. Nenhuma ação manual necessária |
-| F-02 — Login | Ao acessar qualquer produto, você será redirecionado para a tela de login da sua instituição |
-| F-03 — Perfil | Seus dados (nome, e-mail, papel) estão disponíveis em todos os produtos |
-| F-04 — Segurança | Seus dados são isolados — ninguém de outra escola pode acessá-los |
-| F-07 — Logout | Ao sair, você será desconectado de todos os produtos simultaneamente |
-
-## 3. Step-by-Step Guides
-
-### Integração de Novo Produto
+### Checklist de Integração (4 passos)
 
 | Passo | Ação | Responsável |
 |-------|------|------------|
-| 1 | Solicitar client_id e client_secret ao time Shield | Time de Produto |
-| 2 | Configurar redirect_uri no Keycloak | IAM Specialist |
-| 3 | Implementar redirecionamento `/auth/login?redirect_uri=...` no frontend | Dev Frontend |
-| 4 | Implementar consumo de `/auth/me` para perfil | Dev Frontend |
-| 5 | Implementar chamada a `/auth/logout` no botão "Sair" | Dev Frontend |
-| 6 | Testar fluxo completo em staging | QA + Time de Produto |
-| 7 | Solicitar liberação para produção | Time de Produto → PO |
+| 1 | Configurar fetch/axios com `credentials: 'include'` | Dev Frontend |
+| 2 | Tratar respostas 302 como fluxo normal (navegador segue redirect) | Dev Frontend |
+| 3 | Testar: sem cookie → API redireciona para login → autenticar → API retorna dados | QA + Dev Frontend |
+| 4 | Verificar: `document.cookie` NÃO mostra tokens (confirmação de segurança) | QA |
 
-### Primeiro Acesso de Usuário Final
+### O que seu produto NÃO deve fazer:
 
-| Passo | Ação |
-|-------|------|
-| 1 | Acesse o endereço da sua escola no navegador |
-| 2 | Você será redirecionado para a tela de login |
-| 3 | Informe o usuário e senha fornecidos pela sua instituição |
-| 4 | Após o primeiro login, altere sua senha |
-| 5 | Pronto — você tem acesso a todos os produtos contratados |
-
-## 4. FAQ
-
-| Pergunta | Resposta |
-|----------|---------|
-| Preciso criar uma conta para cada produto? | Não. Uma única conta dá acesso a todos os produtos contratados pela sua escola |
-| Esqueci minha senha. O que fazer? | Clique em "Esqueci minha senha" na tela de login. Um link de recuperação será enviado para seu e-mail |
-| Posso acessar de casa? | Sim. O acesso é via internet, de qualquer lugar |
-| Meus dados estão seguros? | Sim. Cada escola tem seu ambiente isolado. Ninguém de fora da sua instituição acessa seus dados |
-| O que acontece se eu ficar muito tempo sem usar? | Após 30 minutos de inatividade, você precisará fazer login novamente |
-
-## 5. Troubleshooting
-
-| Problema | Causa Provável | Solução |
-|----------|--------------|---------|
-| "Domínio não reconhecido" | Sua escola não está cadastrada na plataforma | Entre em contato com o suporte FBSO |
-| "Sessão expirada" | Você ficou mais de 30min sem usar o sistema | Faça login novamente |
-| Tela branca após login | Erro de conexão com o produto | Atualize a página (F5). Se persistir, contate o suporte |
-| "Acesso negado" | Seu perfil não tem permissão para acessar este recurso | Solicite acesso ao administrador da sua escola |
+- ❌ Redirecionar manualmente para `/auth/login`
+- ❌ Chamar `/auth/me` para obter perfil (as claims estão no JWT injetado)
+- ❌ Chamar `/auth/logout` (basta remover o cookie local; a sessão expira no Redis)
+- ❌ Armazenar client_secret do Keycloak (o Shield é o único que conhece)
+- ❌ Tentar extrair JWT de cookies ou headers de resposta
 
 ---
 
-**[STATUS: SUCESSO]** — Manual com 5 seções: getting started, walkthrough, step-by-step, FAQ (5 itens), troubleshooting (4 cenários).
+## 2. Fluxo de Autenticação (visão do frontend)
+
+```
+1. SPA carrega → faz GET /api/v1/alunos
+2. Se resposta = 200 com dados → usuário está autenticado (transparente)
+3. Se resposta = 302 → navegador segue para tela de login Keycloak
+4. Usuário autentica → navegador volta para a URL original
+5. SPA recarrega → faz GET /api/v1/alunos → 200 com dados
+```
+
+**O frontend não implementa nenhuma lógica de autenticação.** Apenas faz chamadas de API e deixa o navegador seguir redirects.
+
+---
+
+## 3. FAQ
+
+| Pergunta | Resposta |
+|----------|---------|
+| Preciso implementar tela de login? | Não. O Keycloak fornece a tela de login com o tema visual da escola |
+| Como obtenho os dados do usuário (nome, email, roles)? | As claims do JWT (tenant_id, roles, user_id, email) são injetadas no header `Authorization`. Seu backend as extrai do token |
+| Preciso de client_secret do Keycloak? | Não. O Shield é o único componente que conhece esse segredo |
+| O que acontece quando a sessão expira? | A API retorna 302 → Keycloak. Se ainda houver refresh token válido, a renovação é silenciosa (usuário não percebe) |
+| Funciona em múltiplas abas? | Sim. O cookie SHIELD_SESSION é compartilhado entre abas do mesmo domínio |
+
+---
+
+**[STATUS: SUCESSO]** — Manual alinhado com arquitetura Kong Filter. Times de produto integram em 4 passos, sem implementar lógica de autenticação.

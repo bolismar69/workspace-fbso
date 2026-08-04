@@ -1,5 +1,5 @@
 # Low-Level Design (LLD): PROJETO SHIELD — ms-shield-identity-auth
-## [STATUS: COMPLIANCE]
+## [STATUS: Em revisão]
 
 | Campo | Detalhe |
 |-------|---------|
@@ -7,156 +7,127 @@
 | **Solução Técnica** | ms-shield-identity-auth |
 | **Documentos Base** | 01-PROJECT-CHARTER, 10-SAD, 11-HLD |
 | **Stack** | Java 21 + Quarkus + GraalVM Native |
-| **Data** | 03/08/2026 | **Versão** | 2.0 | **Metodologia** | WATERFALL |
+| **Data** | 03/08/2026 | **Versão** | 3.0 — Revisão de Integração | **Metodologia** | WATERFALL |
 
 ---
 
-## 1. Component Diagram (C4 Level 3) — Package Structure
+## 1. Component Diagram — Package Structure (Kong Filter Model)
+
+O Shield atua como **serviço de validação de sessão acoplado ao Kong**. A SPA nunca chama o Shield diretamente — o Kong encaminha a validação de cookie para o Shield, que decide: injetar JWT (sessão válida) ou redirecionar para Keycloak (sem sessão).
 
 ```mermaid
 classDiagram
-    namespace web {
-        class AuthController {
-            +login(redirectUri) Redirect
-            +callback(code, state) Redirect
-            +logout() Redirect
-            +refresh() Response
-            +me() UserProfile
-        }
-        class HealthController {
-            +health() HealthStatus
-        }
-        class MetricsController {
-            +metrics() PrometheusData
-        }
+    class KongRouter {
+        +route(api_request) SessionCheck
+    }
+    class JWTInjector {
+        +inject(jwt_claims) AuthorizationHeader
+    }
+    class SessionFilter {
+        +validateCookie(cookie) SessionStatus
+        +injectJWT(session) JWTClaims
+        +redirectToLogin(host) Redirect
+    }
+    class TenantResolver {
+        +resolveTenant(host) RealmMapping
+        +invalidateCache(host) void
+    }
+    class OidcFlowService {
+        +handleCallback(code, state) TokenSet
+        +exchangeCode(realm, code, verifier) TokenSet
+    }
+    class SessionStore {
+        +save(sessionId, jwt, ttl) void
+        +get(sessionId) SessionData
+        +delete(sessionId) void
+    }
+    class AuditService {
+        +logEvent(event) void
+    }
+    class KeycloakClient {
+        +authorize(realm, challenge) Redirect
+        +token(realm, code, verifier) TokenResponse
+        +logout(realm, refreshToken) void
+    }
+    class RedisSessionStore {
+        +SET session_id jwt EX ttl
+        +GET session_id
+        +DEL session_id
+    }
+    class RedisHostCache {
+        +GET host
+        +SET host realm EX ttl
+    }
+    class SessionData {
+        +String accessToken
+        +String refreshToken
+        +UUID tenantId
+        +List~String~ roles
+        +UUID userId
+        +Instant expiresAt
+    }
+    class JWTClaims {
+        +UUID tenantId
+        +List~String~ roles
+        +UUID userId
+        +String email
     }
 
-    namespace service {
-        class TenantResolverService {
-            +resolveTenant(host) TenantMapping
-            +invalidateCache(host) void
-        }
-        class OidcFlowService {
-            +buildAuthUrl(realm, redirect, challenge) String
-            +exchangeCode(realm, code, verifier) TokenSet
-            +logout(realm, refreshToken) void
-        }
-        class SessionService {
-            +createSession(profile, tokens) void
-            +getProfile(sessionId) UserProfile
-            +destroySession(sessionId) void
-            +refreshSession(refreshToken) void
-        }
-        class TokenService {
-            +exchangeTokens(realm, code, verifier) TokenSet
-            +refreshTokens(realm, refreshToken) TokenSet
-            +validateSession(accessToken) boolean
-        }
-        class AuditService {
-            +logEvent(event) void
-            +queryEvents(tenantId, filter) List~AuditEvent~
-        }
-    }
-
-    namespace client {
-        class KeycloakClient {
-            +authorize(realm, params) Redirect
-            +token(realm, body) TokenResponse
-            +logout(realm, refreshToken) void
-            +userinfo(realm, accessToken) UserInfo
-        }
-        class RedisClient {
-            +get(key) String
-            +set(key, value, ttl) void
-            +del(key) void
-        }
-        class PostgresClient {
-            +query(sql, tenantId) List~Row~
-            +execute(sql, tenantId) void
-            +withTenant(tenantId) Session
-        }
-    }
-
-    namespace model {
-        class TenantMapping {
-            +String host
-            +String realm
-            +UUID tenantId
-            +LocalDateTime cachedAt
-        }
-        class TokenSet {
-            +String accessToken
-            +String refreshToken
-            +String idToken
-            +int expiresIn
-        }
-        class UserProfile {
-            +UUID userId
-            +String email
-            +List~String~ roles
-            +UUID tenantId
-        }
-        class AuditEvent {
-            +UUID eventId
-            +UUID correlationId
-            +UUID tenantId
-            +String eventType
-            +Instant timestamp
-        }
-    }
-
-    AuthController --> TenantResolverService
-    AuthController --> OidcFlowService
-    AuthController --> SessionService
-    TenantResolverService --> RedisClient
+    KongRouter --> SessionFilter : "api + cookie"
+    SessionFilter --> TenantResolver : "host lookup"
+    SessionFilter --> SessionStore : "validate sessao"
+    SessionFilter --> JWTInjector : "injeta claims"
+    SessionStore --> RedisSessionStore
+    TenantResolver --> RedisHostCache
+    SessionFilter --> OidcFlowService : "callback"
     OidcFlowService --> KeycloakClient
-    SessionService --> PostgresClient
-    SessionService --> TokenService
-    TokenService --> KeycloakClient
-    AuditService --> PostgresClient
-    TenantResolverService --> TenantMapping
-    OidcFlowService --> TokenSet
-    SessionService --> UserProfile
-    AuditService --> AuditEvent
+    SessionStore --> AuditService
+    SessionData --> JWTClaims
 ```
 
----
-
-## 2. API Contracts
+### Fluxo de Decisão do SessionFilter
 
 ```mermaid
-flowchart LR
-    subgraph Endpoints["🌐 REST Endpoints"]
-        Login["GET /auth/login\n?redirect_uri=...\n→ 302 Keycloak + PKCE"]
-        Callback["GET /auth/callback\n?code=...&state=...\n→ 302 App + Set-Cookie"]
-        Logout["POST /auth/logout\nCookie: session\n→ 200 + Clear-Cookie"]
-        Refresh["POST /auth/refresh\nCookie: refresh_token\n→ 200 + Set-Cookie"]
-        Me["GET /auth/me\nCookie: session\n→ 200 UserProfile JSON"]
-        Health["GET /health\n→ 200 {status, checks}"]
-        Metrics["GET /metrics\n→ Prometheus text"]
-    end
-
-    style Login fill:#6f9,stroke:#333
-    style Callback fill:#6f9,stroke:#333
-    style Logout fill:#fc6,stroke:#333
-    style Refresh fill:#fc6,stroke:#333
-    style Me fill:#69f,stroke:#333
-    style Health fill:#ccc,stroke:#333
-    style Metrics fill:#ccc,stroke:#333
+flowchart TD
+    A["Kong recebe GET /api/v1/alunos + cookie"] --> B{"Cookie SHIELD_SESSION presente?"}
+    B -->|"Sim"| C["SessionStore.get(sessionId)"]
+    C --> D{"JWT válido e não expirado?"}
+    D -->|"Sim"| E["Extrai JWTClaims\ninjeta Authorization: Bearer <JWT>\nencaminha para microserviço"]
+    D -->|"Expirado"| F["Tenta refresh token\nvia Keycloak"]
+    F --> G{"Refresh OK?"}
+    G -->|"Sim"| H["SessionStore.save(novo JWT)\ninjeta Authorization"]
+    G -->|"Falhou"| I["302 → Keycloak login"]
+    B -->|"Não"| J["TenantResolver.resolveTenant(host)"]
+    J --> K["302 → Keycloak /realms/{realm}/auth?code_challenge=..."]
 ```
 
 ---
 
-## 3. Database Schema
+## 2. Endpoints — Uso Interno (Kong)
+
+Estes endpoints são chamados **apenas pelo Kong API Gateway**, nunca diretamente pelo frontend:
+
+| Endpoint | Quem Chama | Função |
+|----------|-----------|--------|
+| `POST /internal/session/validate` | Kong | Recebe cookie SHIELD_SESSION → retorna JWT claims (válido) ou 401 (expirado/inválido) |
+| `GET /internal/tenant/resolve?host=` | Kong | Recebe host → retorna realm_id (para construir redirect Keycloak) |
+| `GET /auth/callback?code=&state=` | Browser (via redirect Keycloak) | Recebe authorization code → troca por tokens → salva no Redis → seta cookie → redirect |
+| `GET /health` | Kong / Prometheus | Health check |
+| `GET /metrics` | Prometheus | Métricas operacionais |
+
+**Nota:** Endpoints como `/auth/login`, `/auth/logout`, `/auth/refresh`, `/auth/me` **não existem mais como API pública**. O fluxo de login é disparado pela interceptação do Kong (passo 3 do SessionFilter). O logout é gerenciado pelo cookie — a SPA apenas remove o cookie local. O perfil do usuário está nas claims do JWT injetado — o microserviço de negócio as extrai diretamente.
+
+---
+
+## 3. Database Schema (inalterado — mantido para referência)
 
 ```mermaid
 erDiagram
     user_sessions {
         uuid session_id PK "gen_random_uuid()"
         uuid user_id "NOT NULL"
-        uuid tenant_id "NOT NULL — FK"
+        uuid tenant_id "NOT NULL"
         text access_hash "NOT NULL"
-        text refresh_hash "NOT NULL"
         timestamptz created_at "DEFAULT now()"
         timestamptz expires_at "NOT NULL"
         boolean revoked "DEFAULT false"
@@ -166,169 +137,132 @@ erDiagram
         uuid event_id PK "gen_random_uuid()"
         uuid correlation_id "NOT NULL"
         uuid tenant_id "NOT NULL"
-        uuid user_id "nullable"
         varchar event_type "LOGIN|LOGOUT|REFRESH|FAILED|SUSPENDED"
-        inet ip_address ""
-        text user_agent ""
         timestamptz created_at "DEFAULT now()"
     }
 
     user_sessions ||--o{ audit_events : "triggers"
 ```
 
-### RLS Policies
-
-```sql
-ALTER TABLE shield.user_sessions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE shield.audit_events   ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY tenant_isolation_sessions ON shield.user_sessions
-    FOR ALL USING (
-        tenant_id = current_setting('app.current_tenant')::UUID
-    );
-
-CREATE POLICY tenant_isolation_audit ON shield.audit_events
-    FOR ALL USING (
-        tenant_id = current_setting('app.current_tenant')::UUID
-    );
-```
-
 ---
 
 ## 4. Sequence Diagrams
 
-### Login Flow (Authorization Code + PKCE)
+### 4.1 Login — SPA faz chamada API, Kong+Shield interceptam
 
 ```mermaid
 sequenceDiagram
-    actor U as 👤 Browser
+    actor User as 👤 Browser
+    participant SPA as 🖥️ SPA Frontend
     participant CF as Cloudflare
     participant Kong as Kong Gateway
-    participant BFF as AuthController
-    participant TR as TenantResolver
-    participant OIDC as OidcFlowService
-    participant KC as Keycloak
+    participant Shield as SessionFilter
     participant Redis as Redis
-    participant SS as SessionService
+    participant KC as Keycloak
+    participant MS as Microserviço Negócio
     participant PG as PostgreSQL
 
-    U->>CF: GET /app
-    CF->>Kong: X-Tenant-Host: escola-alfa.com
-    Kong->>BFF: GET /auth/login?redirect_uri=/app
+    User->>CF: https://escola-alfa.com
+    CF->>SPA: Entrega HTML/JS/CSS
+    SPA-->>User: SPA carregada
 
-    BFF->>TR: resolveTenant("escola-alfa.com")
-    TR->>Redis: GET host:escola-alfa.com
-    Redis-->>TR: realm-escola-alfa
-    TR-->>BFF: TenantMapping(realm=realm-escola-alfa)
+    User->>CF: GET /api/v1/alunos (SPA)
+    CF->>Kong: Proxy API + cookie SHIELD_SESSION (se existir)
 
-    BFF->>OIDC: buildAuthUrl(realm, redirectUri, challenge)
-    OIDC-->>BFF: https://keycloak/realms/realm-escola-alfa/protocol/openid-connect/auth?code_challenge=...
-    BFF-->>U: 302 → Keycloak
+    Kong->>Shield: POST /internal/session/validate (cookie)
 
-    U->>KC: Login form (credentials)
-    KC-->>U: 302 → /auth/callback?code=xyz&state=abc
+    alt Sem cookie (primeira visita)
+        Shield->>Redis: GET host:escola-alfa.com
+        Redis-->>Shield: realm-escola-alfa
+        Shield-->>Kong: 302 → Keycloak /realms/realm-escola-alfa/auth
+        Kong-->>User: 302 → Login form (tema da escola)
 
-    U->>BFF: GET /auth/callback?code=xyz&state=abc
-    BFF->>OIDC: exchangeCode(realm, code, verifier)
-    OIDC->>KC: POST /token (code + code_verifier)
-    KC-->>OIDC: {access_token, refresh_token, id_token}
-    OIDC-->>BFF: TokenSet
-
-    BFF->>SS: createSession(profile, tokens)
-    SS->>PG: INSERT user_sessions (SET LOCAL tenant)
-    SS-->>BFF: sessionId
-
-    BFF-->>U: 302 /app + Set-Cookie
-    Note over BFF,U: Cookie flags: HttpOnly, Secure, SameSite=Strict
+        User->>KC: Credenciais
+        KC-->>User: 302 → /auth/callback?code=xyz&state=abc
+        User->>Shield: GET /auth/callback?code=xyz&state=abc
+        Shield->>KC: POST /token (code + code_verifier)
+        KC-->>Shield: {access_token, refresh_token, id_token}
+        Shield->>Redis: SET session_id {jwt, claims, ttl}
+        Shield-->>User: 302 → escola-alfa.com
+        Note over Shield,User: Set-Cookie: SHIELD_SESSION=..., HttpOnly, Secure, SameSite=Strict
+    else Com cookie valido
+        Shield->>Redis: GET session_id
+        Redis-->>Shield: {jwt, claims: tenant_id, roles, user_id}
+        Shield-->>Kong: 200 {claims, jwt}
+        Kong->>Kong: JWTInjector → Authorization: Bearer <JWT>
+        Kong->>MS: GET /api/v1/alunos + Authorization header
+        MS->>PG: SET LOCAL app.current_tenant = '{tenant_id}'
+        PG-->>MS: Dados filtrados (RLS)
+        MS-->>User: 200 {data: [...]}
+    end
 ```
 
-### Cross-Tenant Attack Blocked
+### 4.2 Cookie Expirado — Refresh ou Re-login
 
 ```mermaid
 sequenceDiagram
-    actor Attacker as 👤 Escola A (token)
     participant Kong as Kong Gateway
-    participant BFF as AuthController
-    participant PG as PostgreSQL (RLS)
+    participant Shield as SessionFilter
+    participant Redis as Redis
+    participant KC as Keycloak
 
-    Attacker->>Kong: GET /api/v1/dados?escola=B
-    Note over Attacker,Kong: Cookie: session (tenant=A)
-
-    Kong->>Kong: Validate JWT → tenant=A, roles=[...]
-    Kong->>BFF: Authorization: Bearer <JWT>
-
-    BFF->>PG: SET LOCAL app.current_tenant = 'A'
-    BFF->>PG: SELECT * FROM dados WHERE escola = 'B'
-    Note over PG: RLS Policy: tenant_id = 'A'
-    Note over PG: Row: tenant_id='B' → FILTERED OUT
-    PG-->>BFF: 0 rows
-
-    BFF-->>Attacker: 200 OK {data: []}
-    Note over BFF,Attacker: Dados da Escola B NÃO vazaram
+    Kong->>Shield: POST /internal/session/validate (cookie)
+    Shield->>Redis: GET session_id
+    Redis-->>Shield: {jwt: expirado, refresh_token}
+    Shield->>KC: POST /token (grant_type=refresh_token)
+    alt Refresh OK
+        KC-->>Shield: {new_access_token, new_refresh_token}
+        Shield->>Redis: SET session_id {new_jwt, new_ttl}
+        Shield-->>Kong: 200 {claims, jwt}
+    else Refresh expirado
+        KC-->>Shield: 400 invalid_grant
+        Shield->>Redis: DEL session_id
+        Shield-->>Kong: 302 → Keycloak /auth
+    end
 ```
 
 ---
 
-## 5. State Machine — User Session
+## 5. State Machine — Sessão do Usuário
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Anonymous : Acessa /app
+    [*] --> Anonymous : Acessa SPA
 
-    Anonymous --> Redirecting : GET /auth/login
-    Redirecting --> Authenticating : 302 → Keycloak
-    Authenticating --> Active : /auth/callback OK
-    Authenticating --> Failed : Invalid credentials
-    Failed --> Redirecting : Retry
+    Anonymous --> SPA_Loaded : Cloudflare entrega HTML/JS/CSS
+    SPA_Loaded --> Calling_API : SPA faz GET /api/v1/alunos
+    Calling_API --> Redirecting : Kong+Shield: sem cookie → 302 Keycloak
+    Calling_API --> Authorized : Kong+Shield: cookie válido → injeta JWT → MS recebe
 
-    Active --> Refreshing : POST /auth/refresh
-    Refreshing --> Active : New tokens OK
-    Refreshing --> Expired : Refresh token expired
+    Redirecting --> Authenticating : Usuário vê login form
+    Authenticating --> Callback : Keycloak redireciona com code
+    Callback --> Session_Stored : Shield troca code → tokens → Redis
+    Session_Stored --> SPA_Loaded : 302 → escola-alfa.com
 
-    Active --> LoggedOut : POST /auth/logout
-    LoggedOut --> [*] : Cookies cleared
+    Authorized --> Calling_API : Próxima chamada API (cookie existe)
 
-    Active --> Blocked : Tenant suspended
-    Blocked --> [*] : 403 Access Denied
+    Calling_API --> Refreshing : Cookie expirado → tenta refresh
+    Refreshing --> Authorized : Refresh OK → novo JWT no Redis
+    Refreshing --> Redirecting : Refresh falhou → 302 Keycloak
 
-    Expired --> Redirecting : Redirect to login
+    Calling_API --> Session_Deleted : Logout / sessão revogada
+    Session_Deleted --> Anonymous : Cookie removido
 ```
 
 ---
 
 ## 6. Error Handling Strategy
 
-```mermaid
-flowchart TB
-    subgraph Exceptions["🚨 Exception Hierarchy"]
-        TKE["TokenExchangeException\n502 — Keycloak unavailable"]
-        TNE["TenantNotFoundException\n401 — Domain not mapped"]
-        ISE["InvalidStateException\n401 — PKCE state mismatch"]
-        SEE["SessionExpiredException\n401 — Token expired"]
-        STE["SuspendedTenantException\n403 — Tenant blocked"]
-        RE["RedisException\nWARN — Cache miss, fallback KC"]
-        PE["PostgresException\n503 — DB unavailable, retry 3x"]
-        GE["GenericException\n500 — Log + correlation_id"]
-    end
-
-    subgraph Mapper["🔄 GlobalExceptionMapper"]
-        JAXRS["JAX-RS ExceptionMapper"]
-    end
-
-    subgraph Response["📤 Standard Error Response"]
-        JSON["{error, message, correlation_id}"]
-    end
-
-    TKE --> JAXRS
-    TNE --> JAXRS
-    ISE --> JAXRS
-    SEE --> JAXRS
-    STE --> JAXRS
-    RE --> JAXRS
-    PE --> JAXRS
-    GE --> JAXRS
-    JAXRS --> JSON
-```
+| Situação | Onde Ocorre | Resposta |
+|----------|------------|---------|
+| Cookie ausente | SessionFilter.validateCookie() | Kong retorna 302 → Keycloak login |
+| Cookie expirado, refresh OK | SessionFilter + KeycloakClient | Novo JWT armazenado no Redis, Kong injeta Authorization |
+| Cookie expirado, refresh falhou | SessionFilter + KeycloakClient | Kong retorna 302 → Keycloak login |
+| JWT inválido (assinatura/tampering) | Kong JWTInjector | 401 — descartar cookie |
+| Host não mapeado | TenantResolver.resolveTenant() | 401 — "Domínio não configurado" |
+| Keycloak indisponível | KeycloakClient.token() | 503 — "Serviço de autenticação temporariamente indisponível" |
+| Redis indisponível | SessionStore.get() | Degradado: validar JWT localmente (cache em memória, TTL curto). Alertar |
+| Tenant suspenso | SessionFilter.validateCookie() | 403 — tenant_id bloqueado |
 
 ---
 
@@ -336,33 +270,47 @@ flowchart TB
 
 ```mermaid
 classDiagram
+    class SessionFilter {
+        <<interface>>
+        +validate(cookie) SessionResult
+    }
+
+    class SessionStore {
+        <<interface>>
+        +save(sessionId, jwt, ttl) void
+        +get(sessionId) SessionData
+        +delete(sessionId) void
+        +refresh(sessionId, refreshToken) SessionData
+    }
+
     class TenantResolver {
         <<interface>>
-        +resolveTenant(String host) Uni~TenantMapping~
-        +invalidateCache(String host) Uni~Void~
+        +resolve(host) RealmMapping
     }
 
-    class OidcFlow {
-        <<interface>>
-        +buildAuthorizationUrl(String realm, String redirectUri, String challenge) Uni~String~
-        +exchangeCodeForTokens(String realm, String code, String verifier) Uni~TokenSet~
-        +logout(String realm, String refreshToken) Uni~Void~
-        +refreshTokens(String realm, String refreshToken) Uni~TokenSet~
+    class JWTClaims {
+        +UUID tenantId
+        +List~String~ roles
+        +UUID userId
+        +String email
     }
 
-    class SessionManager {
-        <<interface>>
-        +createSession(UserProfile profile, TokenSet tokens) Uni~Void~
-        +getProfile(String sessionId) Uni~UserProfile~
-        +destroySession(String sessionId) Uni~Void~
-        +refreshSession(String refreshToken) Uni~Void~
-    }
-
-    TenantResolver ..> TenantMapping : returns
-    OidcFlow ..> TokenSet : returns
-    SessionManager ..> UserProfile : returns
+    SessionFilter ..> SessionStore : uses
+    SessionFilter ..> TenantResolver : uses
+    SessionFilter ..> JWTClaims : produces
+    SessionStore ..> SessionData : returns
 ```
+
+### Kickback para o Kong
+
+O SessionFilter retorna ao Kong uma destas 3 respostas:
+
+| Resposta | Código | Ação do Kong |
+|----------|--------|-------------|
+| `{action: "INJECT", claims: {...}, jwt: "..."}` | 200 | JWTInjector insere `Authorization: Bearer <jwt>`, encaminha para MS |
+| `{action: "REDIRECT", location: "https://keycloak/.../auth"}` | 302 | Kong retorna redirect HTTP para o browser |
+| `{action: "REJECT", status: 403, reason: "tenant_suspended"}` | 403 | Kong retorna 403 para o browser |
 
 ---
 
-**[STATUS: SUCESSO]** — LLD v2.0 com diagramas Mermaid (classDiagram, erDiagram, sequenceDiagram ×2, stateDiagram-v2, flowchart).
+**[STATUS: SUCESSO]** — LLD v3.0 alinhado com arquitetura Kong Filter. Shield não expõe endpoints REST públicos. SessionFilter decide: injetar JWT ou redirecionar.

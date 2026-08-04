@@ -51,6 +51,7 @@ flowchart TB
     subgraph Obs["📊 Observability"]
         Prom["Prometheus"]
         Graf["Grafana"]
+    end
 
     User -->|"1. https://escola-alfa.com"| CF
     CF -->|"2. Proxy estático"| SPA
@@ -64,6 +65,7 @@ flowchart TB
     Istio --> MS
     MS -->|"SET LOCAL tenant"| PG
     MS -.-> Prom --> Graf
+    
 ```
 
 ### ADR Registry
