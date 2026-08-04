@@ -4,7 +4,7 @@
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
-| **Documentos Base** | 01-PROJECT-CHARTER, 10-SAD, 16-DEPLOYMENT-PLAN |
+| **Documentos Base** | 01-PROJECT-CHARTER, 05-SAD, 16-DEPLOYMENT-PLAN |
 | **Stack** | DOKS + Kong + Shield + Istio + Argo CD + PostgreSQL + Redis |
 | **Data** | 03/08/2026 | **Versão** | 2.0 — Revisão Integração | **Metodologia** | WATERFALL |
 

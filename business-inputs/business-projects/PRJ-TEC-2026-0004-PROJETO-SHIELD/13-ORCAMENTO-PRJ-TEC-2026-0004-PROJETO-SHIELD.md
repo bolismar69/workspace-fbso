@@ -4,7 +4,7 @@
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
-| **Documentos Base** | 01-PROJECT-CHARTER, 05-EAP-WBS, 06-Cronograma, 13-TEST-PLAN |
+| **Documentos Base** | 01-PROJECT-CHARTER, 11-EAP-WBS, 06-Cronograma, 08-TEST-PLAN |
 | **Data** | 03/08/2026 | **Versão** | 1.0 | **Metodologia** | WATERFALL |
 
 ---

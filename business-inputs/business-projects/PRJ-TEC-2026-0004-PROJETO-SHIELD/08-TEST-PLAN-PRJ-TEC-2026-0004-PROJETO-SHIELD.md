@@ -4,7 +4,7 @@
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
-| **Documentos Base** | 01-PROJECT-CHARTER, 03-SRS, 10-SAD, 12-LLD |
+| **Documentos Base** | 01-PROJECT-CHARTER, 03-SRS, 05-SAD, 07-LLD |
 | **Stack** | Java 21 + Quarkus + GraalVM Native + Kong + Keycloak + PostgreSQL + Redis + DOKS |
 | **Data** | 03/08/2026 | **Versão** | 2.0 — Revisão Integração | **Metodologia** | WATERFALL |
 

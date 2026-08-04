@@ -179,27 +179,27 @@ Verificar existência e status de cada um dos 20 documentos. Para arquivos exist
 
 | # | Documento | Arquivo |
 |---|---|---|
-| 10 | SAD | `10-SAD-{PROJECT_ID_NAME}.md` |
-| 11 | HLD | `11-HLD-{PROJECT_ID_NAME}.md` |
-| 12 | LLD | `12-LLD-{PROJECT_ID_NAME}.md` |
+| 5 | SAD | `05-SAD-{PROJECT_ID_NAME}.md` |
+| 6 | HLD | `06-HLD-{PROJECT_ID_NAME}.md` |
+| 7 | LLD | `07-LLD-{PROJECT_ID_NAME}.md` |
 
 ### FASE 4 — TESTES E QUALIDADE
 
 | # | Documento | Arquivo |
 |---|---|---|
-| 13 | TEST-PLAN | `13-TEST-PLAN-{PROJECT_ID_NAME}.md` |
-| 14 | TEST-CASES | `14-TEST-CASES-{PROJECT_ID_NAME}.md` |
-| 15 | Relatório de Qualidade | `15-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md` |
+| 8 | TEST-PLAN | `08-TEST-PLAN-{PROJECT_ID_NAME}.md` |
+| 9 | TEST-CASES | `09-TEST-CASES-{PROJECT_ID_NAME}.md` |
+| 15 | Relatório de Qualidade | `10-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md` |
 
 ### FASE 5 — PLANEJAMENTO (pós-arquitetura e testes)
 
 | # | Documento | Arquivo |
 |---|---|---|
-| 5 | EAP/WBS | `05-EAP-WBS-{PROJECT_ID_NAME}.md` |
-| 6 | Cronograma/Gantt | `06-CRONOGRAMA-GANTT-{PROJECT_ID_NAME}.md` |
-| 7 | Orçamento | `07-ORCAMENTO-{PROJECT_ID_NAME}.md` |
-| 8 | Plano de Comunicação | `08-PLANO-COMUNICACAO-{PROJECT_ID_NAME}.md` |
-| 9 | Plano de Riscos | `09-PLANO-RISCOS-{PROJECT_ID_NAME}.md` |
+| 5 | EAP/WBS | `11-EAP-WBS-{PROJECT_ID_NAME}.md` |
+| 6 | Cronograma/Gantt | `12-CRONOGRAMA-GANTT-{PROJECT_ID_NAME}.md` |
+| 7 | Orçamento | `13-ORCAMENTO-{PROJECT_ID_NAME}.md` |
+| 8 | Plano de Comunicação | `14-PLANO-COMUNICACAO-{PROJECT_ID_NAME}.md` |
+| 9 | Plano de Riscos | `15-PLANO-RISCOS-{PROJECT_ID_NAME}.md` |
 
 ### FASE 6 — IMPLANTAÇÃO E ENCERRAMENTO
 
@@ -297,11 +297,11 @@ Apresentar o documento e fazer 4 perguntas:
 | 7 | Orçamento | `project-estimation` | ✅ |
 | 8 | Plano de Comunicação | `stakeholder-analysis`, `stakeholder-map` | ✅ |
 | 9 | Plano de Riscos | `risk-manager`, `risk-management-specialist` | ✅ |
-| 10 | SAD | `software-architecture`, `architecture-designer`, `architecture-patterns` | ✅ |
-| 11 | HLD | `c4-container`, `system-design`, `architecture-decision-records` | ✅ |
-| 12 | LLD | `c4-component`, `ddd-tactical-patterns`, `database-designer` | ✅ |
-| 13 | TEST-PLAN | `test-strategy-design`, `qa-test-planner` | ✅ |
-| 14 | TEST-CASES | `test-case-creation`, `acceptance-criteria` | ✅ |
+| 5 | SAD | `software-architecture`, `architecture-designer`, `architecture-patterns` | ✅ |
+| 6 | HLD | `c4-container`, `system-design`, `architecture-decision-records` | ✅ |
+| 7 | LLD | `c4-component`, `ddd-tactical-patterns`, `database-designer` | ✅ |
+| 8 | TEST-PLAN | `test-strategy-design`, `qa-test-planner` | ✅ |
+| 9 | TEST-CASES | `test-case-creation`, `acceptance-criteria` | ✅ |
 | 15 | Relatório de Qualidade | `quality-documentation-manager`, `qa` | ✅ |
 | 16 | DEPLOYMENT-PLAN | `deployment-engineer`, `devops-rollout-plan` | ✅ |
 | 17 | Manuais de Usuário | `documentation-generation-doc-generate`, `docs-writer` | ✅ |
@@ -326,11 +326,11 @@ Cada linha mostra quais variáveis de domínio o GENERATE daquele documento deve
 | 7 | Orçamento | — | — | — | ✅ | ✅ | Custo por recurso (RH × stack) |
 | 8 | Plano de Comunicação | — | — | — | — | — | Stakeholders e canais — sem dependência técnica |
 | 9 | Plano de Riscos | — | — | — | — | — | Riscos de projeto — sem dependência técnica |
-| 10 | SAD | ✅ | ✅ | ✅ | — | ✅ | 6 visões arquiteturais — requer ARCH global, SEC global, stack e soluções |
-| 11 | HLD | ✅ | ✅ | ✅ | — | ✅ | Design de alto nível — requer ARCH (ADRs), SEC (decisões) e stack (tecnologias) |
-| 12 | LLD | ✅ | — | ✅ | — | ✅ | Design de baixo nível — requer ARCH (padrões), stack (frameworks) e soluções |
-| 13 | TEST-PLAN | — | ✅ | ✅ | — | ✅ | Estratégia de testes — requer stack (ferramentas), SEC (testes segurança) e soluções |
-| 14 | TEST-CASES | — | — | ✅ | — | — | Casos de teste por feature/solução |
+| 5 | SAD | ✅ | ✅ | ✅ | — | ✅ | 6 visões arquiteturais — requer ARCH global, SEC global, stack e soluções |
+| 6 | HLD | ✅ | ✅ | ✅ | — | ✅ | Design de alto nível — requer ARCH (ADRs), SEC (decisões) e stack (tecnologias) |
+| 7 | LLD | ✅ | — | ✅ | — | ✅ | Design de baixo nível — requer ARCH (padrões), stack (frameworks) e soluções |
+| 8 | TEST-PLAN | — | ✅ | ✅ | — | ✅ | Estratégia de testes — requer stack (ferramentas), SEC (testes segurança) e soluções |
+| 9 | TEST-CASES | — | — | ✅ | — | — | Casos de teste por feature/solução |
 | 15 | Relatório de Qualidade | — | — | — | — | — | Métricas de qualidade — sem dependência técnica direta |
 | 16 | DEPLOYMENT-PLAN | ✅ | ✅ | ✅ | — | ✅ | Deploy — requer ARCH (topologia), SEC (secure deploy) e stack |
 | 17 | Manuais de Usuário | — | — | ✅ | — | — | Documentação por solução |
@@ -359,21 +359,21 @@ Cada GENERATE recebe em `UPSTREAM_DOCS` a lista de documentos anteriores que já
 | 2 | BRD | `[01-PROJECT-CHARTER]` |
 | 3 | SRS | `[01-PROJECT-CHARTER, 02-BRD]` |
 | 4 | RTM | `[01-PROJECT-CHARTER, 02-BRD, 03-SRS]` |
-| 5 | EAP/WBS | `[01-PROJECT-CHARTER, 12-LLD, 14-TEST-CASES]` |
-| 6 | Cronograma/Gantt | `[01-PROJECT-CHARTER, 05-EAP-WBS, 14-TEST-CASES]` |
-| 7 | Orçamento | `[01-PROJECT-CHARTER, 05-EAP-WBS, 06-Cronograma, 13-TEST-PLAN]` |
+| 5 | EAP/WBS | `[01-PROJECT-CHARTER, 07-LLD, 09-TEST-CASES]` |
+| 6 | Cronograma/Gantt | `[01-PROJECT-CHARTER, 11-EAP-WBS, 09-TEST-CASES]` |
+| 7 | Orçamento | `[01-PROJECT-CHARTER, 11-EAP-WBS, 06-Cronograma, 08-TEST-PLAN]` |
 | 8 | Plano de Comunicação | `[01-PROJECT-CHARTER]` |
 | 9 | Plano de Riscos | `[01-PROJECT-CHARTER]` |
-| 10 | SAD | `[01-PROJECT-CHARTER, 02-BRD, 03-SRS]` |
-| 11 | HLD | `[01-PROJECT-CHARTER, 10-SAD]` |
-| 12 | LLD | `[01-PROJECT-CHARTER, 10-SAD, 11-HLD]` |
-| 13 | TEST-PLAN | `[01-PROJECT-CHARTER, 03-SRS, 10-SAD, 12-LLD]` |
-| 14 | TEST-CASES | `[01-PROJECT-CHARTER, 03-SRS, 13-TEST-PLAN]` |
-| 15 | Relatório de Qualidade | `[13-TEST-PLAN, 14-TEST-CASES]` |
-| 16 | DEPLOYMENT-PLAN | `[01-PROJECT-CHARTER, 10-SAD, 11-HLD, 12-LLD]` |
+| 5 | SAD | `[01-PROJECT-CHARTER, 02-BRD, 03-SRS]` |
+| 6 | HLD | `[01-PROJECT-CHARTER, 05-SAD]` |
+| 7 | LLD | `[01-PROJECT-CHARTER, 05-SAD, 06-HLD]` |
+| 8 | TEST-PLAN | `[01-PROJECT-CHARTER, 03-SRS, 05-SAD, 07-LLD]` |
+| 9 | TEST-CASES | `[01-PROJECT-CHARTER, 03-SRS, 08-TEST-PLAN]` |
+| 15 | Relatório de Qualidade | `[08-TEST-PLAN, 09-TEST-CASES]` |
+| 16 | DEPLOYMENT-PLAN | `[01-PROJECT-CHARTER, 05-SAD, 06-HLD, 07-LLD]` |
 | 17 | Manuais de Usuário | `[01-PROJECT-CHARTER, 03-SRS]` |
-| 18 | Manuais Operacionais | `[01-PROJECT-CHARTER, 10-SAD, 16-DEPLOYMENT-PLAN]` |
-| 19 | Termo de Aceite | `[01-PROJECT-CHARTER, 13-TEST-PLAN, 15-RELATORIO-QUALIDADE]` |
+| 18 | Manuais Operacionais | `[01-PROJECT-CHARTER, 05-SAD, 16-DEPLOYMENT-PLAN]` |
+| 19 | Termo de Aceite | `[01-PROJECT-CHARTER, 08-TEST-PLAN, 10-RELATORIO-QUALIDADE]` |
 | 20 | Lições Aprendidas | `[todos os 19 documentos anteriores]` |
 
 ---
@@ -385,15 +385,15 @@ Quando um documento já em COMPLIANCE é modificado, todos os documentos downstr
 | Se modificar... | Impacta (regenerar + revalidar)... |
 |---|---|
 | 01-PROJECT-CHARTER | Todos os 19 documentos downstream |
-| 02-BRD | 03-SRS, 04-RTM, 10-SAD, 11-HLD, 12-LLD, 13-TEST-PLAN, 14-TEST-CASES, 05-EAP, 06-Cronograma, 07-Orçamento, 16-DEPLOYMENT-PLAN, 17-Manuais, 19-Termo |
-| 10-SAD | 11-HLD, 12-LLD, 13-TEST-PLAN, 16-DEPLOYMENT-PLAN, 18-Manuais Ops |
-| 12-LLD | 13-TEST-PLAN, 14-TEST-CASES, **05-EAP**, **06-Cronograma**, **07-Orçamento**, 16-DEPLOYMENT-PLAN |
-| 13-TEST-PLAN | 14-TEST-CASES, 15-Relatório, **05-EAP**, **06-Cronograma**, **07-Orçamento**, 19-Termo Aceite |
-| 14-TEST-CASES | 15-Relatório, **05-EAP**, **06-Cronograma** |
+| 02-BRD | 03-SRS, 04-RTM, 05-SAD, 06-HLD, 07-LLD, 08-TEST-PLAN, 09-TEST-CASES, 05-EAP, 06-Cronograma, 07-Orçamento, 16-DEPLOYMENT-PLAN, 17-Manuais, 19-Termo |
+| 05-SAD | 06-HLD, 07-LLD, 08-TEST-PLAN, 16-DEPLOYMENT-PLAN, 18-Manuais Ops |
+| 07-LLD | 08-TEST-PLAN, 09-TEST-CASES, **05-EAP**, **06-Cronograma**, **07-Orçamento**, 16-DEPLOYMENT-PLAN |
+| 08-TEST-PLAN | 09-TEST-CASES, 15-Relatório, **05-EAP**, **06-Cronograma**, **07-Orçamento**, 19-Termo Aceite |
+| 09-TEST-CASES | 15-Relatório, **05-EAP**, **06-Cronograma** |
 | 05-EAP/WBS | 06-Cronograma, 07-Orçamento |
 | (regra geral) | Todos os documentos listados como UPSTREAM_DOCS do modificado e seus dependentes transitivos |
 
-**Destaque:** A alteração mais impactante é no 12-LLD, que agora cascateia para Planejamento (EAP, Cronograma, Orçamento) via Testes. Modificações no design de baixo nível ou nos planos de teste **exigem reestimativa de esforço, prazo e custo**.
+**Destaque:** A alteração mais impactante é no 07-LLD, que agora cascateia para Planejamento (EAP, Cronograma, Orçamento) via Testes. Modificações no design de baixo nível ou nos planos de teste **exigem reestimativa de esforço, prazo e custo**.
 
 **Ação:** Alertar o humano, listar documentos afetados, perguntar: (A) regeneração completa, ou (B) marcar como "potencialmente desatualizados."
 

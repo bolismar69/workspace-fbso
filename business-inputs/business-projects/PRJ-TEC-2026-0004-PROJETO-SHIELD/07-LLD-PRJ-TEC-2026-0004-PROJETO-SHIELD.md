@@ -5,7 +5,7 @@
 |-------|---------|
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Solução Técnica** | ms-shield-identity-auth |
-| **Documentos Base** | 01-PROJECT-CHARTER, 10-SAD, 11-HLD |
+| **Documentos Base** | 01-PROJECT-CHARTER, 05-SAD, 06-HLD |
 | **Stack** | Java 21 + Quarkus + GraalVM Native |
 | **Data** | 03/08/2026 | **Versão** | 3.0 — Revisão de Integração | **Metodologia** | WATERFALL |
 

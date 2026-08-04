@@ -52,7 +52,7 @@
 | Template de Project Charter WATERFALL | Template | `01-PROJECT-CHARTER-PRJ-TEC-2026-0004-PROJETO-SHIELD.md` |
 | Pipeline CI/CD GraalVM Native | Runbook | `.github/workflows/` |
 | Configuração Keycloak Multi-Realm | Runbook | Documentação IAM |
-| Políticas RLS Multi-Tenant | Template SQL | `12-LLD` Seção 3 |
+| Políticas RLS Multi-Tenant | Template SQL | `07-LLD` Seção 3 |
 | Dashboard Grafana Shield | Dashboard | `grafana.fbso.org/d/shield-overview` |
 
 ---
