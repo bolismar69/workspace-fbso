@@ -17,20 +17,38 @@
 flowchart TB
     User["👤 Usuário\nBrowser"]
 
-    subgraph Shield["🛡️ Plataforma Shield"]
-        BFF["ms-shield-identity-auth\nQuarkus Native : 8080"]
+    subgraph DO["DigitalOcean"]
+        subgraph Frontend["🖥️ Frontend (App Platform)"]
+            SPA["SPA Estática\nPortal Escola / Reforma / SaaS\n(Zero secrets)"]
+        end
+
+        subgraph DOKS["DOKS Cluster"]
+            Kong["Kong API Gateway"]
+            subgraph Shield["🛡️ Plataforma Shield"]
+                BFF["ms-shield-identity-auth\nQuarkus Native\nValidação de Sessão"]
+            end
+            subgraph Business["📦 Microserviços de Negócio"]
+                MS["ms-escolas-core\nms-reforma-core\nms-saas-core"]
+            end
+        end
+
+        KC["Keycloak\nMulti-Realm OIDC"]
+        PG["PostgreSQL\nRLS Multi-Tenant"]
+        Redis["Redis\nSession Store + Cache"]
     end
 
-    KC["Keycloak\nMulti-Realm OIDC"]
-    PG["PostgreSQL\nRLS Multi-Tenant"]
-    Redis["Redis\nHost→Realm Cache"]
-    Produtos["Produtos FBSO\nGestão Escolar, Portal, Comunidades"]
+    CF["Cloudflare\nWAF + DNS + Proxy"]
 
-    User -->|"HTTPS + Cookie"| BFF
-    BFF -->|"OIDC/PKCE"| KC
-    BFF -->|"Reactive SQL"| PG
-    BFF -->|"Cache GET/SET"| Redis
-    Produtos -->|"Consome /auth/*"| BFF
+    User -->|"1. https://escola-alfa.com"| CF
+    CF -->|"2. Entrega estáticos"| SPA
+    SPA -.->|"3. GET /api/v1/alunos"| CF
+    CF -->|"4. Proxy API"| Kong
+    Kong -->|"5. Validar sessão"| BFF
+    BFF -->|"6. Host→Realm"| Redis
+    BFF -.->|"7a. 302 login"| KC
+    BFF -->|"7b. Injeta JWT"| Kong
+    Kong -->|"8. Bearer JWT"| MS
+    MS -->|"SET LOCAL tenant"| PG
 ```
 
 ---
@@ -39,40 +57,47 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    subgraph Edge["🔒 Edge"]
-        CF["Cloudflare\nWAF + Header Injection"]
+    User["👤 Browser"]
+
+    subgraph Edge["🔒 Cloudflare Edge"]
+        CF["Cloudflare\nWAF + DNS + Proxy API\nHeader: X-Tenant-Host"]
     end
 
-    subgraph Gateway["🚪 Gateway"]
-        Kong["Kong API Gateway\nRoute: /auth/* → Shield\nRoute: /api/* → Produtos\nJWT Validation + Rate Limit"]
+    subgraph AppPlatform["🖥️ DigitalOcean App Platform / DOKS Nginx"]
+        SPA["Frontend SPA\nHTML/JS/CSS estático"]
     end
 
-    subgraph Mesh["🔐 Mesh"]
-        Istio["Istio Service Mesh\nmTLS + Traffic Control"]
+    subgraph DOKS["DOKS Cluster"]
+        subgraph KongNS["kong-system"]
+            Kong["Kong API Gateway\nRouter: /api/* → validar sessão\nRouter: /auth/* → processar OIDC"]
+        end
+
+        subgraph ShieldNS["shield-system"]
+            Web["Shield Web Layer\nRESTEasy Reactive + Vert.x"]
+            SessionFilter["SessionFilter\nValida cookie → injeta JWT\nou 302 → Keycloak"]
+        end
+
+        subgraph BusinessNS["business-system"]
+            MS["Microserviços de Negócio\nms-escolas-core, etc."]
+        end
     end
 
-    subgraph BFF["⚙️ ms-shield-identity-auth"]
-        Web["Web Layer\nRESTEasy Reactive + Vert.x"]
-        Svc["Service Layer\nCDI Beans"]
-        Int["Integration Layer\nReactive Clients"]
+    subgraph Dependencies["🔗 Serviços Externos (DOKS)"]
+        KC["Keycloak\nMulti-Realm + Temas"]
+        Redis["Redis\nSession Store\nHost→Realm Cache"]
+        PG["PostgreSQL\nRLS Multi-Tenant"]
     end
 
-    subgraph Dependencies["🔗 Dependencies"]
-        Keycloak["Keycloak\nMulti-Realm"]
-        RedisCache["Redis\nCache"]
-        PostgresDB["PostgreSQL\nRLS"]
-        PrometheusMetrics["Prometheus\n/metrics scrape"]
-    end
-
-    CF -->|"TLS 1.3\nX-Tenant-Host"| Kong
-    Kong -->|"HTTP/2 mTLS"| Istio
-    Istio -->|"/auth/*"| Web
-    Web --> Svc
-    Svc --> Int
-    Int -->|"OIDC"| Keycloak
-    Int -->|"Redis Protocol"| RedisCache
-    Int -->|"Reactive SQL"| PostgresDB
-    Web -->|"/metrics"| PrometheusMetrics
+    User -->|"1. https://escola-alfa.com"| CF
+    CF -->|"2. Arquivos estáticos"| SPA
+    SPA -.->|"3. GET /api/v1/alunos"| CF
+    CF -->|"4. Proxy API"| Kong
+    Kong -->|"5. Validar SHIELD_SESSION"| SessionFilter
+    SessionFilter -->|"6. Host→Realm"| Redis
+    SessionFilter -.->|"7a. 302 → Keycloak"| KC
+    SessionFilter -->|"7b. Injeta Authorization: Bearer JWT"| Kong
+    Kong -->|"8. JWT (tenant_id, roles)"| MS
+    MS -->|"SET LOCAL tenant\nRLS"| PG
 ```
 
 ---
@@ -123,17 +148,23 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    CF["Cloudflare"] -->|"HTTPS\nX-Tenant-Host"| Kong["Kong API Gateway"]
-    Kong -->|"HTTP/2 mTLS\nJWT Bearer"| BFF["Shield BFF\n:8080"]
-    BFF -->|"OIDC Client Secret\nTLS 1.3"| KC["Keycloak\n:8443"]
-    BFF -->|"Redis TLS\nPassword"| Redis["Redis\n:6379"]
-    BFF -->|"SQL TLS\nSET LOCAL tenant"| PG["PostgreSQL\n:5432"]
-    Prometheus["Prometheus"] -.->|"Pull /metrics"| BFF
+    User["👤 Browser"] -->|"1. HTTPS"| CF["Cloudflare"]
+    CF -->|"2. Estáticos"| SPA["SPA Frontend\n(App Platform)"]
+    SPA -.->|"3. GET /api/*"| CF
+    CF -->|"4. Proxy API"| Kong["Kong Gateway"]
+    Kong -->|"5. Validar sessão"| Shield["Shield BFF\n:8080"]
+    Shield -->|"6. Host→Realm"| Redis["Redis\nSession Store"]
+    Shield -.->|"7a. 302 OIDC"| KC["Keycloak\n:8443"]
+    Shield -->|"7b. Injeta JWT\nAuthorization header"| Kong
+    Kong -->|"8. Bearer JWT\n(tenant_id, roles)"| MS["Microserviços\nNegócio"]
+    MS -->|"SET LOCAL\napp.current_tenant"| PG["PostgreSQL\nRLS"]
+    Prometheus["Prometheus"] -.->|"/metrics"| Shield
 
     style CF fill:#f96,stroke:#333,color:#fff
     style Kong fill:#69f,stroke:#333,color:#fff
-    style BFF fill:#6f9,stroke:#333
+    style Shield fill:#6f9,stroke:#333
     style KC fill:#96f,stroke:#333,color:#fff
+    style MS fill:#fc6,stroke:#333
 ```
 
 ---
@@ -143,98 +174,116 @@ flowchart LR
 ```mermaid
 flowchart TB
     subgraph DO["DigitalOcean NYC3"]
-        subgraph DOKS["DOKS — 3 nodes"]
+        subgraph AppPlatform["App Platform / DOKS Nginx"]
+            SPA["Frontend SPA\nHTML/JS/CSS\n(Portal, Reforma, SaaS...)"]
+        end
+
+        subgraph DOKS["DOKS Cluster — 3 nodes (4vCPU/8GB)"]
             subgraph istio-system["istio-system"]
                 IstioGW["Istio Ingress Gateway"]
             end
+            subgraph kong-system["kong-system"]
+                KongGW["Kong API Gateway"]
+            end
             subgraph shield-system["shield-system"]
-                direction TB
-                BFF1["Shield BFF Pod 1\nQuarkus Native\n~40MB RAM"]
-                BFF2["Shield BFF Pod 2\nQuarkus Native\n~40MB RAM"]
-                BFFN["Shield BFF Pod N\nKEDA: 2→50\n~40MB RAM"]
-                KCPod1["Keycloak Pod 1\nStatefulSet"]
-                KCPod2["Keycloak Pod 2\nStatefulSet"]
+                Shield1["Shield Pod 1\nSessão + JWT Injector"]
+                Shield2["Shield Pod 2\nSessão + JWT Injector"]
+                ShieldN["Shield Pod N\nKEDA: 2→50\n~40MB RAM"]
+            end
+            subgraph business-system["business-system"]
+                MS1["ms-escolas-core\nPod 1+"]
+                MS2["ms-reforma-core\nPod 1+"]
+            end
+            subgraph iam-system["iam-system"]
+                KC1["Keycloak Pod 1\nStatefulSet"]
+                KC2["Keycloak Pod 2\nStatefulSet"]
             end
             subgraph monitoring["monitoring"]
                 Prom["Prometheus"]
                 Graf["Grafana"]
-                Loki["Grafana Loki"]
-                Jaeger["Jaeger"]
             end
         end
+
         subgraph Managed["Managed Services"]
-            PGHA["PostgreSQL HA\n2 nodes, 4GB"]
-            RedisDO["Redis Managed\n2GB, TLS"]
+            PGHA["PostgreSQL HA\n2 nodes, 4GB\nRLS Multi-Tenant"]
+            RedisDO["Redis Managed\n2GB, TLS\nSession Store + Cache"]
         end
     end
 
-    IstioGW --> BFF1 & BFF2 & BFFN
-    BFF1 --> KCPod1 & KCPod2
-    BFF1 --> PGHA
-    BFF1 --> RedisDO
-    BFF1 -.-> Prom
-    Prom --> Graf
-    BFF1 -.-> Loki
-    BFF1 -.-> Jaeger
+    SPA -.->|"GET /api/*"| IstioGW
+    IstioGW --> KongGW
+    KongGW -->|"Validar sessão"| Shield1 & Shield2 & ShieldN
+    Shield1 -->|"Injeta JWT"| KongGW
+    KongGW -->|"Bearer JWT"| MS1 & MS2
+    MS1 -->|"SET LOCAL tenant"| PGHA
+    Shield1 --> RedisDO
+    Shield1 -.-> Prom --> Graf
 ```
 
 ---
 
-## 6. Data Flow — Login Sequence (com Sistemas Existentes)
+## 6. Data Flow — Interceptação de API pelo Shield (Kong Plugin)
+
+O Shield atua como serviço de validação de sessão acoplado ao Kong. O frontend SPA **não chama o Shield diretamente** — ele faz chamadas de API normalmente, e o Kong+Shield interceptam a autenticação.
 
 ```mermaid
 sequenceDiagram
     actor User as 👤 Usuário
-    participant Sys as 🖥️ Portal Escola<br/>Portal Reforma<br/>SaaS Corporativo<br/>Comunidades Ensino
     participant CF as Cloudflare
-    participant Kong as Kong Gateway
-    participant BFF as Shield BFF
+    participant SPA as 🖥️ SPA Frontend<br/>(App Platform)
+    participant Kong as Kong API Gateway
+    participant Shield as Shield BFF
     participant Redis as Redis
     participant KC as Keycloak
+    participant MS as Microserviço<br/>Negócio
+    participant PG as PostgreSQL
 
-    User->>Sys: Acessa sistema (escola-alfa.portal.fbso.org)
-    Sys->>Sys: Verifica cookie Shield (.fbso.org)
-    Note over Sys: Sem sessão
-    Sys-->>User: 302 → shield.fbso.org/auth/login?redirect_uri=...
+    User->>CF: https://escola-alfa.com
+    CF->>SPA: Proxy → entrega HTML/JS/CSS
+    SPA-->>User: SPA carregada
 
-    User->>CF: GET shield.fbso.org/auth/login?redirect_uri=escola-alfa.portal.fbso.org
-    CF->>Kong: HTTPS + X-Tenant-Host: escola-alfa.portal.fbso.org
-    Kong->>BFF: GET /auth/login?redirect_uri=escola-alfa.portal.fbso.org
+    User->>CF: GET /api/v1/alunos (SPA)
+    CF->>Kong: Proxy API
+    Kong->>Shield: Validar sessão (cookie SHIELD_SESSION)
 
-    BFF->>Redis: GET host:escola-alfa.portal.fbso.org
-    Redis-->>BFF: realm-escola-alfa
+    alt Sem sessao (primeira visita)
+        Shield->>Redis: GET host:escola-alfa.com
+        Redis-->>Shield: realm-escola-alfa
+        Shield-->>Kong: 302 → Keycloak /realms/realm-escola-alfa/auth
+        Kong-->>User: 302 → Login form (tema da escola)
 
-    BFF->>KC: Redirect /realms/realm-escola-alfa/protocol/openid-connect/auth?code_challenge=...
-    KC-->>User: 302 → Login Form (tema da Escola Alfa)
-
-    User->>KC: POST credentials
-    KC-->>User: 302 → shield.fbso.org/auth/callback?code=xyz&state=...
-
-    User->>BFF: GET /auth/callback?code=xyz&state=...
-    BFF->>KC: POST /token (code + code_verifier)
-    KC-->>BFF: {access_token, refresh_token, id_token}
-
-    BFF-->>User: 302 → escola-alfa.portal.fbso.org
-    Note over BFF,User: Cookie: Domain=.fbso.org, HttpOnly, Secure, SameSite=Strict
-
-    User->>Sys: GET escola-alfa.portal.fbso.org (com cookie Shield)
-    Sys->>BFF: GET shield.fbso.org/auth/me (com cookie)
-    BFF-->>Sys: {user_id, email, roles, tenant_id}
-
-    Note over Sys,Kong: Chamadas API subsequentes:<br/>Kong valida cookie → injeta Authorization: Bearer JWT<br/>com claims tenant_id, roles, user_id
+        User->>KC: Credenciais
+        KC-->>User: 302 → /auth/callback?code=xyz
+        User->>Shield: /auth/callback?code=xyz
+        Shield->>KC: POST /token (troca code por tokens)
+        KC-->>Shield: {access_token, refresh_token, id_token}
+        Shield->>Redis: Armazena JWT (session_id → token)
+        Shield-->>User: 302 → escola-alfa.com
+        Note over Shield,User: Set-Cookie: SHIELD_SESSION, HttpOnly, Secure, SameSite=Strict
+    else Com sessao valida
+        Shield->>Redis: GET session (recupera JWT)
+        Redis-->>Shield: {access_token, claims}
+        Shield->>Kong: Injeta Authorization: Bearer <JWT>
+        Note over Shield,Kong: Claims: tenant_id, roles, user_id
+        Kong->>MS: GET /api/v1/alunos + Authorization
+        MS->>PG: SET LOCAL app.current_tenant
+        PG-->>MS: Dados filtrados (RLS)
+        MS-->>User: 200 {data: [...]}
+    end
 ```
 
-**Contrato de Integração — Sistemas Existentes:**
+**Fluxo pós-login (chamadas subsequentes):**
+1. SPA faz `GET /api/v1/alunos` → Cloudflare → Kong
+2. Kong encaminha cookie para o Shield validar
+3. Shield recupera JWT do Redis → injeta `Authorization: Bearer <JWT>` no header
+4. Microserviço de negócio recebe o JWT com claims (tenant_id, roles, user_id)
+5. Microserviço executa `SET LOCAL app.current_tenant` e consulta PostgreSQL com RLS
+6. **O frontend nunca vê o JWT.** Toda a orquestração de segurança é transparente para a SPA.
 
-| Sistema | Domínio | Como integra |
-|---------|---------|-------------|
-| Portal Escola FBSO | `*.portal.fbso.org` | Redireciona para `/auth/login?redirect_uri=...` ao detectar ausência de cookie Shield; consome `/auth/me` para perfil |
-| Portal Reforma FBSO | `*.reforma.fbso.org` | Idem |
-| SaaS Corporativo FBSO | `*.saas.fbso.org` | Idem |
-| Comunidades de Ensino | `*.comunidades.fbso.org` | Idem |
-| Novos produtos FBSO | `*.fbso.org` | Mesmo contrato — cookies compartilhados via domínio `.fbso.org` |
-
-**Regra:** O Cookie de sessão Shield é setado no domínio `.fbso.org` — todos os subdomínios herdam a sessão automaticamente. Um usuário que faz login no Portal Escola já está autenticado no Portal Reforma (Single Sign-On).
+**Por que o Shield fica separado do Frontend:**
+- **Zero-Trust:** A SPA no App Platform é 100% estática, sem acesso a segredos do Keycloak
+- **Escala independente:** KEDA escala apenas o Shield (Quarkus Native, ~40MB, cold start <100ms)
+- **Isolamento:** Frontend cuida de UI/UX; Shield cuida de OIDC, cookies, injeção de JWT
 
 ---
 

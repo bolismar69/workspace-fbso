@@ -135,4 +135,31 @@
 
 ---
 
-**[STATUS: SUCESSO]** — Documento completo com 6 seções. 12 requisitos funcionais, 16 requisitos não-funcionais, 9 funcionalidades, 6 interfaces, 5 premissas, 5 dependências.
+**[STATUS: SUCESSO]** — Documento completo com 6 seções. 12 requisitos funcionais, 16 requisitos não-funcionais, 9 funcionalidades, 6 interfaces, 5 premissas, 5 dependências.### 4.1 Contrato de Integração — Sistemas Existentes (IF-05 Detalhado)
+
+O Shield atua como um **servico de validacao de sessao acoplado ao Kong API Gateway**. O frontend SPA nao chama o Shield diretamente — ele faz chamadas de API normalmente. O Kong+Shield interceptam e gerenciam a autenticacao de forma transparente.
+
+**Fluxo de interceptacao (Shield como Kong Plugin):**
+
+1. Usuario acessa https://escola-alfa.com → Cloudflare → App Platform/Nginx entrega a SPA estatica
+2. SPA carregada faz chamada de API: GET /api/v1/alunos
+3. Cloudflare (proxy de API) → Kong API Gateway
+4. Kong repassa a validacao de sessao para o Shield (cookie SHIELD_SESSION)
+5. **Sem sessao:** Shield consulta Redis (host → realm), redireciona para Keycloak /realms/realm-escola-alfa/auth
+6. Usuario autentica no Keycloak → Authorization Code retorna para /auth/callback
+7. Shield troca code por tokens (back-channel), armazena JWT no Redis, seta cookie HttpOnly
+8. **Com sessao:** Shield recupera JWT do Redis, injeta Authorization: Bearer <JWT> no header
+9. Kong encaminha requisicao com JWT para o microservico de negocio
+10. Microservico executa SET LOCAL app.current_tenant, consulta PostgreSQL com RLS
+11. Resposta retorna ao cliente — **o frontend nunca ve o JWT**
+
+| Sistema | Dominio | Como integra |
+|---------|---------|-------------|
+| Portal Escola FBSO | *.portal.fbso.org | SPA faz chamadas API; Kong+Shield interceptam autenticacao |
+| Portal Reforma FBSO | *.reforma.fbso.org | Idem |
+| SaaS Corporativo FBSO | *.saas.fbso.org | Idem |
+| Comunidades de Ensino | *.comunidades.fbso.org | Idem |
+
+**Requisitos para o Frontend SPA:** (R1) Nao armazenar ou acessar tokens JWT; (R2) Enviar cookies automaticamente (credentials: include); (R3) Tratar redirect 302 para Keycloak como fluxo normal de login; (R4) Nao chamar Keycloak ou Shield diretamente — apenas fazer chamadas de API como faria normalmente.
+
+
