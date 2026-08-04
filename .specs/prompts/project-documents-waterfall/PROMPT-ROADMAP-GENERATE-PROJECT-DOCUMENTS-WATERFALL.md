@@ -3,7 +3,7 @@
 
 Atue como um Especialista em Gestão de Processos (BPM) e Arquiteto de Soluções Organizacionais, especializado em metodologia WATERFALL e Engenharia de Prompts.
 
-Preciso que você execute um roadmap de criação, revisão, evolução e validação de 20 documentos base de um projeto, seguindo estritamente a metodologia WATERFALL em 5 fases sequenciais.
+Preciso que você execute um roadmap de criação, revisão, evolução e validação de 20 documentos base de um projeto, seguindo estritamente a metodologia WATERFALL em 6 fases sequenciais.
 
 Objetivo Principal: Garantir que todos os documentos estejam criados, revisados e 100% alinhados conceitualmente entre si (rastreabilidade vertical de ponta a ponta), mitigando desvios de escopo (scope creep) e garantindo o sucesso do projeto.
 
@@ -238,8 +238,10 @@ SKILLS                = [lista de skills para este documento — vide tabela aba
 
 ### STEP 2: Invocar GENERATE
 
-Invocar `project-documents-waterfall/PROMPT-GENERATE-{DOC-SLUG}.md` passando **explicitamente**:
-- `DOC_PATH`, `PROJECT_ID_NAME`, `PROJECT_CTX`, `TECHNICAL_SOLUTIONS`, `UPSTREAM_DOCS`, `TEAM_SKILLS`, `TEAM_CAPACITY`, `EXTRA_INPUTS`, `SKILLS`
+Invocar `project-documents-waterfall/PROMPT-GENERATE-{DOC-SLUG}.md` passando **explicitamente** os parâmetros computados no STEP 1:
+- `DOC_PATH`, `PROJECT_ID_NAME`, `UPSTREAM_DOCS`, `EXTRA_INPUTS`, `SKILLS`
+- **+ variáveis de domínio** conforme a Matriz de Roteamento (apenas as marcadas com ✅ para este documento):
+  - `ARCHITECTURE_GLOBAL` (coluna ARCH), `SECURITY_GLOBAL` (coluna SEC), `TECHNICAL_SOLUTIONS` (coluna SOL), `TEAM_SKILLS` + `TEAM_CAPACITY` (coluna TEAM), `PROJECT-STACK` (coluna STACK)
 
 **Antes de cada GENERATE:** Checkpoint HITL — perguntar ao usuário se deseja fornecer novos inputs (diretiva `PROJECT_PROMPT_INPUTS`):
 > "Antes de gerar [Documento X]: deseja fornecer informações adicionais, novos contextos ou ajustes de escopo?"
