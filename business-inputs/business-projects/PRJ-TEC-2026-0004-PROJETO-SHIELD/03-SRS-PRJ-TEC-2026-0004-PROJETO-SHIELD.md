@@ -80,6 +80,20 @@
 | IF-05 | Produtos Consumidores → Plataforma Shield | Consumo dos endpoints de autenticação via redirecionamento HTTP e chamadas de API | REST/HTTPS, OpenAPI 3.0 |
 | IF-06 | Plataforma → Banco de Dados (PostgreSQL) | Consultas com injeção de identificador do cliente para ativação de filtro de isolamento | SQL com variável de sessão `app.current_tenant` |
 
+
+### 4.1 Contrato de Integracao — Sistemas Existentes (IF-05 Detalhado)
+
+| Sistema | Dominio | Status |
+|---------|---------|--------|
+| Portal Escola FBSO | *.portal.fbso.org | A integrar |
+| Portal Reforma FBSO | *.reforma.fbso.org | A integrar |
+| SaaS Corporativo FBSO | *.saas.fbso.org | A integrar |
+| Comunidades de Ensino | *.comunidades.fbso.org | A integrar |
+
+**Requisitos:** (R1) Detectar ausencia de cookie Shield → redirecionar /auth/login; (R2) Aceitar retorno pos-login; (R3) Consumir /auth/me para perfil; (R4) Logout via /auth/logout; (R5) NUNCA chamar Keycloak; (R6) Confiar header Authorization do Kong.
+
+**SSO:** Cookies no dominio .fbso.org — login unico entre todos os sistemas.
+
 ---
 
 ### 5. Premissas e Dependências (Assumptions and Dependencies)

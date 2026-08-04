@@ -164,6 +164,59 @@ flowchart LR
     Auth -->|"set cookies"| Browser
 ```
 
+### System Integration Architecture — Shield × Sistemas Existentes
+
+O Shield é a camada de identidade centralizada. Todos os sistemas existentes do ecossistema FBSO (Portal Escola, Portal Reforma, SaaS Corporativo, Comunidades de Ensino) delegam autenticação a ele. O contrato de integração é:
+
+1. Cada sistema expõe suas páginas no domínio `*.fbso.org`
+2. Ao detectar usuário sem sessão, o sistema redireciona para `shield.fbso.org/auth/login?redirect_uri=<url-de-retorno>`
+3. O Shield gerencia todo o fluxo OIDC com Keycloak e retorna o usuário autenticado ao `redirect_uri`
+4. Após retorno, o sistema chama `shield.fbso.org/auth/me` para obter o perfil
+5. Cookies de sessão são compartilhados via domínio `.fbso.org` — login único para todos os sistemas
+
+```mermaid
+sequenceDiagram
+    actor User as 👤 Usuário
+    participant Sys as 🖥️ Portal Escola<br/>(sistema existente)
+    participant CF as Cloudflare
+    participant Kong as Kong Gateway
+    participant BFF as Shield BFF
+    participant Redis as Redis
+    participant KC as Keycloak
+
+    User->>Sys: Acessa escola-alfa.portal.fbso.org
+    Sys->>Sys: Verifica cookie de sessão Shield
+    Note over Sys: Sem sessão → redireciona
+    Sys-->>User: 302 → shield.fbso.org/auth/login?redirect_uri=escola-alfa.portal.fbso.org
+
+    User->>CF: GET shield.fbso.org/auth/login?redirect_uri=...
+    CF->>Kong: X-Tenant-Host: escola-alfa.portal.fbso.org
+    Kong->>BFF: GET /auth/login?redirect_uri=escola-alfa.portal.fbso.org
+
+    BFF->>Redis: GET host:escola-alfa.portal.fbso.org
+    Redis-->>BFF: realm-escola-alfa
+
+    BFF-->>User: 302 → Keycloak /realms/realm-escola-alfa/auth?code_challenge=...
+    User->>KC: Login form (credenciais)
+    KC-->>User: 302 → shield.fbso.org/auth/callback?code=xyz&state=...
+
+    User->>BFF: GET /auth/callback?code=xyz&state=...
+    BFF->>KC: POST /token (code + code_verifier)
+    KC-->>BFF: {access_token, refresh_token, id_token}
+
+    BFF-->>User: 302 → escola-alfa.portal.fbso.org
+    Note over BFF,User: Cookie: HttpOnly, Secure, SameSite=Strict, Domain=.fbso.org
+
+    User->>Sys: GET escola-alfa.portal.fbso.org (com cookie)
+    Sys->>BFF: GET shield.fbso.org/auth/me (com cookie)
+    BFF-->>Sys: {user_id, email, roles, tenant_id}
+    Sys-->>User: 🖥️ Aplicação renderizada
+
+    Note over Sys,Kong: Chamadas API subsequentes passam pelo Kong<br/>Kong valida cookie → injeta Authorization: Bearer JWT<br/>com claims: tenant_id, roles, user_id
+```
+
+**Regra de Ouro da Integração:** Microserviços de negócio **NUNCA** chamam Keycloak diretamente. Toda validação de sessão é feita pelo Kong (que injeta o JWT) ou pelo Shield BFF (`/auth/me`).
+
 ---
 
 ## 3. Data Architecture

@@ -180,37 +180,61 @@ flowchart TB
 
 ---
 
-## 6. Data Flow — Login Sequence
+## 6. Data Flow — Login Sequence (com Sistemas Existentes)
 
 ```mermaid
 sequenceDiagram
-    actor User as 👤 Browser
+    actor User as 👤 Usuário
+    participant Sys as 🖥️ Portal Escola<br/>Portal Reforma<br/>SaaS Corporativo<br/>Comunidades Ensino
     participant CF as Cloudflare
     participant Kong as Kong Gateway
     participant BFF as Shield BFF
     participant Redis as Redis
     participant KC as Keycloak
 
-    User->>CF: GET /app
-    CF->>Kong: HTTPS + X-Tenant-Host: escola-alfa.com
-    Kong->>BFF: GET /auth/login?redirect_uri=/app
+    User->>Sys: Acessa sistema (escola-alfa.portal.fbso.org)
+    Sys->>Sys: Verifica cookie Shield (.fbso.org)
+    Note over Sys: Sem sessão
+    Sys-->>User: 302 → shield.fbso.org/auth/login?redirect_uri=...
 
-    BFF->>Redis: GET host:escola-alfa.com
+    User->>CF: GET shield.fbso.org/auth/login?redirect_uri=escola-alfa.portal.fbso.org
+    CF->>Kong: HTTPS + X-Tenant-Host: escola-alfa.portal.fbso.org
+    Kong->>BFF: GET /auth/login?redirect_uri=escola-alfa.portal.fbso.org
+
+    BFF->>Redis: GET host:escola-alfa.portal.fbso.org
     Redis-->>BFF: realm-escola-alfa
 
     BFF->>KC: Redirect /realms/realm-escola-alfa/protocol/openid-connect/auth?code_challenge=...
-    KC-->>User: 302 → Login Form
+    KC-->>User: 302 → Login Form (tema da Escola Alfa)
 
     User->>KC: POST credentials
-    KC-->>User: 302 → /auth/callback?code=xyz&state=...
+    KC-->>User: 302 → shield.fbso.org/auth/callback?code=xyz&state=...
 
     User->>BFF: GET /auth/callback?code=xyz&state=...
     BFF->>KC: POST /token (code + code_verifier)
     KC-->>BFF: {access_token, refresh_token, id_token}
 
-    BFF-->>User: 302 /app + Set-Cookie
-    Note over BFF,User: Cookie flags: HttpOnly, Secure, SameSite=Strict
+    BFF-->>User: 302 → escola-alfa.portal.fbso.org
+    Note over BFF,User: Cookie: Domain=.fbso.org, HttpOnly, Secure, SameSite=Strict
+
+    User->>Sys: GET escola-alfa.portal.fbso.org (com cookie Shield)
+    Sys->>BFF: GET shield.fbso.org/auth/me (com cookie)
+    BFF-->>Sys: {user_id, email, roles, tenant_id}
+
+    Note over Sys,Kong: Chamadas API subsequentes:<br/>Kong valida cookie → injeta Authorization: Bearer JWT<br/>com claims tenant_id, roles, user_id
 ```
+
+**Contrato de Integração — Sistemas Existentes:**
+
+| Sistema | Domínio | Como integra |
+|---------|---------|-------------|
+| Portal Escola FBSO | `*.portal.fbso.org` | Redireciona para `/auth/login?redirect_uri=...` ao detectar ausência de cookie Shield; consome `/auth/me` para perfil |
+| Portal Reforma FBSO | `*.reforma.fbso.org` | Idem |
+| SaaS Corporativo FBSO | `*.saas.fbso.org` | Idem |
+| Comunidades de Ensino | `*.comunidades.fbso.org` | Idem |
+| Novos produtos FBSO | `*.fbso.org` | Mesmo contrato — cookies compartilhados via domínio `.fbso.org` |
+
+**Regra:** O Cookie de sessão Shield é setado no domínio `.fbso.org` — todos os subdomínios herdam a sessão automaticamente. Um usuário que faz login no Portal Escola já está autenticado no Portal Reforma (Single Sign-On).
 
 ---
 
