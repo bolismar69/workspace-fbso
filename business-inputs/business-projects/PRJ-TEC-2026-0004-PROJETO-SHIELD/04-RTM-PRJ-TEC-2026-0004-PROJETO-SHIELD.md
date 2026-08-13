@@ -11,6 +11,21 @@
 
 ---
 
+## RTM — Requirements Traceability Matrix (Matriz de Rastreabilidade de Requisitos)
+A RTM (Requirements Traceability Matrix) no nosso pipeline Waterfall é o instrumento de governança e auditoria contínua que conecta, de forma bidirecional, todas as pontas do projeto — desde a intenção estratégica do negócio até a entrega e validação técnica em produção.
+
+### O Papel da RTM na Transição BRD ➔ DRF/FRD (Rastreabilidade Primária)
+
+A primeira versão da RTM é gerada imediatamente após a aprovação do 02B-DRF/FRD para selar a Linha de Base de Escopo Funcional.
+
+Neste momento do projeto, a RTM atua como o validador contratual de negócio:
+  - **Garantia de Cobertura Total (Zero Lacunas):** Prova que cada Requisito de Negócio do BRD (REQ-NN) possui correspondência direta em Funcionalidades (F-NN), Regras de Negócio (RN-NN) e Casos de Uso (UC-NN) no DRF/FRD.
+  - **Bloqueio de Escopo Dourado (Zero Órfãos):** Garante que nenhuma funcionalidade ou regra foi inventada no DRF sem que haja um requisito explícito ou justificativa de negócio no BRD.
+  - **Insumo para Análise de Impacto de Mudanças (CCR):** Se um requisito de negócio mudar, a RTM aponta imediatamente quais casos de uso, regras e fluxos do DRF precisarão ser revisados antes de avançar para a engenharia.
+
+
+---
+
 ## Matriz de Rastreabilidade Bidirecional
 
 | Objetivo Charter | Requisito de Negócio (BRD) | Requisito Funcional (SRS) | Feature (SRS) | Status |

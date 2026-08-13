@@ -7,9 +7,9 @@ Atue como um Engenheiro de Requisitos Sênior, especializado em especificação 
 
 | Parâmetro | Descrição |
 |---|---|
-| `DOC_PATH` | Caminho completo onde o arquivo será criado |
+| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `020-SRS-{PROJECT_ID_NAME}.md`) |
 | `PROJECT_ID_NAME` | Identificador do projeto |
-| `UPSTREAM_DOCS` | Lista: `[{PROJECT_COMPLETE_PATH_NAME}/01-PROJECT-CHARTER-{PROJECT_ID_NAME}.md, {PROJECT_COMPLETE_PATH_NAME}/02-BRD-{PROJECT_ID_NAME}.md]` |
+| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 005-BRD, 010-FRD, 015-RTM-FASE-1]` |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: `["frs-creation", "requirements-engineering"]` |
 
@@ -31,12 +31,14 @@ Atue como um Engenheiro de Requisitos Sênior, especializado em especificação 
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documento Base** | 01-PROJECT-CHARTER-{PROJECT_ID_NAME}.md, 02-BRD-{PROJECT_ID_NAME}.md |
+| **Documentos Base** | 001-PROJECT-CHARTER, 005-BRD, 010-FRD, 015-RTM-FASE-1 |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |
 
 ---
+## SRS — Software Requirements Specification (Especificação de Requisitos do Sistema)
+O **SRS** é o documento técnico oficial que traduz as necessidades de negócio do **005-BRD** e as regras funcionais do **010-FRD** em especificações operacionais e computacionais do software. Enquanto o FRD define o que o usuário vê e experimenta (telas, campos, fluxos), o SRS define como a plataforma deve se comportar internamente (NFRs, APIs, processamento). Serve como contrato técnico antes do desenho arquitetural (**030-SAD**).
 
 ### 1. Functional Requirements
 

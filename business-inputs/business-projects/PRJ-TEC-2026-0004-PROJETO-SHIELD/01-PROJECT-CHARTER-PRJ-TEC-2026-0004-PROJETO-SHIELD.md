@@ -15,7 +15,7 @@
 - `BRIEFING.md` — Briefing de Produto Plataforma Shield
 - `02-BRD-PRJ-TEC-2026-0004-PROJETO-SHIELD.md` — Requisitos de Negócio (Próxima Fase)
 
----
+--- 
 
 ### 1. O Problema de Negócio (Business Problem)
 

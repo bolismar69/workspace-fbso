@@ -7,12 +7,12 @@ Atue como Technical Writer especializado em documentação de operações e runb
 
 | Parâmetro | Descrição |
 |---|---|
-| `DOC_PATH` | Caminho completo onde o arquivo será criado |
+| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `100-MANUAIS-OPERACIONAIS-{PROJECT_ID_NAME}.md`) |
 | `PROJECT_ID_NAME` | Identificador do projeto |
 | `ARCHITECTURE_GLOBAL` | Caminho para a pasta de arquitetura global — ADRs, blueprints, padrões corporativos |
 | `TECHNICAL_SOLUTIONS` | Lista de soluções técnicas do projeto (`TECHNICAL_SOLUTION_NAMES`) — nomes dos microsserviços, frontends, batches |
 | `PROJECT-STACK` | Stack tecnológica validada contra baseline corporativa em `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md` |
-| `UPSTREAM_DOCS` | Lista de caminhos para documentos upstream já em COMPLIANCE |
+| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 030-SAD, 090-DEPLOYMENT-PLAN]` |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: ["documentation-generation-doc-generate"] |
 
@@ -33,7 +33,7 @@ Atue como Technical Writer especializado em documentação de operações e runb
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documentos Base** | 01-PROJECT-CHARTER, 10-SAD, 16-DEPLOYMENT-PLAN |
+| **Documentos Base** | 001-PROJECT-CHARTER, 030-SAD, 090-DEPLOYMENT-PLAN |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |

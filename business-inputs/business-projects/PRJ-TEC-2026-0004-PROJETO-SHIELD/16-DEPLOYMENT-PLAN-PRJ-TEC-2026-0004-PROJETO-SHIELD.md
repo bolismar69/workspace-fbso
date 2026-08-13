@@ -1,5 +1,5 @@
 # Plano de Deployment: PROJETO SHIELD
-## [STATUS: Em revisão]
+## [STATUS: COMPLIANCE]
 
 | Campo | Detalhe |
 |-------|---------|

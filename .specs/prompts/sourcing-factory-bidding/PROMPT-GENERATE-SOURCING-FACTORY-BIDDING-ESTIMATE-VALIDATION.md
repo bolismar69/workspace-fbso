@@ -6,7 +6,7 @@ Este prompt implementa o **GENERATE do ESTIMATE-VALIDATION** para o processo de 
 
 **Propósito:** Valida cada estimativa recebida contra as regras definidas em `.specs/standards/DTA-VALIDATION-STANDARDS.md` §2: QA Balanceado, Arquitetura/SRE, Consistência Prazo×Horas, Outliers, Formato.
 
-**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
+**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement`).
 
 ## Parâmetros de Entrada
 
@@ -14,7 +14,7 @@ Este prompt implementa o **GENERATE do ESTIMATE-VALIDATION** para o processo de 
 |---|---|
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
+| `{SOURCING_BIDDING_MODE}` | Modo: `agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement` |
 | `{SOURCING_BIDDING_PATH}` | Pasta sourcing-factory-bidding-{mode} |
 | `{ESTIMATES_PATH}` | Pasta de estimativas recebidas |
 
@@ -25,7 +25,7 @@ Confirmar `{PROJECT_PATH}`, `{PROJECT_ID_NAME}`, `{SOURCING_BIDDING_MODE}`.
 
 ### Passo 1 — Carregar Artefatos Base
 - CSVs das fábricas em `estimates/ESTIMATION-SCHEMA-{FAB}.csv`
-- Baseline PIB conforme modo: `DISCOVERY-LEVEL-ROM-ESTIMATE.md` (discovery) ou `BOTTOM-UP-PERT-ESTIMATE.md` (full)
+- Baseline PIB conforme modo: `DISCOVERY-LEVEL-ROM-ESTIMATE.md` (agile-discovery) ou `BOTTOM-UP-PERT-ESTIMATE.md` (full)
 - DTA-VALIDATION-STANDARDS.md §2 (regras de validação)
 
 ### Passo 2 — Invocar Skills Especializadas

@@ -7,13 +7,13 @@ Atue como Arquiteto de Soluções especializado em design de alto nível e diagr
 
 | Parâmetro | Descrição |
 |---|---|
-| `DOC_PATH` | Caminho completo onde o arquivo será criado |
+| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `035-HLD-{PROJECT_ID_NAME}.md`) |
 | `PROJECT_ID_NAME` | Identificador do projeto |
 | `ARCHITECTURE_GLOBAL` | Caminho para a pasta de arquitetura global — ADRs, blueprints, padrões corporativos |
 | `SECURITY_GLOBAL` | Caminho para o GLOBAL-SECURITY.md — regras de ouro, checklist SDD, threat model global |
 | `TECHNICAL_SOLUTIONS` | Lista de soluções técnicas do projeto (`TECHNICAL_SOLUTION_NAMES`) — nomes dos microsserviços, frontends, batches |
 | `PROJECT-STACK` | Stack tecnológica validada contra baseline corporativa em `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md` |
-| `UPSTREAM_DOCS` | Lista de caminhos para documentos upstream já em COMPLIANCE |
+| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 030-SAD]` |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: ["c4-container", "system-design", "architecture-decision-records"] |
 
@@ -34,12 +34,14 @@ Atue como Arquiteto de Soluções especializado em design de alto nível e diagr
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documentos Base** | 01-PROJECT-CHARTER, 10-SAD |
+| **Documentos Base** | 001-PROJECT-CHARTER, 030-SAD |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |
 
 ---
+## HLD — High-Level Design (Desenho de Alto Nível)
+O **HLD** detalha a solução definida no **030-SAD** em diagramas C4 de contexto e containers, stack tecnológica, topologia de integração e deployment e fluxos de dados. Traduz as decisões arquiteturais do SAD em uma visão estrutural de alto nível que orienta o desenho de componentes (**040-LLD**), o plano de testes (**045-TEST-PLAN**) e o plano de deployment (**090-DEPLOYMENT-PLAN**).
 
 ### 1. System Context (C4 Level 1)
 [Diagrama de contexto do sistema com atores e sistemas externos]

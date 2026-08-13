@@ -11,6 +11,18 @@
 
 ---
 
+## HLD - High-Level Design
+O High-Level Design (HLD) (Projeto de Alto Nível) é a planta arquitetônica inicial de um sistema ou software. Ele oferece uma visão geral e ampla de como todo o produto funcionará, definindo os módulos principais, as tecnologias, o fluxo de dados e as interações entre os componentes, sem entrar em detalhes de código.
+
+### Principais Componentes do HLD
+- **Arquitetura Geral:** Desenho macro de como o sistema se organiza (camadas, microsserviços ou monolito).
+- **Módulos e Componentes:** Identificação das grandes unidades funcionais (ex: autenticação, catálogo, pagamento).
+- **Fluxo de Dados:** Como as informações trafegam entre os serviços externos e internos.
+- **Tecnologias e Hardware:** Escolha de servidores, bancos de dados, infraestrutura e plataformas
+- **Escalabilidade e Segurança:** Estratégias para suportar o crescimento de usuários e proteger os dados.
+
+---
+
 ## 1. System Context (C4 Level 1)
 
 ```mermaid

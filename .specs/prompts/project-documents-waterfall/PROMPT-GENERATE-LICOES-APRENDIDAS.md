@@ -7,7 +7,7 @@ Atue como Gerente de Projetos especializado em retrospectivas e melhoria contín
 
 | Parâmetro | Descrição |
 |---|---|
-| `DOC_PATH` | Caminho completo onde o arquivo será criado |
+| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `110-LICOES-APRENDIDAS-{PROJECT_ID_NAME}.md`) |
 | `PROJECT_ID_NAME` | Identificador do projeto |
 | `UPSTREAM_DOCS` | Lista de caminhos para documentos upstream já em COMPLIANCE |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
@@ -30,7 +30,7 @@ Atue como Gerente de Projetos especializado em retrospectivas e melhoria contín
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documentos Base** | todos os 19 documentos anteriores |
+| **Documentos Base** | todos os 21 documentos anteriores |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |

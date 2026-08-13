@@ -10,7 +10,7 @@ Este prompt implementa o **GATE de Validação do ESTIMATE-VALIDATION** — Fase
 | 1.4 | Formato | 20 colunas obrigatórias preenchidas |
 | 2.1 | Prazo×Horas | Divergência ≤ 50% |
 | 2.2 | Outliers | ±50% da mediana |
-| 2.3 | PIB 🆕 | PIB Score calculado com baseline do modo correto (discovery→ROM, full→PERT); vereditos consideram PIB < 0.25 |
+| 2.3 | PIB 🆕 | PIB Score calculado com baseline do modo correto (agile-discovery→ROM, agile-refinement→PERT); vereditos consideram PIB < 0.25 |
 | 3.1 | 100% Fábricas | Todas validadas com veredito claro |
 ## Formato de Saída
 ### 🚨 NÃO COMPLIANCE — Para cada NC: ID-CONFLITO-[VALID-XX], Localização, Problema, Impacto, Sugestão

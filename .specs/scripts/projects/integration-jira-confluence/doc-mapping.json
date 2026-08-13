@@ -1,0 +1,76 @@
+{
+  "confluence_folders": {
+    "F1": {"id": 4096001, "title": "F1 — Negócios & Discovery"},
+    "F2": {"id": 4128769, "title": "F2 — Estimativa UPSTREAM"},
+    "F3": {"id": 4161537, "title": "F3 — Detalhamento Técnico"},
+    "F4": {"id": 4194305, "title": "F4 — Estimativa DOWNSTREAM"},
+    "F5": {"id": 4227073, "title": "F5 — GO/NO-GO & Planejamento"},
+    "F6": {"id": 4259841, "title": "F6 — Execução Técnica"},
+    "ADRS": {"id": 3997698, "title": "ADRs — Architecture Decision Records"}
+  },
+  "documents": [
+    {"file": "01-PROJECT-CHARTER-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "01 — Project Charter v2.0", "folder": "F1", "jira_epic": "F1"},
+    {"file": "02-BRD-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "02 — BRD v2.0", "folder": "F1", "jira_epic": "F1"},
+    {"file": "03-SRS-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "03 — SRS v1.0", "folder": "F1", "jira_epic": "F1"},
+    {"file": "04-RTM-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "04 — RTM v1.0", "folder": "F1", "jira_epic": "F1"},
+    {"file": "05-SAD-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "05 — SAD v2.0", "folder": "F1", "jira_epic": "F1"},
+    {"file": "06-HLD-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "06 — HLD v2.0", "folder": "F1", "jira_epic": "F1"},
+    {"file": "07-LLD-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "07 — LLD v3.0", "folder": "F3", "jira_epic": "F3"},
+    {"file": "08-TEST-PLAN-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "08 — Test Plan v3.0", "folder": "F3", "jira_epic": "F3"},
+    {"file": "09-TEST-CASES-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "09 — Test Cases v2.0", "folder": "F3", "jira_epic": "F3"},
+    {"file": "10-RELATORIO-QUALIDADE-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "10 — Relatório de Qualidade", "folder": "F3", "jira_epic": "F3"},
+    {"file": "11-EAP-WBS-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "11 — EAP/WBS", "folder": "F3", "jira_epic": "F3"},
+    {"file": "12-CRONOGRAMA-GANTT-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "12 — Cronograma Gantt", "folder": "F5", "jira_epic": "F5"},
+    {"file": "13-ORCAMENTO-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "13 — Orçamento", "folder": "F5", "jira_epic": "F5"},
+    {"file": "14-PLANO-COMUNICACAO-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "14 — Plano de Comunicação", "folder": "F6", "jira_epic": "F7"},
+    {"file": "15-PLANO-RISCOS-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "15 — Plano de Riscos", "folder": "F6", "jira_epic": "F7"},
+    {"file": "16-DEPLOYMENT-PLAN-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "16 — Deployment Plan v2.0", "folder": "F6", "jira_epic": "F7"},
+    {"file": "17-MANUAIS-USUARIO-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "17 — Manuais de Usuário", "folder": "F6", "jira_epic": "F7"},
+    {"file": "18-MANUAIS-OPERACIONAIS-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "18 — Manuais Operacionais", "folder": "F6", "jira_epic": "F7"},
+    {"file": "19-TERMO-ACEITE-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "19 — Termo de Aceite", "folder": "F6", "jira_epic": "F7"},
+    {"file": "20-LICOES-APRENDIDAS-PRJ-TEC-2026-0004-PROJETO-SHIELD.md", "confluence_title": "20 — Lições Aprendidas", "folder": "F6", "jira_epic": "F7"}
+  ],
+  "waterfall_estimation": [
+    {"file": "waterfall-estimation/WATERFALL-ESTIMATION-UPSTREAM-ROM.md", "confluence_title": "UPSTREAM — ROM ±50%", "folder": "F2", "jira_epic": "F2"},
+    {"file": "waterfall-estimation/ESTIMATION-SCOPE-SNAPSHOT-UPSTREAM.md", "confluence_title": "UPSTREAM — Scope Snapshot", "folder": "F2", "jira_epic": "F2"},
+    {"file": "waterfall-estimation/GOVERNANCE-ROM-REPORT.md", "confluence_title": "UPSTREAM — Governance ROM Report", "folder": "F2", "jira_epic": "F2"},
+    {"file": "waterfall-estimation/WATERFALL-ESTIMATION-DOWNSTREAM-PERT.md", "confluence_title": "DOWNSTREAM — PERT ±15%", "folder": "F4", "jira_epic": "F4"},
+    {"file": "waterfall-estimation/ESTIMATION-SCOPE-SNAPSHOT-DOWNSTREAM.md", "confluence_title": "DOWNSTREAM — Scope Snapshot", "folder": "F4", "jira_epic": "F4"},
+    {"file": "waterfall-estimation/CRONOGRAMA-CALCULADO.md", "confluence_title": "DOWNSTREAM — Cronograma Calculado", "folder": "F4", "jira_epic": "F4"},
+    {"file": "waterfall-estimation/ORCAMENTO-CALCULADO.md", "confluence_title": "DOWNSTREAM — Orçamento Calculado", "folder": "F4", "jira_epic": "F4"}
+  ],
+  "remote_links": {
+    "PRJSHIELD-2": [
+      ["01 — Project Charter v2.0", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/3997718"],
+      ["02 — BRD v2.0", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4653059"],
+      ["03 — SRS v1.0", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4718593"],
+      ["04 — RTM v1.0", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4751361"],
+      ["05 — SAD v2.0", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/3801132"],
+      ["06 — HLD v2.0", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4915221"]
+    ],
+    "PRJSHIELD-3": [
+      ["UPSTREAM — ROM ±50%", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4259883"],
+      ["UPSTREAM — Scope Snapshot", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4751381"],
+      ["UPSTREAM — Governance ROM Report", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4030485"]
+    ],
+    "PRJSHIELD-4": [
+      ["10 — Relatório de Qualidade", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4816897"],
+      ["11 — EAP/WBS", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4849665"]
+    ],
+    "PRJSHIELD-5": [
+      ["DOWNSTREAM — PERT ±15%", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4751399"],
+      ["DOWNSTREAM — Orçamento Calculado", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4096022"]
+    ],
+    "PRJSHIELD-6": [
+      ["12 — Cronograma Gantt", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4915201"],
+      ["13 — Orçamento", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/3801112"]
+    ],
+    "PRJSHIELD-7": [
+      ["F6 — Pasta de Documentos", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4259841"]
+    ],
+    "PRJSHIELD-9":  [["Deployment Plan v2.0", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4947969"]],
+    "PRJSHIELD-10": [["HLD v2.0", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4915221"], ["SAD v2.0", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/3801132"]],
+    "PRJSHIELD-11": [["HLD v2.0", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4915221"], ["SRS v1.0", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4718593"]],
+    "PRJSHIELD-16": [["Plano de Riscos", "https://bolismar69.atlassian.net/wiki/spaces/NEPF/pages/4849685"]]
+  }
+}

@@ -1,5 +1,5 @@
 # Manuais Operacionais: Plataforma Shield
-## [STATUS: Em revisão]
+## [STATUS: COMPLIANCE]
 
 | Campo | Detalhe |
 |-------|---------|

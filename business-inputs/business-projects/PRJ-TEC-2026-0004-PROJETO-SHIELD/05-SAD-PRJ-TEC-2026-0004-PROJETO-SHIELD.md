@@ -13,6 +13,53 @@
 
 ---
 
+#   
+
+O **SAD (Software Architecture Document)** é o guia técnico mestre que estabelece a estrutura macro, os padrões de engenharia, a topologia de componentes e as diretrizes arquiteturais de um sistema de software. Ele traduz os Requisitos Funcionais (**02B-DRF**) e Não-Funcionais (**03-SRS**) na blueprint tecnológica oficial da solução.
+
+---
+
+## Principais Objetivos no Pipeline
+
+* **Explicar o "Como" Estrutural:** Define a arquitetura do sistema antes do detalhamento técnico avançado (**07-LLD**) e da codificação.
+* **Justificar Escolhas Técnicas (ADRs):** Formaliza os *Architecture Decision Records*, registrando a justificativa técnica e financeira para a escolha de frameworks, bancos de dados, comunicação entre serviços e infraestrutura.
+* **Garantir os NFRs do SRS:** Prova teoricamente e estruturalmente como a solução atenderá às métricas de desempenho, segurança, escalabilidade e resiliência exigidas no **03-SRS**.
+* **Sustentar a Estimativa Upstream (ROM ±50%):** Fornece o desenho de alto nível necessário para dimensionamento inicial de licenças, recursos de nuvem/infraestrutura e alocação de perfis técnicos.
+
+---
+
+## O que contém o Documento
+
+1. **Visão Geral e Contexto:**
+   * Propósito do sistema, objetivos de negócio e fronteiras do software.
+
+2. **Visões Arquiteturais (Modelo 4+1):**
+   * **Visão Lógica:** Módulos, camadas e abstrações do sistema.
+   * **Visão de Processos:** Fluxos de execução, concorrência, comunicação síncrona/assíncrona e threads.
+   * **Visão de Implantação/Física:** Topologia de servidores, redes, clusters, containers e nuvem.
+   * **Visão de Desenvolvimento:** Organização do código fonte, pacotes, padrões de projeto e diretrizes de monorepo/multirepo.
+   * **Visão de Cenários (Casos de Uso Críticos):** Ilustração de como os principais fluxos do **DRF** atravessam a arquitetura.
+
+3. **Matriz de Tecnologias e Stack:**
+   * Definição de linguagens, frameworks, bancos de dados, brokers de mensageria e ferramentas de borda.
+
+4. **Estratégia de Requisitos Não-Funcionais (NFRs):**
+   * Arquitetura de Segurança (mecanismos de autenticação, autorização e isolamento multi-tenant).
+   * Estratégia de Escalabilidade e Alta Disponibilidade (load balancers, caching, réplicas).
+   * Estratégia de Observabilidade (métricas, logs estruturados e rastreamento distribuído).
+
+5. **Registro de Decisões Arquiteturais (ADR - Architecture Decision Records):**
+   * Histórico de decisões técnicas relevantes, contendo: Contexto, Opções Consideradas, Decisão Tomada e Consequências/Trade-offs.
+
+---
+
+## Integração no Fluxo Waterfall
+
+* **Entrada:** Recebe as restrições e NFRs do **SRS** e o mapeamento da **RTM**.
+* **Saída:** Alimenta diretamente o **HLD** (High-Level Design), permitindo o fechamento da documentação necessária para o **Gate 1: Estimativa Upstream / Discovery (ROM ±50%)** junto às fábricas ou times internos.
+
+---
+
 ## 1. Architectural Overview
 
 **Estilo Arquitetural:** Microserviço de borda (Backend-For-Frontend) com arquitetura reativa e compilação nativa GraalVM. O Shield atua como **serviço de validação de sessão acoplado ao Kong API Gateway** — não é chamado diretamente pelo frontend.

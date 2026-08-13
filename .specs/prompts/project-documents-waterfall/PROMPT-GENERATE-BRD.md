@@ -7,9 +7,9 @@ Atue como um Analista de Negócios Sênior (Business Analyst), especializado em 
 
 | Parâmetro | Descrição |
 |---|---|
-| `DOC_PATH` | Caminho completo onde o arquivo será criado |
+| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `005-BRD-{PROJECT_ID_NAME}.md`) |
 | `PROJECT_ID_NAME` | Identificador do projeto |
-| `UPSTREAM_DOCS` | Lista: `[{PROJECT_COMPLETE_PATH_NAME}/01-PROJECT-CHARTER-{PROJECT_ID_NAME}.md]` |
+| `UPSTREAM_DOCS` | Lista: `[{PROJECT_COMPLETE_PATH_NAME}/001-PROJECT-CHARTER-{PROJECT_ID_NAME}.md, {PROJECT_COMPLETE_PATH_NAME}/002-STAKEHOLDER-MAP-{PROJECT_ID_NAME}.md]` |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: `["brd-creation", "business-analyst", "requirements-elicitation"]` |
 
@@ -31,10 +31,33 @@ Atue como um Analista de Negócios Sênior (Business Analyst), especializado em 
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documento Base** | 01-PROJECT-CHARTER-{PROJECT_ID_NAME}.md |
+| **Documentos Base** | 001-PROJECT-CHARTER-{PROJECT_ID_NAME}.md, 002-STAKEHOLDER-MAP-{PROJECT_ID_NAME}.md |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |
+
+---
+
+## BRD — Business Requirements Document (Documento de Requisitos de Negócio)
+
+O **BRD (Business Requirements Document)** é o documento formal que define os objetivos, o valor gerado e as necessidades estratégicas e operacionais de uma empresa para um novo projeto. Ele responde estritamente ao **"o quê"** a empresa precisa e ao **"porquê"**, servindo como o contrato primário de negócio antes de qualquer detalhamento funcional (**010-FRD**) ou especificação técnica (**020-SRS**).
+
+### Principais Elementos do BRD
+
+- **Resumo Executivo:** Visão geral da iniciativa, justificativa de negócio e problema a ser resolvido
+- **Objetivos de Negócio:** Metas quantificáveis e qualitativas (ex: redução de custos, conformidade regulatória)
+- **Escopo Declarado (In-Scope e Out-of-Scope):** Delimitação clara das fronteiras do projeto
+- **Requisitos de Negócio (`REQ-NN`):** Lista das necessidades de alto nível que a solução deve atender
+- **Cenário Atual vs. Futuro (As-Is / To-Be):** Descrição do processo operacional atual e do impacto esperado
+- **Premissas, Restrições e Riscos de Negócio:** Prazos limite, orçamento, políticas operacionais internas
+- **Matriz de Stakeholders:** Identificação dos patrocinadores, aprovadores e áreas impactadas
+
+### Para que serve no Pipeline Waterfall
+
+- **Alinhamento Estratégico:** Garante que diretoria, áreas de negócio e TI tenham a mesma expectativa
+- **Insumo Direto para o FRD (010):** Cada `REQ-NN` dará origem a funcionalidades (`FEAT-NN`), regras (`RN-NN`) e casos de uso (`UC-NN`)
+- **Sustentação do Gate Upstream (ROM ±50%):** Fornece justificativas financeiras e de escopo para análise de viabilidade
+- **Âncora de Alterações (CCR):** Se uma nova demanda não apoiar nenhum objetivo do BRD, ela é rejeitada ou exige revisão contratual
 
 ---
 

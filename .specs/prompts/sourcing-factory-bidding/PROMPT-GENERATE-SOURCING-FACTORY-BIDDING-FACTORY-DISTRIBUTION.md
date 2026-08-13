@@ -6,7 +6,7 @@ Este prompt implementa o **GENERATE do FACTORY-DISTRIBUTION** para o processo de
 
 **Propósito:** Registra as fábricas participantes com dados de contato (Canal, E-mail, Telefone), controla envio do RFQ e prazos de resposta. Colunas: Fábrica, Data Envio, Canal, E-mail, Telefone, Prazo, Status.
 
-**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
+**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement`).
 
 ## Parâmetros de Entrada
 
@@ -14,7 +14,7 @@ Este prompt implementa o **GENERATE do FACTORY-DISTRIBUTION** para o processo de
 |---|---|
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
+| `{SOURCING_BIDDING_MODE}` | Modo: `agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement` |
 | `{SOURCING_BIDDING_PATH}` | Pasta sourcing-factory-bidding-{mode} |
 | `{ESTIMATES_PATH}` | Pasta de estimativas recebidas |
 

@@ -7,10 +7,10 @@ Atue como Technical Writer especializado em documentação de usuário final.
 
 | Parâmetro | Descrição |
 |---|---|
-| `DOC_PATH` | Caminho completo onde o arquivo será criado |
+| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `095-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md`) |
 | `PROJECT_ID_NAME` | Identificador do projeto |
 | `TECHNICAL_SOLUTIONS` | Lista de soluções técnicas do projeto (`TECHNICAL_SOLUTION_NAMES`) — nomes dos microsserviços, frontends, batches |
-| `UPSTREAM_DOCS` | Lista de caminhos para documentos upstream já em COMPLIANCE |
+| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 010-FRD, 020-SRS]` |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: ["documentation-generation-doc-generate", "docs-writer"] |
 
@@ -31,7 +31,7 @@ Atue como Technical Writer especializado em documentação de usuário final.
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documentos Base** | 01-PROJECT-CHARTER, 03-SRS |
+| **Documentos Base** | 001-PROJECT-CHARTER, 010-FRD, 020-SRS |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |

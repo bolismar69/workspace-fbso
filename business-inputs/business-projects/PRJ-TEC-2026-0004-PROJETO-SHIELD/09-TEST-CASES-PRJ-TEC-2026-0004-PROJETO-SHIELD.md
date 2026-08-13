@@ -1,5 +1,5 @@
 # Casos de Teste: PROJETO SHIELD
-## [STATUS: Em revisão]
+## [STATUS: COMPLIANCE]
 
 | Campo | Detalhe |
 |-------|---------|

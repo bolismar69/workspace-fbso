@@ -9,6 +9,21 @@
 
 ---
 
+## EAP significa Estrutura Analítica do Projeto (e WBS vem do inglês Work Breakdown Structure)
+ Trata-se de uma ferramenta de gestão de projetos que divide o trabalho total em partes menores e fáceis de controlar, organizadas em formato de árvore ou lista hierárquica focada nas entregas.
+
+ ### Como Funciona a Estrutura
+ - **Divisão por entregas:** O projeto grande é quebrado em fases, subfases e, no menor nível, em pacotes de trabalho.
+ - **Foco no "o quê":** Diferente do cronograma (que diz quando e como), a EAP define claramente o que será entregue.
+ - **Regra do escopo:** O que não estiver incluído na EAP não faz parte oficialmente do escopo do projeto.
+
+### Principais Vantagens
+- **Clareza de responsabilidades:** Facilita a atribuição de tarefas a pessoas ou equipes específicas.
+- **Estimativa precisa:** Ajuda a calcular custos, prazos e recursos necessários para cada etapa.
+- **Controle de andamento:** Permite monitorar o progresso do projeto de forma visual e organizada
+
+---
+
 ## 1. EAP Gráfica (3 níveis)
 
 ```

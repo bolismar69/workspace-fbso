@@ -1,5 +1,5 @@
 # Manuais de Usuário: Plataforma Shield — Integração para Times de Produto
-## [STATUS: Em revisão]
+## [STATUS: COMPLIANCE]
 
 | Campo | Detalhe |
 |-------|---------|

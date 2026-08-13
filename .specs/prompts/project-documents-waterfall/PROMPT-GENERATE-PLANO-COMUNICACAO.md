@@ -7,9 +7,9 @@ Atue como Especialista em Comunicação Organizacional e Gestão de Stakeholders
 
 | Parâmetro | Descrição |
 |---|---|
-| `DOC_PATH` | Caminho completo onde o arquivo será criado |
+| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `075-PLANO-COMUNICACAO-{PROJECT_ID_NAME}.md`) |
 | `PROJECT_ID_NAME` | Identificador do projeto |
-| `UPSTREAM_DOCS` | Lista de caminhos para documentos upstream já em COMPLIANCE |
+| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP]` |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: ["stakeholder-analysis", "stakeholder-map"] |
 
@@ -30,7 +30,7 @@ Atue como Especialista em Comunicação Organizacional e Gestão de Stakeholders
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documentos Base** | 01-PROJECT-CHARTER |
+| **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |

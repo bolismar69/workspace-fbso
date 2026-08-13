@@ -1,0 +1,74 @@
+{
+  "phases": {
+    "F0": {"jira_epic": null, "fix_version": "V0-Setup", "summary": "F0 — Governança & Setup"},
+    "F1": {"jira_epic": null, "fix_version": "V1-Discovery", "summary": "F1 — Negócios & Discovery"},
+    "F2": {"jira_epic": null, "fix_version": "V2-Upstream", "summary": "F2 — Estimativa UPSTREAM (ROM ±50%)"},
+    "F3": {"jira_epic": null, "fix_version": "V3-Detalhamento", "summary": "F3 — Detalhamento Técnico"},
+    "F4": {"jira_epic": null, "fix_version": "V4-Downstream", "summary": "F4 — Estimativa DOWNSTREAM (PERT ±15%)"},
+    "F5": {"jira_epic": null, "fix_version": "V5-Planejamento", "summary": "F5 — GO/NO-GO & Planejamento"},
+    "F6": {"jira_epic": null, "fix_version": "V6-Execucao", "summary": "F6 — Execução Técnica (WBS D1-D7)"},
+    "F7": {"jira_epic": null, "fix_version": "V7-Encerramento", "summary": "F7 — Documentação & Encerramento"}
+  },
+  "deliverables": {
+    "D1": {"phase": "F6", "summary": "D1 — Infraestrutura Produção", "component": "infra-producao",
+      "jira_story": "PRJSHIELD-9",
+      "tasks": [
+        {"wbs": "1.1.1", "summary": "[D1] 1.1.1 — Provisionar DOKS + Istio", "jira_key": "PRJSHIELD-17"},
+        {"wbs": "1.1.2", "summary": "[D1] 1.1.2 — Configurar CI/CD + Argo CD", "jira_key": "PRJSHIELD-18"}
+      ]
+    },
+    "D2": {"phase": "F6", "summary": "D2 — Motor de Identidade (Keycloak)", "component": "motor-identidade",
+      "jira_story": "PRJSHIELD-10",
+      "tasks": [
+        {"wbs": "1.2.1", "summary": "[D2] 1.2.1 — Configurar Keycloak Multi-Realm", "jira_key": "PRJSHIELD-19"},
+        {"wbs": "1.2.2", "summary": "[D2] 1.2.2 — Implementar Kong Gateway + Shield Filter", "jira_key": "PRJSHIELD-20"},
+        {"wbs": "1.2.3", "summary": "[D2] 1.2.3 — Configurar Cloudflare Edge", "jira_key": "PRJSHIELD-21"}
+      ]
+    },
+    "D3": {"phase": "F6", "summary": "D3 — Portal de Acesso (Auth-BFF)", "component": "portal-acesso",
+      "jira_story": "PRJSHIELD-11",
+      "tasks": [
+        {"wbs": "1.3.1", "summary": "[D3] 1.3.1 — Implementar BFF Login/Logout OIDC+PKCE", "jira_key": "PRJSHIELD-22"},
+        {"wbs": "1.3.2", "summary": "[D3] 1.3.2 — Implementar Session Management", "jira_key": "PRJSHIELD-23"},
+        {"wbs": "1.3.3", "summary": "[D3] 1.3.3 — Implementar Cache Redis", "jira_key": "PRJSHIELD-24"}
+      ]
+    },
+    "D4": {"phase": "F6", "summary": "D4 — Isolamento de Dados (PostgreSQL RLS)", "component": "isolamento-dados",
+      "jira_story": "PRJSHIELD-12",
+      "tasks": [
+        {"wbs": "1.4.1", "summary": "[D4] 1.4.1 — Implementar PostgreSQL RLS Tenant", "jira_key": "PRJSHIELD-25"},
+        {"wbs": "1.4.2", "summary": "[D4] 1.4.2 — Testes de Isolamento Cross-Tenant", "jira_key": "PRJSHIELD-26"}
+      ]
+    },
+    "D5": {"phase": "F6", "summary": "D5 — Observabilidade (Monitoring)", "component": "observabilidade",
+      "jira_story": "PRJSHIELD-13",
+      "tasks": [
+        {"wbs": "1.5.1", "summary": "[D5] 1.5.1 — Dashboards Grafana/Prometheus", "jira_key": "PRJSHIELD-27"},
+        {"wbs": "1.5.2", "summary": "[D5] 1.5.2 — Configurar Loki + Jaeger", "jira_key": "PRJSHIELD-28"}
+      ]
+    },
+    "D6": {"phase": "F6", "summary": "D6 — Homologação de Segurança", "component": "homologacao-seguranca",
+      "jira_story": "PRJSHIELD-14",
+      "tasks": [
+        {"wbs": "1.6.1", "summary": "[D6] 1.6.1 — Testes de Contrato Kong-Filter", "jira_key": "PRJSHIELD-29"},
+        {"wbs": "1.6.2", "summary": "[D6] 1.6.2 — Testes de Carga KEDA", "jira_key": "PRJSHIELD-30"},
+        {"wbs": "1.6.3", "summary": "[D6] 1.6.3 — Testes de Segurança (OWASP + LGPD)", "jira_key": "PRJSHIELD-31"},
+        {"wbs": "1.6.4", "summary": "[D6] 1.6.4 — Testes de Aceitação (14 TCs)", "jira_key": "PRJSHIELD-32"},
+        {"wbs": "1.6.5", "summary": "[D6] 1.6.5 — Documentação de API (OpenAPI)", "jira_key": "PRJSHIELD-33"},
+        {"wbs": "1.6.6", "summary": "[D6] 1.6.6 — Relatório de Qualidade", "jira_key": "PRJSHIELD-34"}
+      ]
+    },
+    "D7": {"phase": "F6", "summary": "D7 — Go-Live & Entrega Final", "component": "go-live",
+      "jira_story": "PRJSHIELD-15",
+      "tasks": [
+        {"wbs": "1.7.1", "summary": "[D7] 1.7.1 — Deploy Produção + GitOps", "jira_key": "PRJSHIELD-35"},
+        {"wbs": "1.7.2", "summary": "[D7] 1.7.2 — Manuais de Usuário", "jira_key": "PRJSHIELD-36"},
+        {"wbs": "1.7.3", "summary": "[D7] 1.7.3 — Manuais Operacionais (Runbooks/DR)", "jira_key": "PRJSHIELD-37"},
+        {"wbs": "1.7.4", "summary": "[D7] 1.7.4 — Termo de Aceite (Sign-off)", "jira_key": "PRJSHIELD-38"},
+        {"wbs": "1.7.5", "summary": "[D7] 1.7.5 — Lições Aprendidas", "jira_key": "PRJSHIELD-39"}
+      ]
+    },
+    "RISKS": {"phase": "F6", "summary": "Riscos Críticos (R01, R02, R03, R08)",
+      "jira_story": "PRJSHIELD-16", "tasks": []}
+  }
+}

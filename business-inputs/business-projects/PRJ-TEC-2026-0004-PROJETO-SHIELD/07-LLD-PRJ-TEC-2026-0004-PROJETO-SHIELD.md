@@ -1,5 +1,5 @@
 # Low-Level Design (LLD): PROJETO SHIELD — ms-shield-identity-auth
-## [STATUS: Em revisão]
+## [STATUS: COMPLIANCE]
 
 | Campo | Detalhe |
 |-------|---------|
@@ -8,6 +8,22 @@
 | **Documentos Base** | 01-PROJECT-CHARTER, 05-SAD, 06-HLD |
 | **Stack** | Java 21 + Quarkus + GraalVM Native |
 | **Data** | 03/08/2026 | **Versão** | 3.0 — Revisão de Integração | **Metodologia** | WATERFALL |
+
+---
+
+# LLD - Low-Level Design
+O Low-Level Design (LLD) — ou Projeto de Baixo Nível — é a etapa do desenvolvimento de software que detalha a lógica interna, as classes, os métodos, as interfaces e as estruturas de dados de um componente, transformando a arquitetura geral em um plano de código prático.
+
+### Pilares do LLD
+- **Orientação a Objetos (POO):** Identificação de entidades, atributos e comportamentos.
+- **Princípios SOLID:** Aplicação de regras para garantir código limpo, coeso e de baixo acoplamento.
+- **Padrões de Projeto (Design Patterns):** Uso de soluções reutilizáveis para problemas comuns de arquitetura de código (criacionais, estruturais e comportamentais).
+
+- **Diagramas UML:** Representação visual por meio de diagramas de classes, de sequência e de atividades.
+### Benefícios
+- **Manutenibilidade:** Facilita a leitura e a alteração do código sem quebrar outras partes.
+- **Testabilidade:** Promove classes independentes que tornam os testes unitários simples e confiáveis.
+- **Colaboração:** Alinha a equipe de engenharia sobre o que e como codificar antes de iniciar a programação.
 
 ---
 

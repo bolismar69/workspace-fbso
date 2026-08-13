@@ -16,8 +16,10 @@ Produzir uma análise retrospectiva aprofundada quando **0 fábricas são aprova
 1. **ESTIMATE-VALIDATION.md** (F5) — resultado da validação DTA
 2. **CSVs das fábricas** em `estimates/ESTIMATION-SCHEMA-{FAB}.csv` — dados brutos
 3. **Baseline PIB** conforme o modo:
-   - `discovery` → `upstream-architecture-discovery/DISCOVERY-LEVEL-ROM-ESTIMATE.md`
-   - `full` → `downstream-architecture-refinement/BOTTOM-UP-PERT-ESTIMATE.md`
+   - `agile-discovery` → `upstream-architecture-discovery/DISCOVERY-LEVEL-ROM-ESTIMATE.md`
+   - `agile-refinement` → `downstream-architecture-refinement/BOTTOM-UP-PERT-ESTIMATE.md`
+   - `waterfall-discovery` → `waterfall-estimation/WATERFALL-ESTIMATION-UPSTREAM-ROM.md`
+   - `waterfall-refinement` → `waterfall-estimation/WATERFALL-ESTIMATION-DOWNSTREAM-PERT.md`
 4. **DTA-VALIDATION-STANDARDS.md** — regra PIB §2.6
 
 ## DIMENSÕES DE ANÁLISE

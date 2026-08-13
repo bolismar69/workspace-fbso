@@ -10,7 +10,7 @@ Acionado quando o gate reprova `ESTIMATE-RETROSPECTIVE-PIB.md`. Correções cir�
 |---|---|
 | `{PROJECT_PATH}` | Caminho base |
 | `{PROJECT_ID_NAME}` | ID do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
+| `{SOURCING_BIDDING_MODE}` | Modo: `agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement` |
 
 ## Condicionalidade
 

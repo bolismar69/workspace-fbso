@@ -14,7 +14,7 @@ Este prompt implementa o **FIX do RFQ-PACKAGE** — Fase 1 do Sourcing & Factory
 |---|---|
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
+| `{SOURCING_BIDDING_MODE}` | Modo: `agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement` |
 | `{SOURCING_BIDDING_PATH}` | Pasta sourcing-factory-bidding-{mode} |
 
 ## Fluxo de Correção

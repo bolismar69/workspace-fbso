@@ -6,7 +6,7 @@ Este prompt implementa o **GENERATE do RFQ-PACKAGE** para o processo de Sourcing
 
 **Propósito:** Compila artefatos técnicos em um pacote RFQ padronizado para envio às fábricas.
 
-**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
+**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement`).
 
 ## Parâmetros de Entrada
 
@@ -14,7 +14,7 @@ Este prompt implementa o **GENERATE do RFQ-PACKAGE** para o processo de Sourcing
 |---|---|
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
+| `{SOURCING_BIDDING_MODE}` | Modo: `agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement` |
 | `{SOURCING_BIDDING_PATH}` | Pasta sourcing-factory-bidding-{mode} |
 | `{ESTIMATES_PATH}` | Pasta de estimativas recebidas |
 
