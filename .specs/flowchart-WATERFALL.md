@@ -10,11 +10,15 @@ graph TD
     REQUIREMENTS
     ANALISYS
     DESIGN
-    CODING
-    TESTING
-    DEPLOYMENT
+    IMPLEMENTATION-PLANNING
+    subgraph DEVELOPMENT
+        CODING
+        TESTING
+        DEPLOYMENT
+        CODING --> TESTING --> DEPLOYMENT --> CODING
+    end
 
-    PROJECT-PLANNING --> REQUIREMENTS --> ANALISYS --> DESIGN --> CODING --> TESTING --> DEPLOYMENT
+    PROJECT-PLANNING --> REQUIREMENTS --> ANALISYS --> DESIGN --> IMPLEMENTATION-PLANNING --> CODING
 
 ```
 
@@ -115,11 +119,11 @@ flowchart TB
         075-PLANO-COMUNICACAO["075-COMUNICAÇÃO\n(Rituais & Reporting)"]
         080-PLANO-RISCOS["080-RISCOS\n(Matriz & Contingências)"]
         085-PLANO-GESTAO-MUDANCAS["085-MUDANÇAS\n(Controle de Escopo/Prazo)"]
-        090-DEPLOYMENT-PLAN["090-DEPLOYMENT-PLAN"]
+        090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN["090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN"]
 
         062-STAFFING-PLAN --> 065-CRONOGRAMA-GANTT --> 070-ORCAMENTO
         070-ORCAMENTO --> 075-PLANO-COMUNICACAO --> 080-PLANO-RISCOS --> 085-PLANO-GESTAO-MUDANCAS
-        085-PLANO-GESTAO-MUDANCAS --> 090-DEPLOYMENT-PLAN --> 062-STAFFING-PLAN
+        085-PLANO-GESTAO-MUDANCAS --> 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN --> 062-STAFFING-PLAN
 
     end
 
@@ -151,9 +155,13 @@ flowchart TB
         end
 
         subgraph ARTEFATOS-SUPORTE["3. Documentação de Suporte e Evidências"]
-            055-RELATORIO-QUALIDADE["055-RELATORIO-QUALIDADE\n(Evidências de QA (Testes e Homologação)"]
-            095-MANUAIS-USUARIO["095-MANUAIS-USUARIO\n(Documentação de Treinamento e Negócio)"]
+            095-RELATORIO-QUALIDADE["095-RELATORIO-QUALIDADE\n(Evidências de QA (Testes e Homologação)"]
+            097-MANUAIS-USUARIO["097-MANUAIS-USUARIO\n(Documentação de Treinamento e Negócio)"]
             100-MANUAIS-OPERACIONAIS["100-MANUAIS-OPERACIONAIS\n(Runbooks e Guias de Sustentação/SRE)"]
+
+            095-RELATORIO-QUALIDADE --> 097-MANUAIS-USUARIO
+            097-MANUAIS-USUARIO --> 100-MANUAIS-OPERACIONAIS
+            100-MANUAIS-OPERACIONAIS --> 095-RELATORIO-QUALIDADE
         end
 
         GESTAO-E-RITUAIS --> JANELAS-EXECUCAO --> ARTEFATOS-SUPORTE --> GESTAO-E-RITUAIS
@@ -238,25 +246,25 @@ flowchart TB
     %%070-ORCAMENTO --> 075-PLANO-COMUNICACAO
     %%070-ORCAMENTO --> 080-PLANO-RISCOS
     %%070-ORCAMENTO --> 085-PLANO-GESTAO-MUDANCAS
-    %%PLANOS-GOVERNANCA --> 090-DEPLOYMENT-PLAN
-    %%075-PLANO-COMUNICACAO --> 090-DEPLOYMENT-PLAN
-    %%080-PLANO-RISCOS --> 090-DEPLOYMENT-PLAN
-    %%085-PLANO-GESTAO-MUDANCAS --> 090-DEPLOYMENT-PLAN
+    %%PLANOS-GOVERNANCA --> 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN
+    %%075-PLANO-COMUNICACAO --> 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN
+    %%080-PLANO-RISCOS --> 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN
+    %%085-PLANO-GESTAO-MUDANCAS --> 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN
 
     %% Transição para Execução
     FASE-4 --> MILESTONE-4
-    %%090-DEPLOYMENT-PLAN --> MILESTONE-4
+    %%090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN --> MILESTONE-4
     MILESTONE-4 --> GESTAO-E-RITUAIS
-    %%GESTAO-E-RITUAIS --> 055-RELATORIO-QUALIDADE
-    %%GESTAO-E-RITUAIS --> 095-MANUAIS-USUARIO
+    %%GESTAO-E-RITUAIS --> 095-RELATORIO-QUALIDADE
+    %%GESTAO-E-RITUAIS --> 097-MANUAIS-USUARIO
     %%GESTAO-E-RITUAIS --> 100-MANUAIS-OPERACIONAIS
     %%GESTAO-E-RITUAIS --> JANELAS-EXECUCAO
     %%JANELAS-EXECUCAO --> ARTEFATOS-SUPORTE
     %%ARTEFATOS-SUPORTE --> MILESTONE-5
 
     %% Conexões Fase 5
-    %%055-RELATORIO-QUALIDADE --> 105-TERMO-ACEITE
-    %%095-MANUAIS-USUARIO --> 105-TERMO-ACEITE
+    %%095-RELATORIO-QUALIDADE --> 105-TERMO-ACEITE
+    %%097-MANUAIS-USUARIO --> 105-TERMO-ACEITE
     %%100-MANUAIS-OPERACIONAIS --> 105-TERMO-ACEITE
     ARTEFATOS-SUPORTE --> 105-TERMO-ACEITE
     105-TERMO-ACEITE --> MILESTONE-5
@@ -294,12 +302,91 @@ flowchart TB
     %%style FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING fill:#800080 %% purple/roxo
 
     style FASE-4 fill:#800000 %% maroom/marrom
-    style PLANEJAMENTO-RECURSOS-TEMPO fill:#800000 %% maroom/marrom
-    style PLANOS-GOVERNANCA fill:#800000 %% maroom/marrom
+    %%style PLANEJAMENTO-RECURSOS-TEMPO fill:#800000 %% maroom/marrom
+    %%style PLANOS-GOVERNANCA fill:#800000 %% maroom/marrom
 
     style FASE-5 fill:#333333 %% gray/cinza
     %%style GESTAO-E-RITUAIS fill:#333333 %% gray/cinza
     style FASE-6 fill:#000080 %% navy/azul-escuro
 
 ```
+
+-------------------------
+------------------------------
+--------------------------------------
+---------------------------------------------------
+
+# Diagrama 2: Esteira "Mão-na-Massa" (IA + Dev Execution Flow)
+
+```mermaid
+flowchart TB
+    %% INSUMO UPSTREAM (FASE 1 A 4)
+    IN_MACRO["ARTEFATOS MACRO (FASE 1-4)\n(BRD, SRS, SAD, HLD, LLD, TEST-CASES)"]
+
+    subgraph REPO["REPOSITÓRIO DA SOLUÇÃO TÉCNICA (Ex: /services/payment-engine)"]
+        
+        subgraph CONTEXTO-BASE["1. Contexto Base para IA & Dev (Root)"]
+            PRD_MD["PRD.md / SPECS.md\n(Visão e Requisitos do Componente)"]
+            ARCH_MD["ARCH.md / LLD.md\n(Contratos, DTOs e Regras do Componente)"]
+            TEST_PLAN_MD["TEST_PLAN.md\n(Estratégia Local de Testes)"]
+            TASKS_MD["TASKS.md\n(Backlog de Tarefas do Componente)"]
+        end
+
+        subgraph CICLO-SPRINT["2. Pasta de Execução (/sprints/sprint-XX/)"]
+            SPRINT_CARD["SPRINT-CARD.md\n(Objetivo da Sprint, Contexto Local e Prompt/Prompt-Rules)"]
+            SPRINT_TASKS["SPRINT-TASKS.md\n(Quebra em Sub-tarefas Executáveis)"]
+            SPRINT_TESTS-SUITE["SPRINT-TEST-SUITE.md\n(Critérios de Aceite e Casos de Teste Local)"]
+        end
+
+        subgraph LOOP-IA-DEV["3. Loop de Execução e Codificação (Dev + Agente IA)"]
+            PROMPT_ENG["Prompting / Context Ingestion\n(Ingestão de SPRINT-CARD.md pelo Agente IA)"]
+            CODE_GEN["Geração de Código / Refatoração\n(IA gera Código + Testes Unitários)"]
+            HUMAN_REVIEW["Code Review Humano & QA Local\n(Validação de Regra e Segurança)"]
+            
+            PROMPT_ENG --> CODE_GEN
+            CODE_GEN --> HUMAN_REVIEW
+        end
+
+        subgraph FECHAMENTO-SPRINT["4. Fechamento de Incremento e Qualidade"]
+            SPRINT_REVIEW["SPRINT-REVIEW.md\n(Evidências da Entrega e Métricas de Cobertura)"]
+            TECH_DEBT["IDENTIFIED-TECHNICAL-DEBT.md\n(Mapeamento de Débitos Técnicos Gerados)"]
+        end
+
+    end
+
+    %% SAÍDA PARA GOVERNANÇA (MACRO)
+    OUT_GOVERNANCE["095-RELATORIO-QUALIDADE &\nAtualização do Quadro Kanban Macro"]
+
+    %% Conexões do Fluxo
+    IN_MACRO --> PRD_MD
+    IN_MACRO --> ARCH_MD
+    IN_MACRO --> TEST_PLAN_MD
+    IN_MACRO --> TASKS_MD
+
+    PRD_MD --> SPRINT_CARD
+    TASKS_MD --> SPRINT_CARD
+    ARCH_MD --> SPRINT_CARD
+    
+    SPRINT_CARD --> SPRINT_TASKS
+    SPRINT_CARD --> SPRINT_TESTS-SUITE
+    TEST_PLAN_MD --> SPRINT_TESTS-SUITE
+
+    SPRINT_TASKS --> LOOP-IA-DEV
+    SPRINT_TESTS-SUITE --> LOOP-IA-DEV
+
+    HUMAN_REVIEW -- "Reprovado / Ajuste" --> PROMPT_ENG
+    HUMAN_REVIEW -- "Aprovado" --> SPRINT_REVIEW
+
+    SPRINT_REVIEW --> TECH_DEBT
+    TECH_DEBT -.->|"Realimenta"| TASKS_MD
+
+    SPRINT_REVIEW --> OUT_GOVERNANCE
+
+    style CONTEXTO-BASE fill:white
+    style CICLO-SPRINT  fill:blue
+    style LOOP-IA-DEV  fill:green
+    style FECHAMENTO-SPRINT fill:red
+
+```
+
 
