@@ -1,5 +1,5 @@
 # PROMPT: GERADOR DE ORÇAMENTO DO PROJETO
-## Versão: 1.1 — +Integração com WATERFALL-ESTIMATION (PERT → Orçamento)
+## Versão: 1.2 — +062-STAFFING-PLAN (custos de RH por alocação na Fase 4)
 
 Atue como Analista Financeiro de Projetos especializado em orçamentação.
 
@@ -12,7 +12,7 @@ Atue como Analista Financeiro de Projetos especializado em orçamentação.
 | `TEAM_SKILLS` | Skills mapeados para o time de implementação (`PROJECT-TEAM-SKILLS-MAP`) |
 | `TEAM_CAPACITY` | Capacidade do time: seniores, plenos, juniores, duração prevista (`PROJECT-TEAM-CAPACITY`) |
 | `PROJECT-STACK` | Stack tecnológica validada contra baseline corporativa em `.specs/standards/STACK-PADROES-CORPORATIVOS-FBSO-ORG.md` |
-| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 060-EAP-WBS, 065-CRONOGRAMA-GANTT, 045-TEST-PLAN]`. **Inclui `ORCAMENTO-CALCULADO.md` do WATERFALL-ESTIMATION (se executado)** |
+| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 060-EAP-WBS, 065-CRONOGRAMA-GANTT, 045-EST-PLAN, 062-STAFFING-PLAN]`. **Inclui `ORCAMENTO-CALCULADO.md` do WATERFALL-ESTIMATION (se executado)** |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: ["project-estimation"] |
 

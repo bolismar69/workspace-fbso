@@ -1,5 +1,5 @@
 # PROMPT: GERADOR DE CRONOGRAMA E DIAGRAMA DE GANTT
-## Versão: 1.1 — +Integração com WATERFALL-ESTIMATION (PERT → Cronograma)
+## Versão: 1.2 — +062-STAFFING-PLAN (alocação do time na Fase 4)
 
 Atue como Planejador de Projetos especializado em cronogramas e caminho crítico.
 
@@ -11,7 +11,7 @@ Atue como Planejador de Projetos especializado em cronogramas e caminho crítico
 | `PROJECT_ID_NAME` | Identificador do projeto |
 | `TEAM_SKILLS` | Skills mapeados para o time de implementação (`PROJECT-TEAM-SKILLS-MAP`) |
 | `TEAM_CAPACITY` | Capacidade do time: seniores, plenos, juniores, duração prevista (`PROJECT-TEAM-CAPACITY`) |
-| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 060-EAP-WBS, 050-TEST-CASES]`. **Inclui `CRONOGRAMA-CALCULADO.md` do WATERFALL-ESTIMATION (se executado)** |
+| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 060-EAP-WBS, 050-TEST-CASES, 062-STAFFING-PLAN]`. **Inclui `CRONOGRAMA-CALCULADO.md` do WATERFALL-ESTIMATION (se executado)** |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: ["roadmap-planning", "project-estimation"] |
 
