@@ -64,7 +64,7 @@ O **Plano de CI/CD e Ambientes** operacionaliza a esteira DevOps (041) sobre a i
 ### Conexão com o Pipeline
 
 - **UPSTREAM:** Consome pipelines do 041-DEVOPS-SETUP, topologia do 044-INFRA-SETUP e decisões do 030-SAD/035-HLD
-- **DOWNSTREAM:** Alimenta 090-DEPLOYMENT-PLAN (estratégia de deploy em produção), 092-BACKLOG-KANBAN (execução dos ciclos) e 100-MANUAIS-OPERACIONAIS (runbooks de ambientes)
+- **DOWNSTREAM:** Alimenta 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN (estratégia de deploy em produção), 092-BACKLOG-KANBAN (execução dos ciclos) e 100-MANUAIS-OPERACIONAIS (runbooks de ambientes)
 
 ---
 

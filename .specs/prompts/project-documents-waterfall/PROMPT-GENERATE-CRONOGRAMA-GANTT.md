@@ -11,7 +11,7 @@ Atue como Planejador de Projetos especializado em cronogramas e caminho crítico
 | `PROJECT_ID_NAME` | Identificador do projeto |
 | `TEAM_SKILLS` | Skills mapeados para o time de implementação (`PROJECT-TEAM-SKILLS-MAP`) |
 | `TEAM_CAPACITY` | Capacidade do time: seniores, plenos, juniores, duração prevista (`PROJECT-TEAM-CAPACITY`) |
-| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 060-EAP-WBS, 050-TEST-CASES, 062-STAFFING-PLAN]`. **Inclui `CRONOGRAMA-CALCULADO.md` do WATERFALL-ESTIMATION (se executado)** |
+| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 060-EAP-WBS, 050-EST-CASES, 062-STAFFING-PLAN]`. **Inclui `CRONOGRAMA-CALCULADO.md` do WATERFALL-ESTIMATION (se executado)** |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: ["roadmap-planning", "project-estimation"] |
 
@@ -45,7 +45,7 @@ Se NÃO presente, use o template de fallback com estimativas manuais.
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documentos Base** | 001-PROJECT-CHARTER, 060-EAP-WBS, 050-TEST-CASES [ + CRONOGRAMA-CALCULADO.md (PERT)] |
+| **Documentos Base** | 001-PROJECT-CHARTER, 060-EAP-WBS, 050-EST-CASES [ + CRONOGRAMA-CALCULADO.md (PERT)] |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |

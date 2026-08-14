@@ -77,6 +77,9 @@ flowchart TB
 
     %% MILESTONE 2 & GATE 1
     MILESTONE-2(("🚩 M2: ARCHITECTURE & SCOPE APPROVED\n(Aprovação do Sizing Upstream)"))
+    %% NOTA: os três nós de estimativa representam momentos distintos do fluxo upstream (ROM ±50%):
+    %% 1) HIGH-LEVEL FAST-TRACKING (saída da FASE 1) · 2) FAST-TRACKING (saída da FASE 2) · 3) fluxo normal (após M2).
+    %% Todos executam o mesmo roadmap WATERFALL-ESTIMATION em modo UPSTREAM/DISCOVERY.
     ESTIMATIVA-HIGH-LEVEL-FAST-TRACKING-UPSTREAM-DISCOVERY["ESTIMATIVA HIGH-LEVEL-FAST-TRACKING <br> UPSTREAM / DISCOVERY (ROM ±50%)"]
     ESTIMATIVA-FAST-TRACKING-UPSTREAM-DISCOVERY["ESTIMATIVA-FAST-TRACKING <br> UPSTREAM / DISCOVERY (ROM ±50%)"]
     ESTIMATIVA-UPSTREAM-DISCOVERY["ESTIMATIVA UPSTREAM / DISCOVERY (ROM ±50%)"]
@@ -101,8 +104,8 @@ flowchart TB
         %% O 041 (DevOps) integra as especialidades e só inicia após 042/043/044 em COMPLIANCE (validado pelo GATE-041).
 
         subgraph FASE-3-ESTEIRA-QUALIDADE["ESTEIRA DE QUALIDADE (QA)"]
-            045-STP["045-STP - Software Test Plan (IEEE 829)"]
-            050-TEST-CASES["050-TEST-CASES - Especificação de Casos de Teste"]
+            045-EST-PLAN["045-EST-PLAN - Software Test Plan (IEEE 829)"]
+            050-EST-CASES["050-EST-CASES - Especificação de Casos de Teste"]
         end
         
         060-EAP-WBS["060-EAP-WBS - Estrutura Analítica do Projeto"]
@@ -147,7 +150,7 @@ flowchart TB
             092-KANBAN-BACKLOG --> 093-GESTAO-TIMES --> 092-KANBAN-BACKLOG
         end
 
-        subgraph JANELAS-EXECUCAO["2. Janelas de Entrega (Ciclos/Sprints)"]
+        subgraph JANELAS-EXECUCAO["2. Janelas de Entrega (Ciclos/Sprints) — TBD/FORA DE ESCOPO"]
             direction TB
             JANELA-DEV["Janela de Desenvolvimento (DEV)\n(Code, Unit Tests, Code Review)"]
             JANELA-QA["Janela de Testes (QA)\n(Testes Funcionais, Carga e Pentest)"]
@@ -159,8 +162,11 @@ flowchart TB
             JANELA-UAT --> JANELA-DEPLOY
             JANELA-DEPLOY --> JANELA-DEV
         end
+        %% TBD: a sub-fase 2 (Janelas de Entrega) está FORA DE ESCOPO nesta revisão (evolução aprovada em 14/08/2026).
+        %% A esteira da FASE 5 executa por ciclo de entrega (FILA-NN do 092) sem depender da definição das janelas.
 
         subgraph ARTEFATOS-SUPORTE["3. Documentação de Suporte e Evidências"]
+            %% NOTA: 095-RELATORIO-QUALIDADE tem a estrutura criada na F3 e é alimentado com evidências na F5 (via 092/093).
             095-RELATORIO-QUALIDADE["095-RELATORIO-QUALIDADE\n(Evidências de QA (Testes e Homologação)"]
             097-MANUAIS-USUARIO["097-MANUAIS-USUARIO\n(Documentação de Treinamento e Negócio)"]
             100-MANUAIS-OPERACIONAIS["100-MANUAIS-OPERACIONAIS\n(Runbooks e Guias de Sustentação/SRE)"]
@@ -173,7 +179,7 @@ flowchart TB
         GESTAO-E-RITUAIS --> JANELAS-EXECUCAO --> ARTEFATOS-SUPORTE --> GESTAO-E-RITUAIS
     end
 
-    subgraph FASE-6["FASE 5: ENCERRAMENTO E OPERAÇÃO"]
+    subgraph FASE-6["FASE 6: ENCERRAMENTO E OPERAÇÃO"]
         105-TERMO-ACEITE["105-TERMO-ACEITE - Homologação do Cliente"]
         MILESTONE-5(("🚩 M5: GO-LIVE & HANDOVER"))
         110-LICOES-APRENDIDAS["110-LICOES-APRENDIDAS"]
@@ -224,17 +230,17 @@ flowchart TB
     MILESTONE-2 -- "Estimativa no Fluxo Normal" --> ESTIMATIVA-UPSTREAM-DISCOVERY
     ESTIMATIVA-UPSTREAM-DISCOVERY --> GO-NO-GO-UPSTREAM{"Go/No-Go Upstream?"}
     GO-NO-GO-UPSTREAM -- "GO (ARQUITETURA / ENGENHARIA / ESPECIALIDADES)" --> FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING
-    GO-NO-GO-UPSTREAM -- "GO (QUALIDADE)" --> 045-STP
+    GO-NO-GO-UPSTREAM -- "GO (QUALIDADE)" --> 045-EST-PLAN
     GO-NO-GO-UPSTREAM -- "TIMEBOX FASE-3" --> FASE-3-TIMEBOX
     GO-NO-GO-UPSTREAM -- "NO-GO" --> PROJETO-CANCELADO
 
     %% Consulta técnica sem travamento sequencial
-    045-STP --> 050-TEST-CASES
-    FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING -.->|"Alimenta / Consulta Técnica"| 050-TEST-CASES
+    045-EST-PLAN --> 050-EST-CASES
+    FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING -.->|"Alimenta / Consulta Técnica"| 050-EST-CASES
 
     %% Consolidação Final na WBS
     FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING --> 060-EAP-WBS
-    050-TEST-CASES --> 060-EAP-WBS
+    050-EST-CASES --> 060-EAP-WBS
 
     060-EAP-WBS --> MILESTONE-3
     MILESTONE-3 --> ESTIMATIVA-DOWNSTREAM-REFINEMENT
@@ -327,7 +333,7 @@ flowchart TB
 ```mermaid
 flowchart TB
     %% INSUMO UPSTREAM (FASE 1 A 4)
-    IN_MACRO["ARTEFATOS MACRO (FASE 1-4)\n(BRD, SRS, SAD, HLD, LLD, TEST-CASES)"]
+    IN_MACRO["ARTEFATOS MACRO (FASE 1-4)\n(BRD, SRS, SAD, HLD, LLD, EST-CASES,\n086-Padrões/DoD, 087-CI-CD)"]
 
     subgraph REPO["REPOSITÓRIO DA SOLUÇÃO TÉCNICA (Ex: /services/payment-engine)"]
         
@@ -361,7 +367,7 @@ flowchart TB
     end
 
     %% SAÍDA PARA GOVERNANÇA (MACRO)
-    OUT_GOVERNANCE["095-RELATORIO-QUALIDADE &\nAtualização do Quadro Kanban Macro"]
+    OUT_GOVERNANCE["095-RELATORIO-QUALIDADE &\nAtualização de 088/092 (Kanban Macro)"]
 
     %% Conexões do Fluxo
     IN_MACRO --> PRD_MD

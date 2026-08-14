@@ -7,7 +7,7 @@ Atue como DevOps Engineer Sênior especializado em estratégias de deployment.
 
 | Parâmetro | Descrição |
 |---|---|
-| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `090-DEPLOYMENT-PLAN-{PROJECT_ID_NAME}.md`) |
+| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN-{PROJECT_ID_NAME}.md`) |
 | `PROJECT_ID_NAME` | Identificador do projeto |
 | `ARCHITECTURE_GLOBAL` | Caminho para a pasta de arquitetura global — ADRs, blueprints, padrões corporativos |
 | `SECURITY_GLOBAL` | Caminho para o GLOBAL-SECURITY.md — regras de ouro, checklist SDD, threat model global |

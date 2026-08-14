@@ -9,7 +9,7 @@ Atue como Gerente de Projetos especializado em processos formais de aceite e enc
 |---|---|
 | `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `105-TERMO-ACEITE-{PROJECT_ID_NAME}.md`) |
 | `PROJECT_ID_NAME` | Identificador do projeto |
-| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 045-TEST-PLAN, 055-RELATORIO-QUALIDADE]` |
+| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 045-EST-PLAN, 095-RELATORIO-QUALIDADE]` |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: ["contract-and-proposal-writer"] |
 
@@ -30,7 +30,7 @@ Atue como Gerente de Projetos especializado em processos formais de aceite e enc
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documentos Base** | 001-PROJECT-CHARTER, 045-TEST-PLAN, 055-RELATORIO-QUALIDADE |
+| **Documentos Base** | 001-PROJECT-CHARTER, 045-EST-PLAN, 095-RELATORIO-QUALIDADE |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |

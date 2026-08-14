@@ -41,7 +41,7 @@ Atue como Arquiteto de Soluções especializado em design de alto nível e diagr
 
 ---
 ## HLD — High-Level Design (Desenho de Alto Nível)
-O **HLD** detalha a solução definida no **030-SAD** em diagramas C4 de contexto e containers, stack tecnológica, topologia de integração e deployment e fluxos de dados. Traduz as decisões arquiteturais do SAD em uma visão estrutural de alto nível que orienta o desenho de componentes (**040-LLD**), o plano de testes (**045-TEST-PLAN**) e o plano de deployment (**090-DEPLOYMENT-PLAN**).
+O **HLD** detalha a solução definida no **030-SAD** em diagramas C4 de contexto e containers, stack tecnológica, topologia de integração e deployment e fluxos de dados. Traduz as decisões arquiteturais do SAD em uma visão estrutural de alto nível que orienta o desenho de componentes (**040-LLD**), o plano de testes (**045-EST-PLAN**) e o plano de deployment (**090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN**).
 
 ### 1. System Context (C4 Level 1)
 [Diagrama de contexto do sistema com atores e sistemas externos]

@@ -7,7 +7,7 @@ Atue como Technical Writer especializado em documentação de usuário final.
 
 | Parâmetro | Descrição |
 |---|---|
-| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `095-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md`) |
+| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `097-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md`) |
 | `PROJECT_ID_NAME` | Identificador do projeto |
 | `TECHNICAL_SOLUTIONS` | Lista de soluções técnicas do projeto (`TECHNICAL_SOLUTION_NAMES`) — nomes dos microsserviços, frontends, batches |
 | `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 010-FRD, 020-SRS]` |

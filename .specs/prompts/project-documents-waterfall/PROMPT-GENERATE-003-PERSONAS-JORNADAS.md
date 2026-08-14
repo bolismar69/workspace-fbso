@@ -64,7 +64,7 @@ O **documento de Personas e Jornadas** formaliza QUEM usa o produto (personas) e
 ### Conexão com o Pipeline
 
 - **UPSTREAM:** Consome objetivos de negócio do 001-PROJECT-CHARTER e partes interessadas do 002-STAKEHOLDER-MAP
-- **DOWNSTREAM:** Alimenta 004-MAPEAMENTO-AS-IS-TO-BE (processos por perfil), 005-BRD (requisitos fundamentados em usuário), 010-FRD (casos de uso por persona), 016-PROTOTIPOS-UX-UI (design por persona), 088-PRODUCT-BACKLOG-LIST e 095-MANUAIS-USUARIO
+- **DOWNSTREAM:** Alimenta 004-MAPEAMENTO-AS-IS-TO-BE (processos por perfil), 005-BRD (requisitos fundamentados em usuário), 010-FRD (casos de uso por persona), 016-PROTOTIPOS-UX-UI (design por persona), 088-PRODUCT-BACKLOG-LIST e 097-MANUAIS-USUARIO
 
 ---
 

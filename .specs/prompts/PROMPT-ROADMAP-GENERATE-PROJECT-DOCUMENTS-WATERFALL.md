@@ -3,7 +3,7 @@
 
 Atue como um Especialista em Gestão de Processos (BPM) e Arquiteto de Soluções Organizacionais, especializado em metodologia WATERFALL e Engenharia de Prompts.
 
-Preciso que você execute um roadmap de criação, revisão, evolução e validação de 36 documentos base de um projeto, seguindo estritamente a metodologia WATERFALL em 6 fases sequenciais com 2 gates estruturais de estimativa.
+Preciso que você execute um roadmap de criação, revisão, evolução e validação de 38 documentos base de um projeto, seguindo estritamente a metodologia WATERFALL em 6 fases sequenciais com 2 gates estruturais de estimativa.
 
 Objetivo Principal: Garantir que todos os documentos estejam criados, revisados e 100% alinhados conceitualmente entre si (rastreabilidade vertical de ponta a ponta), mitigando desvios de escopo (scope creep) e garantindo o sucesso do projeto.
 
@@ -14,7 +14,7 @@ Regra Crítica de Execução (Gating Rule): O processo é estritamente sequencia
 ## REGRAS DE OURO (7 REGRAS DE GATING — NÃO NEGOCIÁVEIS)
 
 1. **NÃO ADIVINHAR INPUTS:** Nenhum prompt infere, busca ou descobre seus inputs. Todo parâmetro é passado explicitamente por este orquestrador.
-2. **TODO GENERATE TEM GATE+FIX:** Cada um dos 36 documentos tem exatamente um trio GENERATE, GATE e FIX.
+2. **TODO GENERATE TEM GATE+FIX:** Cada um dos 38 documentos tem exatamente um trio GENERATE, GATE e FIX.
 3. **FLUXO DE DADOS EXPLÍCITO:** `DOC_PATH` flui GENERATE→GATE→FIX. `VIOLATIONS[]` flui GATE→FIX. Sempre como parâmetros nomeados.
 4. **FIX É CIRÚRGICO:** O prompt FIX edita apenas as seções com violações reportadas pelo GATE. Nunca regenera ou recria o documento.
 5. **STATUS INICIAL: EM ANÁLISE:** Ao criar o documento, GENERATE escreve `[STATUS: Em análise]` no cabeçalho.
@@ -131,7 +131,7 @@ mkdir -p {PROJECT_COMPLETE_PATH_NAME}
 
 #### Passo 0.7 — Verificar Status dos Arquivos
 
-Verificar existência e status de cada um dos 36 documentos. Para arquivos existentes, ler o cabeçalho e buscar por `[STATUS: COMPLIANCE]`.
+Verificar existência e status de cada um dos 38 documentos. Para arquivos existentes, ler o cabeçalho e buscar por `[STATUS: COMPLIANCE]`.
 
 | # | Arquivo | Status |
 |---|---|---|
@@ -154,7 +154,7 @@ Verificar existência e status de cada um dos 36 documentos. Para arquivos exist
 | 044 | `044-INFRA-SETUP-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 045 | `045-EST-PLAN-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 050 | `050-EST-CASES-{PROJECT_ID_NAME}.md` | ✅/❌ |
-| 055 | `055-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md` | ✅/❌ |
+| 095 | `095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 060 | `060-EAP-WBS-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 062 | `062-STAFFING-PLAN-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 065 | `065-CRONOGRAMA-GANTT-{PROJECT_ID_NAME}.md` | ✅/❌ |
@@ -165,8 +165,10 @@ Verificar existência e status de cada um dos 36 documentos. Para arquivos exist
 | 086 | `086-PADROES-CODIGO-DOD-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 087 | `087-PLANO-CI-CD-AMBIENTES-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 088 | `088-PRODUCT-BACKLOG-LIST-{PROJECT_ID_NAME}.md` | ✅/❌ |
-| 090 | `090-DEPLOYMENT-PLAN-{PROJECT_ID_NAME}.md` | ✅/❌ |
-| 095 | `095-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md` | ✅/❌ |
+| 090 | `090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN-{PROJECT_ID_NAME}.md` | ✅/❌ |
+| 092 | `092-BACKLOG-KANBAN-{PROJECT_ID_NAME}.md` | ✅/❌ |
+| 093 | `093-GESTAO-TIMES-{PROJECT_ID_NAME}.md` | ✅/❌ |
+| 097 | `097-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 100 | `100-MANUAIS-OPERACIONAIS-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 105 | `105-TERMO-ACEITE-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 110 | `110-LICOES-APRENDIDAS-{PROJECT_ID_NAME}.md` | ✅/❌ |
@@ -185,13 +187,13 @@ Verificar existência e status de cada um dos 36 documentos. Para arquivos exist
 > **🛠️ Stack Validada:** `{PROJECT-STACK}`
 > **👥 Time:** `{PROJECT-TEAM-CAPACITY}`
 > **📝 Próxima Fase:** Fase X, Documento {NNN} — {NOME}
-> **📄 Artefatos Existentes:** X de 36 ({Y} com COMPLIANCE)
+> **📄 Artefatos Existentes:** X de 38 ({Y} com COMPLIANCE)
 >
 > Iniciando a Fase X...
 
 ---
 
-## FASES DO ROADMAP WATERFALL (6 Fases, 36 Documentos)
+## FASES DO ROADMAP WATERFALL (6 Fases, 38 Documentos)
 
 ### Convenção de Nomes de Arquivo
 
@@ -258,7 +260,7 @@ O PROJECT-CHARTER é o **start do projeto** — no momento de sua criação, mui
 | 044 | INFRA-SETUP (IDD) 🆕 | `044-INFRA-SETUP-{PROJECT_ID_NAME}.md` |
 | 045 | EST-PLAN (Estratégia de Testes) | `045-EST-PLAN-{PROJECT_ID_NAME}.md` |
 | 050 | EST-CASES (Casos de Teste) | `050-EST-CASES-{PROJECT_ID_NAME}.md` |
-| 055 | RELATORIO-QUALIDADE | `055-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md` |
+| 095 | RELATORIO-QUALIDADE (estrutura — evidências na F5) | `095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md` |
 | 060 | EAP-WBS | `060-EAP-WBS-{PROJECT_ID_NAME}.md` |
 
 > 🎯 **GATE 2 — ESTIMATIVA DOWNSTREAM / REFINEMENT (PERT ±15-25%):** Após `060-EAP-WBS` atingir COMPLIANCE, o orquestrador pergunta se deseja executar WATERFALL-ESTIMATION modo DOWNSTREAM/REFINEMENT para obter PERT e alimentar Cronograma e Orçamento.
@@ -278,18 +280,28 @@ O PROJECT-CHARTER é o **start do projeto** — no momento de sua criação, mui
 | 086 | PADROES-CODIGO-DOD 🆕 | `086-PADROES-CODIGO-DOD-{PROJECT_ID_NAME}.md` |
 | 087 | PLANO-CI-CD-AMBIENTES 🆕 | `087-PLANO-CI-CD-AMBIENTES-{PROJECT_ID_NAME}.md` |
 | 088 | PRODUCT-BACKLOG-LIST 🆕 | `088-PRODUCT-BACKLOG-LIST-{PROJECT_ID_NAME}.md` |
-| 090 | DEPLOYMENT-PLAN | `090-DEPLOYMENT-PLAN-{PROJECT_ID_NAME}.md` |
+| 090 | STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN | `090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN-{PROJECT_ID_NAME}.md` |
 
 > 🔄 **CICLO DA FASE 4 (planejamento/baseline):** `062-STAFFING-PLAN → 065 → 070 → 075 → 080 → 085 → 086 → 087 → 088 → 090 → 062` — o 088-PRODUCT-BACKLOG-LIST fecha a baseline com o backlog priorizado antes do M4 (Project Baseline Locked).
 
-### FASE 5 — ENCERRAMENTO E OPERAÇÃO
+### FASE 5 — EXECUÇÃO E CONSTRUÇÃO
 
-> ⚠️ **Em evolução (plano aprovado em 2026-08-14):** a FASE 5 passará a ser **EXECUÇÃO E CONSTRUÇÃO** — roadmap dedicado `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md`, com 092-BACKLOG-KANBAN, 093-GESTAO-TIMES e a esteira de construção — e o encerramento passará a ser a **FASE 6** (105/110/115). Os documentos 095/100 serão gerados no contexto da execução.
+> 🚀 **Orquestrada pelo roadmap dedicado:** `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` (v1.0). O time recebe a documentação completa das FASES 1–4 (negócio, funcional, design técnico, planejamento e regras) e executa em ciclos de entrega (`FILA-NN` do 092).
+
+| # | Documento | Arquivo | Papel na Execução |
+|---|---|---|---|
+| 092 | BACKLOG-KANBAN 🆕 | `092-BACKLOG-KANBAN-{PROJECT_ID_NAME}.md` | Gestão de tasks, Change-Requests (Negócio/Técnico via 085), status e Filas/Ciclos |
+| 093 | GESTAO-TIMES 🆕 | `093-GESTAO-TIMES-{PROJECT_ID_NAME}.md` | Capacidade, impedimentos e alocação (contra o 062) |
+| 095 | RELATORIO-QUALIDADE | `095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md` | Estrutura criada na F3; evidências alimentadas a cada ciclo |
+| 097 | MANUAIS-USUARIO | `097-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md` | Treinamento e negócio (upstream 003/010/016) |
+| 100 | MANUAIS-OPERACIONAIS | `100-MANUAIS-OPERACIONAIS-{PROJECT_ID_NAME}.md` | Runbooks e sustentação (upstream 041/044/087/090) |
+
+> 🚧 **Sub-fase 2 — Janelas de Entrega (Ciclos/Sprints):** TBD — fora de escopo nesta revisão. A esteira executa por ciclo de entrega (`FILA-NN` do 092) sem depender da definição das janelas.
+
+### FASE 6 — ENCERRAMENTO E OPERAÇÃO
 
 | # | Documento | Arquivo |
 |---|---|---|
-| 095 | MANUAIS-USUARIO | `095-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md` |
-| 100 | MANUAIS-OPERACIONAIS | `100-MANUAIS-OPERACIONAIS-{PROJECT_ID_NAME}.md` |
 | 105 | TERMO-ACEITE | `105-TERMO-ACEITE-{PROJECT_ID_NAME}.md` |
 | 110 | LICOES-APRENDIDAS | `110-LICOES-APRENDIDAS-{PROJECT_ID_NAME}.md` |
 | 115 | TERMO-ENCERRAMENTO-PROJETO 🆕 | `115-TERMO-ENCERRAMENTO-PROJETO-{PROJECT_ID_NAME}.md` |
@@ -383,15 +395,15 @@ Apresentar o documento e fazer 4 perguntas:
 | 040 | LLD | `c4-component`, `ddd-tactical-patterns`, `database-designer` | ✅ |
 | 045 | EST-PLAN | `test-strategy-design`, `qa-test-planner` | ✅ |
 | 050 | EST-CASES | `test-case-creation`, `acceptance-criteria` | ✅ |
-| 055 | RELATORIO-QUALIDADE | `quality-documentation-manager`, `qa` | ✅ |
+| 095 | RELATORIO-QUALIDADE | `quality-documentation-manager`, `qa` | ✅ |
 | 060 | EAP-WBS | `decomposition-planning-roadmap`, `project-estimation` | ✅ |
 | 065 | CRONOGRAMA-GANTT | `roadmap-planning`, `project-estimation` | ✅ |
 | 070 | ORCAMENTO | `project-estimation` | ✅ |
 | 075 | PLANO-COMUNICACAO | `stakeholder-analysis`, `stakeholder-map` | ✅ |
 | 080 | PLANO-RISCOS | `risk-manager`, `risk-management-specialist` | ✅ |
 | 085 | PLANO-GESTAO-MUDANCAS 🆕 | `change-management`, `senior-pm` | ✅ |
-| 090 | DEPLOYMENT-PLAN | `deployment-engineer`, `devops-rollout-plan` | ✅ |
-| 095 | MANUAIS-USUARIO | `documentation-generation-doc-generate`, `docs-writer` | ✅ |
+| 090 | STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN | `deployment-engineer`, `devops-rollout-plan` | ✅ |
+| 097 | MANUAIS-USUARIO | `documentation-generation-doc-generate`, `docs-writer` | ✅ |
 | 100 | MANUAIS-OPERACIONAIS | `documentation-generation-doc-generate` | ✅ |
 | 105 | TERMO-ACEITE | `contract-and-proposal-writer` | ✅ |
 | 110 | LICOES-APRENDIDAS | — | ✅ |
@@ -417,15 +429,15 @@ Cada linha mostra quais variáveis de domínio o GENERATE daquele documento deve
 | 040 | LLD | ✅ | — | ✅ | — | ✅ | Design de baixo nível — requer ARCH (padrões), stack (frameworks) e soluções |
 | 045 | EST-PLAN | — | ✅ | ✅ | — | ✅ | Estratégia de testes — requer stack (ferramentas), SEC (testes segurança) e soluções |
 | 050 | EST-CASES | — | — | ✅ | — | — | Casos de teste por feature/solução — alimentados pelo FRD |
-| 055 | RELATORIO-QUALIDADE | — | — | — | — | — | Métricas de qualidade — sem dependência técnica direta |
+| 095 | RELATORIO-QUALIDADE | — | — | — | — | — | Métricas de qualidade — sem dependência técnica direta |
 | 060 | EAP-WBS | — | — | — | ✅ | — | Decomposição de trabalho por perfil de time |
 | 065 | CRONOGRAMA-GANTT | — | — | — | ✅ | — | Alocação de recursos e durações por capacidade |
 | 070 | ORCAMENTO | — | — | — | ✅ | ✅ | Custo por recurso (RH × stack) |
 | 075 | PLANO-COMUNICACAO | — | — | — | — | — | Stakeholders e canais — sem dependência técnica |
 | 080 | PLANO-RISCOS | — | — | — | — | — | Riscos de projeto — sem dependência técnica |
 | 085 | PLANO-GESTAO-MUDANCAS 🆕 | — | — | — | ✅ | — | Gestão de mudanças — requer skills do time (CCB) |
-| 090 | DEPLOYMENT-PLAN | ✅ | ✅ | ✅ | — | ✅ | Deploy — requer ARCH (topologia), SEC (secure deploy) e stack |
-| 095 | MANUAIS-USUARIO | — | — | ✅ | — | — | Documentação por solução |
+| 090 | STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN | ✅ | ✅ | ✅ | — | ✅ | Deploy — requer ARCH (topologia), SEC (secure deploy) e stack |
+| 097 | MANUAIS-USUARIO | — | — | ✅ | — | — | Documentação por solução |
 | 100 | MANUAIS-OPERACIONAIS | ✅ | — | ✅ | — | ✅ | Runbooks — requer ARCH (visão ops), stack e soluções |
 | 105 | TERMO-ACEITE | — | — | — | — | — | Aceite formal — sem dependência técnica |
 | 110 | LICOES-APRENDIDAS | — | — | — | — | — | Retrospectiva — sem dependência técnica |
@@ -467,7 +479,7 @@ Cada GENERATE recebe em `UPSTREAM_DOCS` a lista de documentos anteriores que já
 | 044 | INFRA-SETUP (IDD) 🆕 | `[001-PROJECT-CHARTER, 030-SAD, 035-HLD, 040-LLD]` |
 | 045 | EST-PLAN | `[001-PROJECT-CHARTER, 020-SRS, 030-SAD, 040-LLD]` |
 | 050 | EST-CASES | `[001-PROJECT-CHARTER, 010-FRD, 020-SRS, 045-EST-PLAN]` |
-| 055 | RELATORIO-QUALIDADE | `[045-EST-PLAN, 050-EST-CASES]` |
+| 095 | RELATORIO-QUALIDADE | `[045-EST-PLAN, 050-EST-CASES]` |
 | 060 | EAP-WBS | `[001-PROJECT-CHARTER, 040-LLD, 050-EST-CASES]` |
 | 062 | STAFFING-PLAN 🆕 | `[001-PROJECT-CHARTER, 060-EAP-WBS, 045-EST-PLAN, 050-EST-CASES]` + `waterfall-estimation/CRONOGRAMA-CALCULADO.md` (se WATERFALL-ESTIMATION executado) |
 | 065 | CRONOGRAMA-GANTT | `[001-PROJECT-CHARTER, 060-EAP-WBS, 050-EST-CASES, 062-STAFFING-PLAN]` + `waterfall-estimation/CRONOGRAMA-CALCULADO.md` (se WATERFALL-ESTIMATION executado) |
@@ -478,10 +490,12 @@ Cada GENERATE recebe em `UPSTREAM_DOCS` a lista de documentos anteriores que já
 | 086 | PADROES-CODIGO-DOD 🆕 | `[001-PROJECT-CHARTER, 030-SAD, 035-HLD, 040-LLD, 043-SEC-SETUP]` |
 | 087 | PLANO-CI-CD-AMBIENTES 🆕 | `[001-PROJECT-CHARTER, 030-SAD, 035-HLD, 041-DEVOPS-SETUP, 044-INFRA-SETUP]` |
 | 088 | PRODUCT-BACKLOG-LIST 🆕 | `[001-PROJECT-CHARTER, 005-BRD, 010-FRD, 020-SRS, 060-EAP-WBS, 062-STAFFING-PLAN, 065-CRONOGRAMA-GANTT, 070-ORCAMENTO, 086-PADROES-CODIGO-DOD]` |
-| 090 | DEPLOYMENT-PLAN | `[001-PROJECT-CHARTER, 030-SAD, 035-HLD, 040-LLD]` |
-| 095 | MANUAIS-USUARIO | `[001-PROJECT-CHARTER, 010-FRD, 020-SRS]` |
-| 100 | MANUAIS-OPERACIONAIS | `[001-PROJECT-CHARTER, 030-SAD, 090-DEPLOYMENT-PLAN]` |
-| 105 | TERMO-ACEITE | `[001-PROJECT-CHARTER, 045-EST-PLAN, 055-RELATORIO-QUALIDADE]` |
+| 090 | STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN | `[001-PROJECT-CHARTER, 030-SAD, 035-HLD, 040-LLD]` |
+| 092 | BACKLOG-KANBAN 🆕 | `[088-PRODUCT-BACKLOG-LIST, 085-PLANO-GESTAO-MUDANCAS, 062-STAFFING-PLAN, 086-PADROES-CODIGO-DOD, 087-PLANO-CI-CD-AMBIENTES, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN]` |
+| 093 | GESTAO-TIMES 🆕 | `[062-STAFFING-PLAN, 065-CRONOGRAMA-GANTT, 070-ORCAMENTO, 092-BACKLOG-KANBAN]` |
+| 097 | MANUAIS-USUARIO | `[001-PROJECT-CHARTER, 003-PERSONAS-JORNADAS, 010-FRD, 016-PROTOTIPOS-UX-UI, 020-SRS]` |
+| 100 | MANUAIS-OPERACIONAIS | `[001-PROJECT-CHARTER, 030-SAD, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN]` |
+| 105 | TERMO-ACEITE | `[001-PROJECT-CHARTER, 045-EST-PLAN, 095-RELATORIO-QUALIDADE]` |
 | 110 | LICOES-APRENDIDAS | `[todos os 21 documentos anteriores]` |
 | 115 | TERMO-ENCERRAMENTO-PROJETO 🆕 | `[001-PROJECT-CHARTER, 105-TERMO-ACEITE, 110-LICOES-APRENDIDAS]` |
 
@@ -495,28 +509,30 @@ Quando um documento já em COMPLIANCE é modificado, todos os documentos downstr
 |---|---|
 | 001-PROJECT-CHARTER | Todos os 35 documentos downstream |
 | 002-STAKEHOLDER-MAP 🆕 | 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD, 015-RTM-FASE-1, 020-SRS, 075-PLANO-COMUNICACAO e seus dependentes transitivos |
-| 003-PERSONAS-JORNADAS 🆕 | 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD, 016-PROTOTIPOS-UX-UI, 088-PRODUCT-BACKLOG-LIST, 095-Manuais e seus dependentes transitivos |
+| 003-PERSONAS-JORNADAS 🆕 | 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD, 016-PROTOTIPOS-UX-UI, 088-PRODUCT-BACKLOG-LIST, 097-Manuais e seus dependentes transitivos |
 | 004-MAPEAMENTO-AS-IS-TO-BE 🆕 | 005-BRD, 010-FRD, 016-PROTOTIPOS-UX-UI, 030-SAD, 088-PRODUCT-BACKLOG-LIST e seus dependentes transitivos |
-| 005-BRD | 010-FRD, 015-RTM-FASE-1, 016-PROTOTIPOS-UX-UI, 020-SRS, 025-RTM-FASE-2, 030-SAD, 035-HLD, 040-LLD, 045-EST-PLAN, 050-EST-CASES, 060-EAP, 065-Cronograma, 070-Orçamento, 090-DEPLOYMENT-PLAN, 095-Manuais, 105-Termo |
-| 010-FRD 🆕 | 015-RTM-FASE-1, 016-PROTOTIPOS-UX-UI, 020-SRS, 025-RTM-FASE-2, 030-SAD, 050-EST-CASES, 095-Manuais e seus dependentes transitivos |
-| 016-PROTOTIPOS-UX-UI 🆕 | 020-SRS, 025-RTM-FASE-2, 088-PRODUCT-BACKLOG-LIST, 095-Manuais, 105-Termo e seus dependentes transitivos |
+| 005-BRD | 010-FRD, 015-RTM-FASE-1, 016-PROTOTIPOS-UX-UI, 020-SRS, 025-RTM-FASE-2, 030-SAD, 035-HLD, 040-LLD, 045-EST-PLAN, 050-EST-CASES, 060-EAP, 065-Cronograma, 070-Orçamento, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 097-Manuais, 105-Termo |
+| 010-FRD 🆕 | 015-RTM-FASE-1, 016-PROTOTIPOS-UX-UI, 020-SRS, 025-RTM-FASE-2, 030-SAD, 050-EST-CASES, 097-Manuais e seus dependentes transitivos |
+| 016-PROTOTIPOS-UX-UI 🆕 | 020-SRS, 025-RTM-FASE-2, 088-PRODUCT-BACKLOG-LIST, 097-Manuais, 105-Termo e seus dependentes transitivos |
 | 015-RTM-FASE-1 🆕 | 020-SRS, 025-RTM-FASE-2 e seus dependentes transitivos |
-| 020-SRS | 025-RTM-FASE-2, 030-SAD, 045-EST-PLAN, 050-EST-CASES, 095-Manuais e seus dependentes transitivos |
+| 020-SRS | 025-RTM-FASE-2, 030-SAD, 045-EST-PLAN, 050-EST-CASES, 097-Manuais e seus dependentes transitivos |
 | 025-RTM-FASE-2 🆕 | 030-SAD, 035-HLD, 040-LLD e seus dependentes transitivos |
-| 030-SAD | 035-HLD, 040-LLD, 041/042/043/044-SETUP, 045-EST-PLAN, 090-DEPLOYMENT-PLAN, 100-Manuais Ops |
-| 035-HLD | 040-LLD, 041/042/043/044-SETUP, 090-DEPLOYMENT-PLAN, **WATERFALL-ESTIMATION (UPSTREAM/DISCOVERY F1-F3)** |
-| 040-LLD | 041-DEVOPS-SETUP, 042-DATA-SETUP, 043-SEC-SETUP, 044-INFRA-SETUP, 045-EST-PLAN, 050-EST-CASES, 060-EAP, 065-Cronograma, 070-Orçamento, 090-DEPLOYMENT-PLAN |
+| 030-SAD | 035-HLD, 040-LLD, 041/042/043/044-SETUP, 045-EST-PLAN, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 100-Manuais Ops |
+| 035-HLD | 040-LLD, 041/042/043/044-SETUP, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, **WATERFALL-ESTIMATION (UPSTREAM/DISCOVERY F1-F3)** |
+| 040-LLD | 041-DEVOPS-SETUP, 042-DATA-SETUP, 043-SEC-SETUP, 044-INFRA-SETUP, 045-EST-PLAN, 050-EST-CASES, 060-EAP, 065-Cronograma, 070-Orçamento, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN |
 | 041-DEVOPS-SETUP 🆕 | 050-EST-CASES, 060-EAP, 087-PLANO-CI-CD-AMBIENTES, 088-PRODUCT-BACKLOG-LIST, 100-Manuais Ops e seus dependentes transitivos |
 | 042-DATA-SETUP 🆕 | 041-DEVOPS-SETUP, 050-EST-CASES, 060-EAP, 088-PRODUCT-BACKLOG-LIST e seus dependentes transitivos |
 | 043-SEC-SETUP 🆕 | 041-DEVOPS-SETUP, 050-EST-CASES, 060-EAP, 086-PADROES-CODIGO-DOD, 088-PRODUCT-BACKLOG-LIST, 100-Manuais Ops e seus dependentes transitivos |
 | 044-INFRA-SETUP 🆕 | 041-DEVOPS-SETUP, 065-Cronograma, 070-Orçamento, 087-PLANO-CI-CD-AMBIENTES, 088-PRODUCT-BACKLOG-LIST, 100-Manuais Ops e seus dependentes transitivos |
-| 045-EST-PLAN | 050-EST-CASES, 055-Relatório, 060-EAP, 062-STAFFING-PLAN, 065-Cronograma, 070-Orçamento, 105-Termo Aceite |
-| 050-EST-CASES | 055-Relatório, 060-EAP, 062-STAFFING-PLAN, 065-Cronograma, 070-Orçamento, 105-Termo Aceite |
+| 045-EST-PLAN | 050-EST-CASES, 095-Relatório, 060-EAP, 062-STAFFING-PLAN, 065-Cronograma, 070-Orçamento, 105-Termo Aceite |
+| 050-EST-CASES | 095-Relatório, 060-EAP, 062-STAFFING-PLAN, 065-Cronograma, 070-Orçamento, 105-Termo Aceite |
 | 060-EAP-WBS | 062-STAFFING-PLAN, 065-Cronograma, 070-Orçamento, 085-PLANO-GESTAO-MUDANCAS, 088-PRODUCT-BACKLOG-LIST, 105-Termo Aceite, **WATERFALL-ESTIMATION (DOWNSTREAM/REFINEMENT F4-F7)** |
 | 062-STAFFING-PLAN 🆕 | 065-Cronograma, 070-Orçamento, 088-PRODUCT-BACKLOG-LIST, 093-GESTAO-TIMES e seus dependentes transitivos |
 | 086-PADROES-CODIGO-DOD 🆕 | 087-PLANO-CI-CD-AMBIENTES, 088-PRODUCT-BACKLOG-LIST, 092-BACKLOG-KANBAN (critérios DONE) e seus dependentes transitivos |
-| 087-PLANO-CI-CD-AMBIENTES 🆕 | 090-DEPLOYMENT-PLAN, 092-BACKLOG-KANBAN, 100-Manuais Ops e seus dependentes transitivos |
+| 087-PLANO-CI-CD-AMBIENTES 🆕 | 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 092-BACKLOG-KANBAN, 100-Manuais Ops e seus dependentes transitivos |
 | 088-PRODUCT-BACKLOG-LIST 🆕 | 092-BACKLOG-KANBAN, 093-GESTAO-TIMES e seus dependentes transitivos |
+| 092-BACKLOG-KANBAN 🆕 | 093-GESTAO-TIMES, 095-Relatório (evidências de andamento) e seus dependentes transitivos |
+| 093-GESTAO-TIMES 🆕 | 092-BACKLOG-KANBAN (realocação de filas), 095-Relatório (evidências de execução) e seus dependentes transitivos |
 | **WATERFALL-ESTIMATION F1 (UPSTREAM-ROM)** 🆕 | F2 (Scope Snapshot), F3 (Governance Report) |
 | **WATERFALL-ESTIMATION F4 (DOWNSTREAM-PERT)** 🆕 | F5 (Scope Snapshot), F6 (Cronograma), F7 (Orçamento), **065-Cronograma**, **070-Orçamento** |
 | **CRONOGRAMA-CALCULADO.md** 🆕 | 065-Cronograma, 070-Orçamento (via dependência do Orçamento no Cronograma) |
@@ -587,7 +603,7 @@ WATERFALL Docs (Fase 3)
 
 ## FINALIZAÇÃO — GIT WORKFLOW
 
-Quando os 36 documentos estiverem em COMPLIANCE e o humano confirmar a conclusão, executar o pipeline Git abaixo. O nome da branch de trabalho é derivado automaticamente:
+Quando os 38 documentos estiverem em COMPLIANCE e o humano confirmar a conclusão, executar o pipeline Git abaixo. O nome da branch de trabalho é derivado automaticamente:
 
 ```
 WORK_BRANCH = "feature/" + PROJECT_ID_NAME + "-waterfall-docs"
@@ -603,7 +619,7 @@ Exemplo: `feature/PRJ-FIN-2026-0003-SAAS-FBSO-ORG-waterfall-docs`
 git add -A
 git commit -m "docs: documentação WATERFALL completa — ${PROJECT_ID_NAME}
 
-- 36 documentos WATERFALL gerados e validados
+- 38 documentos WATERFALL gerados e validados
 - Status: COMPLIANCE em todos os documentos
 - Gerado pelo Waterfall Orchestrator v2.0
 - Branch: ${WORK_BRANCH}
@@ -624,7 +640,7 @@ Se falhar (branch remota existe): perguntar sobre `--force`.
 ### Passo F.3 — Criar e Mergear PR
 
 ```bash
-gh pr create --base main --head ${WORK_BRANCH} --title "docs: documentação WATERFALL — ${PROJECT_ID_NAME}" --body "Documentação WATERFALL completa para ${PROJECT_ID_NAME}. 36 documentos validados."
+gh pr create --base main --head ${WORK_BRANCH} --title "docs: documentação WATERFALL — ${PROJECT_ID_NAME}" --body "Documentação WATERFALL completa para ${PROJECT_ID_NAME}. 38 documentos validados."
 gh pr merge --merge --delete-branch
 ```
 
@@ -652,7 +668,7 @@ git branch -d ${WORK_BRANCH}
     ├── PROMPT-GENERATE-BRD.md
     ├── PROMPT-GATE-BRD.md
     ├── PROMPT-FIX-BRD.md
-    ├── ... (total de 109 prompts: 36 GENERATE + 36 GATE + 36 FIX + 1 FLOWCHART)
+    ├── ... (total de 115 prompts: 38 GENERATE + 38 GATE + 38 FIX + 1 FLOWCHART)
     └── PROMPT-FIX-TERMO-ENCERRAMENTO-PROJETO.md
 ```
 

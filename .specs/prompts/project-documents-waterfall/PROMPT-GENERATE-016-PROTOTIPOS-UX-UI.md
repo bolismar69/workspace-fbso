@@ -65,7 +65,7 @@ O **documento de Protótipos UX/UI** formaliza o desenho de interface do produto
 ### Conexão com o Pipeline
 
 - **UPSTREAM:** Consome FEAT-NN/UC-NN do 010-FRD, personas do 003, processos TO-BE do 004 e REQ-NN do 005-BRD
-- **DOWNSTREAM:** Alimenta 020-SRS (NFRs de usabilidade/UX e detalhamento de interfaces), 025-RTM-FASE-2 (rastreabilidade de sistema), 088-PRODUCT-BACKLOG-LIST, 095-MANUAIS-USUARIO (telas para treinamento) e 105-TERMO-ACEITE (critérios de homologação visual)
+- **DOWNSTREAM:** Alimenta 020-SRS (NFRs de usabilidade/UX e detalhamento de interfaces), 025-RTM-FASE-2 (rastreabilidade de sistema), 088-PRODUCT-BACKLOG-LIST, 097-MANUAIS-USUARIO (telas para treinamento) e 105-TERMO-ACEITE (critérios de homologação visual)
 
 ---
 

@@ -11,7 +11,7 @@ Atue como Gerente de Projetos especializado em decomposição de escopo e EAP/WB
 | `PROJECT_ID_NAME` | Identificador do projeto |
 | `TEAM_SKILLS` | Skills mapeados para o time de implementação (`PROJECT-TEAM-SKILLS-MAP`) |
 | `TEAM_CAPACITY` | Capacidade do time: seniores, plenos, juniores, duração prevista (`PROJECT-TEAM-CAPACITY`) |
-| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 040-LLD, 050-TEST-CASES]` |
+| `UPSTREAM_DOCS` | Lista: `[001-PROJECT-CHARTER, 040-LLD, 050-EST-CASES]` |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: ["decomposition-planning-roadmap", "project-estimation"] |
 
@@ -32,14 +32,14 @@ Atue como Gerente de Projetos especializado em decomposição de escopo e EAP/WB
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documentos Base** | 001-PROJECT-CHARTER, 040-LLD, 050-TEST-CASES |
+| **Documentos Base** | 001-PROJECT-CHARTER, 040-LLD, 050-EST-CASES |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |
 
 ---
 ## EAP/WBS — Estrutura Analítica de Projeto (Work Breakdown Structure)
-A **EAP/WBS** decompõe o escopo da solução em pacotes de trabalho gerenciáveis, derivados do **001-PROJECT-CHARTER**, do desenho técnico do **040-LLD** e da cobertura de testes do **050-TEST-CASES**. É a base para o cronograma (**065-CRONOGRAMA-GANTT**) e para o orçamento (**070-ORCAMENTO**).
+A **EAP/WBS** decompõe o escopo da solução em pacotes de trabalho gerenciáveis, derivados do **001-PROJECT-CHARTER**, do desenho técnico do **040-LLD** e da cobertura de testes do **050-EST-CASES**. É a base para o cronograma (**065-CRONOGRAMA-GANTT**) e para o orçamento (**070-ORCAMENTO**).
 
 ### 1. EAP Gráfica (Árvore Hierárquica)
 [Representação hierárquica com pelo menos 3 níveis de decomposição]

@@ -46,7 +46,7 @@ Se NÃO presente, use o template de fallback com estimativas manuais.
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documentos Base** | 001-PROJECT-CHARTER, 060-EAP-WBS, 065-CRONOGRAMA-GANTT, 045-TEST-PLAN [ + ORCAMENTO-CALCULADO.md (PERT)] |
+| **Documentos Base** | 001-PROJECT-CHARTER, 060-EAP-WBS, 065-CRONOGRAMA-GANTT, 045-EST-PLAN [ + ORCAMENTO-CALCULADO.md (PERT)] |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |

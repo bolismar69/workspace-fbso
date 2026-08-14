@@ -2,6 +2,8 @@
 
 ## Versão: 2.0 — Visualização Gráfica das 5 Fases, 22 Documentos, Dupla RTM e Gates Estruturais
 
+> ⚠️ **VISUALIZAÇÃO LEGADA (histórica):** este diagrama reflete a versão original do roadmap (5 fases, 22 documentos). A estrutura vigente é a do roadmap master — **6 fases, 38 documentos** (`PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md`) e do `flowchart-WATERFALL.md` atualizado.
+
 > **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md` v2.0
 >
 > Este documento complementa o roadmap textual com diagramas Mermaid que visualizam o fluxo de execução das **5 fases WATERFALL**, os **22 documentos**, o mecanismo de orquestração Generate→Gate→Fix, a dupla RTM (Negócio + Sistema) e a integração com WATERFALL-ESTIMATION.
@@ -62,7 +64,7 @@ flowchart TB
         D070 --> D075["075: PLANO-COMUNICACAO"]
         D075 --> D080["080: PLANO-RISCOS"]
         D080 --> D085["085: GESTAO-MUDANCAS 🆕"]
-        D085 --> D090["090: DEPLOYMENT-PLAN"]
+        D085 --> D090["090: STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN"]
     end
 
     FASE4 --> FASE5
@@ -309,7 +311,7 @@ flowchart TD
 
     subgraph F6["Fase 6: IMPLANTAÇÃO E ENCERRAMENTO"]
         direction TB
-        D16_GEN["GENERATE #16: DEPLOYMENT-PLAN<br/>Skills: deployment-engineer, devops-rollout-plan"] --> D16_GATE["GATE #16"]
+        D16_GEN["GENERATE #16: STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN<br/>Skills: deployment-engineer, devops-rollout-plan"] --> D16_GATE["GATE #16"]
         D16_GATE -->|PASS| D16_OK["#16: COMPLIANCE ✅"]
 
         D16_OK --> D17_GEN["GENERATE #17: Manuais Usuário<br/>Skills: documentation-generation-doc-generate"] --> D17_GATE["GATE #17"]
