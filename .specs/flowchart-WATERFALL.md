@@ -88,14 +88,17 @@ flowchart TB
         subgraph FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING["ESTEIRA DE ENGENHARIA E ESPECIALIDADES"]
             direction TB
             040-LLD["040-LLD - Engenharia de Software\n(APIs, Schemas, Redis, PKCE)"]
-            042-DMD["042-DMD - Physical Data Model & Design"]
-            
-            043-SRD["043-SRD - Security Architecture & Controls"]
-            044-IDD["044-IDD - Infrastructure & Cloud Desig"]
-            041-DED["041-DED - Deployment & DevOps Engineering)"]
+            042-DMD["042-DATA-SETUP (DMD) - Physical Data Model & Design"]
+
+            043-SRD["043-SEC-SETUP (SRD) - Security Architecture & Controls"]
+            044-IDD["044-INFRA-SETUP (IDD) - Infrastructure & Cloud Design"]
+            041-DED["041-DEVOPS-SETUP (DED) - Deployment & DevOps Engineering"]
 
             040-LLD --> 042-DMD --> 043-SRD --> 044-IDD --> 041-DED --> 040-LLD
         end
+        %% NOTA: a numeração 041–044 identifica a família de criação, NÃO a ordem de execução.
+        %% Ordem da esteira (ciclo fechado): 040-LLD → 042-DATA-SETUP → 043-SEC-SETUP → 044-INFRA-SETUP → 041-DEVOPS-SETUP.
+        %% O 041 (DevOps) integra as especialidades e só inicia após 042/043/044 em COMPLIANCE (validado pelo GATE-041).
 
         subgraph FASE-3-ESTEIRA-QUALIDADE["ESTEIRA DE QUALIDADE (QA)"]
             045-STP["045-STP - Software Test Plan (IEEE 829)"]
