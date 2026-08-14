@@ -3,7 +3,7 @@
 
 Atue como um Especialista em Gestão de Processos (BPM) e Arquiteto de Soluções Organizacionais, especializado em metodologia WATERFALL e Engenharia de Prompts.
 
-Preciso que você execute um roadmap de criação, revisão, evolução e validação de 22 documentos base de um projeto, seguindo estritamente a metodologia WATERFALL em 5 fases sequenciais com 2 gates estruturais de estimativa.
+Preciso que você execute um roadmap de criação, revisão, evolução e validação de 28 documentos base de um projeto, seguindo estritamente a metodologia WATERFALL em 6 fases sequenciais com 2 gates estruturais de estimativa.
 
 Objetivo Principal: Garantir que todos os documentos estejam criados, revisados e 100% alinhados conceitualmente entre si (rastreabilidade vertical de ponta a ponta), mitigando desvios de escopo (scope creep) e garantindo o sucesso do projeto.
 
@@ -14,7 +14,7 @@ Regra Crítica de Execução (Gating Rule): O processo é estritamente sequencia
 ## REGRAS DE OURO (7 REGRAS DE GATING — NÃO NEGOCIÁVEIS)
 
 1. **NÃO ADIVINHAR INPUTS:** Nenhum prompt infere, busca ou descobre seus inputs. Todo parâmetro é passado explicitamente por este orquestrador.
-2. **TODO GENERATE TEM GATE+FIX:** Cada um dos 22 documentos tem exatamente um trio GENERATE, GATE e FIX.
+2. **TODO GENERATE TEM GATE+FIX:** Cada um dos 28 documentos tem exatamente um trio GENERATE, GATE e FIX.
 3. **FLUXO DE DADOS EXPLÍCITO:** `DOC_PATH` flui GENERATE→GATE→FIX. `VIOLATIONS[]` flui GATE→FIX. Sempre como parâmetros nomeados.
 4. **FIX É CIRÚRGICO:** O prompt FIX edita apenas as seções com violações reportadas pelo GATE. Nunca regenera ou recria o documento.
 5. **STATUS INICIAL: EM ANÁLISE:** Ao criar o documento, GENERATE escreve `[STATUS: Em análise]` no cabeçalho.
@@ -131,15 +131,18 @@ mkdir -p {PROJECT_COMPLETE_PATH_NAME}
 
 #### Passo 0.7 — Verificar Status dos Arquivos
 
-Verificar existência e status de cada um dos 22 documentos. Para arquivos existentes, ler o cabeçalho e buscar por `[STATUS: COMPLIANCE]`.
+Verificar existência e status de cada um dos 28 documentos. Para arquivos existentes, ler o cabeçalho e buscar por `[STATUS: COMPLIANCE]`.
 
 | # | Arquivo | Status |
 |---|---|---|
 | 001 | `001-PROJECT-CHARTER-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 002 | `002-STAKEHOLDER-MAP-{PROJECT_ID_NAME}.md` | ✅/❌ |
+| 003 | `003-PERSONAS-JORNADAS-{PROJECT_ID_NAME}.md` | ✅/❌ |
+| 004 | `004-MAPEAMENTO-AS-IS-TO-BE-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 005 | `005-BRD-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 010 | `010-FRD-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 015 | `015-RTM-FASE-1-{PROJECT_ID_NAME}.md` | ✅/❌ |
+| 016 | `016-PROTOTIPOS-UX-UI-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 020 | `020-SRS-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 025 | `025-RTM-FASE-2-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 030 | `030-SAD-{PROJECT_ID_NAME}.md` | ✅/❌ |
@@ -174,13 +177,13 @@ Verificar existência e status de cada um dos 22 documentos. Para arquivos exist
 > **🛠️ Stack Validada:** `{PROJECT-STACK}`
 > **👥 Time:** `{PROJECT-TEAM-CAPACITY}`
 > **📝 Próxima Fase:** Fase X, Documento {NNN} — {NOME}
-> **📄 Artefatos Existentes:** X de 22 ({Y} com COMPLIANCE)
+> **📄 Artefatos Existentes:** X de 28 ({Y} com COMPLIANCE)
 >
 > Iniciando a Fase X...
 
 ---
 
-## FASES DO ROADMAP WATERFALL (5 Fases, 22 Documentos)
+## FASES DO ROADMAP WATERFALL (6 Fases, 28 Documentos)
 
 ### Convenção de Nomes de Arquivo
 
@@ -199,6 +202,8 @@ A numeração usa **intervalos** (001, 002, 005, 010, 015...) para permitir inse
 |---|---|---|---|
 | 001 | PROJECT-CHARTER | `001-PROJECT-CHARTER-{PROJECT_ID_NAME}.md` | — |
 | 002 | STAKEHOLDER-MAP 🆕 | `002-STAKEHOLDER-MAP-{PROJECT_ID_NAME}.md` | — |
+| 003 | PERSONAS-JORNADAS 🆕 | `003-PERSONAS-JORNADAS-{PROJECT_ID_NAME}.md` | `P-01`, `J-01` |
+| 004 | MAPEAMENTO-AS-IS-TO-BE 🆕 | `004-MAPEAMENTO-AS-IS-TO-BE-{PROJECT_ID_NAME}.md` | `PROC-01`, `GAP-01` |
 | 005 | BRD | `005-BRD-{PROJECT_ID_NAME}.md` | `REQ-01`, `REQ-02`... |
 | 010 | FRD (Functional Requirements Document) 🆕 | `010-FRD-{PROJECT_ID_NAME}.md` | `FEAT-01`, `RN-01`, `UC-01` |
 | 015 | RTM-FASE-1 🆕 | `015-RTM-FASE-1-{PROJECT_ID_NAME}.md` | — |
@@ -226,6 +231,7 @@ O PROJECT-CHARTER é o **start do projeto** — no momento de sua criação, mui
 
 | # | Documento | Arquivo | Prefixo IDs |
 |---|---|---|---|
+| 016 | PROTOTIPOS-UX-UI 🆕 | `016-PROTOTIPOS-UX-UI-{PROJECT_ID_NAME}.md` | `PROTO-01` |
 | 020 | SRS | `020-SRS-{PROJECT_ID_NAME}.md` | `FR-01`, `NFR-PERF-01`... |
 | 025 | RTM-FASE-2 🆕 | `025-RTM-FASE-2-{PROJECT_ID_NAME}.md` | — |
 | 030 | SAD | `030-SAD-{PROJECT_ID_NAME}.md` | — |
@@ -257,6 +263,8 @@ O PROJECT-CHARTER é o **start do projeto** — no momento de sua criação, mui
 | 090 | DEPLOYMENT-PLAN | `090-DEPLOYMENT-PLAN-{PROJECT_ID_NAME}.md` |
 
 ### FASE 5 — ENCERRAMENTO E OPERAÇÃO
+
+> ⚠️ **Em evolução (plano aprovado em 2026-08-14):** a FASE 5 passará a ser **EXECUÇÃO E CONSTRUÇÃO** — roadmap dedicado `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md`, com 092-BACKLOG-KANBAN, 093-GESTAO-TIMES e a esteira de construção — e o encerramento passará a ser a **FASE 6** (105/110/115). Os documentos 095/100 serão gerados no contexto da execução.
 
 | # | Documento | Arquivo |
 |---|---|---|
@@ -422,11 +430,14 @@ Cada GENERATE recebe em `UPSTREAM_DOCS` a lista de documentos anteriores que já
 |---|---|---|
 | 001 | PROJECT-CHARTER | `[]` (documento raiz) |
 | 002 | STAKEHOLDER-MAP 🆕 | `[001-PROJECT-CHARTER]` |
-| 005 | BRD | `[001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP]` |
-| 010 | FRD 🆕 | `[001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 005-BRD]` |
-| 015 | RTM-FASE-1 🆕 | `[001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 005-BRD, 010-FRD]` |
-| 020 | SRS | `[001-PROJECT-CHARTER, 005-BRD, 010-FRD, 015-RTM-FASE-1]` |
-| 025 | RTM-FASE-2 🆕 | `[015-RTM-FASE-1, 020-SRS]` |
+| 003 | PERSONAS-JORNADAS 🆕 | `[001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP]` |
+| 004 | MAPEAMENTO-AS-IS-TO-BE 🆕 | `[001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS]` |
+| 005 | BRD | `[001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE]` |
+| 010 | FRD 🆕 | `[001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD]` |
+| 015 | RTM-FASE-1 🆕 | `[001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD]` |
+| 016 | PROTOTIPOS-UX-UI 🆕 | `[001-PROJECT-CHARTER, 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD]` |
+| 020 | SRS | `[001-PROJECT-CHARTER, 005-BRD, 010-FRD, 015-RTM-FASE-1, 016-PROTOTIPOS-UX-UI]` |
+| 025 | RTM-FASE-2 🆕 | `[015-RTM-FASE-1, 020-SRS, 016-PROTOTIPOS-UX-UI]` |
 | 030 | SAD | `[001-PROJECT-CHARTER, 010-FRD, 020-SRS, 025-RTM-FASE-2]` |
 | 035 | HLD | `[001-PROJECT-CHARTER, 030-SAD]` |
 | 040 | LLD | `[001-PROJECT-CHARTER, 030-SAD, 035-HLD]` |
@@ -454,10 +465,13 @@ Quando um documento já em COMPLIANCE é modificado, todos os documentos downstr
 
 | Se modificar... | Impacta (regenerar + revalidar)... |
 |---|---|
-| 001-PROJECT-CHARTER | Todos os 21 documentos downstream |
-| 002-STAKEHOLDER-MAP 🆕 | 005-BRD, 010-FRD, 015-RTM-FASE-1, 020-SRS, 075-PLANO-COMUNICACAO e seus dependentes transitivos |
-| 005-BRD | 010-FRD, 015-RTM-FASE-1, 020-SRS, 025-RTM-FASE-2, 030-SAD, 035-HLD, 040-LLD, 045-EST-PLAN, 050-EST-CASES, 060-EAP, 065-Cronograma, 070-Orçamento, 090-DEPLOYMENT-PLAN, 095-Manuais, 105-Termo |
-| 010-FRD 🆕 | 015-RTM-FASE-1, 020-SRS, 025-RTM-FASE-2, 030-SAD, 050-EST-CASES, 095-Manuais e seus dependentes transitivos |
+| 001-PROJECT-CHARTER | Todos os 27 documentos downstream |
+| 002-STAKEHOLDER-MAP 🆕 | 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD, 015-RTM-FASE-1, 020-SRS, 075-PLANO-COMUNICACAO e seus dependentes transitivos |
+| 003-PERSONAS-JORNADAS 🆕 | 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD, 016-PROTOTIPOS-UX-UI, 088-PRODUCT-BACKLOG-LIST, 095-Manuais e seus dependentes transitivos |
+| 004-MAPEAMENTO-AS-IS-TO-BE 🆕 | 005-BRD, 010-FRD, 016-PROTOTIPOS-UX-UI, 030-SAD, 088-PRODUCT-BACKLOG-LIST e seus dependentes transitivos |
+| 005-BRD | 010-FRD, 015-RTM-FASE-1, 016-PROTOTIPOS-UX-UI, 020-SRS, 025-RTM-FASE-2, 030-SAD, 035-HLD, 040-LLD, 045-EST-PLAN, 050-EST-CASES, 060-EAP, 065-Cronograma, 070-Orçamento, 090-DEPLOYMENT-PLAN, 095-Manuais, 105-Termo |
+| 010-FRD 🆕 | 015-RTM-FASE-1, 016-PROTOTIPOS-UX-UI, 020-SRS, 025-RTM-FASE-2, 030-SAD, 050-EST-CASES, 095-Manuais e seus dependentes transitivos |
+| 016-PROTOTIPOS-UX-UI 🆕 | 020-SRS, 025-RTM-FASE-2, 088-PRODUCT-BACKLOG-LIST, 095-Manuais, 105-Termo e seus dependentes transitivos |
 | 015-RTM-FASE-1 🆕 | 020-SRS, 025-RTM-FASE-2 e seus dependentes transitivos |
 | 020-SRS | 025-RTM-FASE-2, 030-SAD, 045-EST-PLAN, 050-EST-CASES, 095-Manuais e seus dependentes transitivos |
 | 025-RTM-FASE-2 🆕 | 030-SAD, 035-HLD, 040-LLD e seus dependentes transitivos |
@@ -537,7 +551,7 @@ WATERFALL Docs (Fase 3)
 
 ## FINALIZAÇÃO — GIT WORKFLOW
 
-Quando os 22 documentos estiverem em COMPLIANCE e o humano confirmar a conclusão, executar o pipeline Git abaixo. O nome da branch de trabalho é derivado automaticamente:
+Quando os 28 documentos estiverem em COMPLIANCE e o humano confirmar a conclusão, executar o pipeline Git abaixo. O nome da branch de trabalho é derivado automaticamente:
 
 ```
 WORK_BRANCH = "feature/" + PROJECT_ID_NAME + "-waterfall-docs"
@@ -553,7 +567,7 @@ Exemplo: `feature/PRJ-FIN-2026-0003-SAAS-FBSO-ORG-waterfall-docs`
 git add -A
 git commit -m "docs: documentação WATERFALL completa — ${PROJECT_ID_NAME}
 
-- 22 documentos WATERFALL gerados e validados
+- 28 documentos WATERFALL gerados e validados
 - Status: COMPLIANCE em todos os documentos
 - Gerado pelo Waterfall Orchestrator v2.0
 - Branch: ${WORK_BRANCH}
@@ -574,7 +588,7 @@ Se falhar (branch remota existe): perguntar sobre `--force`.
 ### Passo F.3 — Criar e Mergear PR
 
 ```bash
-gh pr create --base main --head ${WORK_BRANCH} --title "docs: documentação WATERFALL — ${PROJECT_ID_NAME}" --body "Documentação WATERFALL completa para ${PROJECT_ID_NAME}. 22 documentos validados."
+gh pr create --base main --head ${WORK_BRANCH} --title "docs: documentação WATERFALL — ${PROJECT_ID_NAME}" --body "Documentação WATERFALL completa para ${PROJECT_ID_NAME}. 28 documentos validados."
 gh pr merge --merge --delete-branch
 ```
 
@@ -602,7 +616,7 @@ git branch -d ${WORK_BRANCH}
     ├── PROMPT-GENERATE-BRD.md
     ├── PROMPT-GATE-BRD.md
     ├── PROMPT-FIX-BRD.md
-    ├── ... (total de 67 prompts: 22 GENERATE + 22 GATE + 22 FIX + 1 FLOWCHART)
+    ├── ... (total de 85 prompts: 28 GENERATE + 28 GATE + 28 FIX + 1 FLOWCHART)
     └── PROMPT-FIX-TERMO-ENCERRAMENTO-PROJETO.md
 ```
 

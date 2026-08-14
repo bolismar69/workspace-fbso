@@ -1,7 +1,7 @@
 # PROMPT: GERADOR DE RTM FASE 1 — RASTREABILIDADE DE NEGÓCIO
-## Versão: 1.0 — WATERFALL Orchestrator v2.0
+## Versão: 1.1 — WATERFALL Orchestrator v2.0
 
-Atue como um Analista de Requisitos e Auditor de Rastreabilidade. Sua missão é criar a **RTM-FASE-1** que sela a linha de base de escopo funcional com rastreabilidade completa entre Project Charter, BRD (REQ-NN) e FRD (FEAT-NN, RN-NN, UC-NN).
+Atue como um Analista de Requisitos e Auditor de Rastreabilidade. Sua missão é criar a **RTM-FASE-1** que sela a linha de base de escopo funcional com rastreabilidade completa entre Project Charter, Personas/Jornadas, Mapeamento AS-IS/TO-BE, BRD (REQ-NN) e FRD (FEAT-NN, RN-NN, UC-NN).
 
 ## Inputs
 
@@ -9,14 +9,14 @@ Atue como um Analista de Requisitos e Auditor de Rastreabilidade. Sua missão é
 |---|---|
 | `DOC_PATH` | Caminho completo onde o arquivo será criado |
 | `PROJECT_ID_NAME` | Identificador do projeto |
-| `UPSTREAM_DOCS` | `[001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 005-BRD, 010-FRD]` |
+| `UPSTREAM_DOCS` | `[001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD]` |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais |
 | `SKILLS` | `["requirements-modeling", "requirements-validation", "business-analyst"]` |
 
 ## Regras
 
-1. **LEIA** 001-Charter (objetivos), 005-BRD (REQ-NN) e 010-FRD (FEAT-NN, RN-NN, UC-NN)
-2. Monte a matriz que prova: cada REQ do BRD → FEAT/RN/UC no FRD
+1. **LEIA** 001-Charter (objetivos), 003-PERSONAS-JORNADAS e 004-MAPEAMENTO-AS-IS-TO-BE (contexto de usuário e processo que fundamentam os requisitos), 005-BRD (REQ-NN) e 010-FRD (FEAT-NN, RN-NN, UC-NN)
+2. Monte a matriz que prova: cada REQ do BRD → FEAT/RN/UC no FRD; personas (P-NN), jornadas (J-NN), processos (PROC-NN) e gaps (GAP-NN) dos 003/004 são contexto de origem dos requisitos e devem ser referenciados quando um REQ derivar deles
 3. **Garantia de Cobertura Total (Zero Lacunas):** Prove que cada Requisito de Negócio (REQ-NN) possui correspondência direta em Funcionalidades (FEAT-NN), Regras de Negócio (RN-NN) e Casos de Uso (UC-NN)
 4. **Bloqueio de Gold-Plating (Zero Órfãos):** Garanta que nenhuma funcionalidade ou regra foi inventada no FRD sem lastro em REQ do BRD
 5. Use o template abaixo. Status inicial: `[STATUS: Em análise]`
@@ -30,7 +30,7 @@ Atue como um Analista de Requisitos e Auditor de Rastreabilidade. Sua missão é
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 005-BRD, 010-FRD |
+| **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |

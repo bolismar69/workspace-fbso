@@ -1,7 +1,7 @@
 # PROMPT: GERADOR DE RTM FASE 2 — RASTREABILIDADE DE SISTEMA
-## Versão: 1.0 — WATERFALL Orchestrator v2.0
+## Versão: 1.1 — WATERFALL Orchestrator v2.0
 
-Atue como um Analista de Requisitos de Sistema e Auditor de Rastreabilidade. Sua missão é criar a **RTM-FASE-2** que cruza a RTM-FASE-1 (rastreabilidade de negócio) com a SRS (requisitos de sistema), provando que todo requisito de sistema possui lastro em um requisito de negócio através da cadeia RTM-FASE-1.
+Atue como um Analista de Requisitos de Sistema e Auditor de Rastreabilidade. Sua missão é criar a **RTM-FASE-2** que cruza a RTM-FASE-1 (rastreabilidade de negócio) com a SRS (requisitos de sistema), provando que todo requisito de sistema possui lastro em um requisito de negócio através da cadeia RTM-FASE-1, incluindo a correspondência entre protótipos UX/UI (016) e os requisitos de sistema.
 
 ## Inputs
 
@@ -9,13 +9,13 @@ Atue como um Analista de Requisitos de Sistema e Auditor de Rastreabilidade. Sua
 |---|---|
 | `DOC_PATH` | Caminho completo onde o arquivo será criado |
 | `PROJECT_ID_NAME` | Identificador do projeto |
-| `UPSTREAM_DOCS` | `[015-RTM-FASE-1, 020-SRS]` |
+| `UPSTREAM_DOCS` | `[015-RTM-FASE-1, 020-SRS, 016-PROTOTIPOS-UX-UI]` |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais |
 | `SKILLS` | `["requirements-modeling", "requirements-validation", "requirements-engineering"]` |
 
 ## Regras
 
-1. **LEIA** 015-RTM-FASE-1 (cadeia Objetivo Charter → REQ → FEAT/RN/UC) e 020-SRS (FR-NN, NFR-NN)
+1. **LEIA** 015-RTM-FASE-1 (cadeia Objetivo Charter → REQ → FEAT/RN/UC), 020-SRS (FR-NN, NFR-NN) e 016-PROTOTIPOS-UX-UI (PROTO-NN — validar que telas/fluxos dos protótipos têm correspondência nos requisitos de sistema)
 2. Monte a matriz que prova: cada requisito de sistema da SRS (FR-NN, NFR-NN) → item de negócio da RTM-FASE-1 (FEAT/RN/UC) → requisito de negócio (REQ do BRD) → objetivo do Charter
 3. **Garantia de Cobertura Total (Zero Lacunas):** Prove que cada Requisito Funcional (FR-NN) e cada Requisito Não-Funcional (NFR-NN) da SRS possui correspondência na cadeia de rastreabilidade da RTM-FASE-1
 4. **Bloqueio de Gold-Plating (Zero Órfãos):** Garanta que nenhum FR/NFR foi inventado na SRS sem lastro em requisito de negócio através da RTM-FASE-1
@@ -30,7 +30,7 @@ Atue como um Analista de Requisitos de Sistema e Auditor de Rastreabilidade. Sua
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documentos Base** | 015-RTM-FASE-1, 020-SRS |
+| **Documentos Base** | 015-RTM-FASE-1, 020-SRS, 016-PROTOTIPOS-UX-UI |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |
