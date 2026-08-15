@@ -1,16 +1,14 @@
 # FLOWCHART: ROADMAP DE DOCUMENTOS WATERFALL
 
-## Versão: 2.0 — Visualização Gráfica das 5 Fases, 22 Documentos, Dupla RTM e Gates Estruturais
+## Versão: 3.0 — Visualização Gráfica das 6 Fases, 38 Documentos, Dupla RTM e Gates Estruturais
 
-> ⚠️ **VISUALIZAÇÃO LEGADA (histórica):** este diagrama reflete a versão original do roadmap (5 fases, 22 documentos). A estrutura vigente é a do roadmap master — **6 fases, 38 documentos** (`PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md`) e do `flowchart-WATERFALL.md` atualizado.
-
-> **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md` v2.0
+> **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md` (6 fases, 38 documentos)
 >
-> Este documento complementa o roadmap textual com diagramas Mermaid que visualizam o fluxo de execução das **5 fases WATERFALL**, os **22 documentos**, o mecanismo de orquestração Generate→Gate→Fix, a dupla RTM (Negócio + Sistema) e a integração com WATERFALL-ESTIMATION.
+> Este documento complementa o roadmap textual com diagramas Mermaid que visualizam o fluxo de execução das **6 fases WATERFALL**, os **38 documentos**, o mecanismo de orquestração Generate→Gate→Fix, a dupla RTM (Negócio + Sistema), a FASE 5 de EXECUÇÃO E CONSTRUÇÃO (roadmap dedicado) e a integração com WATERFALL-ESTIMATION.
 
 ---
 
-## 1. Visão Macro — 5 Fases WATERFALL (22 Documentos)
+## 1. Visão Macro — 6 Fases WATERFALL (38 Documentos)
 
 ```mermaid
 flowchart TB
@@ -21,8 +19,10 @@ flowchart TB
     subgraph FASE1["Fase 1: INICIAÇÃO E REQUISITOS DE NEGÓCIO"]
         direction LR
         D001["001: PROJECT-CHARTER"] --> D002["002: STAKEHOLDER-MAP"]
-        D002 --> D005["005: BRD<br/>REQ-01, REQ-02..."]
-        D005 --> D010["010: FRD<br/>FEAT-01, RN-01, UC-01"]
+        D002 --> D003["003: PERSONAS-JORNADAS<br/>P-NN, J-NN"]
+        D003 --> D004["004: MAPEAMENTO AS-IS/TO-BE<br/>PROC-NN, GAP-NN"]
+        D004 --> D005["005: BRD<br/>REQ-NN"]
+        D005 --> D010["010: FRD<br/>FEAT-NN, RN-NN, UC-NN"]
         D010 --> D015["015: RTM-FASE-1<br/>Rastr. Negócio"]
     end
 
@@ -30,7 +30,8 @@ flowchart TB
 
     subgraph FASE2["Fase 2: ESPECIFICAÇÃO DE SISTEMA E ARQUITETURA MACRO"]
         direction LR
-        D020["020: SRS<br/>FR-01, NFRs"] --> D025["025: RTM-FASE-2<br/>Rastr. Sistema"]
+        D016["016: PROTOTIPOS-UX-UI<br/>PROTO-NN"] --> D020["020: SRS<br/>FR-NN, NFR-NN"]
+        D020 --> D025["025: RTM-FASE-2<br/>Rastr. Sistema"]
         D025 --> D030["030: SAD"]
         D030 --> D035["035: HLD"]
     end
@@ -41,70 +42,112 @@ flowchart TB
     EST_UP -->|"GO ✅"| FASE3
     EST_UP -->|"NO-GO ❌"| CANCEL["Projeto Cancelado"]
 
-    FASE2 --> FASE3
-
-    subgraph FASE3["Fase 3: ENGENHARIA DETALHADA E QUALIDADE"]
-        direction LR
-        D040["040: LLD"] --> D045["045: EST-PLAN"]
-        D045 --> D050["050: EST-CASES"]
-        D050 --> D055["055: RELATORIO-QUALIDADE"]
-        D055 --> D060["060: EAP-WBS"]
+    subgraph FASE3["Fase 3: ENGENHARIA DETALHADA, QUALIDADE E ENGENHARIAS TÉCNICAS"]
+        direction TB
+        subgraph ESTEIRA["Esteira de Engenharia (ciclo fechado: 040 → 042 → 043 → 044 → 041)"]
+            direction LR
+            D040["040: LLD"] --> D042["042: DATA-SETUP (DMD)"]
+            D042 --> D043["043: SEC-SETUP (SRD)"]
+            D043 --> D044["044: INFRA-SETUP (IDD)"]
+            D044 --> D041["041: DEVOPS-SETUP (DED)"]
+        end
+        subgraph QUALIDADE["Esteira de Qualidade"]
+            direction LR
+            D045["045: EST-PLAN"] --> D050["050: EST-CASES"]
+        end
+        D041 --> D045
+        D050 --> D095E["095: RELATORIO-QUALIDADE<br/>(estrutura)"]
+        D095E --> D060["060: EAP-WBS"]
     end
 
-    FASE3 --> EST_GATE_DOWN{{🎯 GATE 2: DOWNSTREAM<br/>após 040-LLD + 060-EAP}}
+    FASE3 --> EST_GATE_DOWN{{🎯 GATE 2: DOWNSTREAM<br/>após 060-EAP-WBS}}
     EST_GATE_DOWN -->|"Opcional"| EST_DOWN["WATERFALL-ESTIMATION<br/>DOWNSTREAM/REFINEMENT<br/>PERT ±15-25%<br/>→ Alimenta 065 + 070"]
     EST_GATE_DOWN -->|"Pular"| FASE4
     EST_DOWN --> FASE4
 
-    FASE3 --> FASE4
-
     subgraph FASE4["Fase 4: PLANEJAMENTO E BASELINE"]
         direction LR
-        D065["065: CRONOGRAMA-GANTT"] --> D070["070: ORCAMENTO"]
+        D062["062: STAFFING-PLAN"] --> D065["065: CRONOGRAMA-GANTT"]
+        D065 --> D070["070: ORCAMENTO"]
         D070 --> D075["075: PLANO-COMUNICACAO"]
         D075 --> D080["080: PLANO-RISCOS"]
-        D080 --> D085["085: GESTAO-MUDANCAS 🆕"]
-        D085 --> D090["090: STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN"]
+        D080 --> D085["085: PLANO-GESTAO-MUDANCAS"]
+        D085 --> D086["086: PADROES-CODIGO-DOD"]
+        D086 --> D087["087: PLANO-CI-CD-AMBIENTES"]
+        D087 --> D088["088: PRODUCT-BACKLOG-LIST"]
+        D088 --> D090["090: STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN"]
     end
 
-    FASE4 --> FASE5
+    FASE4 --> M4(("🚩 M4: PROJECT BASELINE LOCKED"))
+    M4 --> FASE5
 
-    subgraph FASE5["Fase 5: ENCERRAMENTO E OPERAÇÃO"]
+    subgraph FASE5["Fase 5: EXECUÇÃO E CONSTRUÇÃO (roadmap dedicado WATERFALL-EXECUTION)"]
         direction LR
-        D095["095: MANUAIS-USUARIO"] --> D100["100: MANUAIS-OPERACIONAIS"]
-        D100 --> D105["105: TERMO-ACEITE"]
-        D105 --> D110["110: LICOES-APRENDIDAS"]
-        D110 --> D115["115: TERMO-ENCERRAMENTO 🆕"]
+        D092["092: BACKLOG-KANBAN<br/>CRs Negócio/Técnico (085)<br/>Status · FILA-NN"] --> D093["093: GESTAO-TIMES<br/>Capacidade · IMP-NN"]
+        D093 --> D092
+        D092 --> ESTEIRA_DEV["Esteira de Construção por ciclo FILA-NN<br/>(sprint-artefacts + sprint-tecnhnical-implementation)"]
+        JANELAS["2. Janelas de Entrega<br/>TBD / FORA DE ESCOPO"]
+        ESTEIRA_DEV -.->|"roda por ciclo FILA-NN"| JANELAS
+        ESTEIRA_DEV --> D095F["095: RELATORIO-QUALIDADE<br/>(evidências por ciclo)"]
+        D095F --> D097["097: MANUAIS-USUARIO"]
+        D097 --> D100["100: MANUAIS-OPERACIONAIS"]
     end
 
-    FASE5 --> END(["✅ Roadmap Concluído"])
+    FASE5 --> M5(("🚩 M5: GO-LIVE & HANDOVER"))
+    M5 --> FASE6
+
+    subgraph FASE6["Fase 6: ENCERRAMENTO E OPERAÇÃO"]
+        direction LR
+        D105["105: TERMO-ACEITE"] --> D110["110: LICOES-APRENDIDAS"]
+        D110 --> D115["115: TERMO-ENCERRAMENTO-PROJETO"]
+    end
+
+    FASE6 --> END(["✅ Roadmap Concluído"])
 
     style F0 fill:#6c5ce7,color:#fff
     style D001 fill:#0984e3,color:#fff
     style D002 fill:#0984e3,color:#fff
+    style D003 fill:#0984e3,color:#fff
+    style D004 fill:#0984e3,color:#fff
     style D005 fill:#0984e3,color:#fff
     style D010 fill:#0984e3,color:#fff
     style D015 fill:#0984e3,color:#fff
+    style D016 fill:#6c5ce7,color:#fff
     style D020 fill:#6c5ce7,color:#fff
     style D025 fill:#6c5ce7,color:#fff
     style D030 fill:#6c5ce7,color:#fff
     style D035 fill:#6c5ce7,color:#fff
     style D040 fill:#00b894,color:#fff
+    style D041 fill:#00b894,color:#fff
+    style D042 fill:#00b894,color:#fff
+    style D043 fill:#00b894,color:#fff
+    style D044 fill:#00b894,color:#fff
     style D045 fill:#00b894,color:#fff
     style D050 fill:#00b894,color:#fff
-    style D055 fill:#00b894,color:#fff
+    style D095E fill:#00b894,color:#fff
     style D060 fill:#00b894,color:#fff
+    style D062 fill:#e17055,color:#fff
     style D065 fill:#e17055,color:#fff
     style D070 fill:#e17055,color:#fff
     style D075 fill:#e17055,color:#fff
     style D080 fill:#e17055,color:#fff
     style D085 fill:#e17055,color:#fff
+    style D086 fill:#e17055,color:#fff
+    style D087 fill:#e17055,color:#fff
+    style D088 fill:#e17055,color:#fff
     style D090 fill:#e17055,color:#fff
-    style D095 fill:#a29bfe,color:#fff
+    style M4 fill:#fdcb6e,color:#333
+    style M5 fill:#fdcb6e,color:#333
+    style D092 fill:#a29bfe,color:#fff
+    style D093 fill:#a29bfe,color:#fff
+    style ESTEIRA_DEV fill:#a29bfe,color:#fff
+    style JANELAS fill:#dfe6e9,color:#333,stroke-dasharray: 5 5
+    style D095F fill:#a29bfe,color:#fff
+    style D097 fill:#a29bfe,color:#fff
     style D100 fill:#a29bfe,color:#fff
-    style D105 fill:#a29bfe,color:#fff
-    style D110 fill:#a29bfe,color:#fff
-    style D115 fill:#a29bfe,color:#fff
+    style D105 fill:#6c5ce7,color:#fff
+    style D110 fill:#6c5ce7,color:#fff
+    style D115 fill:#6c5ce7,color:#fff
     style EST_GATE_UP fill:#fdcb6e,color:#333
     style EST_GATE_DOWN fill:#fdcb6e,color:#333
     style EST_UP fill:#fff3e0,stroke:#e65100
@@ -146,7 +189,7 @@ flowchart TD
     end
 
     subgraph PASSO_05["Passo 0.6-0.7 — Estrutura e Status"]
-        F0_6["mkdir -p PROJECT_COMPLETE_PATH_NAME"] --> F0_7["Verificar existência e status<br/>COMPLIANCE dos 20 documentos"]
+        F0_6["mkdir -p PROJECT_COMPLETE_PATH_NAME"] --> F0_7["Verificar existência e status<br/>COMPLIANCE dos 38 documentos"]
         F0_7 --> F0_7_DEC{Status?}
         F0_7_DEC -->|"Todos ❌"| F0_8A["Iniciar Fase 1, Doc #1"]
         F0_7_DEC -->|"Parcial"| F0_8B["Iniciar do primeiro doc<br/>sem COMPLIANCE"]
@@ -169,201 +212,275 @@ flowchart TD
 
 ---
 
-## 3. Fases 1-3 — Inicialização, Requisitos e Design
+## 3. Fases 1-2 — Iniciação, Requisitos e Especificação
+
+Cada nó abaixo executa o **loop completo Generate→Gate→Fix + validação humana** (ver seção 5). O diagrama mostra a sequência de documentos; os gates de estimativa aparecem onde disparam.
 
 ```mermaid
 flowchart TD
-    subgraph F1["Fase 1: INICIALIZAÇÃO"]
+    subgraph F1["Fase 1: INICIAÇÃO E REQUISITOS DE NEGÓCIO"]
         direction TB
-        D01_GEN["GENERATE #1<br/>PROJECT-CHARTER<br/>Skills: draft-project-charter, senior-pm"] --> D01_GATE["GATE #1<br/>Valida seções:<br/>Escopo, Cronograma Macro,<br/>Orçamento Macro, Riscos, RACI"]
-        D01_GATE -->|FAIL| D01_FIX["FIX #1<br/>Corrige seções<br/>com VIOLATIONS"]
-        D01_FIX -.->|loop| D01_GATE
-        D01_GATE -->|PASS| D01_HUMAN["Validação Humana<br/>4 perguntas HITL"]
-        D01_HUMAN -->|Aprovado| D01_OK["#1: COMPLIANCE ✅"]
-        D01_HUMAN -->|Novos inputs| D01_GEN
+        D001_GEN["GENERATE 001: PROJECT-CHARTER<br/>Skills: draft-project-charter, senior-pm"] --> D001_GATE["GATE 001"]
+        D001_GATE -->|FAIL| D001_FIX["FIX 001"]
+        D001_FIX -.->|loop| D001_GATE
+        D001_GATE -->|PASS| D001_OK["001: COMPLIANCE ✅"]
+
+        D001_OK --> D002_GEN["GENERATE 002: STAKEHOLDER-MAP<br/>Skills: stakeholder-analysis, stakeholder-map"] --> D002_GATE["GATE 002"]
+        D002_GATE -->|FAIL| D002_FIX["FIX 002"]
+        D002_FIX -.->|loop| D002_GATE
+        D002_GATE -->|PASS| D002_OK["002: COMPLIANCE ✅"]
+
+        D002_OK --> D003_GEN["GENERATE 003: PERSONAS-JORNADAS<br/>Skills: proto-persona, customer-journey-map"] --> D003_GATE["GATE 003"]
+        D003_GATE -->|FAIL| D003_FIX["FIX 003"]
+        D003_FIX -.->|loop| D003_GATE
+        D003_GATE -->|PASS| D003_OK["003: COMPLIANCE ✅"]
+
+        D003_OK --> D004_GEN["GENERATE 004: MAPEAMENTO AS-IS/TO-BE<br/>Skills: process-mapping, gap-analysis"] --> D004_GATE["GATE 004"]
+        D004_GATE -->|FAIL| D004_FIX["FIX 004"]
+        D004_FIX -.->|loop| D004_GATE
+        D004_GATE -->|PASS| D004_OK["004: COMPLIANCE ✅"]
+
+        D004_OK --> D005_GEN["GENERATE 005: BRD<br/>Skills: brd-creation, business-analyst"] --> D005_GATE["GATE 005"]
+        D005_GATE -->|FAIL| D005_FIX["FIX 005"]
+        D005_FIX -.->|loop| D005_GATE
+        D005_GATE -->|PASS| D005_OK["005: COMPLIANCE ✅"]
+
+        D005_OK --> D010_GEN["GENERATE 010: FRD<br/>Skills: frs-creation, requirements-engineering"] --> D010_GATE["GATE 010"]
+        D010_GATE -->|FAIL| D010_FIX["FIX 010"]
+        D010_FIX -.->|loop| D010_GATE
+        D010_GATE -->|PASS| D010_OK["010: COMPLIANCE ✅"]
+
+        D010_OK --> D015_GEN["GENERATE 015: RTM-FASE-1<br/>Skills: requirements-modeling, requirements-validation"] --> D015_GATE["GATE 015"]
+        D015_GATE -->|FAIL| D015_FIX["FIX 015"]
+        D015_FIX -.->|loop| D015_GATE
+        D015_GATE -->|PASS| D015_OK["015: COMPLIANCE ✅"]
     end
 
-    D01_OK --> F2_START
+    D015_OK --> F2_START
 
-    subgraph F2["Fase 2: REQUISITOS"]
+    subgraph F2["Fase 2: ESPECIFICAÇÃO DE SISTEMA E ARQUITETURA MACRO"]
         direction TB
-        D02_GEN["GENERATE #2: BRD<br/>Skills: brd-creation, business-analyst"] --> D02_GATE["GATE #2"]
-        D02_GATE -->|FAIL| D02_FIX["FIX #2"]
-        D02_FIX -.->|loop| D02_GATE
-        D02_GATE -->|PASS| D02_OK["#2: COMPLIANCE ✅"]
+        D016_GEN["GENERATE 016: PROTOTIPOS-UX-UI<br/>Skills: ui-ux-designer, lean-ux-canvas"] --> D016_GATE["GATE 016"]
+        D016_GATE -->|FAIL| D016_FIX["FIX 016"]
+        D016_FIX -.->|loop| D016_GATE
+        D016_GATE -->|PASS| D016_OK["016: COMPLIANCE ✅"]
 
-        D02_OK --> D03_GEN["GENERATE #3: SRS<br/>Skills: frs-creation, requirements-engineering"] --> D03_GATE["GATE #3"]
-        D03_GATE -->|FAIL| D03_FIX["FIX #3"]
-        D03_FIX -.->|loop| D03_GATE
-        D03_GATE -->|PASS| D03_OK["#3: COMPLIANCE ✅"]
+        D016_OK --> D020_GEN["GENERATE 020: SRS<br/>Skills: frs-creation, requirements-engineering"] --> D020_GATE["GATE 020"]
+        D020_GATE -->|FAIL| D020_FIX["FIX 020"]
+        D020_FIX -.->|loop| D020_GATE
+        D020_GATE -->|PASS| D020_OK["020: COMPLIANCE ✅"]
 
-        D03_OK --> D04_GEN["GENERATE #4: RTM<br/>Skills: requirements-modeling, requirements-validation"] --> D04_GATE["GATE #4"]
-        D04_GATE -->|FAIL| D04_FIX["FIX #4"]
-        D04_FIX -.->|loop| D04_GATE
-        D04_GATE -->|PASS| D04_OK["#4: COMPLIANCE ✅"]
+        D020_OK --> D025_GEN["GENERATE 025: RTM-FASE-2<br/>Skills: requirements-modeling, requirements-validation"] --> D025_GATE["GATE 025"]
+        D025_GATE -->|FAIL| D025_FIX["FIX 025"]
+        D025_FIX -.->|loop| D025_GATE
+        D025_GATE -->|PASS| D025_OK["025: COMPLIANCE ✅"]
+
+        D025_OK --> D030_GEN["GENERATE 030: SAD<br/>Skills: software-architecture, architecture-designer"] --> D030_GATE["GATE 030"]
+        D030_GATE -->|FAIL| D030_FIX["FIX 030"]
+        D030_FIX -.->|loop| D030_GATE
+        D030_GATE -->|PASS| D030_OK["030: COMPLIANCE ✅"]
+
+        D030_OK --> D035_GEN["GENERATE 035: HLD<br/>Skills: c4-container, system-design"] --> D035_GATE["GATE 035"]
+        D035_GATE -->|FAIL| D035_FIX["FIX 035"]
+        D035_FIX -.->|loop| D035_GATE
+        D035_GATE -->|PASS| D035_OK["035: COMPLIANCE ✅"]
+
+        D035_OK --> EST_CHECK_UP{{🎯 Após 035-HLD:<br/>Executar WATERFALL-ESTIMATION<br/>UPSTREAM/DISCOVERY?}}
     end
 
-    F2_START --> D02_GEN
+    F2_START --> D016_GEN
 
-    D04_OK --> F3_START
-
-    subgraph F3["Fase 3: DESIGN E ARQUITETURA"]
-        direction TB
-        D05_GEN["GENERATE #5: SAD<br/>Skills: software-architecture, architecture-designer"] --> D05_GATE["GATE #5"]
-        D05_GATE -->|FAIL| D05_FIX["FIX #5"]
-        D05_FIX -.->|loop| D05_GATE
-        D05_GATE -->|PASS| D05_OK["#5: COMPLIANCE ✅"]
-
-        D05_OK --> D06_GEN["GENERATE #6: HLD<br/>Skills: c4-container, system-design, ADRs"] --> D06_GATE["GATE #6"]
-        D06_GATE -->|FAIL| D06_FIX["FIX #6"]
-        D06_FIX -.->|loop| D06_GATE
-        D06_GATE -->|PASS| D06_OK["#6: COMPLIANCE ✅"]
-
-        D06_OK --> EST_CHECK_UP{{🎯 Após #6 HLD:<br/>Executar WATERFALL-ESTIMATION<br/>UPSTREAM/DISCOVERY?}}
-
-        D06_OK --> D07_GEN["GENERATE #7: LLD<br/>Skills: c4-component, ddd-tactical-patterns"] --> D07_GATE["GATE #7"]
-        D07_GATE -->|FAIL| D07_FIX["FIX #7"]
-        D07_FIX -.->|loop| D07_GATE
-        D07_GATE -->|PASS| D07_OK["#7: COMPLIANCE ✅"]
-    end
-
-    F3_START --> D05_GEN
-
-    D07_OK --> F4_START
-
-    style D01_GEN fill:#0984e3,color:#fff
-    style D02_GEN fill:#0984e3,color:#fff
-    style D03_GEN fill:#0984e3,color:#fff
-    style D04_GEN fill:#0984e3,color:#fff
-    style D05_GEN fill:#0984e3,color:#fff
-    style D06_GEN fill:#0984e3,color:#fff
-    style D07_GEN fill:#0984e3,color:#fff
-    style D01_OK fill:#00b894,color:#fff
-    style D02_OK fill:#00b894,color:#fff
-    style D03_OK fill:#00b894,color:#fff
-    style D04_OK fill:#00b894,color:#fff
-    style D05_OK fill:#00b894,color:#fff
-    style D06_OK fill:#00b894,color:#fff
-    style D07_OK fill:#00b894,color:#fff
+    style D001_GEN fill:#0984e3,color:#fff
+    style D002_GEN fill:#0984e3,color:#fff
+    style D003_GEN fill:#0984e3,color:#fff
+    style D004_GEN fill:#0984e3,color:#fff
+    style D005_GEN fill:#0984e3,color:#fff
+    style D010_GEN fill:#0984e3,color:#fff
+    style D015_GEN fill:#0984e3,color:#fff
+    style D016_GEN fill:#6c5ce7,color:#fff
+    style D020_GEN fill:#6c5ce7,color:#fff
+    style D025_GEN fill:#6c5ce7,color:#fff
+    style D030_GEN fill:#6c5ce7,color:#fff
+    style D035_GEN fill:#6c5ce7,color:#fff
+    style D001_OK fill:#00b894,color:#fff
+    style D002_OK fill:#00b894,color:#fff
+    style D003_OK fill:#00b894,color:#fff
+    style D004_OK fill:#00b894,color:#fff
+    style D005_OK fill:#00b894,color:#fff
+    style D010_OK fill:#00b894,color:#fff
+    style D015_OK fill:#00b894,color:#fff
+    style D016_OK fill:#00b894,color:#fff
+    style D020_OK fill:#00b894,color:#fff
+    style D025_OK fill:#00b894,color:#fff
+    style D030_OK fill:#00b894,color:#fff
+    style D035_OK fill:#00b894,color:#fff
     style EST_CHECK_UP fill:#fdcb6e,color:#333
 ```
 
 ---
 
-## 4. Fases 4-6 — Testes, Planejamento e Implantação
+## 4. Fases 3-4 — Engenharia e Baseline
 
 ```mermaid
 flowchart TD
-    F4_START(["Após #7 LLD COMPLIANCE"])
+    F3_START(["Após 035-HLD COMPLIANCE (GO ou Pular)"])
 
-    subgraph F4["Fase 4: TESTES E QUALIDADE"]
+    subgraph F3["Fase 3: ENGENHARIA DETALHADA, QUALIDADE E ENGENHARIAS TÉCNICAS"]
         direction TB
-        D08_GEN["GENERATE #8: TEST-PLAN<br/>Skills: test-strategy-design, qa-test-planner"] --> D08_GATE["GATE #8"]
-        D08_GATE -->|FAIL| D08_FIX["FIX #8"]
-        D08_FIX -.->|loop| D08_GATE
-        D08_GATE -->|PASS| D08_OK["#8: COMPLIANCE ✅"]
+        D040_GEN["GENERATE 040: LLD<br/>Skills: c4-component, ddd-tactical-patterns"] --> D040_OK["040: COMPLIANCE ✅"]
 
-        D08_OK --> D09_GEN["GENERATE #9: TEST-CASES<br/>Skills: test-case-creation, acceptance-criteria"] --> D09_GATE["GATE #9"]
-        D09_GATE -->|FAIL| D09_FIX["FIX #9"]
-        D09_FIX -.->|loop| D09_GATE
-        D09_GATE -->|PASS| D09_OK["#9: COMPLIANCE ✅"]
+        D040_OK --> D042_GEN["GENERATE 042: DATA-SETUP (DMD)<br/>Skills: database-architect, data-modeling"] --> D042_OK["042: COMPLIANCE ✅"]
 
-        D09_OK --> D10_GEN["GENERATE #10: Relatório Qualidade<br/>Skills: quality-documentation-manager, qa"] --> D10_GATE["GATE #10"]
-        D10_GATE -->|FAIL| D10_FIX["FIX #10"]
-        D10_FIX -.->|loop| D10_GATE
-        D10_GATE -->|PASS| D10_OK["#10: COMPLIANCE ✅"]
+        D042_OK --> D043_GEN["GENERATE 043: SEC-SETUP (SRD)<br/>Skills: security-auditor, threat-modeling-expert"] --> D043_OK["043: COMPLIANCE ✅"]
+
+        D043_OK --> D044_GEN["GENERATE 044: INFRA-SETUP (IDD)<br/>Skills: cloud-architect, terraform-specialist"] --> D044_OK["044: COMPLIANCE ✅"]
+
+        D044_OK --> D041_GEN["GENERATE 041: DEVOPS-SETUP (DED)<br/>ÚLTIMO da esteira — após 042/043/044<br/>Skills: senior-devops, cicd-automation-workflow-automate"] --> D041_OK["041: COMPLIANCE ✅"]
+
+        D041_OK --> D045_GEN["GENERATE 045: EST-PLAN<br/>Skills: test-strategy-design, qa-test-planner"] --> D045_OK["045: COMPLIANCE ✅"]
+
+        D045_OK --> D050_GEN["GENERATE 050: EST-CASES<br/>Skills: test-case-creation, acceptance-criteria"] --> D050_OK["050: COMPLIANCE ✅"]
+
+        D050_OK --> D095E_GEN["GENERATE 095: RELATORIO-QUALIDADE (estrutura)<br/>Skills: quality-documentation-manager, qa"] --> D095E_OK["095: COMPLIANCE ✅"]
+
+        D095E_OK --> D060_GEN["GENERATE 060: EAP-WBS<br/>Skills: decomposition-planning-roadmap"] --> D060_OK["060: COMPLIANCE ✅"]
+
+        D060_OK --> EST_CHECK_DOWN{{🎯 Após 060-EAP-WBS:<br/>Executar WATERFALL-ESTIMATION<br/>DOWNSTREAM/REFINEMENT?}}
     end
 
-    F4_START --> D08_GEN
+    F3_START --> D040_GEN
 
-    D10_OK --> F5_START
+    EST_CHECK_DOWN --> F4_START
 
-    subgraph F5["Fase 5: PLANEJAMENTO"]
+    subgraph F4["Fase 4: PLANEJAMENTO E BASELINE"]
         direction TB
-        D11_GEN["GENERATE #11: EAP/WBS<br/>Skills: decomposition-planning-roadmap"] --> D11_GATE["GATE #11"]
-        D11_GATE -->|FAIL| D11_FIX["FIX #11"]
-        D11_FIX -.->|loop| D11_GATE
-        D11_GATE -->|PASS| D11_OK["#11: COMPLIANCE ✅"]
+        D062_GEN["GENERATE 062: STAFFING-PLAN<br/>Skills: team-composition-analysis, team-builder"] --> D062_OK["062: COMPLIANCE ✅"]
 
-        D11_OK --> EST_CHECK_DOWN{{🎯 Após #7 LLD + #11 EAP:<br/>Executar WATERFALL-ESTIMATION<br/>DOWNSTREAM/REFINEMENT?}}
+        D062_OK --> D065_GEN["GENERATE 065: CRONOGRAMA-GANTT<br/>+ CRONOGRAMA-CALCULADO se disponível"] --> D065_OK["065: COMPLIANCE ✅"]
 
-        D11_OK --> D12_GEN["GENERATE #12: Cronograma/Gantt<br/>+ CRONOGRAMA-CALCULADO se disponível<br/>Skills: roadmap-planning, project-estimation"] --> D12_GATE["GATE #12"]
-        D12_GATE -->|FAIL| D12_FIX["FIX #12"]
-        D12_FIX -.->|loop| D12_GATE
-        D12_GATE -->|PASS| D12_OK["#12: COMPLIANCE ✅"]
+        D065_OK --> D070_GEN["GENERATE 070: ORCAMENTO<br/>+ ORCAMENTO-CALCULADO se disponível"] --> D070_OK["070: COMPLIANCE ✅"]
 
-        D12_OK --> D13_GEN["GENERATE #13: Orçamento<br/>+ ORCAMENTO-CALCULADO se disponível<br/>Skills: project-estimation"] --> D13_GATE["GATE #13"]
-        D13_GATE -->|FAIL| D13_FIX["FIX #13"]
-        D13_FIX -.->|loop| D13_GATE
-        D13_GATE -->|PASS| D13_OK["#13: COMPLIANCE ✅"]
+        D070_OK --> D075_GEN["GENERATE 075: PLANO-COMUNICACAO"] --> D075_OK["075: COMPLIANCE ✅"]
 
-        D13_OK --> D14_GEN["GENERATE #14: Plano Comunicação<br/>Skills: stakeholder-analysis"] --> D14_GATE["GATE #14"]
-        D14_GATE -->|PASS| D14_OK["#14: COMPLIANCE ✅"]
+        D075_OK --> D080_GEN["GENERATE 080: PLANO-RISCOS"] --> D080_OK["080: COMPLIANCE ✅"]
 
-        D13_OK --> D15_GEN["GENERATE #15: Plano Riscos<br/>Skills: risk-manager"] --> D15_GATE["GATE #15"]
-        D15_GATE -->|PASS| D15_OK["#15: COMPLIANCE ✅"]
+        D080_OK --> D085_GEN["GENERATE 085: PLANO-GESTAO-MUDANCAS"] --> D085_OK["085: COMPLIANCE ✅"]
+
+        D085_OK --> D086_GEN["GENERATE 086: PADROES-CODIGO-DOD<br/>Skills: coding-guidelines, clean-code"] --> D086_OK["086: COMPLIANCE ✅"]
+
+        D086_OK --> D087_GEN["GENERATE 087: PLANO-CI-CD-AMBIENTES<br/>Skills: deployment-pipeline-design"] --> D087_OK["087: COMPLIANCE ✅"]
+
+        D087_OK --> D088_GEN["GENERATE 088: PRODUCT-BACKLOG-LIST<br/>Skills: backlog-management, senior-pm"] --> D088_OK["088: COMPLIANCE ✅"]
+
+        D088_OK --> D090_GEN["GENERATE 090: STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN<br/>Skills: deployment-engineer, devops-rollout-plan"] --> D090_OK["090: COMPLIANCE ✅"]
+
+        D090_OK --> M4_OK(("🚩 M4: PROJECT BASELINE LOCKED"))
     end
 
-    F5_START --> D11_GEN
+    F4_START --> D062_GEN
 
-    D14_OK --> F6_START
-    D15_OK --> F6_START
-
-    subgraph F6["Fase 6: IMPLANTAÇÃO E ENCERRAMENTO"]
-        direction TB
-        D16_GEN["GENERATE #16: STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN<br/>Skills: deployment-engineer, devops-rollout-plan"] --> D16_GATE["GATE #16"]
-        D16_GATE -->|PASS| D16_OK["#16: COMPLIANCE ✅"]
-
-        D16_OK --> D17_GEN["GENERATE #17: Manuais Usuário<br/>Skills: documentation-generation-doc-generate"] --> D17_GATE["GATE #17"]
-        D17_GATE -->|PASS| D17_OK["#17: COMPLIANCE ✅"]
-
-        D17_OK --> D18_GEN["GENERATE #18: Manuais Operacionais"] --> D18_GATE["GATE #18"]
-        D18_GATE -->|PASS| D18_OK["#18: COMPLIANCE ✅"]
-
-        D18_OK --> D19_GEN["GENERATE #19: Termo Aceite<br/>Skills: contract-and-proposal-writer"] --> D19_GATE["GATE #19"]
-        D19_GATE -->|PASS| D19_OK["#19: COMPLIANCE ✅"]
-
-        D19_OK --> D20_GEN["GENERATE #20: Lições Aprendidas<br/>Consolida todos os 19 docs anteriores"] --> D20_GATE["GATE #20"]
-        D20_GATE -->|PASS| D20_OK["#20: COMPLIANCE ✅"]
-    end
-
-    F6_START --> D16_GEN
-
-    D20_OK --> GIT["Git Workflow:<br/>commit → push → PR → merge"]
-
-    style D08_GEN fill:#00b894,color:#fff
-    style D09_GEN fill:#00b894,color:#fff
-    style D10_GEN fill:#00b894,color:#fff
-    style D11_GEN fill:#e17055,color:#fff
-    style D12_GEN fill:#e17055,color:#fff
-    style D13_GEN fill:#e17055,color:#fff
-    style D14_GEN fill:#e17055,color:#fff
-    style D15_GEN fill:#e17055,color:#fff
-    style D16_GEN fill:#a29bfe,color:#fff
-    style D17_GEN fill:#a29bfe,color:#fff
-    style D18_GEN fill:#a29bfe,color:#fff
-    style D19_GEN fill:#a29bfe,color:#fff
-    style D20_GEN fill:#a29bfe,color:#fff
-    style D08_OK fill:#00b894,color:#fff
-    style D09_OK fill:#00b894,color:#fff
-    style D10_OK fill:#00b894,color:#fff
-    style D11_OK fill:#00b894,color:#fff
-    style D12_OK fill:#00b894,color:#fff
-    style D13_OK fill:#00b894,color:#fff
-    style D14_OK fill:#00b894,color:#fff
-    style D15_OK fill:#00b894,color:#fff
-    style D16_OK fill:#00b894,color:#fff
-    style D17_OK fill:#00b894,color:#fff
-    style D18_OK fill:#00b894,color:#fff
-    style D19_OK fill:#00b894,color:#fff
-    style D20_OK fill:#00b894,color:#fff
+    style D040_GEN fill:#00b894,color:#fff
+    style D042_GEN fill:#00b894,color:#fff
+    style D043_GEN fill:#00b894,color:#fff
+    style D044_GEN fill:#00b894,color:#fff
+    style D041_GEN fill:#00b894,color:#fff
+    style D045_GEN fill:#00b894,color:#fff
+    style D050_GEN fill:#00b894,color:#fff
+    style D095E_GEN fill:#00b894,color:#fff
+    style D060_GEN fill:#00b894,color:#fff
+    style D062_GEN fill:#e17055,color:#fff
+    style D065_GEN fill:#e17055,color:#fff
+    style D070_GEN fill:#e17055,color:#fff
+    style D075_GEN fill:#e17055,color:#fff
+    style D080_GEN fill:#e17055,color:#fff
+    style D085_GEN fill:#e17055,color:#fff
+    style D086_GEN fill:#e17055,color:#fff
+    style D087_GEN fill:#e17055,color:#fff
+    style D088_GEN fill:#e17055,color:#fff
+    style D090_GEN fill:#e17055,color:#fff
+    style D040_OK fill:#00b894,color:#fff
+    style D042_OK fill:#00b894,color:#fff
+    style D043_OK fill:#00b894,color:#fff
+    style D044_OK fill:#00b894,color:#fff
+    style D041_OK fill:#00b894,color:#fff
+    style D045_OK fill:#00b894,color:#fff
+    style D050_OK fill:#00b894,color:#fff
+    style D095E_OK fill:#00b894,color:#fff
+    style D060_OK fill:#00b894,color:#fff
+    style D062_OK fill:#00b894,color:#fff
+    style D065_OK fill:#00b894,color:#fff
+    style D070_OK fill:#00b894,color:#fff
+    style D075_OK fill:#00b894,color:#fff
+    style D080_OK fill:#00b894,color:#fff
+    style D085_OK fill:#00b894,color:#fff
+    style D086_OK fill:#00b894,color:#fff
+    style D087_OK fill:#00b894,color:#fff
+    style D088_OK fill:#00b894,color:#fff
+    style D090_OK fill:#00b894,color:#fff
     style EST_CHECK_DOWN fill:#fdcb6e,color:#333
-    style GIT fill:#6c5ce7,color:#fff
+    style M4_OK fill:#fdcb6e,color:#333
+```
+
+> **Nota:** cada GENERATE acima executa o loop completo Generate→Gate→Fix (o diagrama mostra apenas o caminho feliz para legibilidade). A ordem da esteira F3 é fixa: `040 → 042 → 043 → 044 → 041` — o 041 só inicia após 042/043/044 em COMPLIANCE.
+
+---
+
+## 5. Fase 5 — EXECUÇÃO E CONSTRUÇÃO (roadmap dedicado)
+
+```mermaid
+flowchart TD
+    M4_IN(("🚩 M4: PROJECT BASELINE LOCKED<br/>38 docs F1-F4 em COMPLIANCE")) --> SF1
+
+    subgraph SF1["Sub-fase 1: GESTÃO DIÁRIA E OPERACIONAL"]
+        direction LR
+        D092_GEN["092: BACKLOG-KANBAN<br/>· Revisa/expande o 088 via CR de Negócio e CR Técnico (085)<br/>· Atualiza status (A Fazer → Em Execução → Em Revisão → Concluído/Impedido)<br/>· Define FILA-NN (filas/ciclos)"] --> D093_GEN["093: GESTAO-TIMES<br/>· Capacidade vs demanda (contra o 062)<br/>· Impedimentos (IMP-NN)<br/>· Alocação por fila"]
+        D093_GEN --> D092_GEN
+    end
+
+    SF1 --> SF2
+
+    subgraph SF2["Sub-fase 2: JANELAS DE ENTREGA — TBD/FORA DE ESCOPO"]
+        JANELAS["DEV → QA → UAT → DEPLOY<br/>estrutura preservada no flowchart-WATERFALL.md<br/>solução NÃO definida nesta revisão"]
+    end
+
+    SF1 -.->|"a esteira roda por ciclo FILA-NN"| SF3
+
+    subgraph SF3["Sub-fase 3: ESTEIRA DE CONSTRUÇÃO POR SOLUÇÃO TÉCNICA"]
+        direction TB
+        CTX["Contexto base: PROMPT-ORCHESTRATOR-GENERATE-ALL-ARTEFACTS<br/>→ PRD.md/SPECS.md · ARCH.md/LLD.md · TEST_PLAN.md · TASKS.md"] --> CICLO["Loop por ciclo (FILA-NN):<br/>SPRINT-CARD + SPRINT-TEST-SUITE → EXECUTE-SPRINT-TASKS<br/>→ QA-REVISOR-SECURITY (revisão humana obrigatória)<br/>→ SPRINT-REVIEW + IDENTIFIED-TECHNICAL-DEBT<br/>→ IMPLEMENTATION-REPORT → PR"]
+        CICLO --> GOV["Saída de governança:<br/>095-RELATORIO-QUALIDADE (evidências)<br/>092 (status BL-NN/FILA-NN) · 093 (impedimentos)<br/>desvios → 085"]
+        GOV -.->|"próximo ciclo"| CICLO
+    end
+
+    SF3 --> SF4
+
+    subgraph SF4["Sub-fase 4: DOCUMENTAÇÃO DE SUPORTE E EVIDÊNCIAS"]
+        direction LR
+        D095F2["095: RELATORIO-QUALIDADE<br/>(evidências)"] --> D097F["097: MANUAIS-USUARIO<br/>(upstream 003/010/016)"]
+        D097F --> D100F["100: MANUAIS-OPERACIONAIS<br/>(upstream 041/044/087/090)"]
+    end
+
+    SF4 --> M5_OUT(("🚩 M5: GO-LIVE & HANDOVER"))
+    M5_OUT --> F6
+
+    F6["Fase 6: ENCERRAMENTO<br/>105 TERMO-ACEITE → 110 LICOES-APRENDIDAS<br/>→ 115 TERMO-ENCERRAMENTO-PROJETO"]
+
+    style D092_GEN fill:#a29bfe,color:#fff
+    style D093_GEN fill:#a29bfe,color:#fff
+    style JANELAS fill:#dfe6e9,color:#333,stroke-dasharray: 5 5
+    style CTX fill:#a29bfe,color:#fff
+    style CICLO fill:#a29bfe,color:#fff
+    style GOV fill:#a29bfe,color:#fff
+    style D095F2 fill:#a29bfe,color:#fff
+    style D097F fill:#a29bfe,color:#fff
+    style D100F fill:#a29bfe,color:#fff
+    style M4_IN fill:#fdcb6e,color:#333
+    style M5_OUT fill:#fdcb6e,color:#333
 ```
 
 ---
 
-## 5. Mecanismo de Orquestração — Loop Generate→Gate→Fix por Documento
+## 6. Mecanismo de Orquestração — Loop Generate→Gate→Fix por Documento
 
 ```mermaid
 flowchart TD
@@ -408,136 +525,195 @@ flowchart TD
 
 ---
 
-## 6. Matriz de UPSTREAM_DOCS — Fluxo de Dependências (v2.0)
+## 7. Matriz de UPSTREAM_DOCS — Fluxo de Dependências (v3.0)
 
 ```mermaid
 flowchart LR
     D001["001: Charter"] --> D002["002: Stakeholder Map"]
-    D001 --> D005["005: BRD"]
-    D001 --> D010["010: FRD"]
-    D001 --> D015["015: RTM-F1"]
-    D001 --> D020["020: SRS"]
-    D001 --> D030["030: SAD"]
-    D001 --> D035["035: HLD"]
-    D001 --> D040["040: LLD"]
-    D001 --> D060["060: EAP/WBS"]
-    D001 --> D065["065: Cronograma"]
-    D001 --> D070["070: Orçamento"]
-    D001 --> D075["075: Comunicação"]
-    D001 --> D080["080: Riscos"]
-    D001 --> D085["085: Gestão Mudanças"]
-    D001 --> D090["090: Deploy"]
-    D001 --> D095["095: Manuais User"]
-    D001 --> D105["105: Termo Aceite"]
-    D001 --> D115["115: Encerramento"]
-
+    D002 --> D003["003: Personas-Jornadas"]
+    D002 --> D004["004: AS-IS/TO-BE"]
+    D003 --> D004
+    D003 --> D005["005: BRD"]
+    D004 --> D005
     D002 --> D005
-    D002 --> D075
-
+    D003 --> D010["010: FRD"]
+    D004 --> D010
     D005 --> D010
-    D010 --> D015
+    D002 --> D010
+    D003 --> D015["015: RTM-F1"]
+    D004 --> D015
     D005 --> D015
-    D002 --> D015
+    D010 --> D015
 
-    D015 --> D020
-    D005 --> D020
+    D003 --> D016["016: Protótipos UX/UI"]
+    D004 --> D016
+    D005 --> D016
+    D010 --> D016
+    D005 --> D020["020: SRS"]
     D010 --> D020
+    D015 --> D020
+    D016 --> D020
+    D015 --> D025["025: RTM-F2"]
+    D020 --> D025
+    D016 --> D025
 
-    D020 --> D025["025: RTM-F2"]
-    D015 --> D025
-
+    D010 --> D030["030: SAD"]
+    D020 --> D030
     D025 --> D030
-    D010 --> D030
-
-    D030 --> D035
-    D030 --> D040
-    D030 --> D090
-    D030 --> D100["100: Manuais Ops"]
-
+    D030 --> D035["035: HLD"]
+    D030 --> D040["040: LLD"]
     D035 --> D040
-    D035 --> D090
 
-    D040 --> D045["045: EST-PLAN"]
-    D040 --> D090
-    D040 --> D060
+    D040 --> D042["042: DATA-SETUP"]
+    D040 --> D043["043: SEC-SETUP"]
+    D040 --> D044["044: INFRA-SETUP"]
+    D042 --> D041["041: DEVOPS-SETUP"]
+    D043 --> D041
+    D044 --> D041
+    D030 --> D041
+    D030 --> D042
+    D030 --> D043
+    D030 --> D044
+    D035 --> D041
+    D035 --> D042
+    D035 --> D043
+    D035 --> D044
 
-    D020 --> D045
+    D020 --> D045["045: EST-PLAN"]
+    D030 --> D045
+    D040 --> D045
     D045 --> D050["050: EST-CASES"]
     D010 --> D050
     D020 --> D050
-
-    D050 --> D055["055: Qualidade"]
-    D045 --> D055
-
+    D045 --> D095E["095: RELATORIO-QUALIDADE"]
+    D050 --> D095E
+    D040 --> D060["060: EAP-WBS"]
     D050 --> D060
+
+    D060 --> D062["062: STAFFING-PLAN"]
+    D045 --> D062
+    D050 --> D062
+    D060 --> D065["065: Cronograma"]
     D050 --> D065
-    D045 --> D065
-
-    D060 --> D065
-    D060 --> D070
-    D060 --> D085
-
+    D062 --> D065
+    D060 --> D070["070: Orçamento"]
     D065 --> D070
+    D045 --> D070
+    D062 --> D070
+
+    D002 --> D075["075: Comunicação"]
+    D080["080: Riscos"]
+    D060 --> D085["085: Gestão Mudanças"]
     D080 --> D085
 
+    D030 --> D086["086: Padrões/DoD"]
+    D035 --> D086
+    D040 --> D086
+    D043 --> D086
+    D030 --> D087["087: CI-CD-Ambientes"]
+    D035 --> D087
+    D041 --> D087
+    D044 --> D087
+
+    D005 --> D088["088: Backlog"]
+    D010 --> D088
+    D020 --> D088
+    D060 --> D088
+    D062 --> D088
+    D065 --> D088
+    D070 --> D088
+    D086 --> D088
+
+    D030 --> D090["090: Strategic Deploy"]
+    D035 --> D090
+    D040 --> D090
+
+    D088 --> D092["092: Backlog-Kanban"]
+    D085 --> D092
+    D062 --> D092
+    D086 --> D092
+    D087 --> D092
+    D090 --> D092
+    D062 --> D093["093: Gestão Times"]
+    D065 --> D093
+    D070 --> D093
+    D092 --> D093
+
+    D003 --> D097["097: Manuais Usuário"]
+    D010 --> D097
+    D016 --> D097
+    D020 --> D097
+    D030 --> D100["100: Manuais Ops"]
     D090 --> D100
-    D010 --> D095
-    D020 --> D095
 
-    D045 --> D105
-    D055 --> D105
-
+    D045 --> D105["105: Termo Aceite"]
+    D095E --> D105
     D105 --> D110["110: Lições"]
-    D110 --> D115
+    D110 --> D115["115: Encerramento"]
 
-    style D001 fill:#6c5ce7,color:#fff
-    style D002 fill:#6c5ce7,color:#fff
+    style D001 fill:#0984e3,color:#fff
+    style D002 fill:#0984e3,color:#fff
+    style D003 fill:#0984e3,color:#fff
+    style D004 fill:#0984e3,color:#fff
     style D005 fill:#0984e3,color:#fff
     style D010 fill:#0984e3,color:#fff
     style D015 fill:#0984e3,color:#fff
+    style D016 fill:#6c5ce7,color:#fff
     style D020 fill:#6c5ce7,color:#fff
     style D025 fill:#6c5ce7,color:#fff
     style D030 fill:#6c5ce7,color:#fff
     style D035 fill:#6c5ce7,color:#fff
     style D040 fill:#00b894,color:#fff
+    style D041 fill:#00b894,color:#fff
+    style D042 fill:#00b894,color:#fff
+    style D043 fill:#00b894,color:#fff
+    style D044 fill:#00b894,color:#fff
     style D045 fill:#00b894,color:#fff
     style D050 fill:#00b894,color:#fff
-    style D055 fill:#00b894,color:#fff
+    style D095E fill:#00b894,color:#fff
     style D060 fill:#00b894,color:#fff
+    style D062 fill:#e17055,color:#fff
     style D065 fill:#e17055,color:#fff
     style D070 fill:#e17055,color:#fff
     style D075 fill:#e17055,color:#fff
     style D080 fill:#e17055,color:#fff
     style D085 fill:#e17055,color:#fff
+    style D086 fill:#e17055,color:#fff
+    style D087 fill:#e17055,color:#fff
+    style D088 fill:#e17055,color:#fff
     style D090 fill:#e17055,color:#fff
-    style D095 fill:#a29bfe,color:#fff
+    style D092 fill:#a29bfe,color:#fff
+    style D093 fill:#a29bfe,color:#fff
+    style D097 fill:#a29bfe,color:#fff
     style D100 fill:#a29bfe,color:#fff
-    style D105 fill:#a29bfe,color:#fff
-    style D110 fill:#a29bfe,color:#fff
-    style D115 fill:#a29bfe,color:#fff
+    style D105 fill:#6c5ce7,color:#fff
+    style D110 fill:#6c5ce7,color:#fff
+    style D115 fill:#6c5ce7,color:#fff
 ```
+
+> **Nota:** a matriz reflete a tabela UPSTREAM_DOCS do roadmap master (v3.0). O nó 001 (Charter) é raiz e alimenta todos os documentos — as arestas foram omitidas para legibilidade onde o caminho passa por documentos intermediários.
 
 ---
 
-## 7. Efeitos Cascata — Impacto de Modificações (v2.0)
+## 8. Efeitos Cascata — Impacto de Modificações (v3.0)
 
 ```mermaid
 flowchart TD
     subgraph IMPACTO_ALTO["🔴 Impacto ALTO — Regenera 10+ docs"]
-        CHARTER["001 Charter modificado"] -->|"Impacta TODOS<br/>os 21 docs downstream"| ALL["Regenerar 002 ao 115"]
-        BRD["005 BRD modificado"] -->|"Impacta 13+ docs"| BRD_CASCADE["010, 015, 020, 025, 030, 035, 040,<br/>045, 050, 060, 065, 070, 090, 095"]
+        CHARTER["001 Charter modificado"] -->|"Impacta TODOS<br/>os 35 docs downstream"| ALL["Regenerar 002 ao 115"]
+        BRD["005 BRD modificado"] -->|"Impacta 15+ docs"| BRD_CASCADE["010, 015, 016, 020, 025, 030, 035, 040,<br/>041-044, 045, 050, 060, 062, 065, 070, 088, 090, 097"]
     end
 
-    subgraph IMPACTO_MEDIO["🟡 Impacto MÉDIO — Regenera 4-8 docs"]
-        FRD["010 FRD modificado"] -->|"Impacta 6 docs"| FRD_CASCADE["015, 020, 025, 030, 050, 095"]
-        SAD["030 SAD modificado"] -->|"Impacta 5 docs"| SAD_CASCADE["035, 040, 045, 090, 100"]
-        LLD["040 LLD modificado"] -->|"Impacta 6 docs<br/>+ WATERFALL-ESTIMATION"| LLD_CASCADE["045, 050, 060, 065,<br/>070, 090 + ⚡PERT"]
-        HLD["035 HLD modificado"] -->|"Impacta + ⚡ROM"| HLD_CASCADE["040, 090 + ⚡WATERFALL-ESTIMATION<br/>UPSTREAM/DISCOVERY"]
+    subgraph IMPACTO_MEDIO["🟡 Impacto MÉDIO — Regenera 4-9 docs"]
+        SAD["030 SAD modificado"] -->|"Impacta 8+ docs"| SAD_CASCADE["035, 040, 041-044, 045, 086, 087, 090, 100"]
+        LLD["040 LLD modificado"] -->|"Impacta + ⚡PERT"| LLD_CASCADE["041-044, 045, 050, 060, 062,<br/>065, 070, 086, 090 + ⚡WATERFALL-ESTIMATION"]
+        EAP["060 EAP modificado"] -->|"Impacta 5+ docs<br/>+ WATERFALL-ESTIMATION"| EAP_CASCADE["062, 065, 070, 085, 088 + ⚡PERT"]
     end
 
     subgraph IMPACTO_BAIXO["🟢 Impacto BAIXO — Regenera 1-3 docs"]
-        EAP["060 EAP modificado"] -->|"Impacta 3 docs<br/>+ WATERFALL-ESTIMATION"| EAP_CASCADE["065, 070, 085 + ⚡PERT"]
-        EST_PLAN["045 EST-PLAN"] -->|"Impacta 6 docs"| EST_CASCADE["050, 055, 060, 065, 070, 105"]
+        PERSONAS["003 Personas modificado"] -->|"Impacta 6 docs"| PER_CASCADE["004, 005, 010, 016, 097"]
+        DOD["086 Padrões/DoD modificado"] -->|"Impacta 3 docs"| DOD_CASCADE["087, 088, 092"]
+        BACKLOG["088 Backlog modificado"] -->|"Impacta 2 docs"| BL_CASCADE["092, 093"]
     end
 
     style IMPACTO_ALTO fill:#ffcccc,stroke:#d63031
@@ -545,17 +721,19 @@ flowchart TD
     style IMPACTO_BAIXO fill:#e8f5e9,stroke:#2e7d32
 ```
 
+> **Nota:** buckets representativos — a tabela EFEITOS CASCATA completa (38 linhas) está no roadmap master.
+
 ---
 
-## 8. Integração com WATERFALL-ESTIMATION
+## 9. Integração com WATERFALL-ESTIMATION
 
 ```mermaid
 flowchart LR
     subgraph WATERFALL["WATERFALL Docs"]
         direction TB
-        W06["#6 HLD ✅"] --> GATE1{{Gate UPSTREAM}}
-        W07["#7 LLD ✅"] --> W11["#11 EAP ✅"]
-        W11 --> GATE2{{Gate DOWNSTREAM}}
+        W035["035 HLD ✅"] --> GATE1{{Gate UPSTREAM}}
+        W040["040 LLD ✅"] --> W060["060 EAP ✅"]
+        W060 --> GATE2{{Gate DOWNSTREAM}}
     end
 
     subgraph ESTIMATION["WATERFALL-ESTIMATION"]
@@ -566,19 +744,21 @@ flowchart LR
 
     subgraph WATERFALL_OUT["WATERFALL Docs — Consumidores"]
         direction TB
-        W12["#12 Cronograma/Gantt<br/>← CRONOGRAMA-CALCULADO"]
-        W13["#13 Orçamento<br/>← ORCAMENTO-CALCULADO"]
+        W065["065 Cronograma/Gantt<br/>← CRONOGRAMA-CALCULADO"]
+        W070["070 Orçamento<br/>← ORCAMENTO-CALCULADO"]
+        W062["062 Staffing<br/>← CRONOGRAMA-CALCULADO"]
     end
 
     GATE1 -->|"Opcional"| UP
-    GATE1 -->|"Pular"| W07
-    UP -->|"GO ✅"| W07
+    GATE1 -->|"Pular"| W040
+    UP -->|"GO ✅"| W040
     UP -->|"NO-GO ❌"| CANCEL["Projeto Cancelado"]
 
     GATE2 -->|"Opcional"| DOWN
-    GATE2 -->|"Pular"| W12
-    DOWN -->|"UPSTREAM_DOCS adicional"| W12
-    DOWN -->|"UPSTREAM_DOCS adicional"| W13
+    GATE2 -->|"Pular"| W062
+    DOWN -->|"UPSTREAM_DOCS adicional"| W062
+    DOWN -->|"UPSTREAM_DOCS adicional"| W065
+    DOWN -->|"UPSTREAM_DOCS adicional"| W070
 
     style WATERFALL fill:#e3f2fd,stroke:#0984e3
     style ESTIMATION fill:#fff3e0,stroke:#e65100
@@ -588,7 +768,7 @@ flowchart LR
 
 ---
 
-## 9. Diagrama de Estados — Visão Unificada
+## 10. Diagrama de Estados — Visão Unificada (6 Fases)
 
 ```mermaid
 stateDiagram-v2
@@ -604,86 +784,99 @@ stateDiagram-v2
         AuditarStatus --> Resumo
     }
 
-    Bootstrap --> Fase1_Inicializacao
+    Bootstrap --> Fase1_Negocio
 
-    state Fase1_Inicializacao {
+    state Fase1_Negocio {
         ["*"] --> Doc1_Charter
-        state Doc1_Charter {
-            ["*"] --> Gen1
-            Gen1 --> Gate1
-            Gate1 --> Fix1: FAIL
-            Fix1 --> Gate1
-            Gate1 --> Human1: PASS
-            Human1 --> Gen1: Novos inputs
-            Human1 --> Done1: Aprovado
-        }
-        Doc1_Charter --> ["*"]: COMPLIANCE
+        Doc1_Charter --> Doc2_Stakeholders: COMPLIANCE
+        Doc2_Stakeholders --> Doc3_Personas: COMPLIANCE
+        Doc3_Personas --> Doc4_Processos: COMPLIANCE
+        Doc4_Processos --> Doc5_BRD: COMPLIANCE
+        Doc5_BRD --> Doc10_FRD: COMPLIANCE
+        Doc10_FRD --> Doc15_RTM1: COMPLIANCE
+        Doc15_RTM1 --> ["*"]: COMPLIANCE
     }
 
-    Fase1_Inicializacao --> Fase2_Requisitos
+    Fase1_Negocio --> Fase2_Especificacao
 
-    state Fase2_Requisitos {
-        ["*"] --> Doc2_BRD
-        Doc2_BRD --> Doc3_SRS: COMPLIANCE
-        Doc3_SRS --> Doc4_RTM: COMPLIANCE
-        Doc4_RTM --> ["*"]: COMPLIANCE
-    }
-
-    Fase2_Requisitos --> Fase3_Design
-
-    state Fase3_Design {
-        ["*"] --> Doc5_SAD
-        Doc5_SAD --> Doc6_HLD: COMPLIANCE
-        Doc6_HLD --> GateUpstream: COMPLIANCE
-        GateUpstream --> Doc7_LLD: GO ou Pular
+    state Fase2_Especificacao {
+        ["*"] --> Doc16_Prototipos
+        Doc16_Prototipos --> Doc20_SRS: COMPLIANCE
+        Doc20_SRS --> Doc25_RTM2: COMPLIANCE
+        Doc25_RTM2 --> Doc30_SAD: COMPLIANCE
+        Doc30_SAD --> Doc35_HLD: COMPLIANCE
+        Doc35_HLD --> GateUpstream: COMPLIANCE
+        GateUpstream --> ["*"]: GO ou Pular
         GateUpstream --> Cancelado: NO-GO
-        Doc7_LLD --> ["*"]: COMPLIANCE
     }
 
-    Fase3_Design --> Fase4_Testes
+    Fase2_Especificacao --> Fase3_Engenharia
 
-    state Fase4_Testes {
-        ["*"] --> Doc8_TestPlan
-        Doc8_TestPlan --> Doc9_TestCases: COMPLIANCE
-        Doc9_TestCases --> Doc10_Qualidade: COMPLIANCE
-        Doc10_Qualidade --> ["*"]: COMPLIANCE
+    state Fase3_Engenharia {
+        ["*"] --> Doc40_LLD
+        Doc40_LLD --> Doc42_Dados: COMPLIANCE
+        Doc42_Dados --> Doc43_Seguranca: COMPLIANCE
+        Doc43_Seguranca --> Doc44_Infra: COMPLIANCE
+        Doc44_Infra --> Doc41_DevOps: COMPLIANCE
+        Doc41_DevOps --> Doc45_EstPlan: COMPLIANCE
+        Doc45_EstPlan --> Doc50_EstCases: COMPLIANCE
+        Doc50_EstCases --> Doc95_Estrutura: COMPLIANCE
+        Doc95_Estrutura --> Doc60_EAP: COMPLIANCE
+        Doc60_EAP --> GateDownstream: COMPLIANCE
+        GateDownstream --> ["*"]: Pular ou PERT
     }
 
-    Fase4_Testes --> Fase5_Planejamento
+    Fase3_Engenharia --> Fase4_Baseline
 
-    state Fase5_Planejamento {
-        ["*"] --> Doc11_EAP
-        Doc11_EAP --> GateDownstream: COMPLIANCE
-        GateDownstream --> Doc12_Cronograma: Pular ou PERT
-        Doc12_Cronograma --> Doc13_Orcamento: COMPLIANCE
-        Doc13_Orcamento --> Doc14_Comunicacao: COMPLIANCE
-        Doc13_Orcamento --> Doc15_Riscos: COMPLIANCE
-        Doc14_Comunicacao --> ["*"]: COMPLIANCE
-        Doc15_Riscos --> ["*"]: COMPLIANCE
+    state Fase4_Baseline {
+        ["*"] --> Doc62_Staffing
+        Doc62_Staffing --> Doc65_Cronograma: COMPLIANCE
+        Doc65_Cronograma --> Doc70_Orcamento: COMPLIANCE
+        Doc70_Orcamento --> Doc75_Comunicacao: COMPLIANCE
+        Doc75_Comunicacao --> Doc80_Riscos: COMPLIANCE
+        Doc80_Riscos --> Doc85_Mudancas: COMPLIANCE
+        Doc85_Mudancas --> Doc86_DoD: COMPLIANCE
+        Doc86_DoD --> Doc87_CICD: COMPLIANCE
+        Doc87_CICD --> Doc88_Backlog: COMPLIANCE
+        Doc88_Backlog --> Doc90_Deploy: COMPLIANCE
+        Doc90_Deploy --> M4: COMPLIANCE
+        M4 --> ["*"]: BASELINE LOCKED
     }
 
-    Fase5_Planejamento --> Fase6_Implantacao
+    Fase4_Baseline --> Fase5_Execucao
 
-    state Fase6_Implantacao {
-        ["*"] --> Doc16_Deploy
-        Doc16_Deploy --> Doc17_User: COMPLIANCE
-        Doc17_User --> Doc18_Ops: COMPLIANCE
-        Doc18_Ops --> Doc19_Aceite: COMPLIANCE
-        Doc19_Aceite --> Doc20_Licoes: COMPLIANCE
-        Doc20_Licoes --> ["*"]: COMPLIANCE
+    state Fase5_Execucao {
+        ["*"] --> Doc92_Kanban
+        Doc92_Kanban --> Doc93_Times
+        Doc93_Times --> Doc92_Kanban
+        Doc92_Kanban --> EsteiraConstrucao
+        EsteiraConstrucao --> Doc95_Evidencias
+        Doc95_Evidencias --> Doc97_ManuaisUser
+        Doc97_ManuaisUser --> Doc100_ManuaisOps
+        Doc100_ManuaisOps --> M5
+        M5 --> ["*"]: GO-LIVE
     }
 
-    Fase6_Implantacao --> GitWorkflow
+    Fase5_Execucao --> Fase6_Encerramento
+
+    state Fase6_Encerramento {
+        ["*"] --> Doc105_Aceite
+        Doc105_Aceite --> Doc110_Licoes: COMPLIANCE
+        Doc110_Licoes --> Doc115_Encerramento: COMPLIANCE
+        Doc115_Encerramento --> ["*"]: COMPLIANCE
+    }
+
+    Fase6_Encerramento --> GitWorkflow
     GitWorkflow --> ["*"]
 ```
 
 ---
 
-## 10. Git Workflow de Finalização
+## 11. Git Workflow de Finalização
 
 ```mermaid
 flowchart LR
-    ALL_COMPLIANCE(["22 docs COMPLIANCE ✅"]) --> F1["F.1: git add -A<br/>git commit"]
+    ALL_COMPLIANCE(["38 docs COMPLIANCE ✅"]) --> F1["F.1: git add -A<br/>git commit"]
 
     F1 --> F2["F.2: git push origin<br/>feature/PROJECT_ID_NAME-waterfall-docs"]
 
@@ -701,47 +894,49 @@ flowchart LR
 
 ---
 
-## 11. Tabela de Símbolos e Convenções
+## 12. Tabela de Símbolos e Convenções
 
 | Símbolo/Cor | Significado |
 |-------------|-------------|
-| 🟣 Roxo (`#6c5ce7`) | Bootstrap / Validação Humana / Git Workflow / Fase 1 (docs 001-002) / Fase 2 (docs 020-035) |
-| 🔵 Azul (`#0984e3`) | Fase 1: Requisitos de Negócio (docs 005-015) |
-| 🟢 Verde (`#00b894`) | Fase 3: Engenharia Detalhada e Qualidade / Compliance |
-| 🟠 Terracota (`#e17055`) | Fase 4: Planejamento e Baseline / Correções (FIX) |
-| 🟣 Lilás (`#a29bfe`) | Fase 5: Encerramento e Operação |
-| 🟡 Amarelo (`#fdcb6e`) | Gate / Decisões / Checkpoints |
+| 🟣 Roxo (`#6c5ce7`) | Bootstrap / Validação Humana / Git Workflow / Fase 2 (docs 016-035) / Fase 6 (105-115) |
+| 🔵 Azul (`#0984e3`) | Fase 1: Requisitos de Negócio (docs 001-015) |
+| 🟢 Verde (`#00b894`) | Fase 3: Engenharia Detalhada e Qualidade (docs 040-060) / Compliance |
+| 🟠 Terracota (`#e17055`) | Fase 4: Planejamento e Baseline (docs 062-090) / Correções (FIX) |
+| 🟣 Lilás (`#a29bfe`) | Fase 5: Execução e Construção (docs 092-100) |
+| 🟡 Amarelo (`#fdcb6e`) | Gate / Decisões / Checkpoints / Milestones (M4, M5) |
 | 🔴 Vermelho (`#d63031`) | Cancelado / Impacto ALTO |
 | 🟤 Laranja escuro (`#e65100`) | WATERFALL-ESTIMATION UPSTREAM / Impacto MÉDIO |
 | 🟢 Verde escuro (`#2e7d32`) | WATERFALL-ESTIMATION DOWNSTREAM / Impacto BAIXO |
-| 🔲 Linha tracejada | Loop de retrabalho (GATE→FIX→GATE) |
+| ⬜ Cinza tracejado | Sub-fase 2 — Janelas de Entrega (TBD/fora de escopo) |
+| 🔲 Linha tracejada | Loop de retrabalho (GATE→FIX→GATE) / ciclo de esteira |
 | 🔲 Linha sólida | Fluxo sequencial normal |
 | 🎯 | Gate de Estimativa |
 | ⚡ | Dispara WATERFALL-ESTIMATION |
 | 📥 | Inputs consumidos |
 | 📄 | Documento WATERFALL |
-| #N | Número do documento na sequência WATERFALL |
+| NNN | Número do documento na sequência WATERFALL (001-115) |
 
 ---
 
-## 12. Mapeamento de Cores por Fase
+## 13. Mapeamento de Cores por Fase
 
 | Fase | Cor | Docs |
 |------|-----|------|
-| **Fase 1: Iniciação e Requisitos de Negócio** | 🔵 Azul / 🟣 Roxo | 001, 002, 005, 010, 015 |
-| **Fase 2: Especificação de Sistema e Arquitetura** | 🟣 Roxo | 020, 025, 030, 035 |
-| **Fase 3: Engenharia Detalhada e Qualidade** | 🟢 Verde | 040, 045, 050, 055, 060 |
-| **Fase 4: Planejamento e Baseline** | 🟠 Terracota | 065, 070, 075, 080, 085, 090 |
-| **Fase 5: Encerramento e Operação** | 🟣 Lilás | 095, 100, 105, 110, 115 |
+| **Fase 1: Iniciação e Requisitos de Negócio** | 🔵 Azul | 001, 002, 003, 004, 005, 010, 015 |
+| **Fase 2: Especificação de Sistema e Arquitetura Macro** | 🟣 Roxo | 016, 020, 025, 030, 035 |
+| **Fase 3: Engenharia Detalhada e Qualidade** | 🟢 Verde | 040, 041, 042, 043, 044, 045, 050, 095 (estrutura), 060 |
+| **Fase 4: Planejamento e Baseline** | 🟠 Terracota | 062, 065, 070, 075, 080, 085, 086, 087, 088, 090 |
+| **Fase 5: Execução e Construção** | 🟣 Lilás | 092, 093, 095 (evidências), 097, 100 |
+| **Fase 6: Encerramento e Operação** | 🟣 Roxo | 105, 110, 115 |
 
 ---
 
 > **📁 Arquivos relacionados:**
-> - `PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md` — Documento fonte (v2.0)
+> - `PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md` — Documento fonte (6 fases, 38 docs)
+> - `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` — Roadmap dedicado da FASE 5 (Execução e Construção)
 > - `../PROMPT-ROADMAP-GENERATE-WATERFALL-ESTIMATION.md` — Roadmap companion de estimativa
 > - `../PROMPT-ROADMAP-GENERATE-SOURCING-FACTORY-BIDDING.md` — Roadmap de Sourcing (consome docs WATERFALL)
-> - `PROMPT-GENERATE-*.md` — 22 prompts geradores
-> - `PROMPT-GATE-*.md` — 22 prompts de auditoria
-> - `PROMPT-FIX-*.md` — 22 prompts de correção
-> - `PROMPT-GATE-*.md` — 20 prompts de auditoria
-> - `PROMPT-FIX-*.md` — 20 prompts de correção
+> - `../../../flowchart-WATERFALL.md` — Fluxo macro WATERFALL (visão de milestones e esteiras)
+> - `PROMPT-GENERATE-*.md` — 38 prompts geradores
+> - `PROMPT-GATE-*.md` — 38 prompts de auditoria
+> - `PROMPT-FIX-*.md` — 38 prompts de correção
