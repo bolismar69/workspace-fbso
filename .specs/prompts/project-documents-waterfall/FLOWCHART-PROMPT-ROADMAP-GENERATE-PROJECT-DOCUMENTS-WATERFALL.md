@@ -489,11 +489,11 @@ flowchart TD
     HITL["Checkpoint HITL:<br/>Deseja fornecer novas<br/>informações antes de gerar<br/>Documento N?"] --> GEN
 
     subgraph LOOP["Loop de Validação Soberana — Para CADA documento"]
-        GEN["STEP 2: GENERATE<br/>Invocar project-documents-waterfall/<br/>PROMPT-GENERATE-{DOC-SLUG}.md<br/>Parâmetros: DOC_PATH, PROJECT_ID_NAME,<br/>UPSTREAM_DOCS, SKILLS, + domínio"] --> GATE
+        GEN["STEP 2: GENERATE<br/>Invocar project-documents-waterfall/<br/>PROMPT-GENERATE-{NNN}-{DOC-SLUG}.md<br/>Parâmetros: DOC_PATH, PROJECT_ID_NAME,<br/>UPSTREAM_DOCS, SKILLS, + domínio"] --> GATE
 
-        GATE["STEP 3: GATE<br/>Invocar PROMPT-GATE-{DOC-SLUG}.md<br/>Ler DOC_PATH, aplicar CHECKLIST<br/>Status → Em revisão"] --> GATE_RESULT{Resultado<br/>da Auditoria?}
+        GATE["STEP 3: GATE<br/>Invocar PROMPT-GATE-{NNN}-{DOC-SLUG}.md<br/>Ler DOC_PATH, aplicar CHECKLIST<br/>Status → Em revisão"] --> GATE_RESULT{Resultado<br/>da Auditoria?}
 
-        GATE_RESULT -->|"FAIL<br/>VIOLATIONS[]"| FIX["STEP 4a: FIX CIRÚRGICO<br/>Invocar PROMPT-FIX-{DOC-SLUG}.md<br/>Editar APENAS seções em VIOLATIONS[]<br/>Manter status Em revisão"]
+        GATE_RESULT -->|"FAIL<br/>VIOLATIONS[]"| FIX["STEP 4a: FIX CIRÚRGICO<br/>Invocar PROMPT-FIX-{NNN}-{DOC-SLUG}.md<br/>Editar APENAS seções em VIOLATIONS[]<br/>Manter status Em revisão"]
         FIX --> GATE
 
         GATE_RESULT -->|"PASS"| HUMAN

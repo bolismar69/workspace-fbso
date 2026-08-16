@@ -1,5 +1,5 @@
 # PROMPT: ROADMAP DE EXECUÇÃO MACRO E GUIA DE ORQUESTRAÇÃO DE DOCUMENTOS — METODOLOGIA WATERFALL
-## Versão: 2.0 — Numeração por Intervalos, Dupla RTM (Negócio+Sistema), Gates Estruturais, Cabeçalhos Didáticos e Git Workflow Automatizado
+## Versão: 3.0 — 6 Fases, 38 Documentos, Numeração por Intervalos, Dupla RTM (Negócio+Sistema), Gates Estruturais, FASE 5 de Execução e Prompts Nomeados pelo Número do Artefato
 
 Atue como um Especialista em Gestão de Processos (BPM) e Arquiteto de Soluções Organizacionais, especializado em metodologia WATERFALL e Engenharia de Prompts.
 
@@ -333,7 +333,7 @@ SKILLS                = [lista de skills para este documento — vide tabela aba
 
 ### STEP 2: Invocar GENERATE
 
-Invocar `project-documents-waterfall/PROMPT-GENERATE-{DOC-SLUG}.md` passando **explicitamente** os parâmetros computados no STEP 1:
+Invocar `project-documents-waterfall/PROMPT-GENERATE-{NNN}-{DOC-SLUG}.md` passando **explicitamente** os parâmetros computados no STEP 1:
 - `DOC_PATH`, `PROJECT_ID_NAME`, `UPSTREAM_DOCS`, `EXTRA_INPUTS`, `SKILLS`
 - **+ variáveis de domínio** conforme a Matriz de Roteamento (apenas as marcadas com ✅ para este documento):
   - `ARCHITECTURE_GLOBAL` (coluna ARCH), `SECURITY_GLOBAL` (coluna SEC), `TECHNICAL_SOLUTIONS` (coluna SOL), `TEAM_SKILLS` + `TEAM_CAPACITY` (coluna TEAM), `PROJECT-STACK` (coluna STACK)
@@ -343,7 +343,7 @@ Invocar `project-documents-waterfall/PROMPT-GENERATE-{DOC-SLUG}.md` passando **e
 
 ### STEP 3: Invocar GATE
 
-Invocar `project-documents-waterfall/PROMPT-GATE-{DOC-SLUG}.md` passando **explicitamente**:
+Invocar `project-documents-waterfall/PROMPT-GATE-{NNN}-{DOC-SLUG}.md` passando **explicitamente**:
 - `DOC_PATH` (recebido do GENERATE)
 - `CHECKLIST` (definido no próprio prompt GATE)
 
@@ -354,7 +354,7 @@ GATE deve:
 
 ### STEP 4a: Se GATE retornar FAIL → Invocar FIX
 
-Invocar `project-documents-waterfall/PROMPT-FIX-{DOC-SLUG}.md` passando **explicitamente**:
+Invocar `project-documents-waterfall/PROMPT-FIX-{NNN}-{DOC-SLUG}.md` passando **explicitamente**:
 - `DOC_PATH` (mesmo arquivo)
 - `VIOLATIONS[]` (lista exata de não-conformidades do GATE)
 
@@ -659,19 +659,19 @@ git branch -d ${WORK_BRANCH}
 
 ```
 .specs/prompts/
-├── PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md   ← ESTE ORQUESTRADOR (v2.0)
+├── PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md   ← ESTE ORQUESTRADOR (v3.0)
 │
 └── project-documents-waterfall/
-    ├── PROMPT-GENERATE-PROJECT-CHARTER.md
-    ├── PROMPT-GATE-PROJECT-CHARTER.md
-    ├── PROMPT-FIX-PROJECT-CHARTER.md
-    ├── PROMPT-GENERATE-BRD.md
-    ├── PROMPT-GATE-BRD.md
-    ├── PROMPT-FIX-BRD.md
-    ├── ... (total de 115 prompts: 38 GENERATE + 38 GATE + 38 FIX + 1 FLOWCHART)
-    └── PROMPT-FIX-TERMO-ENCERRAMENTO-PROJETO.md
+    ├── PROMPT-GENERATE-001-PROJECT-CHARTER.md
+    ├── PROMPT-GATE-001-PROJECT-CHARTER.md
+    ├── PROMPT-FIX-001-PROJECT-CHARTER.md
+    ├── PROMPT-GENERATE-005-BRD.md
+    ├── PROMPT-GATE-005-BRD.md
+    ├── PROMPT-FIX-005-BRD.md
+    ├── ... (total de 115 prompts: 38 GENERATE + 38 GATE + 38 FIX + 1 FLOWCHART — todos com o número do artefato no nome)
+    └── PROMPT-FIX-115-TERMO-ENCERRAMENTO-PROJETO.md
 ```
 
 ---
 
-🤖 *Roadmap gerado pelo Waterfall Orchestrator v2.0. Skills: draft-project-charter, senior-pm, brainstorming.*
+🤖 *Roadmap gerado pelo Waterfall Orchestrator v3.0. Skills: draft-project-charter, senior-pm, brainstorming.*
