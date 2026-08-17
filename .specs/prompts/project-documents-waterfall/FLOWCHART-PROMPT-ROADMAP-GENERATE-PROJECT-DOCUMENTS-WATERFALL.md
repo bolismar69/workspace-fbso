@@ -1,14 +1,14 @@
 # FLOWCHART: ROADMAP DE DOCUMENTOS WATERFALL
 
-## Versão: 3.0 — Visualização Gráfica das 6 Fases, 38 Documentos, Dupla RTM e Gates Estruturais
+## Versão: 3.1 — Visualização Gráfica das 6 Fases, 39 Documentos, Dupla RTM, Gates Estruturais e Janelas de Entrega (096)
 
-> **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md` (6 fases, 38 documentos)
+> **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md` (6 fases, 39 documentos)
 >
-> Este documento complementa o roadmap textual com diagramas Mermaid que visualizam o fluxo de execução das **6 fases WATERFALL**, os **38 documentos**, o mecanismo de orquestração Generate→Gate→Fix, a dupla RTM (Negócio + Sistema), a FASE 5 de EXECUÇÃO E CONSTRUÇÃO (roadmap dedicado) e a integração com WATERFALL-ESTIMATION.
+> Este documento complementa o roadmap textual com diagramas Mermaid que visualizam o fluxo de execução das **6 fases WATERFALL**, os **39 documentos**, o mecanismo de orquestração Generate→Gate→Fix, a dupla RTM (Negócio + Sistema), a FASE 5 de EXECUÇÃO E CONSTRUÇÃO (roadmap dedicado) e a integração com WATERFALL-ESTIMATION.
 
 ---
 
-## 1. Visão Macro — 6 Fases WATERFALL (38 Documentos)
+## 1. Visão Macro — 6 Fases WATERFALL (39 Documentos)
 
 ```mermaid
 flowchart TB
@@ -86,7 +86,7 @@ flowchart TB
         D092["092: BACKLOG-KANBAN<br/>CRs Negócio/Técnico (085)<br/>Status · FILA-NN"] --> D093["093: GESTAO-TIMES<br/>Capacidade · IMP-NN"]
         D093 --> D092
         D092 --> ESTEIRA_DEV["Esteira de Construção por ciclo FILA-NN<br/>(sprint-artefacts + sprint-tecnhnical-implementation)"]
-        JANELAS["2. Janelas de Entrega<br/>TBD / FORA DE ESCOPO"]
+        JANELAS["2. Janelas de Entrega<br/>096-DEFINICAO-JANELAS-ENTREGA<br/>+ Bloco F (TECHLEAD v7.0)"]
         ESTEIRA_DEV -.->|"roda por ciclo FILA-NN"| JANELAS
         ESTEIRA_DEV --> D095F["095: RELATORIO-QUALIDADE<br/>(evidências por ciclo)"]
         D095F --> D097["097: MANUAIS-USUARIO"]
@@ -189,7 +189,7 @@ flowchart TD
     end
 
     subgraph PASSO_05["Passo 0.6-0.7 — Estrutura e Status"]
-        F0_6["mkdir -p PROJECT_COMPLETE_PATH_NAME"] --> F0_7["Verificar existência e status<br/>COMPLIANCE dos 38 documentos"]
+        F0_6["mkdir -p PROJECT_COMPLETE_PATH_NAME"] --> F0_7["Verificar existência e status<br/>COMPLIANCE dos 39 documentos"]
         F0_7 --> F0_7_DEC{Status?}
         F0_7_DEC -->|"Todos ❌"| F0_8A["Iniciar Fase 1, Doc #1"]
         F0_7_DEC -->|"Parcial"| F0_8B["Iniciar do primeiro doc<br/>sem COMPLIANCE"]
@@ -429,7 +429,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    M4_IN(("🚩 M4: PROJECT BASELINE LOCKED<br/>38 docs F1-F4 em COMPLIANCE")) --> SF1
+    M4_IN(("🚩 M4: PROJECT BASELINE LOCKED<br/>39 docs F1-F4 em COMPLIANCE")) --> SF1
 
     subgraph SF1["Sub-fase 1: GESTÃO DIÁRIA E OPERACIONAL"]
         direction LR
@@ -439,7 +439,7 @@ flowchart TD
 
     SF1 --> SF2
 
-    subgraph SF2["Sub-fase 2: JANELAS DE ENTREGA — TBD/FORA DE ESCOPO"]
+    subgraph SF2["Sub-fase 2: JANELAS DE ENTREGA — 096 + Bloco F (TECHLEAD)"]
         JANELAS["DEV → QA → UAT → DEPLOY<br/>estrutura preservada no flowchart-WATERFALL.md<br/>solução NÃO definida nesta revisão"]
     end
 
@@ -721,7 +721,7 @@ flowchart TD
     style IMPACTO_BAIXO fill:#e8f5e9,stroke:#2e7d32
 ```
 
-> **Nota:** buckets representativos — a tabela EFEITOS CASCATA completa (38 linhas) está no roadmap master.
+> **Nota:** buckets representativos — a tabela EFEITOS CASCATA completa (39 linhas) está no roadmap master.
 
 ---
 
@@ -876,7 +876,7 @@ stateDiagram-v2
 
 ```mermaid
 flowchart LR
-    ALL_COMPLIANCE(["38 docs COMPLIANCE ✅"]) --> F1["F.1: git add -A<br/>git commit"]
+    ALL_COMPLIANCE(["39 docs COMPLIANCE ✅"]) --> F1["F.1: git add -A<br/>git commit"]
 
     F1 --> F2["F.2: git push origin<br/>feature/PROJECT_ID_NAME-waterfall-docs"]
 
@@ -907,7 +907,7 @@ flowchart LR
 | 🔴 Vermelho (`#d63031`) | Cancelado / Impacto ALTO |
 | 🟤 Laranja escuro (`#e65100`) | WATERFALL-ESTIMATION UPSTREAM / Impacto MÉDIO |
 | 🟢 Verde escuro (`#2e7d32`) | WATERFALL-ESTIMATION DOWNSTREAM / Impacto BAIXO |
-| ⬜ Cinza tracejado | Sub-fase 2 — Janelas de Entrega (TBD/fora de escopo) |
+| ⬜ Cinza tracejado | Sub-fase 2 — Janelas de Entrega (definidas no 096; orquestradas pelo Bloco F do TECHLEAD) |
 | 🔲 Linha tracejada | Loop de retrabalho (GATE→FIX→GATE) / ciclo de esteira |
 | 🔲 Linha sólida | Fluxo sequencial normal |
 | 🎯 | Gate de Estimativa |
@@ -932,7 +932,7 @@ flowchart LR
 ---
 
 > **📁 Arquivos relacionados:**
-> - `PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md` — Documento fonte (6 fases, 38 docs)
+> - `PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md` — Documento fonte (6 fases, 39 docs)
 > - `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` — Roadmap dedicado da FASE 5 (Execução e Construção)
 > - `../PROMPT-ROADMAP-GENERATE-WATERFALL-ESTIMATION.md` — Roadmap companion de estimativa
 > - `../PROMPT-ROADMAP-GENERATE-SOURCING-FACTORY-BIDDING.md` — Roadmap de Sourcing (consome docs WATERFALL)

@@ -150,7 +150,7 @@ flowchart TB
             092-KANBAN-BACKLOG --> 093-GESTAO-TIMES --> 092-KANBAN-BACKLOG
         end
 
-        subgraph JANELAS-EXECUCAO["2. Janelas de Entrega (Ciclos/Sprints) — TBD/FORA DE ESCOPO"]
+        subgraph JANELAS-EXECUCAO["2. Janelas de Entrega (DEV → QA → UAT → DEPLOY por FILA-NN)"]
             direction TB
             JANELA-DEV["Janela de Desenvolvimento (DEV)\n(Code, Unit Tests, Code Review)"]
             JANELA-QA["Janela de Testes (QA)\n(Testes Funcionais, Carga e Pentest)"]
@@ -162,8 +162,8 @@ flowchart TB
             JANELA-UAT --> JANELA-DEPLOY
             JANELA-DEPLOY --> JANELA-DEV
         end
-        %% TBD: a sub-fase 2 (Janelas de Entrega) está FORA DE ESCOPO nesta revisão (evolução aprovada em 14/08/2026).
-        %% A esteira da FASE 5 executa por ciclo de entrega (FILA-NN do 092) sem depender da definição das janelas.
+        %% Janelas definidas no 096-DEFINICAO-JANELAS-ENTREGA (doc WATERFALL) e orquestradas pelo TECHLEAD (Bloco F, PROJECT-TECHNICAL-DEFINITIONS v7.0).
+        %% Aceite por entrega: DE-ACORDO/APROVAÇÃO na UAT; o 105-TERMO-ACEITE permanece aceite final (FASE 6).
 
         subgraph ARTEFATOS-SUPORTE["3. Documentação de Suporte e Evidências"]
             %% NOTA: 095-RELATORIO-QUALIDADE tem a estrutura criada na F3 e é alimentado com evidências na F5 (via 092/093).

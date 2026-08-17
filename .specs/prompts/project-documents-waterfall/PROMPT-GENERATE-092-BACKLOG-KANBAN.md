@@ -64,7 +64,7 @@ O **092-Backlog & Kanban** é o instrumento de gestão diária da FASE 5: opera 
 
 ### Limites
 
-- NÃO define as Janelas de Entrega (DEV/QA/UAT/DEPLOY) — sub-fase 2 da FASE 5, fora de escopo nesta revisão
+- NÃO define as Janelas de Entrega (DEV/QA/UAT/DEPLOY) — definidas no 096-DEFINICAO-JANELAS-ENTREGA e orquestradas pelo TECHLEAD (Bloco F)
 - NÃO altera a baseline do 088 sem CR aprovada — o 088 permanece o registro congelado em M4; mudanças são registradas aqui com rastreabilidade
 
 ### Conexão com o Pipeline

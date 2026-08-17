@@ -1,9 +1,9 @@
 # PROMPT: ROADMAP DE EXECUÇÃO MACRO E GUIA DE ORQUESTRAÇÃO DE DOCUMENTOS — METODOLOGIA WATERFALL
-## Versão: 3.0 — 6 Fases, 38 Documentos, Numeração por Intervalos, Dupla RTM (Negócio+Sistema), Gates Estruturais, FASE 5 de Execução e Prompts Nomeados pelo Número do Artefato
+## Versão: 3.1 — 6 Fases, 39 Documentos, Numeração por Intervalos, Dupla RTM (Negócio+Sistema), Gates Estruturais, FASE 5 de Execução com Janelas de Entrega (096) e Prompts Nomeados pelo Número do Artefato
 
 Atue como um Especialista em Gestão de Processos (BPM) e Arquiteto de Soluções Organizacionais, especializado em metodologia WATERFALL e Engenharia de Prompts.
 
-Preciso que você execute um roadmap de criação, revisão, evolução e validação de 38 documentos base de um projeto, seguindo estritamente a metodologia WATERFALL em 6 fases sequenciais com 2 gates estruturais de estimativa.
+Preciso que você execute um roadmap de criação, revisão, evolução e validação de 39 documentos base de um projeto, seguindo estritamente a metodologia WATERFALL em 6 fases sequenciais com 2 gates estruturais de estimativa.
 
 Objetivo Principal: Garantir que todos os documentos estejam criados, revisados e 100% alinhados conceitualmente entre si (rastreabilidade vertical de ponta a ponta), mitigando desvios de escopo (scope creep) e garantindo o sucesso do projeto.
 
@@ -14,7 +14,7 @@ Regra Crítica de Execução (Gating Rule): O processo é estritamente sequencia
 ## REGRAS DE OURO (7 REGRAS DE GATING — NÃO NEGOCIÁVEIS)
 
 1. **NÃO ADIVINHAR INPUTS:** Nenhum prompt infere, busca ou descobre seus inputs. Todo parâmetro é passado explicitamente por este orquestrador.
-2. **TODO GENERATE TEM GATE+FIX:** Cada um dos 38 documentos tem exatamente um trio GENERATE, GATE e FIX.
+2. **TODO GENERATE TEM GATE+FIX:** Cada um dos 39 documentos tem exatamente um trio GENERATE, GATE e FIX.
 3. **FLUXO DE DADOS EXPLÍCITO:** `DOC_PATH` flui GENERATE→GATE→FIX. `VIOLATIONS[]` flui GATE→FIX. Sempre como parâmetros nomeados.
 4. **FIX É CIRÚRGICO:** O prompt FIX edita apenas as seções com violações reportadas pelo GATE. Nunca regenera ou recria o documento.
 5. **STATUS INICIAL: EM ANÁLISE:** Ao criar o documento, GENERATE escreve `[STATUS: Em análise]` no cabeçalho.
@@ -131,7 +131,7 @@ mkdir -p {PROJECT_COMPLETE_PATH_NAME}
 
 #### Passo 0.7 — Verificar Status dos Arquivos
 
-Verificar existência e status de cada um dos 38 documentos. Para arquivos existentes, ler o cabeçalho e buscar por `[STATUS: COMPLIANCE]`.
+Verificar existência e status de cada um dos 39 documentos. Para arquivos existentes, ler o cabeçalho e buscar por `[STATUS: COMPLIANCE]`.
 
 | # | Arquivo | Status |
 |---|---|---|
@@ -168,6 +168,7 @@ Verificar existência e status de cada um dos 38 documentos. Para arquivos exist
 | 090 | `090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 092 | `092-BACKLOG-KANBAN-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 093 | `093-GESTAO-TIMES-{PROJECT_ID_NAME}.md` | ✅/❌ |
+| 096 | `096-DEFINICAO-JANELAS-ENTREGA-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 097 | `097-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 100 | `100-MANUAIS-OPERACIONAIS-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 105 | `105-TERMO-ACEITE-{PROJECT_ID_NAME}.md` | ✅/❌ |
@@ -187,13 +188,13 @@ Verificar existência e status de cada um dos 38 documentos. Para arquivos exist
 > **🛠️ Stack Validada:** `{PROJECT-STACK}`
 > **👥 Time:** `{PROJECT-TEAM-CAPACITY}`
 > **📝 Próxima Fase:** Fase X, Documento {NNN} — {NOME}
-> **📄 Artefatos Existentes:** X de 38 ({Y} com COMPLIANCE)
+> **📄 Artefatos Existentes:** X de 39 ({Y} com COMPLIANCE)
 >
 > Iniciando a Fase X...
 
 ---
 
-## FASES DO ROADMAP WATERFALL (6 Fases, 38 Documentos)
+## FASES DO ROADMAP WATERFALL (6 Fases, 39 Documentos)
 
 ### Convenção de Nomes de Arquivo
 
@@ -293,6 +294,7 @@ O PROJECT-CHARTER é o **start do projeto** — no momento de sua criação, mui
 | 092 | BACKLOG-KANBAN 🆕 | `092-BACKLOG-KANBAN-{PROJECT_ID_NAME}.md` | Gestão de tasks, Change-Requests (Negócio/Técnico via 085), status e Filas/Ciclos |
 | 093 | GESTAO-TIMES 🆕 | `093-GESTAO-TIMES-{PROJECT_ID_NAME}.md` | Capacidade, impedimentos e alocação (contra o 062) |
 | 095 | RELATORIO-QUALIDADE | `095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md` | Estrutura criada na F3; evidências alimentadas a cada ciclo |
+| 096 | DEFINICAO-JANELAS-ENTREGA 🆕 | `096-DEFINICAO-JANELAS-ENTREGA-{PROJECT_ID_NAME}.md` | Definição estrutural das janelas DEV/QA/UAT/DEPLOY (consumida pelo Bloco F do TECHLEAD) |
 | 097 | MANUAIS-USUARIO | `097-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md` | Treinamento e negócio (upstream 003/010/016) |
 | 100 | MANUAIS-OPERACIONAIS | `100-MANUAIS-OPERACIONAIS-{PROJECT_ID_NAME}.md` | Runbooks e sustentação (upstream 041/044/087/090) |
 
@@ -398,6 +400,7 @@ Apresentar o documento e fazer 4 perguntas:
 | 045 | EST-PLAN | `test-strategy-design`, `qa-test-planner` | ✅ |
 | 050 | EST-CASES | `test-case-creation`, `acceptance-criteria` | ✅ |
 | 095 | RELATORIO-QUALIDADE | `quality-documentation-manager`, `qa` | ✅ |
+| 096 | DEFINICAO-JANELAS-ENTREGA 🆕 | `delivery-manager`, `senior-pm` | ✅ |
 | 060 | EAP-WBS | `decomposition-planning-roadmap`, `project-estimation` | ✅ |
 | 065 | CRONOGRAMA-GANTT | `roadmap-planning`, `project-estimation` | ✅ |
 | 070 | ORCAMENTO | `project-estimation` | ✅ |
@@ -432,6 +435,7 @@ Cada linha mostra quais variáveis de domínio o GENERATE daquele documento deve
 | 045 | EST-PLAN | — | ✅ | ✅ | — | ✅ | Estratégia de testes — requer stack (ferramentas), SEC (testes segurança) e soluções |
 | 050 | EST-CASES | — | — | ✅ | — | — | Casos de teste por feature/solução — alimentados pelo FRD |
 | 095 | RELATORIO-QUALIDADE | — | — | — | — | — | Métricas de qualidade — sem dependência técnica direta |
+| 096 | DEFINICAO-JANELAS-ENTREGA 🆕 | — | — | — | — | — | Definição estrutural das janelas — sem dependência técnica direta |
 | 060 | EAP-WBS | — | — | — | ✅ | — | Decomposição de trabalho por perfil de time |
 | 065 | CRONOGRAMA-GANTT | — | — | — | ✅ | — | Alocação de recursos e durações por capacidade |
 | 070 | ORCAMENTO | — | — | — | ✅ | ✅ | Custo por recurso (RH × stack) |
@@ -495,6 +499,7 @@ Cada GENERATE recebe em `UPSTREAM_DOCS` a lista de documentos anteriores que já
 | 090 | STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN | `[001-PROJECT-CHARTER, 030-SAD, 035-HLD, 040-LLD]` |
 | 092 | BACKLOG-KANBAN 🆕 | `[088-PRODUCT-BACKLOG-LIST, 085-PLANO-GESTAO-MUDANCAS, 062-STAFFING-PLAN, 086-PADROES-CODIGO-DOD, 087-PLANO-CI-CD-AMBIENTES, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN]` |
 | 093 | GESTAO-TIMES 🆕 | `[062-STAFFING-PLAN, 065-CRONOGRAMA-GANTT, 070-ORCAMENTO, 092-BACKLOG-KANBAN]` |
+| 096 | DEFINICAO-JANELAS-ENTREGA 🆕 | `[092-BACKLOG-KANBAN, 085-PLANO-GESTAO-MUDANCAS, 045-EST-PLAN, 050-EST-CASES, 095-RELATORIO-QUALIDADE, 105-TERMO-ACEITE, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 087-PLANO-CI-CD-AMBIENTES]` |
 | 097 | MANUAIS-USUARIO | `[001-PROJECT-CHARTER, 003-PERSONAS-JORNADAS, 010-FRD, 016-PROTOTIPOS-UX-UI, 020-SRS]` |
 | 100 | MANUAIS-OPERACIONAIS | `[001-PROJECT-CHARTER, 030-SAD, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN]` |
 | 105 | TERMO-ACEITE | `[001-PROJECT-CHARTER, 045-EST-PLAN, 095-RELATORIO-QUALIDADE]` |
@@ -535,6 +540,7 @@ Quando um documento já em COMPLIANCE é modificado, todos os documentos downstr
 | 088-PRODUCT-BACKLOG-LIST 🆕 | 092-BACKLOG-KANBAN, 093-GESTAO-TIMES e seus dependentes transitivos |
 | 092-BACKLOG-KANBAN 🆕 | 093-GESTAO-TIMES, 095-Relatório (evidências de andamento) e seus dependentes transitivos |
 | 093-GESTAO-TIMES 🆕 | 092-BACKLOG-KANBAN (realocação de filas), 095-Relatório (evidências de execução) e seus dependentes transitivos |
+| 096-DEFINICAO-JANELAS-ENTREGA 🆕 | Bloco F do TECHLEAD (orquestração das janelas), pacote 595 (coluna Janela/Aceite) e seus dependentes transitivos |
 | **WATERFALL-ESTIMATION F1 (UPSTREAM-ROM)** 🆕 | F2 (Scope Snapshot), F3 (Governance Report) |
 | **WATERFALL-ESTIMATION F4 (DOWNSTREAM-PERT)** 🆕 | F5 (Scope Snapshot), F6 (Cronograma), F7 (Orçamento), **065-Cronograma**, **070-Orçamento** |
 | **CRONOGRAMA-CALCULADO.md** 🆕 | 065-Cronograma, 070-Orçamento (via dependência do Orçamento no Cronograma) |
@@ -605,7 +611,7 @@ WATERFALL Docs (Fase 3)
 
 ## FINALIZAÇÃO — GIT WORKFLOW
 
-Quando os 38 documentos estiverem em COMPLIANCE e o humano confirmar a conclusão, executar o pipeline Git abaixo. O nome da branch de trabalho é derivado automaticamente:
+Quando os 39 documentos estiverem em COMPLIANCE e o humano confirmar a conclusão, executar o pipeline Git abaixo. O nome da branch de trabalho é derivado automaticamente:
 
 ```
 WORK_BRANCH = "feature/" + PROJECT_ID_NAME + "-waterfall-docs"
@@ -621,7 +627,7 @@ Exemplo: `feature/PRJ-FIN-2026-0003-SAAS-FBSO-ORG-waterfall-docs`
 git add -A
 git commit -m "docs: documentação WATERFALL completa — ${PROJECT_ID_NAME}
 
-- 38 documentos WATERFALL gerados e validados
+- 39 documentos WATERFALL gerados e validados
 - Status: COMPLIANCE em todos os documentos
 - Gerado pelo Waterfall Orchestrator v2.0
 - Branch: ${WORK_BRANCH}
@@ -642,7 +648,7 @@ Se falhar (branch remota existe): perguntar sobre `--force`.
 ### Passo F.3 — Criar e Mergear PR
 
 ```bash
-gh pr create --base main --head ${WORK_BRANCH} --title "docs: documentação WATERFALL — ${PROJECT_ID_NAME}" --body "Documentação WATERFALL completa para ${PROJECT_ID_NAME}. 38 documentos validados."
+gh pr create --base main --head ${WORK_BRANCH} --title "docs: documentação WATERFALL — ${PROJECT_ID_NAME}" --body "Documentação WATERFALL completa para ${PROJECT_ID_NAME}. 39 documentos validados."
 gh pr merge --merge --delete-branch
 ```
 
@@ -670,7 +676,7 @@ git branch -d ${WORK_BRANCH}
     ├── PROMPT-GENERATE-005-BRD.md
     ├── PROMPT-GATE-005-BRD.md
     ├── PROMPT-FIX-005-BRD.md
-    ├── ... (total de 115 prompts: 38 GENERATE + 38 GATE + 38 FIX + 1 FLOWCHART — todos com o número do artefato no nome)
+    ├── ... (total de 118 prompts: 39 GENERATE + 39 GATE + 39 FIX + 1 FLOWCHART — todos com o número do artefato no nome)
     └── PROMPT-FIX-115-TERMO-ENCERRAMENTO-PROJETO.md
 ```
 

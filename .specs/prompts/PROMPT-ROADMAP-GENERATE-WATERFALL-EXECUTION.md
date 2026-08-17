@@ -1,5 +1,5 @@
 # PROMPT: ROADMAP DE EXECUÇÃO E CONSTRUÇÃO — FASE 5 DO WATERFALL (WATERFALL-EXECUTION)
-## Versão: 2.0 — WATERFALL Orchestrator v3.0 (6 Fases, 38 Documentos) — Delegação da Construção ao TECHLEAD (PROJECT-TECHNICAL-DEFINITIONS v6.0, modo waterfall-discovery)
+## Versão: 2.1 — WATERFALL Orchestrator v3.1 (6 Fases, 39 Documentos) — Delegação da Construção ao TECHLEAD (PROJECT-TECHNICAL-DEFINITIONS v7.0, modo waterfall-discovery) + Janelas de Entrega (096 + Bloco F)
 
 Atue como um Arquiteto de Soluções Organizacionais e Gestor de Execução, especializado em metodologia WATERFALL, engenharia de prompts e orquestração de esteiras de desenvolvimento.
 
@@ -78,9 +78,19 @@ O par 092 ↔ 093 roda em loop contínuo durante toda a FASE 5 (como no flowchar
 
 **Modo atualização do 092 (consumo do pacote 595):** na recepção TECHLEAD→PM/PO (sub-fase 3.3), o GENERATE-092 roda em modo atualização com `EXTRA_INPUTS` = `595-RETURN-PACKAGE-{FILA-NN}.md` — aplica status propostos e CRs Técnicas, mantendo `[STATUS: Em revisão]` até o GATE-092 e a validação humana.
 
-## Sub-fase 2 — Janelas de Entrega (Ciclos/Sprints)
+## Sub-fase 2 — Janelas de Entrega (DEV → QA → UAT → DEPLOY)
 
-> 🚧 **TBD — FORA DE ESCOPO nesta revisão.** A estrutura das janelas (DEV → QA → UAT → DEPLOY) permanece como no `flowchart-WATERFALL.md`, mas NENHUMA solução de prompt/orquestração foi definida. A esteira da sub-fase 3 executa por **ciclo de entrega** (`FILA-NN` do 092), sem depender da definição das janelas.
+As janelas são **definidas no `096-DEFINICAO-JANELAS-ENTREGA`** (documento WATERFALL, trio em `project-documents-waterfall/`) e **orquestradas pelo TECHLEAD no Bloco F do PROJECT-TECHNICAL-DEFINITIONS v7.0** — o PM/PO não executa janelas.
+
+Loop por ciclo `FILA-NN`: `DEV (Bloco E) → gate → QA (050 + QA-REVISOR + 095 GO/NO-GO) → UAT (DE-ACORDO/APROVAÇÃO por entrega — Key Users + PM/PO) → DEPLOY (090 + 087, GMUD) → pacote 595 → PM/PO aplica no 092 → próxima FILA-NN`.
+
+**Quem propõe/aceita por janela:**
+- DEV: TECHLEAD executa e propõe a conclusão; aceite = GATE do ciclo + revisor humano (086)
+- QA: TECHLEAD executa e propõe; PM/PO aceita via 095 (GO/NO-GO)
+- UAT: PM/PO + Key Users executam; aceite = registro de DE-ACORDO/APROVAÇÃO por entrega (alimenta o 595 e pode ser refletido no 580)
+- DEPLOY: TECHLEAD executa (090/087); PM/PO aplica o go/no-go GMUD
+
+> **NOTA:** o 105-TERMO-ACEITE permanece como aceite FINAL do projeto (FASE 6) — nunca gate por entrega. Tratativas de retorno (QA NO-GO → DEV; UAT divergência → 085; DEPLOY bloqueado → IMP-NN) conforme o 096.
 
 ## Sub-fase 3 — Contrato de Delegação ao TECHLEAD
 
@@ -97,7 +107,7 @@ A construção é executada pelo TECHLEAD via `PROMPT-ROADMAP-GENERATE-PROJECT-T
 
 ### 3.2 Execução no TECHLEAD (resumo — sem duplicar steps)
 
-O TECHLEAD executa o pipeline completo no roadmap dele: Fases migradas/validadas (F1–F19 no modo waterfall), **Bloco E** (contexto base + loop por ciclo com os prompts reusados de `sprint-artefacts/` e `sprint-tecnhnical-implementation/` — steps 0–6 como no Diagrama 2) e encerra cada ciclo com o **trio 595** (empacotamento do retorno). A tabela de steps vive SOMENTE no v6.0 (Bloco E).
+O TECHLEAD executa o pipeline completo no roadmap dele: Fases migradas/validadas (F1–F19 no modo waterfall), **Bloco E** (contexto base + loop por ciclo — janela DEV) e **Bloco F** (janelas QA/UAT/DEPLOY), encerrando cada ciclo com o **trio 595** (empacotamento do retorno). A tabela de steps vive SOMENTE no v7.0 (Bloco E).
 
 ### 3.3 Recepção TECHLEAD → PM/PO
 
@@ -150,4 +160,4 @@ Se a EAP mudar via 085 (mudança de escopo aprovada), o orquestrador alerta o hu
 
 ---
 
-🤖 *Roadmap gerado pelo Waterfall Orchestrator v3.0. v2.0 (16/08/2026): construção delegada ao TECHLEAD (PROJECT-TECHNICAL-DEFINITIONS v6.0, modo waterfall-discovery) — contrato PM/PO ↔ TECHLEAD com trio 595. Sub-fase 2 (Janelas de Entrega) permanece TBD/fora de escopo.*
+🤖 *Roadmap gerado pelo Waterfall Orchestrator v3.1. v2.1 (17/08/2026): Janelas de Entrega definidas no 096 e orquestradas pelo TECHLEAD (Bloco F, v7.0) — aceite por entrega via DE-ACORDO; 105 permanece aceite final (FASE 6).*

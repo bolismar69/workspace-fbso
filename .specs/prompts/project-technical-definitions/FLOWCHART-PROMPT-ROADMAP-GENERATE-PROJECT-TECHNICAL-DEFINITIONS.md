@@ -1,6 +1,6 @@
 # FLOWCHART: ROADMAP DE DEFINIÇÕES TÉCNICAS DO PROJETO
 
-## Versão: 6.0 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção)
+## Versão: 7.0 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção) + Bloco F (Janelas de Entrega)
 
 > **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` v5.0
 >
@@ -65,9 +65,16 @@ flowchart TB
         E2 --> E3[595-TECHLEAD-RETURN-PACKAGE<br/>GENERATE → GATE → FIX]
     end
 
+    subgraph BLOCO_F["Bloco F: Janelas de Entrega (SOMENTE modo waterfall-discovery — consome o 096)"]
+        F1[DEV: Bloco E] --> F2[QA: 095 GO/NO-GO]
+        F2 --> F3[UAT: DE-ACORDO por entrega]
+        F3 --> F4[DEPLOY: 090 + 087 GMUD]
+    end
+
     GD -->|"modo waterfall-discovery"| BLOCO_E
+    BLOCO_E --> BLOCO_F
     GD --> HIST[📊 EXECUTION-HISTORY]
-    BLOCO_E -->|"entrega ao PM/PO"| PMPO([WATERFALL-EXECUTION v2.0<br/>recepção 3.3])
+    BLOCO_F -->|"entrega ao PM/PO"| PMPO([WATERFALL-EXECUTION v2.1<br/>recepção 3.3])
     HIST --> END([✅ Pipeline Completo])
 
     style F0 fill:#6c5ce7,color:#fff
@@ -95,13 +102,14 @@ flowchart TB
     style GB fill:#d63031,color:#fff
     style GC fill:#d63031,color:#fff
     style GD fill:#d63031,color:#fff
-    style BLOCO_0 fill:#e3f2fd,stroke:#0984e3
-    style BLOCO_A fill:#e3f2fd,stroke:#0984e3
-    style BLOCO_B fill:#fff3e0,stroke:#e17055
-    style BLOCO_C fill:#e8f5e9,stroke:#00b894
-    style BLOCO_D fill:#f3e5f5,stroke:#6c5ce7
+    style BLOCO_0 fill:#e3f2fd,stroke:#0984e3,color:#000000
+    style BLOCO_A fill:#e3f2fd,stroke:#0984e3,color:#000000
+    style BLOCO_B fill:#fff3e0,stroke:#e17055,color:#000000
+    style BLOCO_C fill:#e8f5e9,stroke:#00b894,color:#000000
+    style BLOCO_D fill:#f3e5f5,stroke:#6c5ce7,color:#000000
     style HIST fill:#00b894,color:#fff
-    style BLOCO_E fill:#f3e5f5,stroke:#a29bfe
+    style BLOCO_E fill:#f3e5f5,stroke:#a29bfe,color:#000000
+    style BLOCO_F fill:#f3e5f5,stroke:#6c5ce7,color:#000000
     style PMPO fill:#a29bfe,color:#fff
 ```
 
@@ -129,38 +137,38 @@ flowchart TD
         F0_2_CONF -->|SIM| F0_3
     end
 
-    subgraph PASSO_03[Passo 0.3 — Criar Estrutura]
-        F0_3[mkdir -p TECHNICAL_DEFINITIONS_PATH] --> F0_4
+    subgraph PASSO_03["Passo 0.3 — Criar Estrutura"]
+        F0_3["mkdir -p TECHNICAL_DEFINITIONS_PATH"] --> F0_4
     end
 
-    subgraph PASSO_04[Passo 0.4 — Criar Template de Exceções]
-        F0_4[Criar template<br/>TEAM-CAPACITY-EXCEPTIONS.md]
+    subgraph PASSO_04["Passo 0.4 — Criar Template de Exceções"]
+        F0_4["Criar template<br/>TEAM-CAPACITY-EXCEPTIONS.md"]
     end
 
-    subgraph PASSO_05[Passo 0.5 — Auditar Artefatos + Detectar Modo]
-        F0_4 --> F0_5[Verificar existência e compliance<br/>de artefatos de definição] --> F0_5_DEC{Status dos<br/>artefatos?}
-        F0_5_DEC -->|Todos ❌| F0_6A[🆕 Projeto Novo<br/>→ Iniciar Fase 1]
-        F0_5_DEC -->|Alguns ✅| F0_6B[📋 Projeto em Andamento<br/>→ Iniciar da primeira fase pendente]
-        F0_5_DEC -->|Todos ✅ Compliance| F0_6C[✅ Projeto Completo<br/>→ Revisar / Evoluir / Encerrar]
-        F0_5 --> F0_5_MODE[Auditar sinais de modo:<br/>docs ágeis (project-documents/)<br/>vs WATERFALL (088 + 092 FILA-NN<br/>+ 010 + 060 COMPLIANCE)] --> F0_5_MODE_DEC{Modo proposto<br/>(decisão humana)}
-        F0_5_MODE_DEC -->|waterfall-discovery| F0_5_MODE_W[Bloco 0 reduzido +<br/>Blocos A-D migrados +<br/>Bloco E + 595]
-        F0_5_MODE_DEC -->|agile-discovery| F0_5_MODE_A[Pipeline atual<br/>(retrocompatível)]
+    subgraph PASSO_05["Passo 0.5 — Auditar Artefatos + Detectar Modo"]
+        F0_4 --> F0_5["Verificar existência e compliance<br/>de artefatos de definição"] --> F0_5_DEC{Status dos<br/>artefatos?}
+        F0_5_DEC -->|Todos ❌| F0_6A["🆕 Projeto Novo<br/>→ Iniciar Fase 1"]
+        F0_5_DEC -->|Alguns ✅| F0_6B["📋 Projeto em Andamento<br/>→ Iniciar da primeira fase pendente"]
+        F0_5_DEC -->|Todos ✅ Compliance| F0_6C["✅ Projeto Completo<br/>→ Revisar / Evoluir / Encerrar"]
+        F0_5 --> F0_5_MODE["Auditar sinais de modo:<br/>docs ágeis (project-documents/)<br/>vs WATERFALL (088 + 092 FILA-NN<br/>+ 010 + 060 COMPLIANCE)"] --> F0_5_MODE_DEC{"Modo proposto<br/>(decisão humana)"}
+        F0_5_MODE_DEC -->|waterfall-discovery| F0_5_MODE_W["Bloco 0 reduzido +<br/>Blocos A-D migrados +<br/>Bloco E + Bloco F + 595"]
+        F0_5_MODE_DEC -->|agile-discovery| F0_5_MODE_A["Pipeline atual<br/>(retrocompatível)"]
     end
 
-    subgraph PASSO_06[Passo 0.6 — Resumo]
-        F0_6A --> F0_6[Exibir resumo final<br/>com caminhos, status,<br/>próxima fase a executar]
+    subgraph PASSO_06["Passo 0.6 — Resumo"]
+        F0_6A --> F0_6["Exibir resumo final<br/>com caminhos, status,<br/>próxima fase a executar"]
         F0_6B --> F0_6
         F0_6C --> F0_6
     end
 
     F0_6 --> ORCH
 
-    style PASSO_01 fill:#dfe6e9,stroke:#6c5ce7
-    style PASSO_02 fill:#dfe6e9,stroke:#6c5ce7
-    style PASSO_03 fill:#dfe6e9,stroke:#6c5ce7
-    style PASSO_04 fill:#dfe6e9,stroke:#6c5ce7
-    style PASSO_05 fill:#dfe6e9,stroke:#6c5ce7
-    style PASSO_06 fill:#dfe6e9,stroke:#6c5ce7
+    style PASSO_01 fill:#dfe6e9,stroke:#6c5ce7,color:#000000
+    style PASSO_02 fill:#dfe6e9,stroke:#6c5ce7,color:#000000
+    style PASSO_03 fill:#dfe6e9,stroke:#6c5ce7,color:#000000
+    style PASSO_04 fill:#dfe6e9,stroke:#6c5ce7,color:#000000
+    style PASSO_05 fill:#dfe6e9,stroke:#6c5ce7,color:#000000
+    style PASSO_06 fill:#dfe6e9,stroke:#6c5ce7,color:#000000
 ```
 
 ---
@@ -198,11 +206,11 @@ flowchart TD
     style GATE fill:#fdcb6e,color:#333
     style FIX fill:#e17055,color:#fff
     style HUMAN_GATE fill:#6c5ce7,color:#fff
-    style P1 fill:#dfe6e9,stroke:#6c5ce7
-    style P2 fill:#dfe6e9,stroke:#6c5ce7
-    style P3 fill:#dfe6e9,stroke:#6c5ce7
+    style P1 fill:#dfe6e9,stroke:#6c5ce7,color:#000000
+    style P2 fill:#dfe6e9,stroke:#6c5ce7,color:#000000
+    style P3 fill:#dfe6e9,stroke:#6c5ce7,color:#000000
     style COMPLIANCE fill:#00b894,color:#fff
-    style LOOP fill:#fff3e0,stroke:#f39c12
+    style LOOP fill:#fff3e0,stroke:#f39c12,color:#000000
 ```
 
 ---
@@ -475,11 +483,11 @@ flowchart TD
 
     HIST --> END([✅ Pipeline Completo])
 
-    style BLOCO_0 fill:#e3f2fd,stroke:#0984e3
-    style BLOCO_A fill:#e3f2fd,stroke:#0984e3
-    style BLOCO_B fill:#fff3e0,stroke:#e17055
-    style BLOCO_C fill:#e8f5e9,stroke:#00b894
-    style BLOCO_D fill:#f3e5f5,stroke:#6c5ce7
+    style BLOCO_0 fill:#e3f2fd,stroke:#0984e3,color:#ffffff
+    style BLOCO_A fill:#e3f2fd,stroke:#0984e3,color:#ffffff
+    style BLOCO_B fill:#fff3e0,stroke:#e17055,color:#ffffff
+    style BLOCO_C fill:#e8f5e9,stroke:#00b894,color:#ffffff
+    style BLOCO_D fill:#f3e5f5,stroke:#6c5ce7,color:#ffffff
     style G0 fill:#d63031,color:#fff
     style GA fill:#d63031,color:#fff
     style GB fill:#d63031,color:#fff
@@ -536,9 +544,9 @@ flowchart TD
         HIST_DEC -->|NÃO| HIST_GEN
     end
 
-    style STANDARD fill:#e3f2fd,stroke:#0984e3
-    style SPECIAL_F19 fill:#fff3e0,stroke:#fdcb6e
-    style SPECIAL_HIST fill:#e8f5e9,stroke:#00b894
+    style STANDARD fill:#e3f2fd,stroke:#0984e3,color:#ffffff
+    style SPECIAL_F19 fill:#fff3e0,stroke:#fdcb6e,color:#ffffff
+    style SPECIAL_HIST fill:#e8f5e9,stroke:#00b894,color:#ffffff
 ```
 
 | Fase | Mecanismo | Motivo |
@@ -850,25 +858,25 @@ Diferentemente dos roadmaps de negócio e soluções técnicas, este roadmap val
 
 ```mermaid
 flowchart TD
-    CONS_START([Antes da Barreira B<br/>— Bloco B COMPLIANCE]) --> CONS_1
+    CONS_START(["Antes da Barreira B<br/>— Bloco B COMPLIANCE"]) --> CONS_1
 
-    subgraph CONS[Auditoria de Consistência Horizontal — 6 Disciplinas]
-        CONS_1[1. RASTREABILIDADE VERTICAL<br/>SOLUTIONS-MATRIX → MILESTONES → SPECS →<br/>INFRA-CLOUD → DEVOPS-SRE → TEST-STRATEGY → DATA-ARCH →<br/>SECURITY → ARCHITECTURE → PRD →<br/>STACK-MATRIX → CATALOG → TEAM-SKILLS-MAP] --> CONS_2
+    subgraph CONS["Auditoria de Consistência Horizontal — 6 Disciplinas"]
+        CONS_1["1. RASTREABILIDADE VERTICAL<br/>SOLUTIONS-MATRIX → MILESTONES → SPECS →<br/>INFRA-CLOUD → DEVOPS-SRE → TEST-STRATEGY → DATA-ARCH →<br/>SECURITY → ARCHITECTURE → PRD →<br/>STACK-MATRIX → CATALOG → TEAM-SKILLS-MAP"] --> CONS_2
 
-        CONS_2[2. DETECÇÃO DE INCONSISTÊNCIAS<br/>ARCHITECTURE ↔ SECURITY: controles implementam padrões?<br/>ARCHITECTURE ↔ DATA: modelo alinhado com topologia?<br/>ARCHITECTURE ↔ DEVOPS-SRE: pipeline suporta topologia?<br/>SECURITY ↔ INFRA-CLOUD: rede e IAM consistentes?<br/>TEST-STRATEGY ↔ ARCHITECTURE: pirâmide cobre topologia?<br/>TEST-STRATEGY ↔ SECURITY: SAST/DAST alinhado com threat model?] --> CONS_3
+        CONS_2["2. DETECÇÃO DE INCONSISTÊNCIAS<br/>ARCHITECTURE ↔ SECURITY: controles implementam padrões?<br/>ARCHITECTURE ↔ DATA: modelo alinhado com topologia?<br/>ARCHITECTURE ↔ DEVOPS-SRE: pipeline suporta topologia?<br/>SECURITY ↔ INFRA-CLOUD: rede e IAM consistentes?<br/>TEST-STRATEGY ↔ ARCHITECTURE: pirâmide cobre topologia?<br/>TEST-STRATEGY ↔ SECURITY: SAST/DAST alinhado com threat model?"] --> CONS_3
 
-        CONS_3[3. VERIFICAÇÃO DE COMPLETUDE<br/>100% das soluções do CATALOG têm<br/>stack, arquitetura, segurança, data, devops,<br/>testes, infra e milestones definidos?] --> CONS_4
+        CONS_3["3. VERIFICAÇÃO DE COMPLETUDE<br/>100% das soluções do CATALOG têm<br/>stack, arquitetura, segurança, data, devops,<br/>testes, infra e milestones definidos?] --> CONS_4
 
-        CONS_4[4. ALINHAMENTO COM NEGÓCIO<br/>PRD-DEFINITION referencia todos<br/>os objetivos do Project Charter?<br/>MILESTONES alinha com Epics?]
+        CONS_4["4. ALINHAMENTO COM NEGÓCIO<br/>PRD-DEFINITION referencia todos<br/>os objetivos do Project Charter?<br/>MILESTONES alinha com Epics?]
     end
 
-    CONS_4 --> CONS_RESULT{Relatório de<br/>Consistência?}
+    CONS_4 --> CONS_RESULT{"Relatório de<br/>Consistência?}
 
     CONS_RESULT -->|✅ PASS| CONS_OK([✅ Consistência Confirmada<br/>Pipeline concluído])
-    CONS_RESULT -->|❌ FAIL| CONS_FIX[🔧 Identificar artefatos<br/>com inconsistências<br/>+ Reportar gaps]
+    CONS_RESULT -->|❌ FAIL| CONS_FIX["🔧 Identificar artefatos<br/>com inconsistências<br/>+ Reportar gaps"]
     CONS_FIX --> CONS_1
 
-    style CONS fill:#fff3e0,stroke:#6c5ce7
+    style CONS fill:#fff3e0,stroke:#6c5ce7,color:#ffffff
     style CONS_OK fill:#00b894,color:#fff
     style CONS_FIX fill:#d63031,color:#fff
 ```
@@ -900,9 +908,9 @@ flowchart LR
     N5 -->|"📥 Alimenta Bloco 0<br/>(INTAKE-LOG, DoR, Backlog)"| DEFS
     D_OUT -->|"📤 Baseline para<br/>cada solução técnica"| T1
 
-    style NEGOCIO fill:#e3f2fd,stroke:#0984e3
-    style DEFS fill:#fff3e0,stroke:#e17055
-    style TEC fill:#e8f5e9,stroke:#00b894
+    style NEGOCIO fill:#e3f2fd,stroke:#0984e3,color:#ffffff
+    style DEFS fill:#fff3e0,stroke:#e17055,color:#ffffff
+    style TEC fill:#e8f5e9,stroke:#00b894,color:#ffffff
 ```
 
 ### Contrato da FASE 5 WATERFALL — PM/PO × TECHLEAD (modo waterfall-discovery)
@@ -918,15 +926,15 @@ flowchart LR
     subgraph TECHLEAD[PROJECT-TECHNICAL-DEFINITIONS v6.0 — TECHLEAD]
         direction TB
         T0[Bootstrap detecta modo<br/>waterfall-discovery] --> T1[Bloco 0 reduzido +<br/>Blocos A-D migrados/validados]
-        T1 --> T2[Bloco E:<br/>contexto base + loop por ciclo]
+        T1 --> T2[Bloco E + Bloco F:<br/>esteira + janelas por ciclo]
         T2 --> T3[595-TECHLEAD-RETURN-PACKAGE<br/>GENERATE → GATE → FIX]
     end
 
     P2 -->|"demanda: snapshot 092 + docs F1-F4"| TECHLEAD
     T3 -->|"retorno: 595-RETURN-PACKAGE-{FILA-NN}.md"| P4
 
-    style PMPO fill:#e3f2fd,stroke:#0984e3
-    style TECHLEAD fill:#f3e5f5,stroke:#a29bfe
+    style PMPO fill:#e3f2fd,stroke:#0984e3,color:#ffffff
+    style TECHLEAD fill:#f3e5f5,stroke:#a29bfe,color:#ffffff
 ```
 
 ### Posicionamento na Cadeia de Valor
@@ -972,6 +980,7 @@ flowchart LR
         G5[⛔ Barreira C:<br/>Skills-gap detection<br/>→ pode reabrir Bloco A]
         G6[⛔ Barreira D:<br/>100% US com contratos<br/>antes do History]
         G7[⛔ Modo waterfall:<br/>TECHLEAD propõe,<br/>PM/PO aplica]
+        G8[⛔ Janelas:<br/>HITL por transição<br/>(096 + Bloco F)]
     end
 
     style G1 fill:#d63031,color:#fff
@@ -981,6 +990,7 @@ flowchart LR
     style G5 fill:#d63031,color:#fff
     style G6 fill:#d63031,color:#fff
     style G7 fill:#d63031,color:#fff
+    style G8 fill:#d63031,color:#fff
 ```
 
 ---
