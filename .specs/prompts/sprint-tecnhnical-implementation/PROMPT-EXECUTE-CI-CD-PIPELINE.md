@@ -2,7 +2,7 @@
 
 ## Contexto
 
-Este prompt **implementa os pipelines de CI/CD concretos** de uma solução técnica, materializando os planos definidos nos documentos de projeto WATERFALL e nas definições técnicas do TECHLEAD. Ele não inventa estratégia — ele traduz os componentes `DED-NN` (041-DEVOPS-SETUP), `CICD-NN` (087-PLANO-CI-CD-AMBIENTES) e as quality gates da 510-TEST-STRATEGY em arquivos de pipeline reais (GitHub Actions / GitLab CI), prontos para uso.
+Este prompt **implementa os pipelines de CI/CD concretos** de uma solução técnica, materializando os planos definidos nos documentos-base do projeto (041/087/090 no padrão WATERFALL, ou equivalentes do TECHLEAD em outros contextos) e nas definições técnicas do TECHLEAD — independente da metodologia adotada. Ele não inventa estratégia — ele traduz os componentes `DED-NN` (041-DEVOPS-SETUP), `CICD-NN` (087-PLANO-CI-CD-AMBIENTES) e as quality gates da 510-TEST-STRATEGY em arquivos de pipeline reais (GitHub Actions / GitLab CI), prontos para uso.
 
 **Princípios fundamentais:**
 
@@ -98,7 +98,7 @@ Implementar, no repositório da solução `{SOLUTION_NAME}`, os pipelines de CI/
 ## Regras de Ouro
 
 1. NUNCA criar etapa de pipeline que não esteja ancorada em 041/087/090/510/086.
-2. NUNCA publicar deploy automático em PROD sem approval gate (GMUD do 087/090).
+2. NUNCA publicar deploy automático em PROD sem approval gate (GMUD do 087/090 em contexto WATERFALL; approval gates equivalentes em contexto ágil).
 3. SEMPRE incluir job de rollback (estratégia do 090) em pipelines de deploy.
 4. SEMPRE anexar o relatório TASK-EXECUTED na PR.
 5. Toda correção pós-gate é cirúrgica — alterar apenas o que o gate reprovou.
