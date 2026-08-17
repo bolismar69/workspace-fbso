@@ -1,6 +1,6 @@
 # FLOWCHART: ROADMAP DE DEFINIÇÕES TÉCNICAS DO PROJETO
 
-## Versão: 5.0 — Ponte Negócio→TI + 6 Disciplinas Técnicas + Discovery Contínuo
+## Versão: 6.0 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção)
 
 > **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` v5.0
 >
@@ -59,7 +59,15 @@ flowchart TB
     end
     
     BLOCO_D --> GD{{⛔ Barreira D}}
+
+    subgraph BLOCO_E["Bloco E: Esteira de Construção (SOMENTE modo waterfall-discovery)"]
+        E1[E1: Contexto Base<br/>PRD/ARCH/SPECS/TASKS/TEST_PLAN] --> E2[E2: Loop por ciclo FILA-NN<br/>SPRINT-CARD → EXECUTE → QA → PR]
+        E2 --> E3[595-TECHLEAD-RETURN-PACKAGE<br/>GENERATE → GATE → FIX]
+    end
+
+    GD -->|"modo waterfall-discovery"| BLOCO_E
     GD --> HIST[📊 EXECUTION-HISTORY]
+    BLOCO_E -->|"entrega ao PM/PO"| PMPO([WATERFALL-EXECUTION v2.0<br/>recepção 3.3])
     HIST --> END([✅ Pipeline Completo])
 
     style F0 fill:#6c5ce7,color:#fff
@@ -93,6 +101,8 @@ flowchart TB
     style BLOCO_C fill:#e8f5e9,stroke:#00b894
     style BLOCO_D fill:#f3e5f5,stroke:#6c5ce7
     style HIST fill:#00b894,color:#fff
+    style BLOCO_E fill:#f3e5f5,stroke:#a29bfe
+    style PMPO fill:#a29bfe,color:#fff
 ```
 
 ---
@@ -127,11 +137,14 @@ flowchart TD
         F0_4[Criar template<br/>TEAM-CAPACITY-EXCEPTIONS.md]
     end
 
-    subgraph PASSO_05[Passo 0.5 — Auditar Artefatos]
+    subgraph PASSO_05[Passo 0.5 — Auditar Artefatos + Detectar Modo]
         F0_4 --> F0_5[Verificar existência e compliance<br/>de artefatos de definição] --> F0_5_DEC{Status dos<br/>artefatos?}
         F0_5_DEC -->|Todos ❌| F0_6A[🆕 Projeto Novo<br/>→ Iniciar Fase 1]
         F0_5_DEC -->|Alguns ✅| F0_6B[📋 Projeto em Andamento<br/>→ Iniciar da primeira fase pendente]
         F0_5_DEC -->|Todos ✅ Compliance| F0_6C[✅ Projeto Completo<br/>→ Revisar / Evoluir / Encerrar]
+        F0_5 --> F0_5_MODE[Auditar sinais de modo:<br/>docs ágeis (project-documents/)<br/>vs WATERFALL (088 + 092 FILA-NN<br/>+ 010 + 060 COMPLIANCE)] --> F0_5_MODE_DEC{Modo proposto<br/>(decisão humana)}
+        F0_5_MODE_DEC -->|waterfall-discovery| F0_5_MODE_W[Bloco 0 reduzido +<br/>Blocos A-D migrados +<br/>Bloco E + 595]
+        F0_5_MODE_DEC -->|agile-discovery| F0_5_MODE_A[Pipeline atual<br/>(retrocompatível)]
     end
 
     subgraph PASSO_06[Passo 0.6 — Resumo]
@@ -892,6 +905,30 @@ flowchart LR
     style TEC fill:#e8f5e9,stroke:#00b894
 ```
 
+### Contrato da FASE 5 WATERFALL — PM/PO × TECHLEAD (modo waterfall-discovery)
+
+```mermaid
+flowchart LR
+    subgraph PMPO[WATERFALL-EXECUTION v2.0 — PM/PO]
+        direction TB
+        P1[092-BACKLOG-KANBAN<br/>FILA-NN · BL-NN · CR-NN] --> P2[3.1 Handoff<br/>pacote de demanda]
+        P4[3.3 Recepção<br/>aplicar pacote 595<br/>→ GENERATE-092 + GATE-092] --> P1
+    end
+
+    subgraph TECHLEAD[PROJECT-TECHNICAL-DEFINITIONS v6.0 — TECHLEAD]
+        direction TB
+        T0[Bootstrap detecta modo<br/>waterfall-discovery] --> T1[Bloco 0 reduzido +<br/>Blocos A-D migrados/validados]
+        T1 --> T2[Bloco E:<br/>contexto base + loop por ciclo]
+        T2 --> T3[595-TECHLEAD-RETURN-PACKAGE<br/>GENERATE → GATE → FIX]
+    end
+
+    P2 -->|"demanda: snapshot 092 + docs F1-F4"| TECHLEAD
+    T3 -->|"retorno: 595-RETURN-PACKAGE-{FILA-NN}.md"| P4
+
+    style PMPO fill:#e3f2fd,stroke:#0984e3
+    style TECHLEAD fill:#f3e5f5,stroke:#a29bfe
+```
+
 ### Posicionamento na Cadeia de Valor
 
 | Roadmap | Nível | Output | Consumido por |
@@ -899,6 +936,7 @@ flowchart LR
 | **Project Documents** | Estratégico / Negócio | Charter, BRD, Epics, Features, US, RTM | → Definições Técnicas (Bloco 0) |
 | **Technical Definitions** ← | Tático / Projeto | 20 artefatos + `technical-discovery/` + EXECUTION-HISTORY | → Soluções Técnicas |
 | **Technical Solutions** | Tático / Implementação | PRD, ARCH, SEC, SPECS, TASKS, TEST_PLAN | → Times de Desenvolvimento |
+| **WATERFALL-EXECUTION v2.0 (FASE 5)** | Operacional / PM-PO | 092/093 + pacote de demanda (FILA-NN + docs F1–F4) | → Definições Técnicas (modo waterfall-discovery) |
 
 ---
 
@@ -926,13 +964,14 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    subgraph GATING[Regras Críticas de Bloqueio — Technical Definitions v5.0]
+    subgraph GATING[Regras Críticas de Bloqueio — Technical Definitions v6.0]
         G1[⛔ Nenhuma fase<br/>avança sem<br/>COMPLIANCE humano]
         G2[⛔ Barreira 0:<br/>Bloco 0 100% antes<br/>do Bloco A]
         G3[⛔ Barreira A:<br/>Bloco A 100% antes<br/>do Bloco B]
         G4[⛔ Barreira B:<br/>6 disciplinas 100%<br/>antes do Bloco C]
         G5[⛔ Barreira C:<br/>Skills-gap detection<br/>→ pode reabrir Bloco A]
         G6[⛔ Barreira D:<br/>100% US com contratos<br/>antes do History]
+        G7[⛔ Modo waterfall:<br/>TECHLEAD propõe,<br/>PM/PO aplica]
     end
 
     style G1 fill:#d63031,color:#fff
@@ -941,14 +980,16 @@ flowchart LR
     style G4 fill:#d63031,color:#fff
     style G5 fill:#d63031,color:#fff
     style G6 fill:#d63031,color:#fff
+    style G7 fill:#d63031,color:#fff
 ```
 
 ---
 
 > **📁 Arquivos relacionados:**
-> - `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` — Documento fonte (v5.0)
+> - `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` — Documento fonte (v6.0)
+> - `../PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` — Parceria PM/PO × TECHLEAD na FASE 5 do WATERFALL (v2.0)
 > - `../project-documents/FLOWCHART-ROADMAP-GENERATE-PROJECT-DOCUMENTS.md` — Visualização do roadmap de negócio
 > - `../technical-solutions/FLOWCHART-ROADMAP-GENERATE-TECHNICAL_SOLUTIONS.md` — Visualização do roadmap técnico
-> - `PROMPT-GENERATE-{NNN}-*.md` — 20 prompts geradores (fases 1-19 + EXECUTION-HISTORY)
-> - `PROMPT-GATE-{NNN}-*.md` — 19 prompts de auditoria (fases 1-19)
-> - `PROMPT-FIX-{NNN}-*.md` — 19 prompts de correção (fases 1-19)
+> - `PROMPT-GENERATE-{NNN}-*.md` — 21 prompts geradores (fases 1-19 + 595 + EXECUTION-HISTORY)
+> - `PROMPT-GATE-{NNN}-*.md` — 20 prompts de auditoria (fases 1-19 + 595)
+> - `PROMPT-FIX-{NNN}-*.md` — 20 prompts de correção (fases 1-19 + 595)

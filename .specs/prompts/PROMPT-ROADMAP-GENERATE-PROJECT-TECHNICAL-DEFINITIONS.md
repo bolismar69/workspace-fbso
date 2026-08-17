@@ -1,5 +1,5 @@
 # PROMPT: ROADMAP DE DEFINIÇÕES TÉCNICAS DO PROJETO
-## Versão: 5.0 — Ponte Negócio→TI + 6 Disciplinas Técnicas + Discovery Contínuo
+## Versão: 6.0 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção)
 
 Atue como um Especialista em Gestão de Processos (BPM), Arquiteto de Soluções Ágeis e Tech Lead, especializado em definições técnicas de projetos e engenharia de prompts.
 
@@ -25,6 +25,7 @@ Regra Crítica de Execução (Gating Rule): O processo é estritamente sequencia
 | `SECURITY_GLOBAL` | ✅ | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) | `/home/bolismar/work/workspace-fbso/.specs/security/GLOBAL-SECURITY.md` |
 | `PROJECT_DOCUMENTS_INPUTS` | ❌ | Lista de caminhos para documentos brutos de entrada adicionais | `[]` |
 | `PROJECT_PROMPT_INPUTS` | ❌ | Lista de caminhos para prompts auxiliares ou contextos adicionais | `[]` |
+| `TECHNICAL_DEFINITIONS_MODE` | ❌ | Modo de execução: `agile-discovery` ou `waterfall-discovery`. Se não informado, o Bootstrap detecta e pergunta ao humano | `agile-discovery` |
 
 ### Variáveis Derivadas (calculadas automaticamente)
 
@@ -32,6 +33,25 @@ Regra Crítica de Execução (Gating Rule): O processo é estritamente sequencia
 PROJECT_COMPLETE_PATH_NAME    = PROJECT_PATH + "/" + PROJECT_ID_NAME
 TECHNICAL_DEFINITIONS_PATH    = PROJECT_COMPLETE_PATH_NAME + "/technical-definitions"
 ```
+
+---
+
+## MODOS DE EXECUÇÃO
+
+| Modo | Pipeline | Baseline | Quando |
+|---|---|---|---|
+| `agile-discovery` | Pipeline atual (Blocos 0–A–B–C–D, 20 fases) | Docs de negócio ágeis (`project-documents/`: Charter, BRD, Epics, Features, US) | Projetos ágeis — comportamento atual, retrocompatível |
+| `waterfall-discovery` 🆕 | Bloco 0 reduzido (F1–F2 puladas, F3–F4 migradas) + Blocos A–D (migrados/validados) + **Bloco E** (Esteira de Construção) + **595-TECHLEAD-RETURN-PACKAGE** | Docs WATERFALL F1–F4 em `[STATUS: COMPLIANCE]` (M4 travado: 088, 092, 010-FRD, 060-EAP-WBS, 062, 065, 070, 086, 087, 090) | Projetos WATERFALL na FASE 5 (parceria com `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` v2.0) |
+
+**Detecção no Bootstrap (auditoria de artefatos):**
+
+| Sinal auditado | Modo proposto |
+|---|---|
+| `project-documents/` ágil (Charter/BRD/Epics/Features/US) + `features/` + `user-stories/` | `agile-discovery` |
+| Docs WATERFALL `088-PRODUCT-BACKLOG-LIST` + `092-BACKLOG-KANBAN` (com `FILA-NN`) + `010-FRD` + `060-EAP-WBS` + 062/065/070/086/087/090 em `[STATUS: COMPLIANCE]` | `waterfall-discovery` |
+| Nenhum dos dois | Perguntar ao humano; iniciar em `agile-discovery` |
+
+A decisão final é sempre do humano (apresentar o modo proposto e confirmar).
 
 ---
 
@@ -62,6 +82,9 @@ FASE 0: BOOTSTRAP (sequencial)
   │     Fase 18 → Fase 19 (iterativo)
   │     ⛔ Barreira D
   │
+  └─▶ BLOCO E: Esteira de Construção por Ciclo (SOMENTE modo waterfall-discovery)
+        Contexto base → Loop por FILA-NN → 595-TECHLEAD-RETURN-PACKAGE → PM/PO
+
   └─▶ EXECUTION-HISTORY 📊 (standalone)
 ```
 
@@ -78,7 +101,8 @@ Workflow:
 3. Criar estrutura: `mkdir -p {TECHNICAL_DEFINITIONS_PATH}`
 4. Criar template `465-TEAM-CAPACITY-EXCEPTIONS.md`
 5. Auditar artefatos existentes — varredura completa nos documentos para identificar a situação atual do processo de criação da documentação
-6. Apresentar resumo da situação atual e iniciar a primeira fase pendente (ou ponto de retomada)
+5a. **Detectar modo de execução** pela auditoria (tabela de detecção da seção MODOS DE EXECUÇÃO) e confirmar com o humano (`agile-discovery` ou `waterfall-discovery`)
+6. Apresentar resumo da situação atual (incluindo o modo proposto) e iniciar a primeira fase pendente (ou ponto de retomada)
 
 ### Fase 1 — 410-INTAKE-LOG.md 🆕
 Registro de lotes de ingestão de requisitos do Negócio. Pipeline: `PROMPT-GENERATE-410-INTAKE-LOG.md` → Gate → Fix → COMPLIANCE
@@ -142,6 +166,60 @@ Dashboard de controle — estado de todos os documentos. Pipeline: Generate → 
 
 ---
 
+## MODO WATERFALL-DISCOVERY (FASE 5 DO WATERFALL — PARCERIA PM/PO × TECHLEAD)
+
+No modo `waterfall-discovery`, este roadmap atua como o **lado TECHLEAD da FASE 5**: recebe o pacote de demanda do PM/PO (via WATERFALL-EXECUTION v2.0), valida/refina as definições técnicas contra os docs WATERFALL, executa a esteira de construção (Bloco E) e devolve o `595-RETURN-PACKAGE-{FILA-NN}.md`.
+
+**Ownership:** "TECHLEAD propõe, PM/PO aplica" — este roadmap NUNCA edita 092/093/095/085/088; atualiza apenas os artefatos de `technical-definitions/`, `technical-discovery/`, o repositório da solução e o 600-EXECUTION-HISTORY.
+
+### Mapeamento Fase a Fase (modo waterfall-discovery)
+
+| Fase | Artefato | Comportamento | Inputs traduzidos |
+|---|---|---|---|
+| F1 | 410-INTAKE-LOG | **PULAR** | Ingestão já feita nas FASES 1–4; baseline = pacote de demanda do PM/PO |
+| F2 | 420-DOR-ASSESSMENT | **PULAR** | DoR → GATE de COMPLIANCE do M4 |
+| F3 | 430-PRODUCT-BACKLOG-LIST | **MIGRADO** | 088-PRODUCT-BACKLOG-LIST → 430 |
+| F4 | 440-PRD-DEFINITION | **MIGRADO** | 010-FRD (FEAT-NN/UC-NN) → 440 |
+| F5 | 450-TEAM-SKILLS-MAP | **MIGRADO** | 062-STAFFING-PLAN → 450 |
+| F6 | 460-TEAM-CAPACITY | **MIGRADO** | 062 + 065/070 → 460 |
+| F7 | 470-ARCHITECTURE-DEFINITION | **VALIDA/REFINA** | 030-SAD + 035-HLD → 470 |
+| F8 | 480-SECURITY-DEFINITION | **VALIDA/REFINA** | 043-SEC-SETUP → 480 |
+| F9 | 490-DATA-ARCHITECTURE-DEFINITION | **VALIDA/REFINA** | 042-DATA-SETUP → 490 |
+| F10 | 500-DEVOPS-SRE-DEFINITION | **VALIDA/REFINA** | 041-DEVOPS-SETUP + 087 → 500 |
+| F11 | 510-TEST-STRATEGY-DEFINITION | **VALIDA/REFINA** | 045-EST-PLAN + 050-EST-CASES → 510 |
+| F12 | 520-INFRA-CLOUD-DEFINITION | **VALIDA/REFINA** | 044-INFRA-SETUP + 090 → 520 |
+| F13 | 530-SOLUTIONS-CATALOG | **RODA** | 060-EAP-WBS + 010 |
+| F14 | 540-SOLUTIONS-MATRIX | **RODA** | 062 + 086 |
+| F15 | 550-SOLUTIONS-STACK-MATRIX | **RODA** | 087 + 044 + STACK-PADROES-CORPORATIVOS |
+| F16 | 560-SPECS-DEFINITION | **RODA** | consolida Blocos 0–B |
+| F17 | 570-MILESTONES | **MIGRADO** | 065-CRONOGRAMA-GANTT + 070-ORCAMENTO → 570 |
+| F18 | 580-SPRINT-BACKLOG | **MIGRADO/RODA** | 092 (FILA-NN/BL-NN) → 580 (tarefas T-NNN) |
+| F19 | 590-TECHNICAL-DISCOVERY (iterativo) | **RODA** | por ciclo: pacote de demanda (FILA-NN) → 5 contratos por 590-sprint-NNN |
+| 600 | 600-EXECUTION-HISTORY | **RODA** | registro interno do TECHLEAD |
+
+**Regras de vocabulário:** US → UC-NN (010-FRD), sprint → FILA-NN (092), DoR → GATE de COMPLIANCE, Epic → pacote EAP (060), Product Backlog → 088. **Regra de espelhamento:** `590-sprint-NN ↔ FILA-NN`.
+
+### BLOCO E — Esteira de Construção por Ciclo (após Barreira D, somente no modo waterfall-discovery)
+
+**E1 — Contexto base (uma vez por solução técnica):** reuso sem edição de `sprint-artefacts/PROMPT-ORCHESTRATOR-GENERATE-ALL-ARTEFACTS.md` com `IN_MACRO` = [010-FRD, 016-Protótipos, 020-SRS, 030-SAD, 035-HLD, 040-LLD, 045-EST-PLAN, 050-EST-CASES, 086, 087] → gera `PRD.md/SPECS.md`, `ARCH.md/LLD.md`, `TEST_PLAN.md`, `TASKS.md` no repositório da solução.
+
+**E2 — Loop por ciclo (para cada FILA-NN ativa):**
+
+| STEP | Ação | Prompt (reuso sem edição) |
+|---|---|---|
+| 0 | SPRINT-CARD + SPRINT-TEST-SUITE | `sprint-artefacts/PROMPT-GENERATE-SPRINT-ARTEFACTS.md` |
+| 1 | GATE dos artefatos do ciclo | `sprint-artefacts/PROMPT-GATE-SPRINT-ARTEFACTS.md` |
+| 2 | FIX cirúrgico (máx. 3 loops) | `sprint-artefacts/PROMPT-FIX-SPRINT-ARTEFACTS.md` |
+| 3 | Executar tarefas | `sprint-tecnhnical-implementation/PROMPT-EXECUTE-SPRINT-TASKS.md` |
+| 4 | Revisão humana obrigatória (HITL) | `sprint-tecnhnical-implementation/PROMPT-QA-REVISOR-SECURITY.md` (máx. 3 tentativas) |
+| 5 | Débito técnico + relatório | `PROMPT-GENERATE-IDENTIFIED-TECHNICAL-DEBT.md` + `PROMPT-GENERATE-IMPLEMENTATION-REPORT.md` |
+| 6 | Git e PR | `PROMPT-GENERATE-PULL-REQUEST.md` |
+| 7 | **Empacotamento (em vez de governança direta)** | trio **595-TECHLEAD-RETURN-PACKAGE** (GENERATE → GATE → FIX → COMPLIANCE) → entrega `595-RETURN-PACKAGE-{FILA-NN}.md` ao PM/PO |
+
+**E3 — Regras:** vocabulário WATERFALL na invocação (nunca reescrever prompts reusados); branch `feature/sprint-NN-<slug>`; HITL obrigatório por ciclo; débito técnico `DT-XXX` entra no pacote 595 como CR Técnico; ownership (nunca editar 092/093/095/085/088). A sub-fase 2 do WATERFALL (Janelas de Entrega) permanece fora de escopo — o Bloco E roda por `FILA-NN`.
+
+---
+
 ## MECANISMO DE ORQUESTRAÇÃO DINÂMICA
 
 Toda fase (1-19) deve rodar sob o ecossistema trifásico de prompts (Gerador, Auditor/Portão e Corretor), com controle final obrigatório do Humano. O fluxo segue estritamente a máquina de estados abaixo, idêntica à do roadmap de documentos de negócio (`PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS.md`):
@@ -183,6 +261,8 @@ CREATED → GATE ⟷ FIX → PRÉ-COMPLIANCE → COMPLIANCE
 | ⛔ Barreira B | Após Bloco B (F12) | 6 disciplinas OK. N/A justificados. Consistência horizontal. | Disciplina N/A sem justificativa = NÃO COMPLIANCE |
 | ⛔ Barreira C | Após Bloco C (F17) | SPECS referencia todos artefatos. MILESTONES alinhado. | **Skills-Gap Detection:** Se skill necessária não coberta pelo Bloco A → `[SKILLS-GAP-DETECTED]` → propõe reabertura Bloco A |
 | ⛔ Barreira D | Após Bloco D (F19) | 100% US da sprint com contratos. SPRINT-BACKLOG atualizado. | Iterativo — pergunta se continua próxima sprint ou encerra |
+
+> **Modo waterfall-discovery:** a Barreira 0 valida os MIGRADOS (F3–F4 contra 088/010); as Barreiras A–D permanecem; após a Barreira D o fluxo entra no Bloco E (por ciclo).
 
 ### Consistência Horizontal (Bloco B)
 
@@ -242,6 +322,7 @@ business-inputs/business-projects/{PROJECT_ID_NAME}/
     │   │   ├── CONTRACTS-SRE-sprint-00.md
     │   │   └── DEFINITION-INCREMENTS-sprint-00.md
     │   └── 590-sprint-01/ ...
+    ├── 595-RETURN-PACKAGE-{FILA-NN}.md          (Bloco E — modo waterfall-discovery) 🆕
     └── 600-EXECUTION-HISTORY.md
 ```
 
@@ -332,7 +413,10 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `project
 ├── PROMPT-GATE-590-TECHNICAL-DISCOVERY.md                  🆕
 ├── PROMPT-FIX-590-TECHNICAL-DISCOVERY.md                   🆕
 ├── PROMPT-GENERATE-600-EXECUTION-HISTORY.md
-└── ... (58 prompts no total: 20 GENERATE + 19 GATE + 19 FIX)
+├── PROMPT-GENERATE-595-TECHLEAD-RETURN-PACKAGE.md        🆕 (Bloco E)
+├── PROMPT-GATE-595-TECHLEAD-RETURN-PACKAGE.md            🆕
+├── PROMPT-FIX-595-TECHLEAD-RETURN-PACKAGE.md             🆕
+└── ... (61 prompts no total: 21 GENERATE + 20 GATE + 20 FIX)
 ```
 
 ---
@@ -346,6 +430,7 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `project
 | 3.0 | 28/07/2026 | TEAM-MAP renomeado para TEAM-SKILLS-MAP com Discovery Team (9 papéis); TEAM-CAPACITY promovido a Fase 2 com Gate/Fix; fases renumeradas (1→12); 31 prompts (11+10+10) | Time de Arquitetura |
 | 4.0 | 28/07/2026 | Reestruturação TOGAF: Bloco A=People(2f), Bloco B=Architecture & Security(2f), Bloco C=Specs & Milestones(3f, PRD→SPECS→MILESTONES), Bloco D=Execution Portfolio(5f, CATALOG→MATRIX→STACK→SPRINTS→HISTORY); cadeia progressiva de inputs no Bloco D; inputs do PRD enriquecidos com Blocos A+B | Time de Arquitetura |
 | 5.0 | 30/07/2026 | Redesign estrutural: Bloco 0 (ponte Negócio→TI com 4 fases), Bloco B expandido (6 disciplinas: +DATA, +DEVOPS-SRE, +TEST, +INFRA), Bloco C reorganizado (CATALOG→MATRIX→STACK→SPECS→MILESTONES), Bloco D=Sprints com Discovery Técnico, History standalone. 20 fases, pipeline sequencial, 58 prompts. | Time de Arquitetura |
+| 6.0 | 16/08/2026 | Modos de execução (agile-discovery/waterfall-discovery) com detecção no Bootstrap; modo waterfall-discovery com mapeamento F1–F19 (pular/migrar/validar/rodar); Bloco E — Esteira de Construção por ciclo com reuso sem edição + trio 595-TECHLEAD-RETURN-PACKAGE; parceria PM/PO × TECHLEAD (WATERFALL-EXECUTION v2.0). 61 prompts. | Time de Arquitetura |
 
 ---
 
