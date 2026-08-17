@@ -973,15 +973,15 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    subgraph GATING[Regras Críticas de Bloqueio — Technical Definitions v7.0]
-        G1[⛔ Nenhuma fase<br/>avança sem<br/>COMPLIANCE humano]
-        G2[⛔ Barreira 0 —<br/>Bloco 0 100% antes<br/>do Bloco A]
-        G3[⛔ Barreira A —<br/>Bloco A 100% antes<br/>do Bloco B]
-        G4[⛔ Barreira B —<br/>6 disciplinas 100%<br/>antes do Bloco C]
-        G5[⛔ Barreira C —<br/>Skills-gap detection<br/>→ pode reabrir Bloco A]
-        G6[⛔ Barreira D —<br/>100% US com contratos<br/>antes do History]
-        G7[⛔ Modo waterfall —<br/>TECHLEAD propõe,<br/>PM/PO aplica]
-        G8[⛔ Janelas —<br/>HITL por transição<br/>(096 + Bloco F)]
+    subgraph GATING["Regras Críticas de Bloqueio — Technical Definitions v7.0"]
+        G1["⛔ Nenhuma fase<br/>avança sem<br/>COMPLIANCE humano"]
+        G2["⛔ Barreira 0 —<br/>Bloco 0 100% antes<br/>do Bloco A"]
+        G3["⛔ Barreira A —<br/>Bloco A 100% antes<br/>do Bloco B"]
+        G4["⛔ Barreira B —<br/>6 disciplinas 100%<br/>antes do Bloco C"]
+        G5["⛔ Barreira C —<br/>Skills-gap detection<br/>→ pode reabrir Bloco A"]
+        G6["⛔ Barreira D —<br/>100% US com contratos<br/>antes do History"]
+        G7["⛔ Modo waterfall —<br/>TECHLEAD propõe,<br/>PM/PO aplica"]
+        G8["⛔ Janelas —<br/>HITL por transição<br/>(096 + Bloco F)"]
     end
 
     style G1 fill:#d63031,color:#fff
