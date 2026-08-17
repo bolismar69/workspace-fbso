@@ -59,8 +59,8 @@ Gerar `{TECHNICAL_DEFINITIONS_PATH}/600-EXECUTION-HISTORY.md` com:
 | SPECS-DEFINITION.md | C | F16 | .../SPECS-DEFINITION.md | PENDENTE | — | — | — | — |
 | MILESTONES.md | C | F17 | .../MILESTONES.md | PENDENTE | — | — | — | — |
 | **Bloco D — Sprints — Technical Discovery** | | | | | | | | |
-| 580-SPRINT-BACKLOG.md | D | F18 | technical-discovery/580-SPRINT-BACKLOG.md | PENDENTE | — | — | — | — |
-| DISCOVERY TÉCNICO (590-sprint-NNN/) | D | F19 | technical-discovery/590-sprint-NNN/ | PENDENTE | — | — | — | — |
+| 580-PACKAGE-BACKLOG-REFINED.md | D | F18 | technical-discovery/580-PACKAGE-BACKLOG-REFINED.md | PENDENTE | — | — | — | — |
+| DISCOVERY TÉCNICO (590-ciclo-NNN/) | D | F19 | technical-discovery/590-ciclo-NNN/ | PENDENTE | — | — | — | — |
 
 **2. Registro de Ciclos Gate→Fix:**
 
@@ -130,7 +130,7 @@ Após cada execução de gate (independentemente do veredito):
 | Versão | Data | Alteração | Autor |
 |:---|:---|:---|:---|
 | 1.0 | 25/07/2026 | Criação inicial: prompt gerador do execution history | Time de Arquitetura |
-| 2.0 | 30/07/2026 | Reformulação: posicionamento standalone pós-Barra D; tracking expandido para 20 artefatos com INTAKE-LOG, DOR-ASSESSMENT, PRODUCT-BACKLOG-LIST, DATA-ARCHITECTURE, DEVOPS-SRE, TEST-STRATEGY, INFRA-CLOUD, SPRINT-BACKLOG, TECHNICAL-DISCOVERY | Time de Arquitetura |
+| 2.0 | 30/07/2026 | Reformulação: posicionamento standalone pós-Barra D; tracking expandido para 20 artefatos com INTAKE-LOG, DOR-ASSESSMENT, PRODUCT-BACKLOG-LIST, DATA-ARCHITECTURE, DEVOPS-SRE, TEST-STRATEGY, INFRA-CLOUD, PACKAGE-BACKLOG, TECHNICAL-DISCOVERY | Time de Arquitetura |
 
 ---
 

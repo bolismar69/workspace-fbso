@@ -22,6 +22,6 @@ Cada item em `VIOLATIONS` tem o formato:
 3. **NÃO** altere seções que passaram no GATE e não estão em `VIOLATIONS`
 4. Mantenha o status como `[STATUS: Em revisão]`
 5. **Mantenha o vocabulário WATERFALL** (BL-NN; sem termos ágeis) — conforme a tabela VOCABULÁRIO WATERFALL do GENERATE
-6. **Não defina filas/sprints** — essa responsabilidade é do 092-BACKLOG-KANBAN na FASE 5
+6. **Não defina ciclos de entrega (`CICLO-NN`)** — essa responsabilidade é do 092-BACKLOG-KANBAN na FASE 5
 7. Após corrigir cada violação, adicione um comentário inline `<!-- FIX: {description} — corrigido -->` na seção reparada
 8. Retorne `{DOC_PATH}` após as correções

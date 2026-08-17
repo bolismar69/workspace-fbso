@@ -83,11 +83,11 @@ flowchart TB
 
     subgraph FASE5["Fase 5: EXECUÇÃO E CONSTRUÇÃO (roadmap dedicado WATERFALL-EXECUTION)"]
         direction LR
-        D092["092: BACKLOG-KANBAN<br/>092-BACKLOG-KANBAN-{PROJECT_ID_NAME}.md<br/>CRs Negócio/Técnico (085)<br/>Status · FILA-NN"] --> D093["093: GESTAO-TIMES<br/>093-GESTAO-TIMES-{PROJECT_ID_NAME}.md<br/>Capacidade · IMP-NN"]
+        D092["092: BACKLOG-KANBAN<br/>092-BACKLOG-KANBAN-{PROJECT_ID_NAME}.md<br/>CRs Negócio/Técnico (085)<br/>Status · CICLO-NN"] --> D093["093: GESTAO-TIMES<br/>093-GESTAO-TIMES-{PROJECT_ID_NAME}.md<br/>Capacidade · IMP-NN"]
         D093 --> D092
-        D092 --> ESTEIRA_DEV["Esteira de Construção por ciclo FILA-NN<br/>(sprint-artefacts + sprint-tecnhnical-implementation)"]
+        D092 --> ESTEIRA_DEV["Esteira de Construção por ciclo CICLO-NN<br/>(sprint-artefacts + sprint-tecnhnical-implementation)"]
         JANELAS["2. Janelas de Entrega<br/>096-DEFINICAO-JANELAS-ENTREGA-{PROJECT_ID_NAME}.md<br/>+ Bloco F (TECHLEAD v7.0)"]
-        ESTEIRA_DEV -.->|"roda por ciclo FILA-NN"| JANELAS
+        ESTEIRA_DEV -.->|"roda por ciclo CICLO-NN"| JANELAS
         ESTEIRA_DEV --> D095F["095: RELATORIO-QUALIDADE<br/>095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md<br/>(evidências por ciclo)"]
         D095F --> D097["097: MANUAIS-USUARIO<br/>097-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md"]
         D097 --> D100["100: MANUAIS-OPERACIONAIS<br/>100-MANUAIS-OPERACIONAIS-{PROJECT_ID_NAME}.md"]
@@ -433,7 +433,7 @@ flowchart TD
 
     subgraph SF1["Sub-fase 1: GESTÃO DIÁRIA E OPERACIONAL"]
         direction LR
-        D092_GEN["092: BACKLOG-KANBAN<br/>· Revisa/expande o 088 via CR de Negócio e CR Técnico (085)<br/>· Atualiza status (A Fazer → Em Execução → Em Revisão → Concluído/Impedido)<br/>· Define FILA-NN (filas/ciclos)"] --> D093_GEN["093: GESTAO-TIMES<br/>· Capacidade vs demanda (contra o 062)<br/>· Impedimentos (IMP-NN)<br/>· Alocação por fila"]
+        D092_GEN["092: BACKLOG-KANBAN<br/>· Revisa/expande o 088 via CR de Negócio e CR Técnico (085)<br/>· Atualiza status (A Fazer → Em Execução → Em Revisão → Concluído/Impedido)<br/>· Define CICLO-NN (ciclos de entrega)"] --> D093_GEN["093: GESTAO-TIMES<br/>· Capacidade vs demanda (contra o 062)<br/>· Impedimentos (IMP-NN)<br/>· Alocação por ciclo"]
         D093_GEN --> D092_GEN
     end
 
@@ -443,12 +443,12 @@ flowchart TD
         JANELAS["DEV → QA → UAT → DEPLOY<br/>estrutura preservada no flowchart-WATERFALL.md<br/>solução NÃO definida nesta revisão"]
     end
 
-    SF1 -.->|"a esteira roda por ciclo FILA-NN"| SF3
+    SF1 -.->|"a esteira roda por ciclo CICLO-NN"| SF3
 
     subgraph SF3["Sub-fase 3: ESTEIRA DE CONSTRUÇÃO POR SOLUÇÃO TÉCNICA"]
         direction TB
-        CTX["Contexto base: PROMPT-ORCHESTRATOR-GENERATE-ALL-ARTEFACTS<br/>→ PRD.md/SPECS.md · ARCH.md/LLD.md · TEST_PLAN.md · TASKS.md"] --> CICLO["Loop por ciclo (FILA-NN):<br/>SPRINT-CARD + SPRINT-TEST-SUITE → EXECUTE-SPRINT-TASKS<br/>→ QA-REVISOR-SECURITY (revisão humana obrigatória)<br/>→ SPRINT-REVIEW + IDENTIFIED-TECHNICAL-DEBT<br/>→ IMPLEMENTATION-REPORT → PR"]
-        CICLO --> GOV["Saída de governança:<br/>095-RELATORIO-QUALIDADE (evidências)<br/>092 (status BL-NN/FILA-NN) · 093 (impedimentos)<br/>desvios → 085"]
+        CTX["Contexto base: PROMPT-ORCHESTRATOR-GENERATE-ALL-ARTEFACTS<br/>→ PRD.md/SPECS.md · ARCH.md/LLD.md · TEST_PLAN.md · TASKS.md"] --> CICLO["Loop por ciclo (CICLO-NN):<br/>SPRINT-CARD + SPRINT-TEST-SUITE → EXECUTE-SPRINT-TASKS<br/>→ QA-REVISOR-SECURITY (revisão humana obrigatória)<br/>→ SPRINT-REVIEW + IDENTIFIED-TECHNICAL-DEBT<br/>→ IMPLEMENTATION-REPORT → PR"]
+        CICLO --> GOV["Saída de governança:<br/>095-RELATORIO-QUALIDADE (evidências)<br/>092 (status BL-NN/CICLO-NN) · 093 (impedimentos)<br/>desvios → 085"]
         GOV -.->|"próximo ciclo"| CICLO
     end
 

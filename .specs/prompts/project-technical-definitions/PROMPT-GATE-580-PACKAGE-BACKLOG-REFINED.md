@@ -1,8 +1,8 @@
-# PROMPT-GATE-580-SPRINT-BACKLOG-REFINED
+# PROMPT-GATE-580-PACKAGE-BACKLOG-REFINED
 
 ## Contexto
 
-Este prompt implementa o **Gate de Validação do Backlog Refinado de Tarefas Técnicas** para o artefato `technical-discovery/580-SPRINT-BACKLOG.md`. Verifica se 100% das User Stories do backlog de negócio estão cobertas por tarefas T-NNN, se os links na coluna CONTRACTS são válidos e se os status são consistentes.
+Este prompt implementa o **Gate de Validação do Backlog Refinado de Tarefas Técnicas** para o artefato `technical-discovery/580-PACKAGE-BACKLOG-REFINED.md`. Verifica se 100% das User Stories do backlog de negócio estão cobertas por tarefas T-NNN, se os links na coluna CONTRACTS são válidos e se os status são consistentes.
 
 **Princípio fundamental:** Toda US do backlog de negócio deve ter ao menos uma tarefa técnica correspondente. Nenhuma tarefa pode ficar sem US vinculada ou sem sprint-alvo definida.
 
@@ -22,14 +22,14 @@ Este prompt implementa o **Gate de Validação do Backlog Refinado de Tarefas T�
 | `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
 | `{PROJECT_PROMPT_INPUTS}` | (Opcional) Lista de caminhos para prompts auxiliares ou contextos adicionais |
 
-**Arquivos gerados pelo GENERATE:** `technical-discovery/580-SPRINT-BACKLOG.md`
+**Arquivos gerados pelo GENERATE:** `technical-discovery/580-PACKAGE-BACKLOG-REFINED.md`
 
 ---
 
 ## Fluxo de Execução
 
 ### Passo 1 — Carregar Documentos Base
-Ler `technical-discovery/580-SPRINT-BACKLOG.md`, PRODUCT-BACKLOG-LIST (F3), User Stories, MILESTONES (F17).
+Ler `technical-discovery/580-PACKAGE-BACKLOG-REFINED.md`, PRODUCT-BACKLOG-LIST (F3), User Stories, MILESTONES (F17).
 
 ### Passo 2 — Executar Dimensões de Validação
 
@@ -70,7 +70,7 @@ Ler `technical-discovery/580-SPRINT-BACKLOG.md`, PRODUCT-BACKLOG-LIST (F3), User
 
 ### 🚨 CENÁRIO A: SE FOREM ENCONTRADOS DESVIOS (NÃO COMPLIANCE)
 
-#### 📊 RELATÓRIO DE AUDITORIA DE SPRINT-BACKLOG: [Nome do Projeto]
+#### 📊 RELATÓRIO DE AUDITORIA DE PACKAGE-BACKLOG: [Nome do Projeto]
 
 ##### 🔍 Pontos Conflitantes Identificados:
 - **[ID-CONFLITO-SB-01] - [Título Curto]:**
@@ -86,17 +86,17 @@ Para que possamos corrigir o backlog refinado, por favor, responda:
 
 ---
 ### 🛑 STATUS DO GATE: [NÃO COMPLIANCE]
-*(Instrução: O processo pausa aqui. Assim que o humano responder, injete este relatório + respostas no PROMPT-FIX-580-SPRINT-BACKLOG-REFINED.md)*
+*(Instrução: O processo pausa aqui. Assim que o humano responder, injete este relatório + respostas no PROMPT-FIX-580-PACKAGE-BACKLOG-REFINED.md)*
 
 ---
 
 ### ✅ CENÁRIO B: SE O BACKLOG REFINADO ESTIVER 100% CONFORME (PRÉ-COMPLIANCE)
 
-#### 📊 RELATÓRIO DE AUDITORIA DE SPRINT-BACKLOG: [Nome do Projeto]
+#### 📊 RELATÓRIO DE AUDITORIA DE PACKAGE-BACKLOG: [Nome do Projeto]
 
 ### 🛑 STATUS DO GATE: [PRÉ-COMPLIANCE INTERNO - AGUARDANDO VALIDAÇÃO HUMANA]
 
-- **DOCUMENTO:** `technical-discovery/580-SPRINT-BACKLOG.md` gerado conforme PRODUCT-BACKLOG-LIST e MILESTONES.
+- **DOCUMENTO:** `technical-discovery/580-PACKAGE-BACKLOG-REFINED.md` gerado conforme PRODUCT-BACKLOG-LIST e MILESTONES.
 - **AUDITORIA DA IA:** Cobertura de US validada. Tarefas T-NNN sequenciais e sem duplicatas. Todas as US do backlog de negócio cobertas. Coluna CONTRACTS preenchida. Resumo por sprint consistente com a tabela.
 - **DIRETRIZ:** Peço que leia o backlog refinado para verificar se a decomposição em tarefas está adequada para o planejamento das sprints.
 

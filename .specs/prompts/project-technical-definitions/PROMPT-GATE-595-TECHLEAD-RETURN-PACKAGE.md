@@ -2,7 +2,7 @@
 
 ## Contexto
 
-Este prompt implementa o **Gate de Validação do Pacote de Retorno do TECHLEAD** para o artefato `595-RETURN-PACKAGE-{FILA-NN}.md` (Bloco E — modo waterfall-discovery). O agente validador verifica se o pacote está completo, rastreável e respeita o contrato PM/PO ↔ TECHLEAD.
+Este prompt implementa o **Gate de Validação do Pacote de Retorno do TECHLEAD** para o artefato `595-RETURN-PACKAGE-{CICLO-NN}.md` (Bloco E — modo waterfall-discovery). O agente validador verifica se o pacote está completo, rastreável e respeita o contrato PM/PO ↔ TECHLEAD.
 
 **Princípio fundamental:** o pacote PROPOE, nunca APLICA. Nenhum arquivo do PM/PO (092/093/095/085/088) pode ter sido alterado pelo TECHLEAD, e todo item do snapshot do 092 deve ter status proposto.
 
@@ -15,17 +15,17 @@ Este prompt implementa o **Gate de Validação do Pacote de Retorno do TECHLEAD*
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
 | `{TECHNICAL_DEFINITIONS_PATH}` | Caminho da pasta technical-definitions |
-| `{FILA_NN}` | Identificador da fila/ciclo de entrega do 092 |
+| `{CICLO_NN}` | Identificador do Ciclo de Entrega (`CICLO-NN`) do 092 |
 | `{SNAPSHOT_092}` | Caminho do snapshot do 092-BACKLOG-KANBAN recebido no pacote de demanda |
 
-**Arquivo gerado pelo GENERATE:** `595-RETURN-PACKAGE-{FILA_NN}.md`
+**Arquivo gerado pelo GENERATE:** `595-RETURN-PACKAGE-{CICLO_NN}.md`
 
 ---
 
 ## Fluxo de Execução
 
 ### Passo 1 — Carregar Documentos Base
-Ler `595-RETURN-PACKAGE-{FILA_NN}.md` (artefato a validar) e `{SNAPSHOT_092}` (referência de itens da fila).
+Ler `595-RETURN-PACKAGE-{CICLO_NN}.md` (artefato a validar) e `{SNAPSHOT_092}` (referência de itens do ciclo).
 
 ### Passo 2 — Executar Dimensões de Validação
 
@@ -74,7 +74,7 @@ Ler `595-RETURN-PACKAGE-{FILA_NN}.md` (artefato a validar) e `{SNAPSHOT_092}` (r
 
 ### 🚨 CENÁRIO A: SE FOREM ENCONTRADOS CONFLITOS OU DESVIOS (NÃO COMPLIANCE)
 
-#### 📊 RELATÓRIO DE AUDITORIA DO RETURN PACKAGE: [FILA-NN — Nome do Projeto]
+#### 📊 RELATÓRIO DE AUDITORIA DO RETURN PACKAGE: [CICLO-NN — Nome do Projeto]
 
 ##### 🔍 Pontos Conflitantes Identificados:
 - **[595-NN] - [Título Curto]:**
@@ -94,11 +94,11 @@ Ler `595-RETURN-PACKAGE-{FILA_NN}.md` (artefato a validar) e `{SNAPSHOT_092}` (r
 
 ### ✅ CENÁRIO B: SE O DOCUMENTO ESTIVER 100% CONFORME (PRÉ-COMPLIANCE)
 
-#### 📊 RELATÓRIO DE AUDITORIA DO RETURN PACKAGE: [FILA-NN — Nome do Projeto]
+#### 📊 RELATÓRIO DE AUDITORIA DO RETURN PACKAGE: [CICLO-NN — Nome do Projeto]
 
 ### 🛑 STATUS DO GATE: [PRÉ-COMPLIANCE INTERNO - AGUARDANDO VALIDAÇÃO HUMANA]
 
-- **DOCUMENTO:** `595-RETURN-PACKAGE-{FILA-NN}.md` gerado conforme as informações fornecidas.
+- **DOCUMENTO:** `595-RETURN-PACKAGE-{CICLO-NN}.md` gerado conforme as informações fornecidas.
 - **AUDITORIA DA IA:** Documento pré-validado. Cobertura total do snapshot 092, débito técnico com CR vinculada, evidências com caminhos válidos agrupadas por janela, coluna "Janela" coerente com o 600, aceite UAT (DE-ACORDO) presente por entrega, impedimentos completos, pedidos de mudança formais, vocabulário WATERFALL e ownership preservado. Nenhum conflito conceitual encontrado pela IA.
 - **DIRETRIZ:** Peço que leia o pacote para verificar se o mesmo atende plenamente ao contrato PM/PO ↔ TECHLEAD antes de enviá-lo ao PM/PO.
 

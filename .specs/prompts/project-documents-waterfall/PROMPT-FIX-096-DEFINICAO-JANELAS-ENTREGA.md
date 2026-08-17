@@ -22,6 +22,6 @@ Cada item em `VIOLATIONS` tem o formato:
 3. **NÃO** altere seções que passaram no GATE e não estão em `VIOLATIONS`
 4. Mantenha o status como `[STATUS: Em revisão]`
 5. **Mantenha o vocabulário WATERFALL** (JAN-*-NN; sem termos ágeis) — conforme a tabela VOCABULÁRIO WATERFALL do GENERATE
-6. **Respeite a fronteira dupla** — não defina Filas/Ciclos (`FILA-NN` é exclusivo do 092)
+6. **Respeite a fronteira dupla** — não defina Ciclos de Entrega (`CICLO-NN` é exclusivo do 092)
 7. Após corrigir cada violação, adicione um comentário inline `<!-- FIX: {description} — corrigido -->` na seção reparada
 8. Retorne `{DOC_PATH}` após as correções

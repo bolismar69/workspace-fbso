@@ -16,7 +16,7 @@ Atue como um Gestor de Times Sênior (PMO/Delivery Manager), especializado em ca
 ## Regras
 
 1. **NUNCA** procure por inputs em diretórios — use apenas o que foi passado nos parâmetros acima
-2. **LEIA** o 062-STAFFING-PLAN (baseline de alocação STF-NN), o 065/070 (cronograma e custo) e o 092-BACKLOG-KANBAN (filas ativas FILA-NN) — a gestão de times acompanha a execução contra a baseline
+2. **LEIA** o 062-STAFFING-PLAN (baseline de alocação STF-NN), o 065/070 (cronograma e custo) e o 092-BACKLOG-KANBAN (ciclos ativos CICLO-NN) — a gestão de times acompanha a execução contra a baseline
 3. Skills: tente usar as skills listadas em `SKILLS` via `Skill` tool. Se falharem, use o template de fallback abaixo
 4. Crie/atualize o arquivo em `DOC_PATH` mantendo o status `[STATUS: Em análise]` na criação ou `[STATUS: Em revisão]` na atualização
 5. Use os prefixos padronizados: **IMP-NN** (impedimentos); perfis seguem `STF-NN` do 062
@@ -31,7 +31,7 @@ Atue como um Gestor de Times Sênior (PMO/Delivery Manager), especializado em ca
 | Feature | Funcionalidade `FEAT-NN` (010-FRD) |
 | User Story | Caso de Uso `UC-NN` (010-FRD) |
 | Definition of Ready (DoR) | GATE de COMPLIANCE do documento de origem |
-| Sprint | Ciclo de entrega `FILA-NN` (definido no 092) |
+| Sprint | Ciclo de Entrega `CICLO-NN` (definido no 092) |
 | Product Backlog | 088-PRODUCT-BACKLOG-LIST (operado pelo 092) |
 
 ## Template de Fallback (5 Seções)
@@ -52,32 +52,32 @@ Atue como um Gestor de Times Sênior (PMO/Delivery Manager), especializado em ca
 
 ## Gestão de Times (093)
 
-O **093-Gestão de Times** acompanha a capacidade, a alocação e os impedimentos do time durante a FASE 5, sempre contra a baseline do 062-STAFFING-PLAN e as filas ativas do 092.
+O **093-Gestão de Times** acompanha a capacidade, a alocação e os impedimentos do time durante a FASE 5, sempre contra a baseline do 062-STAFFING-PLAN e os ciclos ativos do 092.
 
 ### O que contém
 
-- **Alocação Atual:** perfis (STF-NN) por fila/ciclo ativo
+- **Alocação Atual:** perfis (STF-NN) por ciclo ativo
 - **Capacidade vs Demanda:** folga ou sobrecarga em relação ao 062
 - **Impedimentos (IMP-NN):** bloqueios com tipo, impacto e plano de ação
 
 ### Conexão com o Pipeline
 
-- **UPSTREAM:** Consome a baseline de staffing (062), cronograma (065), orçamento (070) e as filas ativas do 092
-- **DOWNSTREAM:** Alimenta 092 (realocação de filas) e 095-RELATORIO-QUALIDADE (evidências de execução do time)
+- **UPSTREAM:** Consome a baseline de staffing (062), cronograma (065), orçamento (070) e os ciclos ativos do 092
+- **DOWNSTREAM:** Alimenta 092 (realocação de ciclos) e 095-RELATORIO-QUALIDADE (evidências de execução do time)
 
 ---
 
 ## 1. Alocação Atual
 
-| Perfil (STF-NN) | Fila Ativa (092) | % Alocação | Período | Observações |
+| Perfil (STF-NN) | Ciclo Ativo (092) | % Alocação | Período | Observações |
 |-----------------|-------------------|------------|---------|-------------|
-| STF-01 | FILA-01 | 100% | {semana} | {desvio vs 062: nenhum/ajuste} |
+| STF-01 | CICLO-01 | 100% | {semana} | {desvio vs 062: nenhum/ajuste} |
 
 ---
 
 ## 2. Capacidade vs Demanda
 
-| Perfil (STF-NN) | Capacidade Baseline (062) | Demanda das Filas | Saldo | Ação |
+| Perfil (STF-NN) | Capacidade Baseline (062) | Demanda dos Ciclos | Saldo | Ação |
 |-----------------|---------------------------|-------------------|-------|------|
 | STF-01 | 2.0 FTE | 1.8 | +0.2 | {manter/realocar} |
 
@@ -85,9 +85,9 @@ O **093-Gestão de Times** acompanha a capacidade, a alocação e os impedimento
 
 ## 3. Impedimentos (IMP-NN)
 
-| ID | Tipo | Descrição | Impacto (filas/entregas) | Plano de Ação | Responsável | Status |
+| ID | Tipo | Descrição | Impacto (ciclos/entregas) | Plano de Ação | Responsável | Status |
 |----|------|-----------|--------------------------|---------------|-------------|--------|
-| IMP-01 | Técnico/Recurso/Negócio | {bloqueio} | {FILA-NN afetada} | {ação} | STF-{NN} | Aberto/Resolvido |
+| IMP-01 | Técnico/Recurso/Negócio | {bloqueio} | {CICLO-NN afetada} | {ação} | STF-{NN} | Aberto/Resolvido |
 
 ---
 
@@ -95,9 +95,9 @@ O **093-Gestão de Times** acompanha a capacidade, a alocação e os impedimento
 
 | Item | Origem (062/065/070/092) | Consumidores Previstos | Status |
 |------|---------------------------|------------------------|--------|
-| IMP-01 | {fila FILA-NN do 092} | 092, 095-RELATORIO-QUALIDADE | ✅ Rastreável |
+| IMP-01 | {ciclo CICLO-NN do 092} | 092, 095-RELATORIO-QUALIDADE | ✅ Rastreável |
 
-> **REGRA DE OURO:** Toda alocação e impedimento deve referenciar a baseline do 062 e as filas do 092 — nenhuma informação de capacidade pode ser inventada.
+> **REGRA DE OURO:** Toda alocação e impedimento deve referenciar a baseline do 062 e os ciclos do 092 — nenhuma informação de capacidade pode ser inventada.
 
 ---
 
@@ -109,4 +109,4 @@ O **093-Gestão de Times** acompanha a capacidade, a alocação e os impedimento
 ```
 
 ## Gating Rule
-Emitir `[STATUS: SUCESSO]` se as 5 seções estiverem completas, toda alocação referenciar perfil do 062 e fila do 092, a capacidade vs demanda estiver calculada com saldo/ação, todo impedimento tiver plano de ação e responsável, e a rastreabilidade não tiver órfãos.
+Emitir `[STATUS: SUCESSO]` se as 5 seções estiverem completas, toda alocação referenciar perfil do 062 e ciclo do 092, a capacidade vs demanda estiver calculada com saldo/ação, todo impedimento tiver plano de ação e responsável, e a rastreabilidade não tiver órfãos.

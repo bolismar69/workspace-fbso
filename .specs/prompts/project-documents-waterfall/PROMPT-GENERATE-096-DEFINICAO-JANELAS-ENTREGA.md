@@ -19,9 +19,9 @@ Atue como um Especialista em Gestão de Entregas e Processos (PM/PO Sênior), re
 2. **LEIA** os upstreams — os critérios de cada janela derivam dos documentos existentes: DEV do Bloco E e do 086/087; QA do 045/050 e do 095 (GO/NO-GO); UAT do 105; DEPLOY do 090/087 (GMUD em PROD)
 3. Skills: tente usar as skills listadas em `SKILLS` via `Skill` tool. Se falharem, use o template de fallback abaixo
 4. Crie o arquivo em `DOC_PATH` com o status inicial `[STATUS: Em análise]`
-5. Use os prefixos padronizados: **JAN-DEV-NN**, **JAN-QA-NN**, **JAN-UAT-NN**, **JAN-DEPLOY-NN** (NN = número da FILA-NN do 092)
+5. Use os prefixos padronizados: **JAN-DEV-NN**, **JAN-QA-NN**, **JAN-UAT-NN**, **JAN-DEPLOY-NN** (NN = número da CICLO-NN do 092)
 6. Aplique a tabela VOCABULÁRIO WATERFALL abaixo em todo o documento
-7. **FRONTEIRA DUPLA:** este documento define JANELAS (estrutura de passagem das entregas) e NUNCA define Filas/Ciclos (`FILA-NN`) — a atribuição de demanda a ciclo é exclusiva do 092. O 092, por sua vez, nunca define janelas
+7. **FRONTEIRA DUPLA:** este documento define JANELAS (estrutura de passagem das entregas) e NUNCA define Ciclos de Entrega (`CICLO-NN`) — a atribuição de demanda a ciclo é exclusiva do 092. O 092, por sua vez, nunca define janelas
 8. Ao final, retorne `{DOC_PATH}` confirmando a criação
 
 ## VOCABULÁRIO WATERFALL (obrigatório — não usar vocabulário ágil)
@@ -32,7 +32,7 @@ Atue como um Especialista em Gestão de Entregas e Processos (PM/PO Sênior), re
 | Feature | Funcionalidade `FEAT-NN` (010-FRD) |
 | User Story | Caso de Uso `UC-NN` (010-FRD) |
 | Definition of Ready (DoR) | GATE de COMPLIANCE do documento de origem |
-| Sprint | Ciclo de entrega `FILA-NN` (definido pelo 092) |
+| Sprint | Ciclo de Entrega `CICLO-NN` (definido pelo 092) |
 | Product Backlog | 088-PRODUCT-BACKLOG-LIST (operado pelo 092) |
 
 ## Template de Fallback (5 Seções)
@@ -53,11 +53,11 @@ Atue como um Especialista em Gestão de Entregas e Processos (PM/PO Sênior), re
 
 ## Definição de Janelas de Entrega
 
-O **096-DEFINICAO-JANELAS-ENTREGA** é a definição estrutural das 4 janelas pelas quais cada ciclo de entrega (`FILA-NN`) passa na FASE 5: **DEV → QA → UAT → DEPLOY**. É um documento de definição (não um registro operacional): os registros de execução vivem no 600-EXECUTION-HISTORY (TECHLEAD), no pacote 595 (retorno por ciclo), no 095 (verificação) e no 105 (aceite).
+O **096-DEFINICAO-JANELAS-ENTREGA** é a definição estrutural das 4 janelas pelas quais cada ciclo de entrega (`CICLO-NN`) passa na FASE 5: **DEV → QA → UAT → DEPLOY**. É um documento de definição (não um registro operacional): os registros de execução vivem no 600-EXECUTION-HISTORY (TECHLEAD), no pacote 595 (retorno por ciclo), no 095 (verificação) e no 105 (aceite).
 
 ### Papel no fluxo
 
-- **UPSTREAM:** consome 092 (FILA-NN), 045/050 (testes), 095 (GO/NO-GO), 105 (aceite), 090/087 (deploy/GMUD), 085 (mudanças)
+- **UPSTREAM:** consome 092 (CICLO-NN), 045/050 (testes), 095 (GO/NO-GO), 105 (aceite), 090/087 (deploy/GMUD), 085 (mudanças)
 - **DOWNSTREAM:** consumido pelo **Bloco F do PROJECT-TECHNICAL-DEFINITIONS v7.0** (orquestração TECHLEAD) — este documento define O QUÊ e QUEM; o Bloco F orquestra O COMO por ciclo
 
 ---
@@ -68,10 +68,10 @@ O **096-DEFINICAO-JANELAS-ENTREGA** é a definição estrutural das 4 janelas pe
 
 | Campo | Detalhe |
 |-------|---------|
-| **Objetivo** | Construção da FILA-NN (Bloco E do TECHLEAD, steps 0–7) |
+| **Objetivo** | Construção da CICLO-NN (Bloco E do TECHLEAD, steps 0–7) |
 | **Dono da execução (frente)** | TECHLEAD (Bloco E) |
 | **Dono do aceite** | TECHLEAD (GATE do ciclo) + revisor humano (086) |
-| **Critérios de entrada** | FILA-NN ativa (092) + snapshot 092 + pacote de demanda F1–F4 |
+| **Critérios de entrada** | CICLO-NN ativa (092) + snapshot 092 + pacote de demanda F1–F4 |
 | **Critérios de saída (gate)** | PR aprovado (086) + CI verde (087) + artefatos do ciclo no repositório da solução |
 | **Evidências esperadas** | PRs, relatórios de execução, IMPLEMENTATION-REPORT, DT-XXX, pacote 595 (seções 2 e 4) |
 | **Docs upstream** | 092, 086, 087, 045, 050 |
@@ -97,7 +97,7 @@ O **096-DEFINICAO-JANELAS-ENTREGA** é a definição estrutural das 4 janelas pe
 | **Dono do aceite** | PM/PO + Key Users — registro de **DE-ACORDO/APROVAÇÃO por entrega** |
 | **Critérios de entrada** | 095 com resultado GO |
 | **Critérios de saída (gate)** | Registro de **DE-ACORDO/APROVAÇÃO da entrega** (Key Users + PM/PO) |
-| **Evidências esperadas** | Registro de DE-ACORDO por entrega (alimenta o pacote 595 e pode ser refletido no 580-SPRINT-BACKLOG pelo TECHLEAD), registros de testes de aceite |
+| **Evidências esperadas** | Registro de DE-ACORDO por entrega (alimenta o pacote 595 e pode ser refletido no 580-PACKAGE-BACKLOG-REFINED pelo TECHLEAD), registros de testes de aceite |
 | **Docs upstream** | 095, 003/010 (jornadas e requisitos) |
 
 > **NOTA:** o **105-TERMO-ACEITE** permanece como o aceite **FINAL do projeto (FASE 6)** — ele NÃO é usado como gate por entrega. O controle por entrega/ciclo é o registro de DE-ACORDO/APROVAÇÃO desta janela.
@@ -116,7 +116,7 @@ O **096-DEFINICAO-JANELAS-ENTREGA** é a definição estrutural das 4 janelas pe
 
 ---
 
-## 2. Matriz de Transição (loop por FILA-NN)
+## 2. Matriz de Transição (loop por CICLO-NN)
 
 ```mermaid
 flowchart LR
@@ -124,7 +124,7 @@ flowchart LR
     QA -->|"095 GO"| UAT["JAN-UAT-NN"]
     UAT -->|"DE-ACORDO da entrega"| DEPLOY["JAN-DEPLOY-NN"]
     DEPLOY -->|"pós-deploy validado"| RET["Pacote 595 → PM/PO aplica 092"]
-    RET -->|"próxima FILA-NN"| DEV
+    RET -->|"próxima CICLO-NN"| DEV
 ```
 
 **Tratativas de retorno:**
@@ -138,9 +138,9 @@ flowchart LR
 
 | Item | Origem | Registro de execução | Consumidor |
 |------|--------|----------------------|------------|
-| JAN-DEV-NN | FILA-NN (092) | 600-EXECUTION-HISTORY (TECHLEAD) | pacote 595 |
+| JAN-DEV-NN | CICLO-NN (092) | 600-EXECUTION-HISTORY (TECHLEAD) | pacote 595 |
 | JAN-QA-NN | gate DEV + 095 GO/NO-GO | 600 + coluna "Janela" do 595 | PM/PO (aceite via 095) |
-| JAN-UAT-NN | DE-ACORDO/APROVAÇÃO da entrega registrado | pacote 595 (e/ou 580-SPRINT-BACKLOG) | 090 (entrada do deploy) |
+| JAN-UAT-NN | DE-ACORDO/APROVAÇÃO da entrega registrado | pacote 595 (e/ou 580-PACKAGE-BACKLOG-REFINED) | 090 (entrada do deploy) |
 | JAN-DEPLOY-NN | 090 + 087 (GMUD) | 600 + evidências do 087 | M5 (GO-LIVE) |
 
 > **REGRA DE OURO:** a janela é atributo de RASTREIO da entrega — o status canônico do item permanece no 092 (`A Fazer → Em Execução → Em Revisão → Concluído/Impedido`). A janela nunca substitui o status.
@@ -150,7 +150,7 @@ flowchart LR
 ## 4. Regras e Limites
 
 1. **Vocabulário WATERFALL** obrigatório em todo o documento
-2. **Fronteira dupla:** este documento não define Filas/Ciclos (exclusivo do 092); o 092 não define janelas (veto da regra 4 do GENERATE-092)
+2. **Fronteira dupla:** este documento não define Ciclos de Entrega (exclusivo do 092); o 092 não define janelas (veto da regra 4 do GENERATE-092)
 3. **M4 preservado:** mudança de escopo pós-M4 segue o 085
 4. **Execução delegada:** este documento define estrutura e donos; a execução de cada frente será realizada por skills/agents/roadmaps especializados (fora do escopo desta definição)
 5. **HITL:** toda transição entre janelas exige validação humana explícita
@@ -166,4 +166,4 @@ flowchart LR
 ```
 
 ## Gating Rule
-Emitir `[STATUS: SUCESSO]` se as 5 seções estiverem completas, as 4 janelas tiverem objetivo/donos/critérios de entrada/saída/evidências/upstreams, a matriz de transição cobrir o loop com as 3 tratativas de retorno, a rastreabilidade não tiver órfãos, e nenhuma FILA/Ciclo tiver sido definida (fronteira dupla).
+Emitir `[STATUS: SUCESSO]` se as 5 seções estiverem completas, as 4 janelas tiverem objetivo/donos/critérios de entrada/saída/evidências/upstreams, a matriz de transição cobrir o loop com as 3 tratativas de retorno, a rastreabilidade não tiver órfãos, e nenhum ciclo de entrega (`CICLO-NN`) tiver sido definido (fronteira dupla).

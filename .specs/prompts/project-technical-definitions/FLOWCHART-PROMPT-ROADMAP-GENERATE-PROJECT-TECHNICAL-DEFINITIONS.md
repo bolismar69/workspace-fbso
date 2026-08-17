@@ -1,6 +1,6 @@
 # FLOWCHART: ROADMAP DE DEFINIÇÕES TÉCNICAS DO PROJETO
 
-## Versão: 7.1 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção + Especialistas Pipeline/CVE/Stress) + Bloco F (Janelas de Entrega + Tooling de Ambiente)
+## Versão: 7.3 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção + Especialistas Pipeline/CVE/Stress) + Bloco F (Janelas de Entrega + Tooling de Ambiente) + Ciclos de Entrega CICLO-NN + 590-ciclo-NNN
 
 > **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` v5.0
 >
@@ -53,16 +53,16 @@ flowchart TB
     GC -->|gap| BLOCO_A
     GC -->|OK| BLOCO_D
     
-    subgraph BLOCO_D[Bloco D: Sprints — Technical Discovery]
-        F18[F18: SPRINT-BACKLOG 🆕<br/>technical-discovery/580-SPRINT-BACKLOG.md] --> F19[F19: DISCOVERY TÉCNICO 🆕<br/>technical-discovery/590-sprint-NNN/]
+    subgraph BLOCO_D[Bloco D: Ciclos/Sprints — Technical Discovery]
+        F18[F18: PACKAGE-BACKLOG 🆕<br/>technical-discovery/580-PACKAGE-BACKLOG-REFINED.md] --> F19[F19: DISCOVERY TÉCNICO 🆕<br/>technical-discovery/590-ciclo-NNN/]
         F19 -.->|iterativo| F19
     end
     
     BLOCO_D --> GD{{⛔ Barreira D}}
 
     subgraph BLOCO_E["Bloco E: Esteira de Construção (SOMENTE modo waterfall-discovery)"]
-        E1[E1: Contexto Base<br/>PRD/ARCH/SPECS/TASKS/TEST_PLAN] --> E2["E2: Loop por ciclo FILA-NN<br/>SPRINT-CARD → EXECUTE → QA → PR<br/>(3a CVE/SCA · 3b CI-CD · 4a STRESS)"]
-        E2 --> E3["595-TECHLEAD-RETURN-PACKAGE<br/>595-RETURN-PACKAGE-{FILA-NN}.md<br/>GENERATE → GATE → FIX"]
+        E1[E1: Contexto Base<br/>PRD/ARCH/SPECS/TASKS/TEST_PLAN] --> E2["E2: Loop por ciclo CICLO-NN<br/>SPRINT-CARD → EXECUTE → QA → PR<br/>(3a CVE/SCA · 3b CI-CD · 4a STRESS)"]
+        E2 --> E3["595-TECHLEAD-RETURN-PACKAGE<br/>595-RETURN-PACKAGE-{CICLO-NN}.md<br/>GENERATE → GATE → FIX"]
     end
 
     subgraph BLOCO_F["Bloco F: Janelas de Entrega (SOMENTE modo waterfall-discovery — consome o 096)"]
@@ -76,7 +76,7 @@ flowchart TB
     GD -->|"modo waterfall-discovery"| BLOCO_E
     BLOCO_E --> BLOCO_F
     GD --> HIST[📊 EXECUTION-HISTORY<br/>600-EXECUTION-HISTORY.md]
-    BLOCO_F -->|"entrega ao PM/PO"| PMPO([WATERFALL-EXECUTION v2.2<br/>recepção 3.3])
+    BLOCO_F -->|"entrega ao PM/PO"| PMPO([WATERFALL-EXECUTION v2.3<br/>recepção 3.3])
     HIST --> END([✅ Pipeline Completo])
 
     style F0 fill:#6c5ce7,color:#fff
@@ -152,7 +152,7 @@ flowchart TD
         F0_5_DEC -->|Todos ❌| F0_6A["🆕 Projeto Novo<br/>→ Iniciar Fase 1"]
         F0_5_DEC -->|Alguns ✅| F0_6B["📋 Projeto em Andamento<br/>→ Iniciar da primeira fase pendente"]
         F0_5_DEC -->|Todos ✅ Compliance| F0_6C["✅ Projeto Completo<br/>→ Revisar / Evoluir / Encerrar"]
-        F0_5 --> F0_5_MODE["Auditar sinais de modo:<br/>docs ágeis (project-documents/)<br/>vs WATERFALL (088 + 092 FILA-NN<br/>+ 010 + 060 COMPLIANCE)"] --> F0_5_MODE_DEC{"Modo proposto<br/>(decisão humana)"}
+        F0_5 --> F0_5_MODE["Auditar sinais de modo:<br/>docs ágeis (project-documents/)<br/>vs WATERFALL (088 + 092 CICLO-NN<br/>+ 010 + 060 COMPLIANCE)"] --> F0_5_MODE_DEC{"Modo proposto<br/>(decisão humana)"}
         F0_5_MODE_DEC -->|waterfall-discovery| F0_5_MODE_W["Bloco 0 reduzido +<br/>Blocos A-D migrados +<br/>Bloco E + Bloco F + 595"]
         F0_5_MODE_DEC -->|agile-discovery| F0_5_MODE_A["Pipeline atual<br/>(retrocompatível)"]
     end
@@ -340,9 +340,9 @@ flowchart TB
         F17_GATE --> F17_OK[COMPLIANCE ✅]
     end
 
-    subgraph F18[F18: SPRINT-BACKLOG 🆕]
+    subgraph F18[F18: PACKAGE-BACKLOG 🆕]
         direction TB
-        F18_GEN[GENERATE<br/>Backlog Refinado] --> F18_GATE[GATE<br/>Valida backlog sprint] --> F18_FIX[FIX<br/>Corrige tarefas]
+        F18_GEN[GENERATE<br/>Backlog Refinado] --> F18_GATE[GATE<br/>Valida backlog do ciclo/sprint] --> F18_FIX[FIX<br/>Corrige tarefas]
         F18_FIX -.->|loop| F18_GATE
         F18_GATE --> F18_OK[COMPLIANCE ✅]
     end
@@ -418,8 +418,8 @@ flowchart TB
 | 15 | `550-SOLUTIONS-STACK-MATRIX.md` | Stack tecnológica de cada solução |
 | 16 | `560-SPECS-DEFINITION.md` | Consolidação técnica enxuta (sumariza + referencia) |
 | 17 | `570-MILESTONES.md` | Roadmap alinhado ao negócio com milestones |
-| 18 🆕 | `technical-discovery/580-SPRINT-BACKLOG.md` | Backlog refinado com tarefas T-NNN → US-ID → Sprint-Alvo → CONTRACTS |
-| 19 🆕 | `technical-discovery/590-sprint-NNN/` | Contratos técnicos por sprint (API, Data, Security, SRE, Increments) |
+| 18 🆕 | `technical-discovery/580-PACKAGE-BACKLOG-REFINED.md` | Backlog refinado com tarefas T-NNN → US-ID → Ciclo/Sprint-Alvo → CONTRACTS |
+| 19 🆕 | `technical-discovery/590-ciclo-NNN/` | Contratos técnicos por ciclo/sprint (API, Data, Security, SRE, Increments) |
 | — | `600-EXECUTION-HISTORY.md` | Dashboard de controle com estado de todos os 20 artefatos |
 
 ---
@@ -474,9 +474,9 @@ flowchart TD
     GC -->|gap detectado| BLOCO_A
     GC -->|OK| BLOCO_D
 
-    subgraph BLOCO_D[Bloco D: Sprints — Technical Discovery — Sequencial + Iterativo]
+    subgraph BLOCO_D[Bloco D: Ciclos/Sprints — Technical Discovery — Sequencial + Iterativo]
         direction LR
-        D1[F18: SPRINT-BACKLOG 🆕] --> D2[F19: DISCOVERY TÉCNICO 🆕]
+        D1[F18: PACKAGE-BACKLOG 🆕] --> D2[F19: DISCOVERY TÉCNICO 🆕]
         D2 -.->|iterativo| D2
     end
 
@@ -533,7 +533,7 @@ flowchart TD
         F19_FIX -.->|loop| F19_GATE
         F19_GATE --> F19_HUMAN[VALIDAÇÃO HUMANA]
         F19_HUMAN --> F19_APPROVED[✅ COMPLIANCE]
-        F19_APPROVED --> F19_NEXT{Próxima<br/>sprint?}
+        F19_APPROVED --> F19_NEXT{Próximo<br/>ciclo/sprint?}
         F19_NEXT -->|SIM| F19_GEN
         F19_NEXT -->|NÃO| F19_DONE
     end
@@ -553,7 +553,7 @@ flowchart TD
 
 | Fase | Mecanismo | Motivo |
 |------|-----------|--------|
-| **F19** 🆕 | Generate → Gate → Fix → COMPLIANCE (loop iterativo por sprint) | Discovery Técnico contínuo — ao final de cada sprint, orquestrador pergunta se continua |
+| **F19** 🆕 | Generate → Gate → Fix → COMPLIANCE (loop iterativo por ciclo/sprint) | Discovery Técnico contínuo — ao final de cada sprint, orquestrador pergunta se continua |
 | **EXECUTION-HISTORY** | Generate → Revisão humana (sem Gate/Fix) | Dashboard de controle consolidado — atualizado incrementalmente após cada fase |
 
 ---
@@ -835,8 +835,8 @@ stateDiagram-v2
         F19_Gate --> F19_Human: SEM ERROS
         F19_Human --> F19_Gen: Novos inputs
         F19_Human --> F19_Done: Aprovado
-        F19_Done --> F19_Next: Sprint concluída
-        F19_Next --> F19_Gen: Continuar próxima sprint
+        F19_Done --> F19_Next: Ciclo/sprint concluído
+        F19_Next --> F19_Gen: Continuar próximo ciclo/sprint
         F19_Next --> BarreiraD: Encerrar discovery
     }
 
@@ -921,7 +921,7 @@ flowchart LR
 flowchart LR
     subgraph PMPO[WATERFALL-EXECUTION v2.0 — PM/PO]
         direction TB
-        P1[092-BACKLOG-KANBAN<br/>FILA-NN · BL-NN · CR-NN] --> P2[3.1 Handoff<br/>pacote de demanda]
+        P1[092-BACKLOG-KANBAN<br/>CICLO-NN · BL-NN · CR-NN] --> P2[3.1 Handoff<br/>pacote de demanda]
         P4[3.3 Recepção<br/>aplicar pacote 595<br/>→ GENERATE-092 + GATE-092] --> P1
     end
 
@@ -933,7 +933,7 @@ flowchart LR
     end
 
     P2 -->|"demanda: snapshot 092 + docs F1-F4"| TECHLEAD
-    T3 -->|"retorno: 595-RETURN-PACKAGE-{FILA-NN}.md"| P4
+    T3 -->|"retorno: 595-RETURN-PACKAGE-{CICLO-NN}.md"| P4
 
     style PMPO fill:#e3f2fd,stroke:#0984e3,color:#ffffff
     style TECHLEAD fill:#f3e5f5,stroke:#a29bfe,color:#ffffff
@@ -946,7 +946,7 @@ flowchart LR
 | **Project Documents** | Estratégico / Negócio | Charter, BRD, Epics, Features, US, RTM | → Definições Técnicas (Bloco 0) |
 | **Technical Definitions** ← | Tático / Projeto | 20 artefatos + `technical-discovery/` + EXECUTION-HISTORY | → Soluções Técnicas |
 | **Technical Solutions** | Tático / Implementação | PRD, ARCH, SEC, SPECS, TASKS, TEST_PLAN | → Times de Desenvolvimento |
-| **WATERFALL-EXECUTION v2.0 (FASE 5)** | Operacional / PM-PO | 092/093 + pacote de demanda (FILA-NN + docs F1–F4) | → Definições Técnicas (modo waterfall-discovery) |
+| **WATERFALL-EXECUTION v2.0 (FASE 5)** | Operacional / PM-PO | 092/093 + pacote de demanda (CICLO-NN + docs F1–F4) | → Definições Técnicas (modo waterfall-discovery) |
 
 ---
 

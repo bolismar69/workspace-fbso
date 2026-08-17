@@ -1,5 +1,5 @@
 # PROMPT: ROADMAP DE EXECUÇÃO MACRO E GUIA DE ORQUESTRAÇÃO DE DOCUMENTOS — METODOLOGIA WATERFALL
-## Versão: 3.2 — 6 Fases, 39 Documentos, Numeração por Intervalos, Dupla RTM (Negócio+Sistema), Gates Estruturais, FASE 5 de Execução com Janelas de Entrega (096), Tooling de Ambiente (IMPLEMENTATION-TOOLING) e Prompts Nomeados pelo Número do Artefato
+## Versão: 3.3 — 6 Fases, 39 Documentos, Numeração por Intervalos, Dupla RTM (Negócio+Sistema), Gates Estruturais, FASE 5 de Execução com Planejamento do Ciclo (CICLO-NN), Janelas de Entrega (096), Tooling de Ambiente (IMPLEMENTATION-TOOLING) e Prompts Nomeados pelo Número do Artefato
 
 Atue como um Especialista em Gestão de Processos (BPM) e Arquiteto de Soluções Organizacionais, especializado em metodologia WATERFALL e Engenharia de Prompts.
 
@@ -287,20 +287,20 @@ O PROJECT-CHARTER é o **start do projeto** — no momento de sua criação, mui
 
 ### FASE 5 — EXECUÇÃO E CONSTRUÇÃO
 
-> 🚀 **Orquestrada pelo roadmap dedicado:** `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` (v1.0). O time recebe a documentação completa das FASES 1–4 (negócio, funcional, design técnico, planejamento e regras) e executa em ciclos de entrega (`FILA-NN` do 092).
+> 🚀 **Orquestrada pelo roadmap dedicado:** `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` (v2.3 — incluindo o Planejamento do Ciclo de Entrega, Sub-fase 1.5). O time recebe a documentação completa das FASES 1–4 (negócio, funcional, design técnico, planejamento e regras) e executa em ciclos de entrega (`CICLO-NN` do 092).
 
 | # | Documento | Arquivo | Papel na Execução |
 |---|---|---|---|
-| 092 | BACKLOG-KANBAN 🆕 | `092-BACKLOG-KANBAN-{PROJECT_ID_NAME}.md` | Gestão de tasks, Change-Requests (Negócio/Técnico via 085), status e Filas/Ciclos |
+| 092 | BACKLOG-KANBAN 🆕 | `092-BACKLOG-KANBAN-{PROJECT_ID_NAME}.md` | Gestão de tasks, Change-Requests (Negócio/Técnico via 085), status e Ciclos de Entrega (`CICLO-NN`) |
 | 093 | GESTAO-TIMES 🆕 | `093-GESTAO-TIMES-{PROJECT_ID_NAME}.md` | Capacidade, impedimentos e alocação (contra o 062) |
 | 095 | RELATORIO-QUALIDADE | `095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md` | Estrutura criada na F3; evidências alimentadas a cada ciclo |
 | 096 | DEFINICAO-JANELAS-ENTREGA 🆕 | `096-DEFINICAO-JANELAS-ENTREGA-{PROJECT_ID_NAME}.md` | Definição estrutural das janelas DEV/QA/UAT/DEPLOY (consumida pelo Bloco F do TECHLEAD) |
 | 097 | MANUAIS-USUARIO | `097-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md` | Treinamento e negócio (upstream 003/010/016) |
 | 100 | MANUAIS-OPERACIONAIS | `100-MANUAIS-OPERACIONAIS-{PROJECT_ID_NAME}.md` | Runbooks e sustentação (upstream 041/044/087/090) |
 
-> 🚧 **Sub-fase 2 — Janelas de Entrega (Ciclos/Sprints):** TBD — fora de escopo nesta revisão. A esteira executa por ciclo de entrega (`FILA-NN` do 092) sem depender da definição das janelas.
+> 🚧 **Sub-fase 2 — Janelas de Entrega (Ciclos/Sprints):** TBD — fora de escopo nesta revisão. A esteira executa por ciclo de entrega (`CICLO-NN` do 092) sem depender da definição das janelas.
 
-> 🔗 **Divisão de papéis (2026-08-16):** a construção é **delegada ao TECHLEAD** via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v6.0, modo `waterfall-discovery`, Bloco E). O PM/PO entrega o pacote de demanda (handoff) e recebe o `595-RETURN-PACKAGE-{FILA-NN}.md` (recepção), conforme `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` v2.0.
+> 🔗 **Divisão de papéis (2026-08-16):** a construção é **delegada ao TECHLEAD** via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v6.0, modo `waterfall-discovery`, Bloco E). O PM/PO entrega o pacote de demanda (handoff) e recebe o `595-RETURN-PACKAGE-{CICLO-NN}.md` (recepção), conforme `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` v2.0.
 
 ### FASE 6 — ENCERRAMENTO E OPERAÇÃO
 
@@ -539,7 +539,7 @@ Quando um documento já em COMPLIANCE é modificado, todos os documentos downstr
 | 087-PLANO-CI-CD-AMBIENTES 🆕 | 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 092-BACKLOG-KANBAN, 100-Manuais Ops e seus dependentes transitivos |
 | 088-PRODUCT-BACKLOG-LIST 🆕 | 092-BACKLOG-KANBAN, 093-GESTAO-TIMES e seus dependentes transitivos |
 | 092-BACKLOG-KANBAN 🆕 | 093-GESTAO-TIMES, 095-Relatório (evidências de andamento) e seus dependentes transitivos |
-| 093-GESTAO-TIMES 🆕 | 092-BACKLOG-KANBAN (realocação de filas), 095-Relatório (evidências de execução) e seus dependentes transitivos |
+| 093-GESTAO-TIMES 🆕 | 092-BACKLOG-KANBAN (realocação de ciclos), 095-Relatório (evidências de execução) e seus dependentes transitivos |
 | 096-DEFINICAO-JANELAS-ENTREGA 🆕 | Bloco F do TECHLEAD (orquestração das janelas), pacote 595 (coluna Janela/Aceite) e seus dependentes transitivos |
 | **WATERFALL-ESTIMATION F1 (UPSTREAM-ROM)** 🆕 | F2 (Scope Snapshot), F3 (Governance Report) |
 | **WATERFALL-ESTIMATION F4 (DOWNSTREAM-PERT)** 🆕 | F5 (Scope Snapshot), F6 (Cronograma), F7 (Orçamento), **065-Cronograma**, **070-Orçamento** |

@@ -1,5 +1,5 @@
 # PROMPT: ROADMAP DE IMPLEMENTAÇÃO DE AMBIENTE E FERRAMENTAS — TOOLING DA FASE 5 (IMPLEMENTATION-TOOLING)
-## Versão: 1.0 — 4 Fases, 4 Trios (12 Prompts) + FLOWCHART, Numeração por Intervalos 6xx, Invocado pelo TECHLEAD (Bloco F) ou standalone — Independente da Metodologia (ágil ou waterfall)
+## Versão: 1.1 — 4 Fases, 4 Trios (12 Prompts) + FLOWCHART, Numeração por Intervalos 6xx, Invocado pelo TECHLEAD (Bloco F) ou standalone — Independente da Metodologia (ágil ou waterfall), Ciclos de Entrega CICLO-NN
 
 Atue como um Arquiteto DevOps/Plataforma Sênior e Gestor de Execução, especializado em orquestração de infraestrutura como código e engenharia de prompts, atuando de forma independente da metodologia do projeto (ágil ou waterfall).
 
@@ -38,7 +38,7 @@ FASE 0 (Bootstrap + Barreira de Entrada) → F1 (610 MANIFESTS-DEVOPS) → 🚧 
 | Feature | Funcionalidade `FEAT-NN` (010-FRD) |
 | User Story | Caso de Uso `UC-NN` (010-FRD) |
 | Definition of Ready (DoR) | GATE de COMPLIANCE do documento de origem |
-| Sprint | Ciclo de entrega `FILA-NN` (definido pelo 092) |
+| Sprint | Ciclo de Entrega `CICLO-NN` (definido pelo 092) |
 | Product Backlog | 088-PRODUCT-BACKLOG-LIST (operado pelo 092 na FASE 5) |
 | Deploy contínuo | Automação de deploy alinhada ao 041/087 (GMUD no 090) |
 
@@ -174,7 +174,7 @@ Template parametrizado — **uma execução por ferramenta** de `TARGET_TOOLS`. 
 | Roadmap | Ponto de integração |
 |---|---|
 | `PROJECT-TECHNICAL-DEFINITIONS` (TECHLEAD, Bloco F) | Tarefas de infra/ferramentas das janelas DEV/QA invocam este roadmap; Bloco E referencia `610` (manifests) via `PROMPT-EXECUTE-CI-CD-PIPELINE` |
-| `WATERFALL-EXECUTION` (FASE 5) | Setup de ambiente por ciclo de entrega (`FILA-NN`): tooling é pré-requisito de ambiente antes da execução do código |
+| `WATERFALL-EXECUTION` (FASE 5) | Setup de ambiente por ciclo de entrega (`CICLO-NN`): tooling é pré-requisito de ambiente antes da execução do código |
 | `PROJECT-DOCUMENTS-WATERFALL` (master) | Companion opcional da FASE 5 — consume `041/043/044` (F3) e alimenta `095-RELATORIO-QUALIDADE`/`100-MANUAIS-OPERACIONAIS` com evidências e runbooks |
 | `sprint-tecnhnical-implementation/` | `PROMPT-EXECUTE-CI-CD-PIPELINE` e `PROMPT-EXECUTE-CVE-SCA-SCAN` consomem manifestos/ferramentas produzidos aqui |
 

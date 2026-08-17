@@ -2,7 +2,7 @@
 
 ## Contexto
 
-Este prompt é acionado quando o gate reprova os contratos de uma sprint em `technical-discovery/590-sprint-NNN/`. O agente corretor aplica correções cirúrgicas com base no relatório inline do gate. **Nunca reescreve os arquivos do zero. Modifique estritamente as seções, tabelas ou linhas apontadas como Não Compliance nos contratos afetados.**
+Este prompt é acionado quando o gate reprova os contratos de uma sprint em `technical-discovery/590-ciclo-NNN/`. O agente corretor aplica correções cirúrgicas com base no relatório inline do gate. **Nunca reescreve os arquivos do zero. Modifique estritamente as seções, tabelas ou linhas apontadas como Não Compliance nos contratos afetados.**
 
 ---
 
@@ -20,7 +20,7 @@ Este prompt é acionado quando o gate reprova os contratos de uma sprint em `tec
 ## Fluxo de Execução
 
 ### Passo 1 — Carregar Relatório do Gate e Artefatos
-Ler o **Relatório de Auditoria** emitido pelo gate (relatório inline com os IDs de conflito e respostas do humano), os 5 contratos da sprint, SPRINT-BACKLOG, artefatos base do Bloco B.
+Ler o **Relatório de Auditoria** emitido pelo gate (relatório inline com os IDs de conflito e respostas do humano), os 5 contratos da sprint, PACKAGE-BACKLOG, artefatos base do Bloco B.
 
 ### Passo 2 — Processar NCs por Prioridade
 

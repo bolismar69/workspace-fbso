@@ -2,7 +2,7 @@
 
 ## Contexto
 
-Este prompt implementa o **corretor cirúrgico do Pacote de Retorno do TECHLEAD** para o artefato `595-RETURN-PACKAGE-{FILA-NN}.md` (Bloco E — modo waterfall-discovery). Ele corrige APENAS os pontos conflitantes reportados pelo GATE, sem regerar o documento.
+Este prompt implementa o **corretor cirúrgico do Pacote de Retorno do TECHLEAD** para o artefato `595-RETURN-PACKAGE-{CICLO-NN}.md` (Bloco E — modo waterfall-discovery). Ele corrige APENAS os pontos conflitantes reportados pelo GATE, sem regerar o documento.
 
 **Princípio fundamental:** correção cirúrgica — editar somente as seções com violações reportadas, preservando o que passou no GATE e mantendo o contrato "TECHLEAD propõe, PM/PO aplica".
 
@@ -15,7 +15,7 @@ Este prompt implementa o **corretor cirúrgico do Pacote de Retorno do TECHLEAD*
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
 | `{TECHNICAL_DEFINITIONS_PATH}` | Caminho da pasta technical-definitions |
-| `{FILA_NN}` | Identificador da fila/ciclo de entrega do 092 |
+| `{CICLO_NN}` | Identificador do Ciclo de Entrega (`CICLO-NN`) do 092 |
 | `{GATE_REPORT}` | Relatório de auditoria do GATE-595 com os conflitos `[595-NN]` e as respostas do humano |
 
 ---
@@ -23,7 +23,7 @@ Este prompt implementa o **corretor cirúrgico do Pacote de Retorno do TECHLEAD*
 ## Fluxo de Execução
 
 ### Passo 1 — Carregar Documentos Base
-Ler `595-RETURN-PACKAGE-{FILA_NN}.md` (artefato a corrigir) e `{GATE_REPORT}` (conflitos + respostas do humano).
+Ler `595-RETURN-PACKAGE-{CICLO_NN}.md` (artefato a corrigir) e `{GATE_REPORT}` (conflitos + respostas do humano).
 
 ### Passo 2 — Corrigir Apenas as Violações
 
