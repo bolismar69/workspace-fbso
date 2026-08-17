@@ -62,14 +62,14 @@ flowchart TB
 
     subgraph BLOCO_E["Bloco E: Esteira de Construção (SOMENTE modo waterfall-discovery)"]
         E1[E1: Contexto Base<br/>PRD/ARCH/SPECS/TASKS/TEST_PLAN] --> E2[E2: Loop por ciclo FILA-NN<br/>SPRINT-CARD → EXECUTE → QA → PR]
-        E2 --> E3[595-TECHLEAD-RETURN-PACKAGE<br/>595-RETURN-PACKAGE-{FILA-NN}.md<br/>GENERATE → GATE → FIX]
+        E2 --> E3["595-TECHLEAD-RETURN-PACKAGE<br/>595-RETURN-PACKAGE-{FILA-NN}.md<br/>GENERATE → GATE → FIX"]
     end
 
     subgraph BLOCO_F["Bloco F: Janelas de Entrega (SOMENTE modo waterfall-discovery — consome o 096)"]
         JF1[JANELA-DEV: Bloco E] --> JF2[JANELA-QA: 095 GO/NO-GO]
         JF2 --> JF3[JANELA-UAT: DE-ACORDO por entrega]
         JF3 --> JF4[JANELA-DEPLOY: 090 + 087 GMUD]
-        JF1 -.->|definição| JAN096[096-DEFINICAO-JANELAS-ENTREGA-{PROJECT_ID_NAME}.md]
+        JF1 -.->|definição| JAN096["096-DEFINICAO-JANELAS-ENTREGA-{PROJECT_ID_NAME}.md"]
     end
 
     GD -->|"modo waterfall-discovery"| BLOCO_E
@@ -866,15 +866,15 @@ flowchart TD
 
         CONS_2["2. DETECÇÃO DE INCONSISTÊNCIAS<br/>ARCHITECTURE ↔ SECURITY: controles implementam padrões?<br/>ARCHITECTURE ↔ DATA: modelo alinhado com topologia?<br/>ARCHITECTURE ↔ DEVOPS-SRE: pipeline suporta topologia?<br/>SECURITY ↔ INFRA-CLOUD: rede e IAM consistentes?<br/>TEST-STRATEGY ↔ ARCHITECTURE: pirâmide cobre topologia?<br/>TEST-STRATEGY ↔ SECURITY: SAST/DAST alinhado com threat model?"] --> CONS_3
 
-        CONS_3["3. VERIFICAÇÃO DE COMPLETUDE<br/>100% das soluções do CATALOG têm<br/>stack, arquitetura, segurança, data, devops,<br/>testes, infra e milestones definidos?] --> CONS_4
+        CONS_3["3. VERIFICAÇÃO DE COMPLETUDE<br/>100% das soluções do CATALOG têm<br/>stack, arquitetura, segurança, data, devops,<br/>testes, infra e milestones definidos?"] --> CONS_4
 
-        CONS_4["4. ALINHAMENTO COM NEGÓCIO<br/>PRD-DEFINITION referencia todos<br/>os objetivos do Project Charter?<br/>MILESTONES alinha com Epics?]
+        CONS_4["4. ALINHAMENTO COM NEGÓCIO<br/>PRD-DEFINITION referencia todos<br/>os objetivos do Project Charter?<br/>MILESTONES alinha com Epics?"]
     end
 
-    CONS_4 --> CONS_RESULT{"Relatório de<br/>Consistência?}
+    CONS_4 --> CONS_RESULT{"Relatório de<br/>Consistência?"}
 
     CONS_RESULT -->|✅ PASS| CONS_OK([✅ Consistência Confirmada<br/>Pipeline concluído])
-    CONS_RESULT -->|❌ FAIL| CONS_FIX["🔧 Identificar artefatos<br/>com inconsistências<br/>+ Reportar gaps"]
+    CONS_RESULT -->|❌ FAIL| CONS_FIX["🔧 Identificar artefatos<br/>com inconsistências<br/>Reportar gaps"]
     CONS_FIX --> CONS_1
 
     style CONS fill:#fff3e0,stroke:#6c5ce7,color:#ffffff
@@ -973,15 +973,15 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    subgraph GATING[Regras Críticas de Bloqueio — Technical Definitions v6.0]
+    subgraph GATING[Regras Críticas de Bloqueio — Technical Definitions v7.0]
         G1[⛔ Nenhuma fase<br/>avança sem<br/>COMPLIANCE humano]
-        G2[⛔ Barreira 0:<br/>Bloco 0 100% antes<br/>do Bloco A]
-        G3[⛔ Barreira A:<br/>Bloco A 100% antes<br/>do Bloco B]
-        G4[⛔ Barreira B:<br/>6 disciplinas 100%<br/>antes do Bloco C]
-        G5[⛔ Barreira C:<br/>Skills-gap detection<br/>→ pode reabrir Bloco A]
-        G6[⛔ Barreira D:<br/>100% US com contratos<br/>antes do History]
-        G7[⛔ Modo waterfall:<br/>TECHLEAD propõe,<br/>PM/PO aplica]
-        G8[⛔ Janelas:<br/>HITL por transição<br/>(096 + Bloco F)]
+        G2[⛔ Barreira 0 —<br/>Bloco 0 100% antes<br/>do Bloco A]
+        G3[⛔ Barreira A —<br/>Bloco A 100% antes<br/>do Bloco B]
+        G4[⛔ Barreira B —<br/>6 disciplinas 100%<br/>antes do Bloco C]
+        G5[⛔ Barreira C —<br/>Skills-gap detection<br/>→ pode reabrir Bloco A]
+        G6[⛔ Barreira D —<br/>100% US com contratos<br/>antes do History]
+        G7[⛔ Modo waterfall —<br/>TECHLEAD propõe,<br/>PM/PO aplica]
+        G8[⛔ Janelas —<br/>HITL por transição<br/>(096 + Bloco F)]
     end
 
     style G1 fill:#d63031,color:#fff
