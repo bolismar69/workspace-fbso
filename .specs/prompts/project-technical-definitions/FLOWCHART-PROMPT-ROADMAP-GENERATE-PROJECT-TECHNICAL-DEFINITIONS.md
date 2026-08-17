@@ -161,11 +161,11 @@ flowchart TD
     ORCH([Orquestrador: Iniciar Fase N]) --> GEN
 
     subgraph LOOP[Loop de Validação Soberana — Fases 1 a 19]
-        GEN["1. GERAÇÃO / EVOLUÇÃO<br/>Executar PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-{FASE}.md<br/>Parâmetros: todos os inputs do roadmap"] --> GATE
+        GEN["1. GERAÇÃO / EVOLUÇÃO<br/>Executar PROMPT-GENERATE-{NNN}-{FASE}.md<br/>Parâmetros: todos os inputs do roadmap"] --> GATE
 
-        GATE["2. AUDITORIA INTERNA DA IA<br/>Executar PROMPT-GATE-PROJECT-TECHNICAL-DEFINITIONS-{FASE}.md"] --> GATE_RESULT{Resultado<br/>da Auditoria?}
+        GATE["2. AUDITORIA INTERNA DA IA<br/>Executar PROMPT-GATE-{NNN}-{FASE}.md"] --> GATE_RESULT{Resultado<br/>da Auditoria?}
 
-        GATE_RESULT -->|NÃO COMPLIANCE<br/>Erros encontrados| FIX["2b. CORREÇÃO CIRÚRGICA<br/>Executar PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-{FASE}.md<br/>Apenas nas seções afetadas"]
+        GATE_RESULT -->|NÃO COMPLIANCE<br/>Erros encontrados| FIX["2b. CORREÇÃO CIRÚRGICA<br/>Executar PROMPT-FIX-{NNN}-{FASE}.md<br/>Apenas nas seções afetadas"]
         FIX --> GATE
 
         GATE_RESULT -->|SEM ERROS| HUMAN_GATE
@@ -378,26 +378,26 @@ flowchart TB
 
 | Fase | Arquivo Gerado | Conteúdo |
 |------|----------------|----------|
-| 1 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-INTAKE-LOG.md` | Registro versionado dos lotes de ingestão de requisitos |
-| 2 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-DOR-ASSESSMENT.md` | Critérios de Definition of Ready aplicados pelo PO/PM |
-| 3 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-PRODUCT-BACKLOG-LIST.md` | Backlog consolidado "Pronto para TI", priorizado |
-| 4 🔄 | `PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md` | PRD de Negócio — Visão, MVP Global, Glossário |
-| 5 | `PROJECT-TECHNICAL-DEFINITIONS-TEAM-SKILLS-MAP.md` | Skills matrix do Discovery Team |
-| 6 | `PROJECT-TECHNICAL-DEFINITIONS-TEAM-CAPACITY.md` | Capacidade de trabalho do time (horas/semana) |
-| 7 | `PROJECT-TECHNICAL-DEFINITIONS-ARCHITECTURE-DEFINITION.md` | Arquitetura — ADRs, diagramas C4, topologia |
-| 8 | `PROJECT-TECHNICAL-DEFINITIONS-SECURITY-DEFINITION.md` | Regras de segurança — threat model, IAM, compliance |
-| 9 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-DATA-ARCHITECTURE-DEFINITION.md` | Data Architecture — modelagem, pipelines, storage strategy |
-| 10 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-DEVOPS-SRE-DEFINITION.md` | DevOps/SRE — CI/CD, IaC, observabilidade, SLOs |
-| 11 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-TEST-STRATEGY-DEFINITION.md` | Test Strategy — pirâmide, automação, performance, SAST/DAST |
-| 12 🆕 | `PROJECT-TECHNICAL-DEFINITIONS-INFRA-CLOUD-DEFINITION.md` | Infra/Cloud — topologia, compute, networking, DR |
-| 13 | `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-CATALOG.md` | Catálogo completo das soluções técnicas do projeto |
-| 14 | `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-MATRIX.md` | Matriz solução×disciplina×owner |
-| 15 | `PROJECT-TECHNICAL-DEFINITIONS-SOLUTIONS-STACK-MATRIX.md` | Stack tecnológica de cada solução |
-| 16 | `PROJECT-TECHNICAL-DEFINITIONS-SPECS-DEFINITION.md` | Consolidação técnica enxuta (sumariza + referencia) |
-| 17 | `PROJECT-TECHNICAL-DEFINITIONS-MILESTONES.md` | Roadmap alinhado ao negócio com milestones |
-| 18 🆕 | `technical-discovery/SPRINT-BACKLOG.md` | Backlog refinado com tarefas T-NNN → US-ID → Sprint-Alvo → CONTRACTS |
-| 19 🆕 | `technical-discovery/sprint-NNN/` | Contratos técnicos por sprint (API, Data, Security, SRE, Increments) |
-| — | `PROJECT-TECHNICAL-DEFINITIONS-EXECUTION-HISTORY.md` | Dashboard de controle com estado de todos os 20 artefatos |
+| 1 🆕 | `410-INTAKE-LOG.md` | Registro versionado dos lotes de ingestão de requisitos |
+| 2 🆕 | `420-DOR-ASSESSMENT.md` | Critérios de Definition of Ready aplicados pelo PO/PM |
+| 3 🆕 | `430-PRODUCT-BACKLOG-LIST.md` | Backlog consolidado "Pronto para TI", priorizado |
+| 4 🔄 | `440-PRD-DEFINITION.md` | PRD de Negócio — Visão, MVP Global, Glossário |
+| 5 | `450-TEAM-SKILLS-MAP.md` | Skills matrix do Discovery Team |
+| 6 | `460-TEAM-CAPACITY.md` | Capacidade de trabalho do time (horas/semana) |
+| 7 | `470-ARCHITECTURE-DEFINITION.md` | Arquitetura — ADRs, diagramas C4, topologia |
+| 8 | `480-SECURITY-DEFINITION.md` | Regras de segurança — threat model, IAM, compliance |
+| 9 🆕 | `490-DATA-ARCHITECTURE-DEFINITION.md` | Data Architecture — modelagem, pipelines, storage strategy |
+| 10 🆕 | `500-DEVOPS-SRE-DEFINITION.md` | DevOps/SRE — CI/CD, IaC, observabilidade, SLOs |
+| 11 🆕 | `510-TEST-STRATEGY-DEFINITION.md` | Test Strategy — pirâmide, automação, performance, SAST/DAST |
+| 12 🆕 | `520-INFRA-CLOUD-DEFINITION.md` | Infra/Cloud — topologia, compute, networking, DR |
+| 13 | `530-SOLUTIONS-CATALOG.md` | Catálogo completo das soluções técnicas do projeto |
+| 14 | `540-SOLUTIONS-MATRIX.md` | Matriz solução×disciplina×owner |
+| 15 | `550-SOLUTIONS-STACK-MATRIX.md` | Stack tecnológica de cada solução |
+| 16 | `560-SPECS-DEFINITION.md` | Consolidação técnica enxuta (sumariza + referencia) |
+| 17 | `570-MILESTONES.md` | Roadmap alinhado ao negócio com milestones |
+| 18 🆕 | `technical-discovery/580-SPRINT-BACKLOG.md` | Backlog refinado com tarefas T-NNN → US-ID → Sprint-Alvo → CONTRACTS |
+| 19 🆕 | `technical-discovery/590-sprint-NNN/` | Contratos técnicos por sprint (API, Data, Security, SRE, Increments) |
+| — | `600-EXECUTION-HISTORY.md` | Dashboard de controle com estado de todos os 20 artefatos |
 
 ---
 
@@ -949,6 +949,6 @@ flowchart LR
 > - `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` — Documento fonte (v5.0)
 > - `../project-documents/FLOWCHART-ROADMAP-GENERATE-PROJECT-DOCUMENTS.md` — Visualização do roadmap de negócio
 > - `../technical-solutions/FLOWCHART-ROADMAP-GENERATE-TECHNICAL_SOLUTIONS.md` — Visualização do roadmap técnico
-> - `PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-*.md` — 20 prompts geradores (fases 1-19 + EXECUTION-HISTORY)
-> - `PROMPT-GATE-PROJECT-TECHNICAL-DEFINITIONS-*.md` — 19 prompts de auditoria (fases 1-19)
-> - `PROMPT-FIX-PROJECT-TECHNICAL-DEFINITIONS-*.md` — 19 prompts de correção (fases 1-19)
+> - `PROMPT-GENERATE-{NNN}-*.md` — 20 prompts geradores (fases 1-19 + EXECUTION-HISTORY)
+> - `PROMPT-GATE-{NNN}-*.md` — 19 prompts de auditoria (fases 1-19)
+> - `PROMPT-FIX-{NNN}-*.md` — 19 prompts de correção (fases 1-19)
