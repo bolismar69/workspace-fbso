@@ -188,7 +188,7 @@ No modo `waterfall-discovery`, este roadmap atua como o **lado TECHLEAD da FASE 
 | F8 | 480-SECURITY-DEFINITION | **VALIDA/REFINA** | 043-SEC-SETUP → 480 |
 | F9 | 490-DATA-ARCHITECTURE-DEFINITION | **VALIDA/REFINA** | 042-DATA-SETUP → 490 |
 | F10 | 500-DEVOPS-SRE-DEFINITION | **VALIDA/REFINA** | 041-DEVOPS-SETUP + 087 → 500 |
-| F11 | 510-TEST-STRATEGY-DEFINITION | **VALIDA/REFINA** | 045-EST-PLAN + 050-EST-CASES → 510 |
+| F11 | 510-TEST-STRATEGY-DEFINITION | **VALIDA/REFINA** | 045-TEST-PLAN + 050-TEST-CASES → 510 |
 | F12 | 520-INFRA-CLOUD-DEFINITION | **VALIDA/REFINA** | 044-INFRA-SETUP + 090 → 520 |
 | F13 | 530-SOLUTIONS-CATALOG | **RODA** | 060-EAP-WBS + 010 |
 | F14 | 540-SOLUTIONS-MATRIX | **RODA** | 062 + 086 |
@@ -203,7 +203,7 @@ No modo `waterfall-discovery`, este roadmap atua como o **lado TECHLEAD da FASE 
 
 ### BLOCO E — Esteira de Construção por Ciclo (após Barreira D, somente no modo waterfall-discovery)
 
-**E1 — Contexto base (uma vez por solução técnica):** reuso sem edição de `sprint-artefacts/PROMPT-ORCHESTRATOR-GENERATE-ALL-ARTEFACTS.md` com `IN_MACRO` = [010-FRD, 016-Protótipos, 020-SRS, 030-SAD, 035-HLD, 040-LLD, 045-EST-PLAN, 050-EST-CASES, 086, 087] → gera `PRD.md/SPECS.md`, `ARCH.md/LLD.md`, `TEST_PLAN.md`, `TASKS.md` no repositório da solução.
+**E1 — Contexto base (uma vez por solução técnica):** reuso sem edição de `sprint-artefacts/PROMPT-ORCHESTRATOR-GENERATE-ALL-ARTEFACTS.md` com `IN_MACRO` = [010-FRD, 016-Protótipos, 020-SRS, 030-SAD, 035-HLD, 040-LLD, 045-TEST-PLAN, 050-TEST-CASES, 086, 087] → gera `PRD.md/SPECS.md`, `ARCH.md/LLD.md`, `TEST_PLAN.md`, `TASKS.md` no repositório da solução.
 
 **E2 — Loop por ciclo (para cada FILA-NN ativa):**
 

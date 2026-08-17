@@ -104,8 +104,8 @@ flowchart TB
         %% O 041 (DevOps) integra as especialidades e só inicia após 042/043/044 em COMPLIANCE (validado pelo GATE-041).
 
         subgraph FASE-3-ESTEIRA-QUALIDADE["ESTEIRA DE QUALIDADE (QA)"]
-            045-EST-PLAN["045-EST-PLAN - Software Test Plan (IEEE 829)"]
-            050-EST-CASES["050-EST-CASES - Especificação de Casos de Teste"]
+            045-TEST-PLAN["045-TEST-PLAN - Software Test Plan (IEEE 829)"]
+            050-TTEST-CASES["050-TTEST-CASES - Especificação de Casos de Teste"]
         end
         
         060-EAP-WBS["060-EAP-WBS - Estrutura Analítica do Projeto"]
@@ -230,17 +230,17 @@ flowchart TB
     MILESTONE-2 -- "Estimativa no Fluxo Normal" --> ESTIMATIVA-UPSTREAM-DISCOVERY
     ESTIMATIVA-UPSTREAM-DISCOVERY --> GO-NO-GO-UPSTREAM{"Go/No-Go Upstream?"}
     GO-NO-GO-UPSTREAM -- "GO (ARQUITETURA / ENGENHARIA / ESPECIALIDADES)" --> FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING
-    GO-NO-GO-UPSTREAM -- "GO (QUALIDADE)" --> 045-EST-PLAN
+    GO-NO-GO-UPSTREAM -- "GO (QUALIDADE)" --> 045-TEST-PLAN
     GO-NO-GO-UPSTREAM -- "TIMEBOX FASE-3" --> FASE-3-TIMEBOX
     GO-NO-GO-UPSTREAM -- "NO-GO" --> PROJETO-CANCELADO
 
     %% Consulta técnica sem travamento sequencial
-    045-EST-PLAN --> 050-EST-CASES
-    FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING -.->|"Alimenta / Consulta Técnica"| 050-EST-CASES
+    045-TEST-PLAN --> 050-TTEST-CASES
+    FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING -.->|"Alimenta / Consulta Técnica"| 050-TTEST-CASES
 
     %% Consolidação Final na WBS
     FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING --> 060-EAP-WBS
-    050-EST-CASES --> 060-EAP-WBS
+    050-TTEST-CASES --> 060-EAP-WBS
 
     060-EAP-WBS --> MILESTONE-3
     MILESTONE-3 --> ESTIMATIVA-DOWNSTREAM-REFINEMENT
@@ -333,7 +333,7 @@ flowchart TB
 ```mermaid
 flowchart TB
     %% INSUMO UPSTREAM (FASE 1 A 4)
-    IN_MACRO["ARTEFATOS MACRO (FASE 1-4)\n(BRD, SRS, SAD, HLD, LLD, EST-CASES,\n086-Padrões/DoD, 087-CI-CD)"]
+    IN_MACRO["ARTEFATOS MACRO (FASE 1-4)\n(BRD, SRS, SAD, HLD, LLD, TEST-CASES,\n086-Padrões/DoD, 087-CI-CD)"]
 
     subgraph REPO["REPOSITÓRIO DA SOLUÇÃO TÉCNICA (Ex: /services/payment-engine)"]
         

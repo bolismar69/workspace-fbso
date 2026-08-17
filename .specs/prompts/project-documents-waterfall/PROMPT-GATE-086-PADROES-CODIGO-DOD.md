@@ -20,7 +20,7 @@ Atue como um Auditor de Qualidade de Documentação, especializado em Engenharia
 
 1. **Cabeçalho e Metadados:** Projeto, Documentos Base (030, 035, 040, 043), Data, Versão e Metodologia preenchidos? Status é "Em análise" ou "Em revisão"?
 2. **Seção 1 — Padrões:** Todo padrão (STD-NN) tem stack/escopo, regra objetiva e origem no 040-LLD/030-SAD? Cobrem todas as stacks do projeto?
-3. **Seção 2 — DoD:** DOD-NN cobre entrega de funcionalidade, correção e refatoração? Critérios são objetivos e verificáveis (cobertura, code review, SAST)? Referenciam 010-FRD/050-EST-CASES?
+3. **Seção 2 — DoD:** DOD-NN cobre entrega de funcionalidade, correção e refatoração? Critérios são objetivos e verificáveis (cobertura, code review, SAST)? Referenciam 010-FRD/050-TEST-CASES?
 4. **Seção 3 — Revisão de Código:** Papéis, checklist, ferramentas e regra de bloqueio definidos? Findings HIGH de segurança bloqueiam merge?
 5. **Seção 4 — Segurança no Código:** Práticas vinculadas a controles SRD-NN do 043? Validação de entrada, segredos e dependências cobertos?
 6. **Seção 5 — Rastreabilidade:** Todo item aponta origem no 030/035/040/043? Não há órfãos?

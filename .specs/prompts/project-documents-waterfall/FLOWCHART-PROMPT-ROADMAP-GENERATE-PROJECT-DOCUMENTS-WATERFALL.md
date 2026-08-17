@@ -18,22 +18,22 @@ flowchart TB
 
     subgraph FASE1["Fase 1: INICIAÇÃO E REQUISITOS DE NEGÓCIO"]
         direction LR
-        D001["001: PROJECT-CHARTER"] --> D002["002: STAKEHOLDER-MAP"]
-        D002 --> D003["003: PERSONAS-JORNADAS<br/>P-NN, J-NN"]
-        D003 --> D004["004: MAPEAMENTO AS-IS/TO-BE<br/>PROC-NN, GAP-NN"]
-        D004 --> D005["005: BRD<br/>REQ-NN"]
-        D005 --> D010["010: FRD<br/>FEAT-NN, RN-NN, UC-NN"]
-        D010 --> D015["015: RTM-FASE-1<br/>Rastr. Negócio"]
+        D001["001: PROJECT-CHARTER<br/>001-PROJECT-CHARTER-{PROJECT_ID_NAME}.md"] --> D002["002: STAKEHOLDER-MAP<br/>002-STAKEHOLDER-MAP-{PROJECT_ID_NAME}.md"]
+        D002 --> D003["003: PERSONAS-JORNADAS<br/>003-PERSONAS-JORNADAS-{PROJECT_ID_NAME}.md<br/>P-NN, J-NN"]
+        D003 --> D004["004: MAPEAMENTO AS-IS/TO-BE<br/>004-MAPEAMENTO-AS-IS-TO-BE-{PROJECT_ID_NAME}.md<br/>PROC-NN, GAP-NN"]
+        D004 --> D005["005: BRD<br/>005-BRD-{PROJECT_ID_NAME}.md<br/>REQ-NN"]
+        D005 --> D010["010: FRD<br/>010-FRD-{PROJECT_ID_NAME}.md<br/>FEAT-NN, RN-NN, UC-NN"]
+        D010 --> D015["015: RTM-FASE-1<br/>015-RTM-FASE-1-{PROJECT_ID_NAME}.md"]
     end
 
     FASE1 --> FASE2
 
     subgraph FASE2["Fase 2: ESPECIFICAÇÃO DE SISTEMA E ARQUITETURA MACRO"]
         direction LR
-        D016["016: PROTOTIPOS-UX-UI<br/>PROTO-NN"] --> D020["020: SRS<br/>FR-NN, NFR-NN"]
-        D020 --> D025["025: RTM-FASE-2<br/>Rastr. Sistema"]
-        D025 --> D030["030: SAD"]
-        D030 --> D035["035: HLD"]
+        D016["016: PROTOTIPOS-UX-UI<br/>016-PROTOTIPOS-UX-UI-{PROJECT_ID_NAME}.md<br/>PROTO-NN"] --> D020["020: SRS<br/>020-SRS-{PROJECT_ID_NAME}.md<br/>FR-NN, NFR-NN"]
+        D020 --> D025["025: RTM-FASE-2<br/>025-RTM-FASE-2-{PROJECT_ID_NAME}.md"]
+        D025 --> D030["030: SAD<br/>030-SAD-{PROJECT_ID_NAME}.md"]
+        D030 --> D035["035: HLD<br/>035-HLD-{PROJECT_ID_NAME}.md"]
     end
 
     FASE2 --> EST_GATE_UP{{🎯 GATE 1: UPSTREAM<br/>após 035-HLD}}
@@ -46,18 +46,18 @@ flowchart TB
         direction TB
         subgraph ESTEIRA["Esteira de Engenharia (ciclo fechado: 040 → 042 → 043 → 044 → 041)"]
             direction LR
-            D040["040: LLD"] --> D042["042: DATA-SETUP (DMD)"]
-            D042 --> D043["043: SEC-SETUP (SRD)"]
-            D043 --> D044["044: INFRA-SETUP (IDD)"]
-            D044 --> D041["041: DEVOPS-SETUP (DED)"]
+            D040["040: LLD<br/>040-LLD-{PROJECT_ID_NAME}.md"] --> D042["042: DATA-SETUP (DMD)<br/>042-DATA-SETUP-{PROJECT_ID_NAME}.md"]
+            D042 --> D043["043: SEC-SETUP (SRD)<br/>043-SEC-SETUP-{PROJECT_ID_NAME}.md"]
+            D043 --> D044["044: INFRA-SETUP (IDD)<br/>044-INFRA-SETUP-{PROJECT_ID_NAME}.md"]
+            D044 --> D041["041: DEVOPS-SETUP (DED)<br/>041-DEVOPS-SETUP-{PROJECT_ID_NAME}.md"]
         end
         subgraph QUALIDADE["Esteira de Qualidade"]
             direction LR
-            D045["045: EST-PLAN"] --> D050["050: EST-CASES"]
+            D045["045: TEST-PLAN<br/>045-TEST-PLAN-{PROJECT_ID_NAME}.md"] --> D050["050: TEST-CASES<br/>050-TEST-CASES-{PROJECT_ID_NAME}.md"]
         end
         D041 --> D045
-        D050 --> D095E["095: RELATORIO-QUALIDADE<br/>(estrutura)"]
-        D095E --> D060["060: EAP-WBS"]
+        D050 --> D095E["095: RELATORIO-QUALIDADE<br/>095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md<br/>(estrutura)"]
+        D095E --> D060["060: EAP-WBS<br/>060-EAP-WBS-{PROJECT_ID_NAME}.md"]
     end
 
     FASE3 --> EST_GATE_DOWN{{🎯 GATE 2: DOWNSTREAM<br/>após 060-EAP-WBS}}
@@ -67,15 +67,15 @@ flowchart TB
 
     subgraph FASE4["Fase 4: PLANEJAMENTO E BASELINE"]
         direction LR
-        D062["062: STAFFING-PLAN"] --> D065["065: CRONOGRAMA-GANTT"]
-        D065 --> D070["070: ORCAMENTO"]
-        D070 --> D075["075: PLANO-COMUNICACAO"]
-        D075 --> D080["080: PLANO-RISCOS"]
-        D080 --> D085["085: PLANO-GESTAO-MUDANCAS"]
-        D085 --> D086["086: PADROES-CODIGO-DOD"]
-        D086 --> D087["087: PLANO-CI-CD-AMBIENTES"]
-        D087 --> D088["088: PRODUCT-BACKLOG-LIST"]
-        D088 --> D090["090: STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN"]
+        D062["062: STAFFING-PLAN<br/>062-STAFFING-PLAN-{PROJECT_ID_NAME}.md"] --> D065["065: CRONOGRAMA-GANTT<br/>065-CRONOGRAMA-GANTT-{PROJECT_ID_NAME}.md"]
+        D065 --> D070["070: ORCAMENTO<br/>070-ORCAMENTO-{PROJECT_ID_NAME}.md"]
+        D070 --> D075["075: PLANO-COMUNICACAO<br/>075-PLANO-COMUNICACAO-{PROJECT_ID_NAME}.md"]
+        D075 --> D080["080: PLANO-RISCOS<br/>080-PLANO-RISCOS-{PROJECT_ID_NAME}.md"]
+        D080 --> D085["085: PLANO-GESTAO-MUDANCAS<br/>085-PLANO-GESTAO-MUDANCAS-{PROJECT_ID_NAME}.md"]
+        D085 --> D086["086: PADROES-CODIGO-DOD<br/>086-PADROES-CODIGO-DOD-{PROJECT_ID_NAME}.md"]
+        D086 --> D087["087: PLANO-CI-CD-AMBIENTES<br/>087-PLANO-CI-CD-AMBIENTES-{PROJECT_ID_NAME}.md"]
+        D087 --> D088["088: PRODUCT-BACKLOG-LIST<br/>088-PRODUCT-BACKLOG-LIST-{PROJECT_ID_NAME}.md"]
+        D088 --> D090["090: STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN<br/>090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN-{PROJECT_ID_NAME}.md"]
     end
 
     FASE4 --> M4(("🚩 M4: PROJECT BASELINE LOCKED"))
@@ -83,14 +83,14 @@ flowchart TB
 
     subgraph FASE5["Fase 5: EXECUÇÃO E CONSTRUÇÃO (roadmap dedicado WATERFALL-EXECUTION)"]
         direction LR
-        D092["092: BACKLOG-KANBAN<br/>CRs Negócio/Técnico (085)<br/>Status · FILA-NN"] --> D093["093: GESTAO-TIMES<br/>Capacidade · IMP-NN"]
+        D092["092: BACKLOG-KANBAN<br/>092-BACKLOG-KANBAN-{PROJECT_ID_NAME}.md<br/>CRs Negócio/Técnico (085)<br/>Status · FILA-NN"] --> D093["093: GESTAO-TIMES<br/>093-GESTAO-TIMES-{PROJECT_ID_NAME}.md<br/>Capacidade · IMP-NN"]
         D093 --> D092
         D092 --> ESTEIRA_DEV["Esteira de Construção por ciclo FILA-NN<br/>(sprint-artefacts + sprint-tecnhnical-implementation)"]
-        JANELAS["2. Janelas de Entrega<br/>096-DEFINICAO-JANELAS-ENTREGA<br/>+ Bloco F (TECHLEAD v7.0)"]
+        JANELAS["2. Janelas de Entrega<br/>096-DEFINICAO-JANELAS-ENTREGA-{PROJECT_ID_NAME}.md<br/>+ Bloco F (TECHLEAD v7.0)"]
         ESTEIRA_DEV -.->|"roda por ciclo FILA-NN"| JANELAS
-        ESTEIRA_DEV --> D095F["095: RELATORIO-QUALIDADE<br/>(evidências por ciclo)"]
-        D095F --> D097["097: MANUAIS-USUARIO"]
-        D097 --> D100["100: MANUAIS-OPERACIONAIS"]
+        ESTEIRA_DEV --> D095F["095: RELATORIO-QUALIDADE<br/>095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md<br/>(evidências por ciclo)"]
+        D095F --> D097["097: MANUAIS-USUARIO<br/>097-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md"]
+        D097 --> D100["100: MANUAIS-OPERACIONAIS<br/>100-MANUAIS-OPERACIONAIS-{PROJECT_ID_NAME}.md"]
     end
 
     FASE5 --> M5(("🚩 M5: GO-LIVE & HANDOVER"))
@@ -98,8 +98,8 @@ flowchart TB
 
     subgraph FASE6["Fase 6: ENCERRAMENTO E OPERAÇÃO"]
         direction LR
-        D105["105: TERMO-ACEITE"] --> D110["110: LICOES-APRENDIDAS"]
-        D110 --> D115["115: TERMO-ENCERRAMENTO-PROJETO"]
+        D105["105: TERMO-ACEITE<br/>105-TERMO-ACEITE-{PROJECT_ID_NAME}.md"] --> D110["110: LICOES-APRENDIDAS<br/>110-LICOES-APRENDIDAS-{PROJECT_ID_NAME}.md"]
+        D110 --> D115["115: TERMO-ENCERRAMENTO-PROJETO<br/>115-TERMO-ENCERRAMENTO-PROJETO-{PROJECT_ID_NAME}.md"]
     end
 
     FASE6 --> END(["✅ Roadmap Concluído"])
@@ -337,9 +337,9 @@ flowchart TD
 
         D044_OK --> D041_GEN["GENERATE 041: DEVOPS-SETUP (DED)<br/>ÚLTIMO da esteira — após 042/043/044<br/>Skills: senior-devops, cicd-automation-workflow-automate"] --> D041_OK["041: COMPLIANCE ✅"]
 
-        D041_OK --> D045_GEN["GENERATE 045: EST-PLAN<br/>Skills: test-strategy-design, qa-test-planner"] --> D045_OK["045: COMPLIANCE ✅"]
+        D041_OK --> D045_GEN["GENERATE 045: TEST-PLAN<br/>Skills: test-strategy-design, qa-test-planner"] --> D045_OK["045: COMPLIANCE ✅"]
 
-        D045_OK --> D050_GEN["GENERATE 050: EST-CASES<br/>Skills: test-case-creation, acceptance-criteria"] --> D050_OK["050: COMPLIANCE ✅"]
+        D045_OK --> D050_GEN["GENERATE 050: TEST-CASES<br/>Skills: test-case-creation, acceptance-criteria"] --> D050_OK["050: COMPLIANCE ✅"]
 
         D050_OK --> D095E_GEN["GENERATE 095: RELATORIO-QUALIDADE (estrutura)<br/>Skills: quality-documentation-manager, qa"] --> D095E_OK["095: COMPLIANCE ✅"]
 
@@ -579,10 +579,10 @@ flowchart LR
     D035 --> D043
     D035 --> D044
 
-    D020 --> D045["045: EST-PLAN"]
+    D020 --> D045["045: TEST-PLAN"]
     D030 --> D045
     D040 --> D045
-    D045 --> D050["050: EST-CASES"]
+    D045 --> D050["050: TEST-CASES"]
     D010 --> D050
     D020 --> D050
     D045 --> D095E["095: RELATORIO-QUALIDADE"]

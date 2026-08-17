@@ -9,7 +9,7 @@ Atue como um Especialista em Gestão de Entregas e Processos (PM/PO Sênior), re
 |---|---|
 | `DOC_PATH` | Caminho completo onde o arquivo será criado |
 | `PROJECT_ID_NAME` | Identificador do projeto |
-| `UPSTREAM_DOCS` | Lista: `[092-BACKLOG-KANBAN, 085-PLANO-GESTAO-MUDANCAS, 045-EST-PLAN, 050-EST-CASES, 095-RELATORIO-QUALIDADE, 105-TERMO-ACEITE, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 087-PLANO-CI-CD-AMBIENTES]` |
+| `UPSTREAM_DOCS` | Lista: `[092-BACKLOG-KANBAN, 085-PLANO-GESTAO-MUDANCAS, 045-TEST-PLAN, 050-TEST-CASES, 095-RELATORIO-QUALIDADE, 105-TERMO-ACEITE, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 087-PLANO-CI-CD-AMBIENTES]` |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: `["delivery-manager", "senior-pm"]` |
 

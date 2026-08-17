@@ -66,7 +66,7 @@ O **DMD** é a especificação física de dados do projeto: modelo físico, DDL,
 ### Conexão com o Pipeline
 
 - **UPSTREAM:** Consome entidades e schemas do 040-LLD, integrações do 035-HLD e ADRs do 030-SAD
-- **DOWNSTREAM:** Alimenta 041-DEVOPS-SETUP (migrations no pipeline), 050-EST-CASES (testes de dados), 060-EAP-WBS e 088-PRODUCT-BACKLOG-LIST
+- **DOWNSTREAM:** Alimenta 041-DEVOPS-SETUP (migrations no pipeline), 050-TEST-CASES (testes de dados), 060-EAP-WBS e 088-PRODUCT-BACKLOG-LIST
 
 ---
 

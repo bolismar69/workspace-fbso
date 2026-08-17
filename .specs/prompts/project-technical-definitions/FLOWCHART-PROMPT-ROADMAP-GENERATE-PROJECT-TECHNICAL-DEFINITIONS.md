@@ -16,37 +16,37 @@ flowchart TB
     F0 --> BLOCO_0
     
     subgraph BLOCO_0[Bloco 0: Product Def & Backlog & PRD]
-        F1[F1: INTAKE-LOG 🆕] --> F2[F2: DOR-ASSESSMENT 🆕]
-        F2 --> F3[F3: PRODUCT-BACKLOG-LIST 🆕]
-        F3 --> F4[F4: PRD-DEFINITION 🔄]
+        F1[F1: INTAKE-LOG 🆕<br/>410-INTAKE-LOG.md] --> F2[F2: DOR-ASSESSMENT 🆕<br/>420-DOR-ASSESSMENT.md]
+        F2 --> F3[F3: PRODUCT-BACKLOG-LIST 🆕<br/>430-PRODUCT-BACKLOG-LIST.md]
+        F3 --> F4[F4: PRD-DEFINITION 🔄<br/>440-PRD-DEFINITION.md]
     end
     
     BLOCO_0 --> G0{{⛔ Barreira 0}}
     G0 --> BLOCO_A
     
     subgraph BLOCO_A[Bloco A: People & Solutions]
-        F5[F5: TEAM-SKILLS-MAP] --> F6[F6: TEAM-CAPACITY]
+        F5[F5: TEAM-SKILLS-MAP<br/>450-TEAM-SKILLS-MAP.md] --> F6[F6: TEAM-CAPACITY<br/>460-TEAM-CAPACITY.md]
     end
     
     BLOCO_A --> GA{{⛔ Barreira A}}
     GA --> BLOCO_B
     
     subgraph BLOCO_B[Bloco B: Architecture & Security & Specialists]
-        F7[F7: ARCHITECTURE] --> F8[F8: SECURITY]
-        F8 --> F9[F9: DATA-ARCH 🆕]
-        F9 --> F10[F10: DEVOPS-SRE 🆕]
-        F10 --> F11[F11: TEST-STRATEGY 🆕]
-        F11 --> F12[F12: INFRA-CLOUD 🆕]
+        F7[F7: ARCHITECTURE<br/>470-ARCHITECTURE-DEFINITION.md] --> F8[F8: SECURITY<br/>480-SECURITY-DEFINITION.md]
+        F8 --> F9[F9: DATA-ARCH 🆕<br/>490-DATA-ARCHITECTURE-DEFINITION.md]
+        F9 --> F10[F10: DEVOPS-SRE 🆕<br/>500-DEVOPS-SRE-DEFINITION.md]
+        F10 --> F11[F11: TEST-STRATEGY 🆕<br/>510-TEST-STRATEGY-DEFINITION.md]
+        F11 --> F12[F12: INFRA-CLOUD 🆕<br/>520-INFRA-CLOUD-DEFINITION.md]
     end
     
     BLOCO_B --> GB{{⛔ Barreira B<br/>6 disciplinas}}
     GB --> BLOCO_C
     
     subgraph BLOCO_C[Bloco C: Catálogo, Matriz, Stack, Specs & Milestones]
-        F13[F13: CATALOG] --> F14[F14: MATRIX]
-        F14 --> F15[F15: STACK-MATRIX]
-        F15 --> F16[F16: SPECS-DEFINITION]
-        F16 --> F17[F17: MILESTONES]
+        F13[F13: CATALOG<br/>530-SOLUTIONS-CATALOG.md] --> F14[F14: MATRIX<br/>540-SOLUTIONS-MATRIX.md]
+        F14 --> F15[F15: STACK-MATRIX<br/>550-SOLUTIONS-STACK-MATRIX.md]
+        F15 --> F16[F16: SPECS-DEFINITION<br/>560-SPECS-DEFINITION.md]
+        F16 --> F17[F17: MILESTONES<br/>570-MILESTONES.md]
     end
     
     BLOCO_C --> GC{{⛔ Barreira C<br/>Skills-gap?}}
@@ -54,7 +54,7 @@ flowchart TB
     GC -->|OK| BLOCO_D
     
     subgraph BLOCO_D[Bloco D: Sprints — Technical Discovery]
-        F18[F18: SPRINT-BACKLOG 🆕] --> F19[F19: DISCOVERY TÉCNICO 🆕]
+        F18[F18: SPRINT-BACKLOG 🆕<br/>technical-discovery/580-SPRINT-BACKLOG.md] --> F19[F19: DISCOVERY TÉCNICO 🆕<br/>technical-discovery/590-sprint-NNN/]
         F19 -.->|iterativo| F19
     end
     
@@ -62,18 +62,19 @@ flowchart TB
 
     subgraph BLOCO_E["Bloco E: Esteira de Construção (SOMENTE modo waterfall-discovery)"]
         E1[E1: Contexto Base<br/>PRD/ARCH/SPECS/TASKS/TEST_PLAN] --> E2[E2: Loop por ciclo FILA-NN<br/>SPRINT-CARD → EXECUTE → QA → PR]
-        E2 --> E3[595-TECHLEAD-RETURN-PACKAGE<br/>GENERATE → GATE → FIX]
+        E2 --> E3[595-TECHLEAD-RETURN-PACKAGE<br/>595-RETURN-PACKAGE-{FILA-NN}.md<br/>GENERATE → GATE → FIX]
     end
 
     subgraph BLOCO_F["Bloco F: Janelas de Entrega (SOMENTE modo waterfall-discovery — consome o 096)"]
-        F1[DEV: Bloco E] --> F2[QA: 095 GO/NO-GO]
-        F2 --> F3[UAT: DE-ACORDO por entrega]
-        F3 --> F4[DEPLOY: 090 + 087 GMUD]
+        JF1[JANELA-DEV: Bloco E] --> JF2[JANELA-QA: 095 GO/NO-GO]
+        JF2 --> JF3[JANELA-UAT: DE-ACORDO por entrega]
+        JF3 --> JF4[JANELA-DEPLOY: 090 + 087 GMUD]
+        JF1 -.->|definição| JAN096[096-DEFINICAO-JANELAS-ENTREGA-{PROJECT_ID_NAME}.md]
     end
 
     GD -->|"modo waterfall-discovery"| BLOCO_E
     BLOCO_E --> BLOCO_F
-    GD --> HIST[📊 EXECUTION-HISTORY]
+    GD --> HIST[📊 EXECUTION-HISTORY<br/>600-EXECUTION-HISTORY.md]
     BLOCO_F -->|"entrega ao PM/PO"| PMPO([WATERFALL-EXECUTION v2.1<br/>recepção 3.3])
     HIST --> END([✅ Pipeline Completo])
 

@@ -9,7 +9,7 @@ Atue como QA Manager especializado em métricas e relatórios de qualidade de so
 |---|---|
 | `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md`) |
 | `PROJECT_ID_NAME` | Identificador do projeto |
-| `UPSTREAM_DOCS` | Lista: `[045-EST-PLAN, 050-EST-CASES]` |
+| `UPSTREAM_DOCS` | Lista: `[045-TEST-PLAN, 050-TEST-CASES]` |
 | `EXTRA_INPUTS` | Documentos brutos de entrada adicionais fornecidos pelo humano (`PROJECT_DOCUMENTS_INPUTS`) |
 | `SKILLS` | Lista de skills: ["quality-documentation-manager", "qa"] |
 
@@ -30,7 +30,7 @@ Atue como QA Manager especializado em métricas e relatórios de qualidade de so
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | {PROJECT_ID_NAME} |
-| **Documentos Base** | 045-EST-PLAN, 050-EST-CASES |
+| **Documentos Base** | 045-TEST-PLAN, 050-TEST-CASES |
 | **Data de Elaboração** | {DATA ATUAL} |
 | **Versão** | 1.0 |
 | **Metodologia** | WATERFALL |

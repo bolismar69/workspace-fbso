@@ -40,7 +40,7 @@ Atue como Arquiteto de Software especializado em design de baixo nível, APIs e 
 
 ---
 ## LLD — Low-Level Design (Desenho de Baixo Nível)
-O **LLD** aprofunda o **035-HLD** no nível de componentes e código: diagramas de componentes (C4 Level 3), design de classes e entidades, contratos de API, schema de banco de dados, diagramas de sequência e máquinas de estado. É a base técnica para o plano de testes (**045-EST-PLAN**) e para a decomposição do escopo na **060-EAP-WBS**.
+O **LLD** aprofunda o **035-HLD** no nível de componentes e código: diagramas de componentes (C4 Level 3), design de classes e entidades, contratos de API, schema de banco de dados, diagramas de sequência e máquinas de estado. É a base técnica para o plano de testes (**045-TEST-PLAN**) e para a decomposição do escopo na **060-EAP-WBS**.
 
 ### 1. Component Diagram (C4 Level 3)
 [Diagrama de componentes com interfaces e dependências]

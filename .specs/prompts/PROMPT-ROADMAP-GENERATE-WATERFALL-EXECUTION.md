@@ -58,7 +58,7 @@ O time de desenvolvimento recebe, no dia 1 da FASE 5:
 |---|---|
 | Negócio (F1–F2) | 001-Charter, 002-Stakeholder-Map, 003-Personas-Jornadas, 004-AS-IS/TO-BE, 005-BRD, 010-FRD, 015-RTM-FASE-1 |
 | Funcional (F1–F2) | 010-FRD, 016-Protótipos UX/UI, 020-SRS, 025-RTM-FASE-2 |
-| Design Técnico (F3) | 030-SAD, 035-HLD, 040-LLD, 041-DEVOPS-SETUP, 042-DATA-SETUP, 043-SEC-SETUP, 044-INFRA-SETUP, 045-EST-PLAN, 050-EST-CASES, 060-EAP-WBS |
+| Design Técnico (F3) | 030-SAD, 035-HLD, 040-LLD, 041-DEVOPS-SETUP, 042-DATA-SETUP, 043-SEC-SETUP, 044-INFRA-SETUP, 045-TEST-PLAN, 050-TEST-CASES, 060-EAP-WBS |
 | Planejamento e Regras (F4) | 062-STAFFING-PLAN, 065-Cronograma, 070-Orçamento, 075-Comunicação, 080-Riscos, 085-Mudanças, 086-Padrões/DoD, 087-CI-CD, 088-Backlog, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN |
 
 **Regra:** o orquestrador só inicia a FASE 5 com M4 travado e 095-RELATORIO-QUALIDADE com a estrutura de métricas criada na FASE 3 (as evidências são alimentadas ao longo da FASE 5).
@@ -100,7 +100,7 @@ A construção é executada pelo TECHLEAD via `PROMPT-ROADMAP-GENERATE-PROJECT-T
 
 1. **Montar o pacote de demanda** via `GENERATE-092` (modo atualização):
    - Snapshot do 092 com a `FILA-NN` ativa, itens `BL-NN` (status `A Fazer`/`Em Execução`) e `CR-NN` aprovadas da fila
-   - Docs F1–F4 (a tabela de Inputs acima — pacote técnico mínimo: 010-FRD, 016, 020-SRS, 030-SAD, 035-HLD, 040-LLD, 041–044, 045-EST-PLAN, 050-EST-CASES, 060-EAP-WBS, 062, 065, 070, 086, 087, 088, 090)
+   - Docs F1–F4 (a tabela de Inputs acima — pacote técnico mínimo: 010-FRD, 016, 020-SRS, 030-SAD, 035-HLD, 040-LLD, 041–044, 045-TEST-PLAN, 050-TEST-CASES, 060-EAP-WBS, 062, 065, 070, 086, 087, 088, 090)
    - Cruzamento por item: `FILA-NN → FEAT-NN/UC-NN (010) → pacote EAP (060) → tarefas T-NNN`
 2. **Transicionar** os `BL-NN` da fila para `Em Execução (delegado ao TECHLEAD)`
 3. **Acionar** o TECHLEAD no modo `waterfall-discovery` do PROJECT-TECHNICAL-DEFINITIONS v6.0

@@ -152,8 +152,8 @@ Verificar existência e status de cada um dos 39 documentos. Para arquivos exist
 | 042 | `042-DATA-SETUP-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 043 | `043-SEC-SETUP-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 044 | `044-INFRA-SETUP-{PROJECT_ID_NAME}.md` | ✅/❌ |
-| 045 | `045-EST-PLAN-{PROJECT_ID_NAME}.md` | ✅/❌ |
-| 050 | `050-EST-CASES-{PROJECT_ID_NAME}.md` | ✅/❌ |
+| 045 | `045-TEST-PLAN-{PROJECT_ID_NAME}.md` | ✅/❌ |
+| 050 | `050-TEST-CASES-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 095 | `095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 060 | `060-EAP-WBS-{PROJECT_ID_NAME}.md` | ✅/❌ |
 | 062 | `062-STAFFING-PLAN-{PROJECT_ID_NAME}.md` | ✅/❌ |
@@ -259,8 +259,8 @@ O PROJECT-CHARTER é o **start do projeto** — no momento de sua criação, mui
 | 042 | DATA-SETUP (DMD) 🆕 | `042-DATA-SETUP-{PROJECT_ID_NAME}.md` |
 | 043 | SEC-SETUP (SRD) 🆕 | `043-SEC-SETUP-{PROJECT_ID_NAME}.md` |
 | 044 | INFRA-SETUP (IDD) 🆕 | `044-INFRA-SETUP-{PROJECT_ID_NAME}.md` |
-| 045 | EST-PLAN (Estratégia de Testes) | `045-EST-PLAN-{PROJECT_ID_NAME}.md` |
-| 050 | EST-CASES (Casos de Teste) | `050-EST-CASES-{PROJECT_ID_NAME}.md` |
+| 045 | TEST-PLAN (Estratégia de Testes) | `045-TEST-PLAN-{PROJECT_ID_NAME}.md` |
+| 050 | TEST-CASES (Casos de Teste) | `050-TEST-CASES-{PROJECT_ID_NAME}.md` |
 | 095 | RELATORIO-QUALIDADE (estrutura — evidências na F5) | `095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md` |
 | 060 | EAP-WBS | `060-EAP-WBS-{PROJECT_ID_NAME}.md` |
 
@@ -397,8 +397,8 @@ Apresentar o documento e fazer 4 perguntas:
 | 030 | SAD | `software-architecture`, `architecture-designer`, `architecture-patterns` | ✅ |
 | 035 | HLD | `c4-container`, `system-design`, `architecture-decision-records` | ✅ |
 | 040 | LLD | `c4-component`, `ddd-tactical-patterns`, `database-designer` | ✅ |
-| 045 | EST-PLAN | `test-strategy-design`, `qa-test-planner` | ✅ |
-| 050 | EST-CASES | `test-case-creation`, `acceptance-criteria` | ✅ |
+| 045 | TEST-PLAN | `test-strategy-design`, `qa-test-planner` | ✅ |
+| 050 | TEST-CASES | `test-case-creation`, `acceptance-criteria` | ✅ |
 | 095 | RELATORIO-QUALIDADE | `quality-documentation-manager`, `qa` | ✅ |
 | 096 | DEFINICAO-JANELAS-ENTREGA 🆕 | `delivery-manager`, `senior-pm` | ✅ |
 | 060 | EAP-WBS | `decomposition-planning-roadmap`, `project-estimation` | ✅ |
@@ -432,8 +432,8 @@ Cada linha mostra quais variáveis de domínio o GENERATE daquele documento deve
 | 030 | SAD | ✅ | ✅ | ✅ | — | ✅ | 6 visões arquiteturais — requer ARCH global, SEC global, stack e soluções |
 | 035 | HLD | ✅ | ✅ | ✅ | — | ✅ | Design de alto nível — requer ARCH (ADRs), SEC (decisões) e stack (tecnologias) |
 | 040 | LLD | ✅ | — | ✅ | — | ✅ | Design de baixo nível — requer ARCH (padrões), stack (frameworks) e soluções |
-| 045 | EST-PLAN | — | ✅ | ✅ | — | ✅ | Estratégia de testes — requer stack (ferramentas), SEC (testes segurança) e soluções |
-| 050 | EST-CASES | — | — | ✅ | — | — | Casos de teste por feature/solução — alimentados pelo FRD |
+| 045 | TEST-PLAN | — | ✅ | ✅ | — | ✅ | Estratégia de testes — requer stack (ferramentas), SEC (testes segurança) e soluções |
+| 050 | TEST-CASES | — | — | ✅ | — | — | Casos de teste por feature/solução — alimentados pelo FRD |
 | 095 | RELATORIO-QUALIDADE | — | — | — | — | — | Métricas de qualidade — sem dependência técnica direta |
 | 096 | DEFINICAO-JANELAS-ENTREGA 🆕 | — | — | — | — | — | Definição estrutural das janelas — sem dependência técnica direta |
 | 060 | EAP-WBS | — | — | — | ✅ | — | Decomposição de trabalho por perfil de time |
@@ -483,13 +483,13 @@ Cada GENERATE recebe em `UPSTREAM_DOCS` a lista de documentos anteriores que já
 | 042 | DATA-SETUP (DMD) 🆕 | `[001-PROJECT-CHARTER, 030-SAD, 035-HLD, 040-LLD]` |
 | 043 | SEC-SETUP (SRD) 🆕 | `[001-PROJECT-CHARTER, 030-SAD, 035-HLD, 040-LLD]` |
 | 044 | INFRA-SETUP (IDD) 🆕 | `[001-PROJECT-CHARTER, 030-SAD, 035-HLD, 040-LLD]` |
-| 045 | EST-PLAN | `[001-PROJECT-CHARTER, 020-SRS, 030-SAD, 040-LLD]` |
-| 050 | EST-CASES | `[001-PROJECT-CHARTER, 010-FRD, 020-SRS, 045-EST-PLAN]` |
-| 095 | RELATORIO-QUALIDADE | `[045-EST-PLAN, 050-EST-CASES]` |
-| 060 | EAP-WBS | `[001-PROJECT-CHARTER, 040-LLD, 050-EST-CASES]` |
-| 062 | STAFFING-PLAN 🆕 | `[001-PROJECT-CHARTER, 060-EAP-WBS, 045-EST-PLAN, 050-EST-CASES]` + `waterfall-estimation/CRONOGRAMA-CALCULADO.md` (se WATERFALL-ESTIMATION executado) |
-| 065 | CRONOGRAMA-GANTT | `[001-PROJECT-CHARTER, 060-EAP-WBS, 050-EST-CASES, 062-STAFFING-PLAN]` + `waterfall-estimation/CRONOGRAMA-CALCULADO.md` (se WATERFALL-ESTIMATION executado) |
-| 070 | ORCAMENTO | `[001-PROJECT-CHARTER, 060-EAP-WBS, 065-CRONOGRAMA-GANTT, 045-EST-PLAN, 062-STAFFING-PLAN]` + `waterfall-estimation/ORCAMENTO-CALCULADO.md` (se WATERFALL-ESTIMATION executado) |
+| 045 | TEST-PLAN | `[001-PROJECT-CHARTER, 020-SRS, 030-SAD, 040-LLD]` |
+| 050 | TEST-CASES | `[001-PROJECT-CHARTER, 010-FRD, 020-SRS, 045-TEST-PLAN]` |
+| 095 | RELATORIO-QUALIDADE | `[045-TEST-PLAN, 050-TEST-CASES]` |
+| 060 | EAP-WBS | `[001-PROJECT-CHARTER, 040-LLD, 050-TEST-CASES]` |
+| 062 | STAFFING-PLAN 🆕 | `[001-PROJECT-CHARTER, 060-EAP-WBS, 045-TEST-PLAN, 050-TEST-CASES]` + `waterfall-estimation/CRONOGRAMA-CALCULADO.md` (se WATERFALL-ESTIMATION executado) |
+| 065 | CRONOGRAMA-GANTT | `[001-PROJECT-CHARTER, 060-EAP-WBS, 050-TEST-CASES, 062-STAFFING-PLAN]` + `waterfall-estimation/CRONOGRAMA-CALCULADO.md` (se WATERFALL-ESTIMATION executado) |
+| 070 | ORCAMENTO | `[001-PROJECT-CHARTER, 060-EAP-WBS, 065-CRONOGRAMA-GANTT, 045-TEST-PLAN, 062-STAFFING-PLAN]` + `waterfall-estimation/ORCAMENTO-CALCULADO.md` (se WATERFALL-ESTIMATION executado) |
 | 075 | PLANO-COMUNICACAO | `[001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP]` |
 | 080 | PLANO-RISCOS | `[001-PROJECT-CHARTER]` |
 | 085 | PLANO-GESTAO-MUDANCAS 🆕 | `[001-PROJECT-CHARTER, 060-EAP-WBS, 080-PLANO-RISCOS]` |
@@ -499,10 +499,10 @@ Cada GENERATE recebe em `UPSTREAM_DOCS` a lista de documentos anteriores que já
 | 090 | STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN | `[001-PROJECT-CHARTER, 030-SAD, 035-HLD, 040-LLD]` |
 | 092 | BACKLOG-KANBAN 🆕 | `[088-PRODUCT-BACKLOG-LIST, 085-PLANO-GESTAO-MUDANCAS, 062-STAFFING-PLAN, 086-PADROES-CODIGO-DOD, 087-PLANO-CI-CD-AMBIENTES, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN]` |
 | 093 | GESTAO-TIMES 🆕 | `[062-STAFFING-PLAN, 065-CRONOGRAMA-GANTT, 070-ORCAMENTO, 092-BACKLOG-KANBAN]` |
-| 096 | DEFINICAO-JANELAS-ENTREGA 🆕 | `[092-BACKLOG-KANBAN, 085-PLANO-GESTAO-MUDANCAS, 045-EST-PLAN, 050-EST-CASES, 095-RELATORIO-QUALIDADE, 105-TERMO-ACEITE, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 087-PLANO-CI-CD-AMBIENTES]` |
+| 096 | DEFINICAO-JANELAS-ENTREGA 🆕 | `[092-BACKLOG-KANBAN, 085-PLANO-GESTAO-MUDANCAS, 045-TEST-PLAN, 050-TEST-CASES, 095-RELATORIO-QUALIDADE, 105-TERMO-ACEITE, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 087-PLANO-CI-CD-AMBIENTES]` |
 | 097 | MANUAIS-USUARIO | `[001-PROJECT-CHARTER, 003-PERSONAS-JORNADAS, 010-FRD, 016-PROTOTIPOS-UX-UI, 020-SRS]` |
 | 100 | MANUAIS-OPERACIONAIS | `[001-PROJECT-CHARTER, 030-SAD, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN]` |
-| 105 | TERMO-ACEITE | `[001-PROJECT-CHARTER, 045-EST-PLAN, 095-RELATORIO-QUALIDADE]` |
+| 105 | TERMO-ACEITE | `[001-PROJECT-CHARTER, 045-TEST-PLAN, 095-RELATORIO-QUALIDADE]` |
 | 110 | LICOES-APRENDIDAS | `[todos os 21 documentos anteriores]` |
 | 115 | TERMO-ENCERRAMENTO-PROJETO 🆕 | `[001-PROJECT-CHARTER, 105-TERMO-ACEITE, 110-LICOES-APRENDIDAS]` |
 
@@ -518,21 +518,21 @@ Quando um documento já em COMPLIANCE é modificado, todos os documentos downstr
 | 002-STAKEHOLDER-MAP 🆕 | 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD, 015-RTM-FASE-1, 020-SRS, 075-PLANO-COMUNICACAO e seus dependentes transitivos |
 | 003-PERSONAS-JORNADAS 🆕 | 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD, 016-PROTOTIPOS-UX-UI, 088-PRODUCT-BACKLOG-LIST, 097-Manuais e seus dependentes transitivos |
 | 004-MAPEAMENTO-AS-IS-TO-BE 🆕 | 005-BRD, 010-FRD, 016-PROTOTIPOS-UX-UI, 030-SAD, 088-PRODUCT-BACKLOG-LIST e seus dependentes transitivos |
-| 005-BRD | 010-FRD, 015-RTM-FASE-1, 016-PROTOTIPOS-UX-UI, 020-SRS, 025-RTM-FASE-2, 030-SAD, 035-HLD, 040-LLD, 045-EST-PLAN, 050-EST-CASES, 060-EAP, 065-Cronograma, 070-Orçamento, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 097-Manuais, 105-Termo |
-| 010-FRD 🆕 | 015-RTM-FASE-1, 016-PROTOTIPOS-UX-UI, 020-SRS, 025-RTM-FASE-2, 030-SAD, 050-EST-CASES, 097-Manuais e seus dependentes transitivos |
+| 005-BRD | 010-FRD, 015-RTM-FASE-1, 016-PROTOTIPOS-UX-UI, 020-SRS, 025-RTM-FASE-2, 030-SAD, 035-HLD, 040-LLD, 045-TEST-PLAN, 050-TEST-CASES, 060-EAP, 065-Cronograma, 070-Orçamento, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 097-Manuais, 105-Termo |
+| 010-FRD 🆕 | 015-RTM-FASE-1, 016-PROTOTIPOS-UX-UI, 020-SRS, 025-RTM-FASE-2, 030-SAD, 050-TEST-CASES, 097-Manuais e seus dependentes transitivos |
 | 016-PROTOTIPOS-UX-UI 🆕 | 020-SRS, 025-RTM-FASE-2, 088-PRODUCT-BACKLOG-LIST, 097-Manuais, 105-Termo e seus dependentes transitivos |
 | 015-RTM-FASE-1 🆕 | 020-SRS, 025-RTM-FASE-2 e seus dependentes transitivos |
-| 020-SRS | 025-RTM-FASE-2, 030-SAD, 045-EST-PLAN, 050-EST-CASES, 097-Manuais e seus dependentes transitivos |
+| 020-SRS | 025-RTM-FASE-2, 030-SAD, 045-TEST-PLAN, 050-TEST-CASES, 097-Manuais e seus dependentes transitivos |
 | 025-RTM-FASE-2 🆕 | 030-SAD, 035-HLD, 040-LLD e seus dependentes transitivos |
-| 030-SAD | 035-HLD, 040-LLD, 041/042/043/044-SETUP, 045-EST-PLAN, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 100-Manuais Ops |
+| 030-SAD | 035-HLD, 040-LLD, 041/042/043/044-SETUP, 045-TEST-PLAN, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, 100-Manuais Ops |
 | 035-HLD | 040-LLD, 041/042/043/044-SETUP, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN, **WATERFALL-ESTIMATION (UPSTREAM/DISCOVERY F1-F3)** |
-| 040-LLD | 041-DEVOPS-SETUP, 042-DATA-SETUP, 043-SEC-SETUP, 044-INFRA-SETUP, 045-EST-PLAN, 050-EST-CASES, 060-EAP, 065-Cronograma, 070-Orçamento, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN |
-| 041-DEVOPS-SETUP 🆕 | 050-EST-CASES, 060-EAP, 087-PLANO-CI-CD-AMBIENTES, 088-PRODUCT-BACKLOG-LIST, 100-Manuais Ops e seus dependentes transitivos |
-| 042-DATA-SETUP 🆕 | 041-DEVOPS-SETUP, 050-EST-CASES, 060-EAP, 088-PRODUCT-BACKLOG-LIST e seus dependentes transitivos |
-| 043-SEC-SETUP 🆕 | 041-DEVOPS-SETUP, 050-EST-CASES, 060-EAP, 086-PADROES-CODIGO-DOD, 088-PRODUCT-BACKLOG-LIST, 100-Manuais Ops e seus dependentes transitivos |
+| 040-LLD | 041-DEVOPS-SETUP, 042-DATA-SETUP, 043-SEC-SETUP, 044-INFRA-SETUP, 045-TEST-PLAN, 050-TEST-CASES, 060-EAP, 065-Cronograma, 070-Orçamento, 090-STRATEGIC-IMPLEMENTATION-AND-DEPLOYMENT-PLAN |
+| 041-DEVOPS-SETUP 🆕 | 050-TEST-CASES, 060-EAP, 087-PLANO-CI-CD-AMBIENTES, 088-PRODUCT-BACKLOG-LIST, 100-Manuais Ops e seus dependentes transitivos |
+| 042-DATA-SETUP 🆕 | 041-DEVOPS-SETUP, 050-TEST-CASES, 060-EAP, 088-PRODUCT-BACKLOG-LIST e seus dependentes transitivos |
+| 043-SEC-SETUP 🆕 | 041-DEVOPS-SETUP, 050-TEST-CASES, 060-EAP, 086-PADROES-CODIGO-DOD, 088-PRODUCT-BACKLOG-LIST, 100-Manuais Ops e seus dependentes transitivos |
 | 044-INFRA-SETUP 🆕 | 041-DEVOPS-SETUP, 065-Cronograma, 070-Orçamento, 087-PLANO-CI-CD-AMBIENTES, 088-PRODUCT-BACKLOG-LIST, 100-Manuais Ops e seus dependentes transitivos |
-| 045-EST-PLAN | 050-EST-CASES, 095-Relatório, 060-EAP, 062-STAFFING-PLAN, 065-Cronograma, 070-Orçamento, 105-Termo Aceite |
-| 050-EST-CASES | 095-Relatório, 060-EAP, 062-STAFFING-PLAN, 065-Cronograma, 070-Orçamento, 105-Termo Aceite |
+| 045-TEST-PLAN | 050-TEST-CASES, 095-Relatório, 060-EAP, 062-STAFFING-PLAN, 065-Cronograma, 070-Orçamento, 105-Termo Aceite |
+| 050-TEST-CASES | 095-Relatório, 060-EAP, 062-STAFFING-PLAN, 065-Cronograma, 070-Orçamento, 105-Termo Aceite |
 | 060-EAP-WBS | 062-STAFFING-PLAN, 065-Cronograma, 070-Orçamento, 085-PLANO-GESTAO-MUDANCAS, 088-PRODUCT-BACKLOG-LIST, 105-Termo Aceite, **WATERFALL-ESTIMATION (DOWNSTREAM/REFINEMENT F4-F7)** |
 | 062-STAFFING-PLAN 🆕 | 065-Cronograma, 070-Orçamento, 088-PRODUCT-BACKLOG-LIST, 093-GESTAO-TIMES e seus dependentes transitivos |
 | 086-PADROES-CODIGO-DOD 🆕 | 087-PLANO-CI-CD-AMBIENTES, 088-PRODUCT-BACKLOG-LIST, 092-BACKLOG-KANBAN (critérios DONE) e seus dependentes transitivos |
