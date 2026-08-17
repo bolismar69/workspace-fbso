@@ -47,15 +47,15 @@ Invocar skills de gestão de execução, gap analysis e documentação.
 Gerar `{TECHNICAL_DEFINITIONS_PATH}/595-RETURN-PACKAGE-{FILA_NN}.md` com **7 seções**:
 
 1. **Identificação do Ciclo** — `FILA-NN`, solução técnica, `590-sprint-NNN`, datas de início/fim do ciclo
-2. **Status Proposto por Item** — tabela: `BL-NN` (do snapshot 092), status proposto (Em Revisão/Concluído/Impedido), % concluído, tarefas `T-NNN` executadas, observações
+2. **Status Proposto por Item** — tabela: `BL-NN` (do snapshot 092), status proposto (Em Revisão/Concluído/Impedido), % concluído, tarefas `T-NNN` executadas, **Janela atual (`JAN-DEV-NN`/`JAN-QA-NN`/`JAN-UAT-NN`/`JAN-DEPLOY-NN`, coerente com o 600)** e **Aceite UAT (DE-ACORDO/APROVAÇÃO por entrega — Key Users + PM/PO)** para itens que saíram da UAT, observações
 3. **Débito Técnico** — `DT-XXX` (fonte: `IDENTIFIED-TECHNICAL-DEBT.md`/`SPRINT-REVIEW.md`): descrição, impacto, tarefas afetadas + **proposta de CR Técnico** (`CR-NN` com justificativa para o processo do 085)
-4. **Evidências para o 095** — caminhos absolutos: `TASK-EXECUTED`, `SPRINT-REVIEW.md`, PRs (nº e link), relatórios de execução, resultados de testes
+4. **Evidências para o 095** — caminhos absolutos, **agrupadas por janela** (DEV: PRs/relatórios; QA: resultados de testes funcionais/carga/pentest; UAT: registro de DE-ACORDO por entrega; DEPLOY: runbooks do 090 + evidências CI/CD do 087): `TASK-EXECUTED`, `SPRINT-REVIEW.md`, PRs (nº e link), relatórios de execução, resultados de testes
 5. **Impedimentos Propostos** — `IMP-NN`: nome, descrição, impacto no ciclo, solução sugerida (o PM/PO registra no 093)
 6. **Pedidos de Mudança** — divergências vs baseline M4: escopo (processo 085), cronograma (PERT/065/070), stack
 7. **Recomendação de Próxima FILA-NN** — priorização sugerida (base: 580 + capacidade do 460) — **não vinculante**
 
 ### Passo 4 — Validação Pós-Geração
-Verificar: 100% dos `BL-NN` do snapshot com status proposto; todo `DT-XXX` com CR Técnico vinculada; todas as evidências com caminhos absolutos existentes; nenhum arquivo do PM/PO editado; vocabulário WATERFALL.
+Verificar: 100% dos `BL-NN` do snapshot com status proposto; coluna "Janela" preenchida e coerente com o 600-EXECUTION-HISTORY; DE-ACORDO presente para itens que saíram da UAT; todo `DT-XXX` com CR Técnico vinculada; todas as evidências com caminhos absolutos existentes, agrupadas por janela; nenhum arquivo do PM/PO editado; vocabulário WATERFALL.
 
 ---
 

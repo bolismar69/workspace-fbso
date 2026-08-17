@@ -1,5 +1,5 @@
 # PROMPT: ROADMAP DE DEFINIÇÕES TÉCNICAS DO PROJETO
-## Versão: 6.0 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção)
+## Versão: 7.0 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção) + Bloco F (Janelas de Entrega)
 
 Atue como um Especialista em Gestão de Processos (BPM), Arquiteto de Soluções Ágeis e Tech Lead, especializado em definições técnicas de projetos e engenharia de prompts.
 
@@ -41,7 +41,7 @@ TECHNICAL_DEFINITIONS_PATH    = PROJECT_COMPLETE_PATH_NAME + "/technical-definit
 | Modo | Pipeline | Baseline | Quando |
 |---|---|---|---|
 | `agile-discovery` | Pipeline atual (Blocos 0–A–B–C–D, 20 fases) | Docs de negócio ágeis (`project-documents/`: Charter, BRD, Epics, Features, US) | Projetos ágeis — comportamento atual, retrocompatível |
-| `waterfall-discovery` 🆕 | Bloco 0 reduzido (F1–F2 puladas, F3–F4 migradas) + Blocos A–D (migrados/validados) + **Bloco E** (Esteira de Construção) + **595-TECHLEAD-RETURN-PACKAGE** | Docs WATERFALL F1–F4 em `[STATUS: COMPLIANCE]` (M4 travado: 088, 092, 010-FRD, 060-EAP-WBS, 062, 065, 070, 086, 087, 090) | Projetos WATERFALL na FASE 5 (parceria com `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` v2.0) |
+| `waterfall-discovery` 🆕 | Bloco 0 reduzido (F1–F2 puladas, F3–F4 migradas) + Blocos A–D (migrados/validados) + **Bloco E** (Esteira de Construção) + **Bloco F** (Janelas de Entrega — consome o 096) + **595-TECHLEAD-RETURN-PACKAGE** | Docs WATERFALL F1–F4 em `[STATUS: COMPLIANCE]` (M4 travado: 088, 092, 010-FRD, 060-EAP-WBS, 062, 065, 070, 086, 087, 090) + `096-DEFINICAO-JANELAS-ENTREGA` | Projetos WATERFALL na FASE 5 (parceria com `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` v2.0) |
 
 **Detecção no Bootstrap (auditoria de artefatos):**
 
@@ -84,6 +84,8 @@ FASE 0: BOOTSTRAP (sequencial)
   │
   └─▶ BLOCO E: Esteira de Construção por Ciclo (SOMENTE modo waterfall-discovery)
         Contexto base → Loop por FILA-NN → 595-TECHLEAD-RETURN-PACKAGE → PM/PO
+  └─▶ BLOCO F: Janelas de Entrega (SOMENTE modo waterfall-discovery)
+        DEV (Bloco E) → QA → UAT → DEPLOY por FILA-NN — consome o 096-DEFINICAO-JANELAS-ENTREGA
 
   └─▶ EXECUTION-HISTORY 📊 (standalone)
 ```
@@ -216,7 +218,39 @@ No modo `waterfall-discovery`, este roadmap atua como o **lado TECHLEAD da FASE 
 | 6 | Git e PR | `PROMPT-GENERATE-PULL-REQUEST.md` |
 | 7 | **Empacotamento (em vez de governança direta)** | trio **595-TECHLEAD-RETURN-PACKAGE** (GENERATE → GATE → FIX → COMPLIANCE) → entrega `595-RETURN-PACKAGE-{FILA-NN}.md` ao PM/PO |
 
-**E3 — Regras:** vocabulário WATERFALL na invocação (nunca reescrever prompts reusados); branch `feature/sprint-NN-<slug>`; HITL obrigatório por ciclo; débito técnico `DT-XXX` entra no pacote 595 como CR Técnico; ownership (nunca editar 092/093/095/085/088). A sub-fase 2 do WATERFALL (Janelas de Entrega) permanece fora de escopo — o Bloco E roda por `FILA-NN`.
+**E3 — Regras:** vocabulário WATERFALL na invocação (nunca reescrever prompts reusados); branch `feature/sprint-NN-<slug>`; HITL obrigatório por ciclo; débito técnico `DT-XXX` entra no pacote 595 como CR Técnico; ownership (nunca editar 092/093/095/085/088). O Bloco E roda por `FILA-NN` **dentro da janela DEV** — a passagem pelas janelas (QA/UAT/DEPLOY) é orquestrada pelo **Bloco F** (abaixo), conforme o 096-DEFINICAO-JANELAS-ENTREGA.
+
+### BLOCO F — Janelas de Entrega (após Barreira D, somente no modo waterfall-discovery)
+
+**F.1 — Visão das Janelas:** consome o **096-DEFINICAO-JANELAS-ENTREGA** (trio em `project-documents-waterfall/`) como upstream. As 4 janelas — DEV, QA, UAT, DEPLOY — regem a passagem de cada ciclo `FILA-NN`. Regra: **janela ≠ fila** — a `FILA-NN` vem do 092; a janela é o estágio de passagem da entrega.
+
+**F.2 — Orquestração por ciclo FILA-NN:**
+
+`JAN-DEV (Bloco E steps 0–7) → gate DEV → JAN-QA (050 + QA-REVISOR-SECURITY + 095 GO/NO-GO) → JAN-UAT (DE-ACORDO/APROVAÇÃO por entrega — Key Users + PM/PO) → JAN-DEPLOY (090 + 087, GMUD em PROD) → pacote 595 ao PM/PO → PM/PO aplica no 092 → próxima FILA-NN`
+
+Tratativas de retorno (do 096): QA NO-GO → volta à DEV; UAT com divergência → CR via 085 + volta à DEV; DEPLOY bloqueado → `IMP-NN` (093) + 085.
+
+**F.3 — Delegação de execução por frente (SEM prompts executores novos):**
+
+| Janela | Frente responsável | Como executará (delegação futura) |
+|---|---|---|
+| DEV | TECHLEAD | Bloco E (prompts reusados atuais); roadmaps/skills/agentes de execução quando existirem |
+| QA | TECHLEAD | QA-REVISOR-SECURITY + 050; skill/agente de QA futuro (funcional/carga/pentest); resultado proposto no 595 |
+| UAT | PM/PO + usuários de negócio | Registro de DE-ACORDO/APROVAÇÃO por entrega; sem executor automatizado — validação humana |
+| DEPLOY | TECHLEAD | 090 + 087; skill/agente de deploy futuro (GMUD em PROD) |
+
+**F.4 — Rastreio por janela:** o 600-EXECUTION-HISTORY registra cada transição (`JAN-*-NN`, data, responsável, evidências); o pacote 595 (GENERATE) carrega a coluna "Janela" na seção 2, o **Aceite UAT (DE-ACORDO)** por item e as evidências agrupadas por janela na seção 4; o GATE-595 valida via `[595-08]`/`[595-09]`/`[595-10]`.
+
+**F.5 — Regras:** vetos do 092 preservados (o 092 não define janelas — nenhuma edição); "TECHLEAD propõe, PM/PO aplica" por janela:
+
+| Janela | TECHLEAD propõe | PM/PO aplica |
+|---|---|---|
+| DEV | conclusão do ciclo (evidências do Bloco E) | revisor humano aceita (086); ciente via 595 |
+| QA | resultado da verificação | status no 092 + validação do 095 (GO/NO-GO) |
+| UAT | — (não executa) | registro de DE-ACORDO/APROVAÇÃO por entrega |
+| DEPLOY | execução (runbook 090) | validação do checklist + go/no-go GMUD |
+
+HITL por transição; 095 GO é pré-requisito do UAT; o 105-TERMO-ACEITE permanece como aceite FINAL do projeto (FASE 6 — nunca gate por entrega); mudança de escopo pós-M4 via 085; vocabulário WATERFALL.
 
 ---
 
@@ -262,7 +296,7 @@ CREATED → GATE ⟷ FIX → PRÉ-COMPLIANCE → COMPLIANCE
 | ⛔ Barreira C | Após Bloco C (F17) | SPECS referencia todos artefatos. MILESTONES alinhado. | **Skills-Gap Detection:** Se skill necessária não coberta pelo Bloco A → `[SKILLS-GAP-DETECTED]` → propõe reabertura Bloco A |
 | ⛔ Barreira D | Após Bloco D (F19) | 100% US da sprint com contratos. SPRINT-BACKLOG atualizado. | Iterativo — pergunta se continua próxima sprint ou encerra |
 
-> **Modo waterfall-discovery:** a Barreira 0 valida os MIGRADOS (F3–F4 contra 088/010); as Barreiras A–D permanecem; após a Barreira D o fluxo entra no Bloco E (por ciclo).
+> **Modo waterfall-discovery:** a Barreira 0 valida os MIGRADOS (F3–F4 contra 088/010); as Barreiras A–D permanecem; após a Barreira D o fluxo entra no Bloco E (por ciclo, janela DEV) e no Bloco F (janelas QA/UAT/DEPLOY).
 
 ### Consistência Horizontal (Bloco B)
 
@@ -431,6 +465,7 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `project
 | 4.0 | 28/07/2026 | Reestruturação TOGAF: Bloco A=People(2f), Bloco B=Architecture & Security(2f), Bloco C=Specs & Milestones(3f, PRD→SPECS→MILESTONES), Bloco D=Execution Portfolio(5f, CATALOG→MATRIX→STACK→SPRINTS→HISTORY); cadeia progressiva de inputs no Bloco D; inputs do PRD enriquecidos com Blocos A+B | Time de Arquitetura |
 | 5.0 | 30/07/2026 | Redesign estrutural: Bloco 0 (ponte Negócio→TI com 4 fases), Bloco B expandido (6 disciplinas: +DATA, +DEVOPS-SRE, +TEST, +INFRA), Bloco C reorganizado (CATALOG→MATRIX→STACK→SPECS→MILESTONES), Bloco D=Sprints com Discovery Técnico, History standalone. 20 fases, pipeline sequencial, 58 prompts. | Time de Arquitetura |
 | 6.0 | 16/08/2026 | Modos de execução (agile-discovery/waterfall-discovery) com detecção no Bootstrap; modo waterfall-discovery com mapeamento F1–F19 (pular/migrar/validar/rodar); Bloco E — Esteira de Construção por ciclo com reuso sem edição + trio 595-TECHLEAD-RETURN-PACKAGE; parceria PM/PO × TECHLEAD (WATERFALL-EXECUTION v2.0). 61 prompts. | Time de Arquitetura |
+| 7.0 | 17/08/2026 | Bloco F — Janelas de Entrega (DEV→QA→UAT→DEPLOY por FILA-NN): consome o 096-DEFINICAO-JANELAS-ENTREGA (WATERFALL), orquestra a passagem por janela com delegação por frente (sem prompts executores), rastreio no 600 e no pacote 595 (coluna Janela + Aceite UAT DE-ACORDO). Vetos do 092 preservados; 105 permanece aceite final. 61 prompts (sem executores novos). | Time de Arquitetura |
 
 ---
 

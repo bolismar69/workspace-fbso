@@ -59,6 +59,13 @@ Ler `595-RETURN-PACKAGE-{FILA_NN}.md` (artefato a validar) e `{SNAPSHOT_092}` (r
 | 5.1 | Veto a termos ágeis | Nenhum termo ágil (Sprint, User Story, DoR, Epic) no pacote — **[595-06]** |
 | 5.2 | Ownership preservado | Nenhum arquivo do PM/PO (092/093/095/085/088) foi alterado pelo TECHLEAD — **[595-07]** |
 
+#### Dimensão 6: Janelas de Entrega e Aceite (096)
+| # | Verificação | Critério |
+|---|---|---|
+| 6.1 | Coluna Janela | Todo `BL-NN` tem janela `JAN-*-NN` preenchida, coerente com o 600-EXECUTION-HISTORY — **[595-08]** |
+| 6.2 | Evidências por janela | Seção 4 agrupa evidências por janela (DEV/QA/UAT/DEPLOY) e todas apontam para arquivos existentes — **[595-09]** |
+| 6.3 | Aceite UAT por entrega | Todo `BL-NN` que saiu da UAT tem registro de DE-ACORDO/APROVAÇÃO por entrega (Key Users + PM/PO) — **[595-10]** |
+
 ### Passo 3 — Emitir Veredito
 
 ---
@@ -92,7 +99,7 @@ Ler `595-RETURN-PACKAGE-{FILA_NN}.md` (artefato a validar) e `{SNAPSHOT_092}` (r
 ### 🛑 STATUS DO GATE: [PRÉ-COMPLIANCE INTERNO - AGUARDANDO VALIDAÇÃO HUMANA]
 
 - **DOCUMENTO:** `595-RETURN-PACKAGE-{FILA-NN}.md` gerado conforme as informações fornecidas.
-- **AUDITORIA DA IA:** Documento pré-validado. Cobertura total do snapshot 092, débito técnico com CR vinculada, evidências com caminhos válidos, impedimentos completos, pedidos de mudança formais, vocabulário WATERFALL e ownership preservado. Nenhum conflito conceitual encontrado pela IA.
+- **AUDITORIA DA IA:** Documento pré-validado. Cobertura total do snapshot 092, débito técnico com CR vinculada, evidências com caminhos válidos agrupadas por janela, coluna "Janela" coerente com o 600, aceite UAT (DE-ACORDO) presente por entrega, impedimentos completos, pedidos de mudança formais, vocabulário WATERFALL e ownership preservado. Nenhum conflito conceitual encontrado pela IA.
 - **DIRETRIZ:** Peço que leia o pacote para verificar se o mesmo atende plenamente ao contrato PM/PO ↔ TECHLEAD antes de enviá-lo ao PM/PO.
 
 Por favor, responda às seguintes perguntas para podermos prosseguir ou reajustar:
