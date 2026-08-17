@@ -2,7 +2,7 @@
 
 ## Contexto
 
-> 📐 **Discovery-Level / Upstream Architecture / Análise de Viabilidade:** Este prompt gera a versão Discovery-Level (high-level) do PRD para análise de viabilidade e estimativa ROM 50%. Para a versão detalhada, usar `PROMPT-GENERATE-PROJECT-TECHNICAL-DEFINITIONS-PRD-DEFINITION.md`.
+> 📐 **Discovery-Level / Upstream Architecture / Análise de Viabilidade:** Este prompt gera a versão Discovery-Level (high-level) do PRD para análise de viabilidade e estimativa ROM 50%. Para a versão detalhada, usar `PROMPT-GENERATE-440-PRD-DEFINITION.md`.
 
 Este prompt gera o artefato `DISCOVERY-LEVEL-PRD.md` 🆕 — o **PRD Discovery-Level** baseado nos Épicos definidos pelo Negócio. Diferente do PRD detalhado (F4 do tech-defs), este documento foca na visão macro do produto para embasar a análise de viabilidade técnica.
 
