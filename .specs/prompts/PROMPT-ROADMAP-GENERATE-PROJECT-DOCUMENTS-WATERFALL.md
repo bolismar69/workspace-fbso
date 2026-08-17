@@ -298,6 +298,8 @@ O PROJECT-CHARTER é o **start do projeto** — no momento de sua criação, mui
 
 > 🚧 **Sub-fase 2 — Janelas de Entrega (Ciclos/Sprints):** TBD — fora de escopo nesta revisão. A esteira executa por ciclo de entrega (`FILA-NN` do 092) sem depender da definição das janelas.
 
+> 🔗 **Divisão de papéis (2026-08-16):** a construção é **delegada ao TECHLEAD** via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v6.0, modo `waterfall-discovery`, Bloco E). O PM/PO entrega o pacote de demanda (handoff) e recebe o `595-RETURN-PACKAGE-{FILA-NN}.md` (recepção), conforme `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` v2.0.
+
 ### FASE 6 — ENCERRAMENTO E OPERAÇÃO
 
 | # | Documento | Arquivo |
