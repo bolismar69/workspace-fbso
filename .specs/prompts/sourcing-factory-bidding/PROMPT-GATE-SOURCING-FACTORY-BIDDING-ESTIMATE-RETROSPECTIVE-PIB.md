@@ -12,7 +12,7 @@ Gate de Validação da Análise Retrospectiva PIB (`ESTIMATE-RETROSPECTIVE-PIB.m
 |---|---|
 | `{PROJECT_PATH}` | Caminho base dos projetos |
 | `{PROJECT_ID_NAME}` | ID completo do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
+| `{SOURCING_BIDDING_MODE}` | Modo: `agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement` |
 
 **Arquivo auditado:** `ESTIMATE-RETROSPECTIVE-PIB.md`
 **Referências:** F5 (ESTIMATE-VALIDATION.md), CSVs das fábricas, Baseline PIB

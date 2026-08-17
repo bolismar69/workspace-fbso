@@ -6,7 +6,7 @@ Este prompt implementa o **GENERATE do ESTIMATION-SCHEMA** para o processo de So
 
 **Propósito:** Gera o template CSV padronizado (DTA Estimation Schema) que as fábricas devem preencher e devolver.
 
-**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
+**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement`).
 
 ## Parâmetros de Entrada
 
@@ -14,7 +14,7 @@ Este prompt implementa o **GENERATE do ESTIMATION-SCHEMA** para o processo de So
 |---|---|
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
+| `{SOURCING_BIDDING_MODE}` | Modo: `agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement` |
 | `{SOURCING_BIDDING_PATH}` | Pasta sourcing-factory-bidding-{mode} |
 | `{ESTIMATES_PATH}` | Pasta de estimativas recebidas |
 
@@ -24,8 +24,8 @@ Este prompt implementa o **GENERATE do ESTIMATION-SCHEMA** para o processo de So
 Confirmar `{PROJECT_PATH}`, `{PROJECT_ID_NAME}`, `{SOURCING_BIDDING_MODE}`.
 
 ### Passo 1 — Carregar Artefatos Base
-- Discovery: `upstream-architecture-discovery/DISCOVERY-LEVEL-PRD.md` (épicos, escopo)
-- Full: features + user stories do projeto
+- Agile Discovery / Waterfall Discovery (modos de alto nível): `upstream-architecture-discovery/DISCOVERY-LEVEL-PRD.md` ou docs WATERFALL (épicos, escopo)
+- Agile Refinement / Waterfall Refinement (modos detalhados): features + user stories ou pacotes EAP/WBS do projeto
 
 ### Passo 2 — Invocar Skills Especializadas
 - `estimate-builder` — Template CSV com 20 colunas do schema unificado

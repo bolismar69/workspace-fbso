@@ -14,7 +14,7 @@ Este prompt implementa o **FIX do ESTIMATE-VALIDATION** — Fase 5. Acionado qua
 |---|---|
 | `{PROJECT_PATH}` | Caminho base dos projetos |
 | `{PROJECT_ID_NAME}` | Identificador do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
+| `{SOURCING_BIDDING_MODE}` | Modo: `agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement` |
 
 ## Fluxo de Correção
 

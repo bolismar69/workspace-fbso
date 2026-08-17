@@ -6,7 +6,7 @@ Este prompt implementa o **GENERATE do FACTORY-COMPARISON** para o processo de S
 
 **Propósito:** Consolida estimativas validadas em matriz comparativa conforme `.specs/standards/DTA-VALIDATION-STANDARDS.md` §3: Matriz de Decisão Ponderada, Pesos por Critério, Escala de Notas, Go/No-Go por Fábrica.
 
-**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`discovery` ou `full`).
+**Modo de operação:** Adapta-se ao `SOURCING_BIDDING_MODE` definido no Bootstrap (`agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement`).
 
 ## Parâmetros de Entrada
 
@@ -14,7 +14,7 @@ Este prompt implementa o **GENERATE do FACTORY-COMPARISON** para o processo de S
 |---|---|
 | `{PROJECT_PATH}` | Caminho base dos projetos de negócio |
 | `{PROJECT_ID_NAME}` | Identificador completo do projeto |
-| `{SOURCING_BIDDING_MODE}` | Modo: `discovery` ou `full` |
+| `{SOURCING_BIDDING_MODE}` | Modo: `agile-discovery`, `agile-refinement`, `waterfall-discovery` ou `waterfall-refinement` |
 | `{SOURCING_BIDDING_PATH}` | Pasta sourcing-factory-bidding-{mode} |
 | `{ESTIMATES_PATH}` | Pasta de estimativas recebidas |
 

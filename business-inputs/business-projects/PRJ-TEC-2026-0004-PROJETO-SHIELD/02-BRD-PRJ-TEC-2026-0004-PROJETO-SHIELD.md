@@ -11,6 +11,35 @@
 
 ---
 
+# Business Requirements Document (BRD) - Documento de Requisitos de Negócio
+
+O **BRD (Business Requirements Document)** é o documento formal que define os objetivos, o valor gerado e as necessidades estratégicas e operacionais de uma empresa para um novo projeto. Ele responde estritamente ao **"o quê"** a empresa precisa e ao **"porquê"**, servindo como o contrato primário de negócio antes de qualquer detalhamento funcional (**02B-DRF**) ou especificação técnica (**03-SRS**).
+
+---
+
+## Principais Elementos do BRD
+
+* **Resumo Executivo:** Visão geral da iniciativa, justificativa de negócio e problema a ser resolvido.
+* **Objetivos de Negócio:** Metas quantificáveis e qualitativas que a empresa busca atingir (ex: redução de custos, conformidade regulatória, aumento de receita).
+* **Escopo Declarado (In-Scope e Out-of-Scope):** Delimitação clara das fronteiras do projeto para evitar o crescimento desordenado do escopo (*scope creep*).
+* **Requisitos de Negócio (`REQ-NN`):** Lista das necessidades de alto nível e regras de negócio macro que a solução deve atender para considerar o projeto um sucesso.
+* **Cenário Atual vs. Futuro (As-Is / To-Be):** Descrição do processo operacional atual e do impacto esperado com a nova solução.
+* **Premissas, Restrições e Riscos de Negócio:** Prazos limite, orçamento, políticas operacionais internas e riscos do negócio.
+* **Matriz de Stakeholders:** Identificação dos patrocinadores (*Sponsors*), aprovadores do projeto e áreas impactadas.
+
+---
+
+## Para que serve no nosso Pipeline Waterfall
+
+* **Alinhamento Estratégico:** Garante que a diretoria, as áreas de negócio e a TI tenham exatamente a mesma expectativa sobre os entregáveis do projeto.
+* **Insumo Direto para o DRF/FRD:** Serve como pai conceitual do **02B-DRF/FRD**. Cada requisito do BRD (`REQ-NN`) dará origem a funcionalidades (`F-NN`), regras (`RN-NN`) e casos de uso (`UC-NN`).
+* **Sustentação do Gate Upstream (ROM ±50%):** Fornece as justificativas financeiras e de escopo para que a TI elabore a arquitetura macro e submeta a primeira análise de viabilidade ao Comitê de Governança.
+* **Âncora de Alterações (CCR):** Funciona como a primeira linha de defesa contra mudanças de escopo. Se uma nova demanda não apoiar nenhum objetivo do BRD, ela é sumariamente rejeitada ou exige revisão contratual.
+
+---
+
+---
+
 ### 1. Requisitos de Negócio
 
 Cada requisito abaixo descreve **o que o produto deve fazer** para entregar valor ao negócio e aos clientes. O *como* será detalhado nos documentos técnicos (Fase 3).

@@ -11,6 +11,45 @@
 
 ---
 
+# Software Requirements Specification (SRS) - Especificação de Requisitos do Sistema
+
+O **SRS (Software Requirements Specification)** é o documento técnico oficial que traduz as necessidades de negócio do **02-BRD** e as regras funcionais do **02B-DRF** em especificações operacionais e computacionais do software. Ele funciona como o contrato técnico da solução antes do desenho arquitetonial (**05-SAD**).
+
+---
+
+## O Papel do SRS no Pipeline Waterfall
+
+Enquanto o **DRF/FRD** define o que o usuário vê e experimenta (telas, campos, fluxos operacionais), o **SRS** define como a plataforma/sistema deve se comportar internamente para sustentar essas funcionalidades:
+* **Foco no Sistema, não no Usuário:** Detalha comportamentos do software, processamentos em segundo plano, regras de validação de dados em nível de API/Backend e Requisitos Não-Funcionais (NFRs).
+* **Guia para Engenheiros e Arquitetos:** Serve como insumo direto para o desenho da arquitetura macro (**SAD**) e detalhada (**LLD**).
+* **Base para Testes Não-Funcionais:** Orienta o QA na criação de suítes de testes de carga, estresse, resiliência e penetração/segurança.
+
+---
+
+### O que contém o SRS (Visão do Sistema)
+
+1. **Requisitos de Sistema e Capacidades Tecnológicas:**
+   * Tradução dos requisitos funcionais do DRF para regras de processamento do sistema.
+   * Tratamento de exceções em nível de sistema (time-outs, quedas de serviço, retentativas/retry policies, códigos de erro HTTP/RPC).
+   * Contratos lógicos de interfaces externas e integradores (sem acoplar a código final).
+
+2. **Requisitos Não-Funcionais (NFRs - O diferencial do SRS):**
+   * **Desempenho e Latência:** Tempo de resposta máximo por endpoint/operação (ex: p95 < 15ms), latência de cache.
+   * **Segurança e Privacidade:** Requisitos de criptografia (em trânsito e em repouso), sanitização de logs, políticas de cookies/tokens e conformidade OWASP.
+   * **Disponibilidade e Resiliência:** SLA de uptime (ex: 99.9%), estratégias de fallback e tempo de recuperação (RTO/RPO).
+   * **Escalabilidade e Consumo:** Limites de requisições por segundo (RPS), vazão esperada e concorrência máxima de usuários.
+   * **Observabilidade:** Métricas operacionais obrigatórias (OpenTelemetry/Prometheus) e auditoria de eventos.
+
+3. **Restrições Técnicas de Sistema:**
+   * Diretrizes mandatórias de plataforma, compatibilidade de protocolos e limites operacionais impostos pela infraestrutura.
+
+### Objetivo
+
+* **Ponte para o Gate Upstream (ROM ±50%):** O SRS consolida os NFRs necessários para que os Arquitetos elaborem o **SAD** e o **HLD**, permitindo uma estimativa macro precisa.
+* **Eliminação de Ambiguidade Técnica:** Impede que o time de desenvolvimento precise "adivinhar" SLAs de performance, regras de segurança ou comportamento do sistema diante de falhas.
+
+---
+
 ### 1. Requisitos Funcionais (Functional Requirements)
 
 | ID | Requisito Funcional | Vinculado a (BRD) | Critério de Aceitação |
@@ -80,6 +119,20 @@
 | IF-05 | Produtos Consumidores → Plataforma Shield | Consumo dos endpoints de autenticação via redirecionamento HTTP e chamadas de API | REST/HTTPS, OpenAPI 3.0 |
 | IF-06 | Plataforma → Banco de Dados (PostgreSQL) | Consultas com injeção de identificador do cliente para ativação de filtro de isolamento | SQL com variável de sessão `app.current_tenant` |
 
+
+### 4.1 Contrato de Integracao — Sistemas Existentes (IF-05 Detalhado)
+
+| Sistema | Dominio | Status |
+|---------|---------|--------|
+| Portal Escola FBSO | *.portal.fbso.org | A integrar |
+| Portal Reforma FBSO | *.reforma.fbso.org | A integrar |
+| SaaS Corporativo FBSO | *.saas.fbso.org | A integrar |
+| Comunidades de Ensino | *.comunidades.fbso.org | A integrar |
+
+**Requisitos:** (R1) Detectar ausencia de cookie Shield → redirecionar /auth/login; (R2) Aceitar retorno pos-login; (R3) Consumir /auth/me para perfil; (R4) Logout via /auth/logout; (R5) NUNCA chamar Keycloak; (R6) Confiar header Authorization do Kong.
+
+**SSO:** Cookies no dominio .fbso.org — login unico entre todos os sistemas.
+
 ---
 
 ### 5. Premissas e Dependências (Assumptions and Dependencies)
@@ -121,4 +174,31 @@
 
 ---
 
-**[STATUS: SUCESSO]** — Documento completo com 6 seções. 12 requisitos funcionais, 16 requisitos não-funcionais, 9 funcionalidades, 6 interfaces, 5 premissas, 5 dependências.
+**[STATUS: SUCESSO]** — Documento completo com 6 seções. 12 requisitos funcionais, 16 requisitos não-funcionais, 9 funcionalidades, 6 interfaces, 5 premissas, 5 dependências.### 4.1 Contrato de Integração — Sistemas Existentes (IF-05 Detalhado)
+
+O Shield atua como um **servico de validacao de sessao acoplado ao Kong API Gateway**. O frontend SPA nao chama o Shield diretamente — ele faz chamadas de API normalmente. O Kong+Shield interceptam e gerenciam a autenticacao de forma transparente.
+
+**Fluxo de interceptacao (Shield como Kong Plugin):**
+
+1. Usuario acessa https://escola-alfa.com → Cloudflare → App Platform/Nginx entrega a SPA estatica
+2. SPA carregada faz chamada de API: GET /api/v1/alunos
+3. Cloudflare (proxy de API) → Kong API Gateway
+4. Kong repassa a validacao de sessao para o Shield (cookie SHIELD_SESSION)
+5. **Sem sessao:** Shield consulta Redis (host → realm), redireciona para Keycloak /realms/realm-escola-alfa/auth
+6. Usuario autentica no Keycloak → Authorization Code retorna para /auth/callback
+7. Shield troca code por tokens (back-channel), armazena JWT no Redis, seta cookie HttpOnly
+8. **Com sessao:** Shield recupera JWT do Redis, injeta Authorization: Bearer <JWT> no header
+9. Kong encaminha requisicao com JWT para o microservico de negocio
+10. Microservico executa SET LOCAL app.current_tenant, consulta PostgreSQL com RLS
+11. Resposta retorna ao cliente — **o frontend nunca ve o JWT**
+
+| Sistema | Dominio | Como integra |
+|---------|---------|-------------|
+| Portal Escola FBSO | *.portal.fbso.org | SPA faz chamadas API; Kong+Shield interceptam autenticacao |
+| Portal Reforma FBSO | *.reforma.fbso.org | Idem |
+| SaaS Corporativo FBSO | *.saas.fbso.org | Idem |
+| Comunidades de Ensino | *.comunidades.fbso.org | Idem |
+
+**Requisitos para o Frontend SPA:** (R1) Nao armazenar ou acessar tokens JWT; (R2) Enviar cookies automaticamente (credentials: include); (R3) Tratar redirect 302 para Keycloak como fluxo normal de login; (R4) Nao chamar Keycloak ou Shield diretamente — apenas fazer chamadas de API como faria normalmente.
+
+
