@@ -1,6 +1,6 @@
 # FLOWCHART: ROADMAP DE DEFINIÇÕES TÉCNICAS DO PROJETO
 
-## Versão: 7.0 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção) + Bloco F (Janelas de Entrega)
+## Versão: 7.1 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção + Especialistas Pipeline/CVE/Stress) + Bloco F (Janelas de Entrega + Tooling de Ambiente)
 
 > **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` v5.0
 >
@@ -61,11 +61,12 @@ flowchart TB
     BLOCO_D --> GD{{⛔ Barreira D}}
 
     subgraph BLOCO_E["Bloco E: Esteira de Construção (SOMENTE modo waterfall-discovery)"]
-        E1[E1: Contexto Base<br/>PRD/ARCH/SPECS/TASKS/TEST_PLAN] --> E2[E2: Loop por ciclo FILA-NN<br/>SPRINT-CARD → EXECUTE → QA → PR]
+        E1[E1: Contexto Base<br/>PRD/ARCH/SPECS/TASKS/TEST_PLAN] --> E2["E2: Loop por ciclo FILA-NN<br/>SPRINT-CARD → EXECUTE → QA → PR<br/>(3a CVE/SCA · 3b CI-CD · 4a STRESS)"]
         E2 --> E3["595-TECHLEAD-RETURN-PACKAGE<br/>595-RETURN-PACKAGE-{FILA-NN}.md<br/>GENERATE → GATE → FIX"]
     end
 
     subgraph BLOCO_F["Bloco F: Janelas de Entrega (SOMENTE modo waterfall-discovery — consome o 096)"]
+        JF0["TOOLING: IMPLEMENTATION-TOOLING v1.0<br/>610/620/630/640 — setup de ambiente"] --> JF1
         JF1[JANELA-DEV: Bloco E] --> JF2[JANELA-QA: 095 GO/NO-GO]
         JF2 --> JF3[JANELA-UAT: DE-ACORDO por entrega]
         JF3 --> JF4[JANELA-DEPLOY: 090 + 087 GMUD]
@@ -75,7 +76,7 @@ flowchart TB
     GD -->|"modo waterfall-discovery"| BLOCO_E
     BLOCO_E --> BLOCO_F
     GD --> HIST[📊 EXECUTION-HISTORY<br/>600-EXECUTION-HISTORY.md]
-    BLOCO_F -->|"entrega ao PM/PO"| PMPO([WATERFALL-EXECUTION v2.1<br/>recepção 3.3])
+    BLOCO_F -->|"entrega ao PM/PO"| PMPO([WATERFALL-EXECUTION v2.2<br/>recepção 3.3])
     HIST --> END([✅ Pipeline Completo])
 
     style F0 fill:#6c5ce7,color:#fff
@@ -1004,3 +1005,5 @@ flowchart LR
 > - `PROMPT-GENERATE-{NNN}-*.md` — 21 prompts geradores (fases 1-19 + 595 + EXECUTION-HISTORY)
 > - `PROMPT-GATE-{NNN}-*.md` — 20 prompts de auditoria (fases 1-19 + 595)
 > - `PROMPT-FIX-{NNN}-*.md` — 20 prompts de correção (fases 1-19 + 595)
+> - Especialistas reusados (sprint-tecnhnical-implementation/): `PROMPT-EXECUTE-CI-CD-PIPELINE`, `PROMPT-EXECUTE-CVE-SCA-SCAN`, `PROMPT-EXECUTE-STRESS-PERFORMANCE-TEST` (steps 3a/3b/4a do Bloco E)
+> - Roadmap companion: `PROMPT-ROADMAP-GENERATE-IMPLEMENTATION-TOOLING.md` v1.0 (trios 610/620/630/640 em `implementation-tooling/` — invocado pelo Bloco F)

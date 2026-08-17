@@ -1,5 +1,5 @@
 # PROMPT: ROADMAP DE DEFINIÇÕES TÉCNICAS DO PROJETO
-## Versão: 7.0 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção) + Bloco F (Janelas de Entrega)
+## Versão: 7.1 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção + Especialistas Pipeline/CVE/Stress) + Bloco F (Janelas de Entrega + Tooling de Ambiente)
 
 Atue como um Especialista em Gestão de Processos (BPM), Arquiteto de Soluções Ágeis e Tech Lead, especializado em definições técnicas de projetos e engenharia de prompts.
 
@@ -213,7 +213,10 @@ No modo `waterfall-discovery`, este roadmap atua como o **lado TECHLEAD da FASE 
 | 1 | GATE dos artefatos do ciclo | `sprint-artefacts/PROMPT-GATE-SPRINT-ARTEFACTS.md` |
 | 2 | FIX cirúrgico (máx. 3 loops) | `sprint-artefacts/PROMPT-FIX-SPRINT-ARTEFACTS.md` |
 | 3 | Executar tarefas | `sprint-tecnhnical-implementation/PROMPT-EXECUTE-SPRINT-TASKS.md` |
+| 3a | (OPCIONAL — se 480/510 exigirem) Varredura CVE/SCA pós-build | `sprint-tecnhnical-implementation/PROMPT-EXECUTE-CVE-SCA-SCAN.md` |
+| 3b | (OPCIONAL — se 500/087 exigirem pipeline para a solução) Implementar pipeline CI/CD | `sprint-tecnhnical-implementation/PROMPT-EXECUTE-CI-CD-PIPELINE.md` |
 | 4 | Revisão humana obrigatória (HITL) | `sprint-tecnhnical-implementation/PROMPT-QA-REVISOR-SECURITY.md` (máx. 3 tentativas) |
+| 4a | (OPCIONAL — se 510/050 tiverem cenários de performance) Teste de estresse/performance | `sprint-tecnhnical-implementation/PROMPT-EXECUTE-STRESS-PERFORMANCE-TEST.md` |
 | 5 | Débito técnico + relatório | `PROMPT-GENERATE-IDENTIFIED-TECHNICAL-DEBT.md` + `PROMPT-GENERATE-IMPLEMENTATION-REPORT.md` |
 | 6 | Git e PR | `PROMPT-GENERATE-PULL-REQUEST.md` |
 | 7 | **Empacotamento (em vez de governança direta)** | trio **595-TECHLEAD-RETURN-PACKAGE** (GENERATE → GATE → FIX → COMPLIANCE) → entrega `595-RETURN-PACKAGE-{FILA-NN}.md` ao PM/PO |
@@ -251,6 +254,8 @@ Tratativas de retorno (do 096): QA NO-GO → volta à DEV; UAT com divergência 
 | DEPLOY | execução (runbook 090) | validação do checklist + go/no-go GMUD |
 
 HITL por transição; 095 GO é pré-requisito do UAT; o 105-TERMO-ACEITE permanece como aceite FINAL do projeto (FASE 6 — nunca gate por entrega); mudança de escopo pós-M4 via 085; vocabulário WATERFALL.
+
+**F.6 — Setup de ambiente e ferramentas (tooling):** tarefas de infra/ferramentas das janelas DEV/QA são orquestradas pelo roadmap companion **`PROMPT-ROADMAP-GENERATE-IMPLEMENTATION-TOOLING.md`** (v1.0, metodologia-independente) — trios 610 (manifests), 620 (observabilidade), 630 (instalação de ferramentas middleware/ETL/orquestração) e 640 (ferramentas de segurança), invocado pelo Bloco F. Os manifests da 610 alimentam o `PROMPT-EXECUTE-CI-CD-PIPELINE` (step 3b do Bloco E). HITL por ambiente preservado; em contexto WATERFALL, HMG/PROD via GMUD (090).
 
 ---
 
@@ -450,7 +455,7 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `project
 ├── PROMPT-GENERATE-595-TECHLEAD-RETURN-PACKAGE.md        🆕 (Bloco E)
 ├── PROMPT-GATE-595-TECHLEAD-RETURN-PACKAGE.md            🆕
 ├── PROMPT-FIX-595-TECHLEAD-RETURN-PACKAGE.md             🆕
-└── ... (61 prompts no total: 21 GENERATE + 20 GATE + 20 FIX)
+└── ... (61 prompts no total: 21 GENERATE + 20 GATE + 20 FIX; + 3 especialistas reusados de sprint-tecnhnical-implementation/ — EXECUTE-CI-CD-PIPELINE, EXECUTE-CVE-SCA-SCAN, EXECUTE-STRESS-PERFORMANCE-TEST — e roadmap companion IMPLEMENTATION-TOOLING com 12 prompts em implementation-tooling/)
 ```
 
 ---
@@ -466,6 +471,7 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `project
 | 5.0 | 30/07/2026 | Redesign estrutural: Bloco 0 (ponte Negócio→TI com 4 fases), Bloco B expandido (6 disciplinas: +DATA, +DEVOPS-SRE, +TEST, +INFRA), Bloco C reorganizado (CATALOG→MATRIX→STACK→SPECS→MILESTONES), Bloco D=Sprints com Discovery Técnico, History standalone. 20 fases, pipeline sequencial, 58 prompts. | Time de Arquitetura |
 | 6.0 | 16/08/2026 | Modos de execução (agile-discovery/waterfall-discovery) com detecção no Bootstrap; modo waterfall-discovery com mapeamento F1–F19 (pular/migrar/validar/rodar); Bloco E — Esteira de Construção por ciclo com reuso sem edição + trio 595-TECHLEAD-RETURN-PACKAGE; parceria PM/PO × TECHLEAD (WATERFALL-EXECUTION v2.0). 61 prompts. | Time de Arquitetura |
 | 7.0 | 17/08/2026 | Bloco F — Janelas de Entrega (DEV→QA→UAT→DEPLOY por FILA-NN): consome o 096-DEFINICAO-JANELAS-ENTREGA (WATERFALL), orquestra a passagem por janela com delegação por frente (sem prompts executores), rastreio no 600 e no pacote 595 (coluna Janela + Aceite UAT DE-ACORDO). Vetos do 092 preservados; 105 permanece aceite final. 61 prompts (sem executores novos). | Time de Arquitetura |
+| 7.1 | 17/08/2026 | Bloco E ganha 3 especialistas opcionais reusados de sprint-tecnhnical-implementation/ (steps 3a/3b/4a: EXECUTE-CVE-SCA-SCAN, EXECUTE-CI-CD-PIPELINE, EXECUTE-STRESS-PERFORMANCE-TEST); Bloco F ganha F.6 — tooling de ambiente via roadmap companion IMPLEMENTATION-TOOLING v1.0 (trios 610/620/630/640). Sem prompts novos no folder TECHLEAD (61 preservados). | Time de Arquitetura |
 
 ---
 

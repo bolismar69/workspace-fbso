@@ -1,11 +1,11 @@
 # PROMPT: ROADMAP DE EXECUÇÃO E CONSTRUÇÃO — FASE 5 DO WATERFALL (WATERFALL-EXECUTION)
-## Versão: 2.1 — WATERFALL Orchestrator v3.1 (6 Fases, 39 Documentos) — Delegação da Construção ao TECHLEAD (PROJECT-TECHNICAL-DEFINITIONS v7.0, modo waterfall-discovery) + Janelas de Entrega (096 + Bloco F)
+## Versão: 2.2 — WATERFALL Orchestrator v3.2 (6 Fases, 39 Documentos) — Delegação da Construção ao TECHLEAD (PROJECT-TECHNICAL-DEFINITIONS v7.1, modo waterfall-discovery) + Janelas de Entrega (096 + Bloco F) + Tooling de Ambiente (IMPLEMENTATION-TOOLING)
 
 Atue como um Arquiteto de Soluções Organizacionais e Gestor de Execução, especializado em metodologia WATERFALL, engenharia de prompts e orquestração de esteiras de desenvolvimento.
 
 ## Propósito e Posição no Fluxo
 
-Este roadmap orquestra a **FASE 5 — EXECUÇÃO E CONSTRUÇÃO** do fluxo WATERFALL no **escopo do PM/PO**: gestão do backlog (092), gestão do time (093), entrega das demandas ao TECHLEAD e recepção da atualização do 092. A **construção é delegada ao TECHLEAD** via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v6.0, modo `waterfall-discovery`) — este roadmap cuida do **contrato PM/PO ↔ TECHLEAD** (handoff e recepção).
+Este roadmap orquestra a **FASE 5 — EXECUÇÃO E CONSTRUÇÃO** do fluxo WATERFALL no **escopo do PM/PO**: gestão do backlog (092), gestão do time (093), entrega das demandas ao TECHLEAD e recepção da atualização do 092. A **construção é delegada ao TECHLEAD** via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v7.1, modo `waterfall-discovery`) — este roadmap cuida do **contrato PM/PO ↔ TECHLEAD** (handoff e recepção).
 
 ```
 FASE 0 (Bootstrap) → FASE 1 (Negócio) → FASE 2 (Especificação) → FASE 3 (Engenharia) → FASE 4 (Baseline)
@@ -80,7 +80,7 @@ O par 092 ↔ 093 roda em loop contínuo durante toda a FASE 5 (como no flowchar
 
 ## Sub-fase 2 — Janelas de Entrega (DEV → QA → UAT → DEPLOY)
 
-As janelas são **definidas no `096-DEFINICAO-JANELAS-ENTREGA`** (documento WATERFALL, trio em `project-documents-waterfall/`) e **orquestradas pelo TECHLEAD no Bloco F do PROJECT-TECHNICAL-DEFINITIONS v7.0** — o PM/PO não executa janelas.
+As janelas são **definidas no `096-DEFINICAO-JANELAS-ENTREGA`** (documento WATERFALL, trio em `project-documents-waterfall/`) e **orquestradas pelo TECHLEAD no Bloco F do PROJECT-TECHNICAL-DEFINITIONS v7.1** — o PM/PO não executa janelas.
 
 Loop por ciclo `FILA-NN`: `DEV (Bloco E) → gate → QA (050 + QA-REVISOR + 095 GO/NO-GO) → UAT (DE-ACORDO/APROVAÇÃO por entrega — Key Users + PM/PO) → DEPLOY (090 + 087, GMUD) → pacote 595 → PM/PO aplica no 092 → próxima FILA-NN`.
 
@@ -92,9 +92,11 @@ Loop por ciclo `FILA-NN`: `DEV (Bloco E) → gate → QA (050 + QA-REVISOR + 095
 
 > **NOTA:** o 105-TERMO-ACEITE permanece como aceite FINAL do projeto (FASE 6) — nunca gate por entrega. Tratativas de retorno (QA NO-GO → DEV; UAT divergência → 085; DEPLOY bloqueado → IMP-NN) conforme o 096.
 
+> **SETUP DE AMBIENTE E FERRAMENTAS (tooling):** tarefas de infra/ferramentas das janelas DEV/QA (manifests, observabilidade, instalação de middleware/ETL e ferramentas de segurança) são orquestradas pelo roadmap companion **`PROMPT-ROADMAP-GENERATE-IMPLEMENTATION-TOOLING.md`** (v1.0, metodologia-independente), invocado pelo TECHLEAD no Bloco F — o PM/PO não executa tooling, apenas acompanha via 092/095. HMG/PROD sempre via GMUD (090).
+
 ## Sub-fase 3 — Contrato de Delegação ao TECHLEAD
 
-A construção é executada pelo TECHLEAD via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v6.0, modo `waterfall-discovery`, **Bloco E**). Este roadmap orquestra apenas o contrato: handoff, acompanhamento e recepção.
+A construção é executada pelo TECHLEAD via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v7.1, modo `waterfall-discovery`, **Bloco E**). Este roadmap orquestra apenas o contrato: handoff, acompanhamento e recepção.
 
 ### 3.1 Handoff PM/PO → TECHLEAD
 
@@ -103,11 +105,11 @@ A construção é executada pelo TECHLEAD via `PROMPT-ROADMAP-GENERATE-PROJECT-T
    - Docs F1–F4 (a tabela de Inputs acima — pacote técnico mínimo: 010-FRD, 016, 020-SRS, 030-SAD, 035-HLD, 040-LLD, 041–044, 045-TEST-PLAN, 050-TEST-CASES, 060-EAP-WBS, 062, 065, 070, 086, 087, 088, 090)
    - Cruzamento por item: `FILA-NN → FEAT-NN/UC-NN (010) → pacote EAP (060) → tarefas T-NNN`
 2. **Transicionar** os `BL-NN` da fila para `Em Execução (delegado ao TECHLEAD)`
-3. **Acionar** o TECHLEAD no modo `waterfall-discovery` do PROJECT-TECHNICAL-DEFINITIONS v6.0
+3. **Acionar** o TECHLEAD no modo `waterfall-discovery` do PROJECT-TECHNICAL-DEFINITIONS v7.1
 
 ### 3.2 Execução no TECHLEAD (resumo — sem duplicar steps)
 
-O TECHLEAD executa o pipeline completo no roadmap dele: Fases migradas/validadas (F1–F19 no modo waterfall), **Bloco E** (contexto base + loop por ciclo — janela DEV) e **Bloco F** (janelas QA/UAT/DEPLOY), encerrando cada ciclo com o **trio 595** (empacotamento do retorno). A tabela de steps vive SOMENTE no v7.0 (Bloco E).
+O TECHLEAD executa o pipeline completo no roadmap dele: Fases migradas/validadas (F1–F19 no modo waterfall), **Bloco E** (contexto base + loop por ciclo — janela DEV) e **Bloco F** (janelas QA/UAT/DEPLOY), encerrando cada ciclo com o **trio 595** (empacotamento do retorno). A tabela de steps vive SOMENTE no v7.1 (Bloco E).
 
 ### 3.3 Recepção TECHLEAD → PM/PO
 
@@ -150,7 +152,7 @@ Se a EAP mudar via 085 (mudança de escopo aprovada), o orquestrador alerta o hu
 .specs/prompts/
 ├── PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md      ← roadmap master (6 fases)
 ├── PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md              ← ESTE ROADMAP (FASE 5 — escopo PM/PO)
-├── PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md    ← roadmap TECHLEAD (v6.0 — modo waterfall-discovery, Bloco E)
+├── PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md    ← roadmap TECHLEAD (v7.1 — modo waterfall-discovery, Bloco E)
 ├── project-documents-waterfall/                                ← triads WATERFALL (092, 093 e demais docs)
 ├── project-technical-definitions/                              ← pipeline TECHLEAD + trio 595-TECHLEAD-RETURN-PACKAGE
 ├── sprint-artefacts/                                           ← reuso (Bloco E do TECHLEAD): contexto base + artefatos de ciclo
@@ -160,4 +162,4 @@ Se a EAP mudar via 085 (mudança de escopo aprovada), o orquestrador alerta o hu
 
 ---
 
-🤖 *Roadmap gerado pelo Waterfall Orchestrator v3.1. v2.1 (17/08/2026): Janelas de Entrega definidas no 096 e orquestradas pelo TECHLEAD (Bloco F, v7.0) — aceite por entrega via DE-ACORDO; 105 permanece aceite final (FASE 6).*
+🤖 *Roadmap gerado pelo Waterfall Orchestrator v3.2. v2.2 (17/08/2026): + tooling de ambiente via IMPLEMENTATION-TOOLING v1.0 (companion da FASE 5, invocado pelo TECHLEAD Bloco F); referências TECHLEAD atualizadas para v7.1. Histórico v2.1: Janelas de Entrega definidas no 096 e orquestradas pelo TECHLEAD (Bloco F) — aceite por entrega via DE-ACORDO; 105 permanece aceite final (FASE 6).*

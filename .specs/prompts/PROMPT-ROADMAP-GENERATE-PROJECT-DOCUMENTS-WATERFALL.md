@@ -1,5 +1,5 @@
 # PROMPT: ROADMAP DE EXECUÇÃO MACRO E GUIA DE ORQUESTRAÇÃO DE DOCUMENTOS — METODOLOGIA WATERFALL
-## Versão: 3.1 — 6 Fases, 39 Documentos, Numeração por Intervalos, Dupla RTM (Negócio+Sistema), Gates Estruturais, FASE 5 de Execução com Janelas de Entrega (096) e Prompts Nomeados pelo Número do Artefato
+## Versão: 3.2 — 6 Fases, 39 Documentos, Numeração por Intervalos, Dupla RTM (Negócio+Sistema), Gates Estruturais, FASE 5 de Execução com Janelas de Entrega (096), Tooling de Ambiente (IMPLEMENTATION-TOOLING) e Prompts Nomeados pelo Número do Artefato
 
 Atue como um Especialista em Gestão de Processos (BPM) e Arquiteto de Soluções Organizacionais, especializado em metodologia WATERFALL e Engenharia de Prompts.
 
@@ -606,6 +606,34 @@ WATERFALL Docs (Fase 3)
    - Perguntar ao humano: "Deseja executar o WATERFALL-ESTIMATION (modo DOWNSTREAM/REFINEMENT) para obter PERT ±15-25% e alimentar Cronograma e Orçamento com estimativas precisas?"
    - Se SIM → Executar o roadmap WATERFALL-ESTIMATION (modo downstream-refinement). Após conclusão, o `CRONOGRAMA-CALCULADO.md` e `ORCAMENTO-CALCULADO.md` são injetados como `UPSTREAM_DOCS` adicionais nos GENERATEs #065 e #070
    - Se NÃO → Prosseguir com os GENERATEs #065 e #070 usando apenas os templates de fallback
+
+---
+
+## INTEGRAÇÃO COM IMPLEMENTATION-TOOLING (ROADMAP COMPANION DA FASE 5) 🆕
+
+O roadmap **`PROMPT-ROADMAP-GENERATE-IMPLEMENTATION-TOOLING.md`** (v1.0, metodologia-independente) é um companion da FASE 5 que orquestra o **setup de ambiente e ferramentas** — atividades fora do ciclo de código:
+
+```
+FASE 5 (EXECUÇÃO E CONSTRUÇÃO)
+  M4 travado ✅ (041/043/044 em COMPLIANCE)
+       │
+       ▼
+  ┌──────────────────────────────────┐
+  │ IMPLEMENTATION-TOOLING v1.0      │
+  │ F1: 610 MANIFESTS-DEVOPS         │
+  │ F2: 620 OBSERVABILITY-SETUP      │
+  │ F3: 630 INSTALL-TOOL-{FERRAMENTA}│
+  │ F4: 640 INSTALL-SECURITY-TOOL    │
+  └──────────┬───────────────────────┘
+             │
+       alimenta 095 (evidências) e 100 (runbooks)
+       suporta as janelas DEV/QA (096, Bloco F do TECHLEAD)
+```
+
+- **Consome:** os setups da FASE 3 (`041-DEVOPS-SETUP`, `043-SEC-SETUP`, `044-INFRA-SETUP`) e as definições do TECHLEAD (`480/490/500/510/520/550`) — todos em `[STATUS: COMPLIANCE]`.
+- **Quem invoca:** o TECHLEAD no Bloco F (janelas DEV/QA) ou o PM/PO na FASE 5, via WATERFALL-EXECUTION. Pode rodar standalone.
+- **Regras preservadas:** HITL por ambiente; HMG/PROD sempre via GMUD (090); ferramenta não prevista nos docs-base exige aprovação humana + atualização dos docs-base antes da instalação.
+- **Como o orquestrador WATERFALL gerencia:** ao iniciar a FASE 5, perguntar ao humano: "Deseja executar o IMPLEMENTATION-TOOLING para o setup de ambiente e ferramentas das janelas DEV/QA?" — Se SIM → acionar o companion (via TECHLEAD Bloco F); Se NÃO → as tarefas de infra/ferramentas seguem pendentes no 092 até decisão do PM/PO.
 
 ---
 
