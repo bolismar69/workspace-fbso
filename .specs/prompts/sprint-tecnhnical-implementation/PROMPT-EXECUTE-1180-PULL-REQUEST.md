@@ -98,5 +98,5 @@ Gerar `{CICLO_DIR}/PACKAGE-DEVELOPMENT-PULL-REQUEST.md`:
 1. PR somente com todas as fases anteriores COMPLIANCE.
 2. Nunca commitar em `main`/`master` — sempre branch `feature/...`.
 3. Stage seletivo obrigatório em monorepo (INCLUDE/EXCLUDE).
-4. TASK-EXECUTED (1140) é o corpo obrigatório da PR.
+4. TASK-EXECUTED (1160) é o corpo obrigatório da PR.
 5. Registro da PR salvo em `.specs/pull-requests/` (padrão do executor).

@@ -2,7 +2,7 @@
 
 ## Versão: 7.4 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção + Pacote de Desenvolvimento — orquestrador 1000, 18 fases) + Bloco F (Janelas de Entrega + Tooling de Ambiente) + Ciclos de Entrega CICLO-NN + 590-ciclo-NNN
 
-> **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` v5.0
+> **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` v7.4
 >
 > Este documento complementa o roadmap textual com diagramas Mermaid que visualizam o fluxo de execução, a arquitetura de blocos sequenciais com barreiras de sincronização, o mecanismo de orquestração e as regras de gating.
 
@@ -66,7 +66,7 @@ flowchart TB
     end
 
     subgraph BLOCO_F["Bloco F: Janelas de Entrega (SOMENTE modo waterfall-discovery — consome o 096)"]
-        JF0["TOOLING: IMPLEMENTATION-TOOLING v1.0<br/>610/620/630/640 — setup de ambiente"] --> JF1
+        JF0["TOOLING: IMPLEMENTATION-TOOLING v1.1<br/>610/620/630/640 — setup de ambiente"] --> JF1
         JF1[JANELA-DEV: Bloco E] --> JF2[JANELA-QA: 095 GO/NO-GO]
         JF2 --> JF3[JANELA-UAT: DE-ACORDO por entrega]
         JF3 --> JF4[JANELA-DEPLOY: 090 + 087 GMUD]
@@ -76,7 +76,7 @@ flowchart TB
     GD -->|"modo waterfall-discovery"| BLOCO_E
     BLOCO_E --> BLOCO_F
     GD --> HIST[📊 EXECUTION-HISTORY<br/>600-EXECUTION-HISTORY.md]
-    BLOCO_F -->|"entrega ao PM/PO"| PMPO([WATERFALL-EXECUTION v2.3<br/>recepção 3.3])
+    BLOCO_F -->|"entrega ao PM/PO"| PMPO([WATERFALL-EXECUTION v2.4<br/>recepção 3.3])
     HIST --> END([✅ Pipeline Completo])
 
     style F0 fill:#6c5ce7,color:#fff
@@ -171,6 +171,7 @@ flowchart TD
     style PASSO_04 fill:#dfe6e9,stroke:#6c5ce7,color:#000000
     style PASSO_05 fill:#dfe6e9,stroke:#6c5ce7,color:#000000
     style PASSO_06 fill:#dfe6e9,stroke:#6c5ce7,color:#000000
+    ORCH(["Orquestrador: Iniciar Fase N"])
 ```
 
 ---
@@ -374,6 +375,7 @@ flowchart TB
     F17_OK -->|⛔ Barreira C| F18_GEN
     F18_OK --> F19_GEN
     F19_OK -->|⛔ Barreira D| HIST
+    HIST[📊 EXECUTION-HISTORY]
 
     style F1 fill:#0984e3,color:#fff
     style F2 fill:#0984e3,color:#fff
@@ -536,6 +538,7 @@ flowchart TD
         F19_APPROVED --> F19_NEXT{Próximo<br/>ciclo/sprint?}
         F19_NEXT -->|SIM| F19_GEN
         F19_NEXT -->|NÃO| F19_DONE
+        F19_DONE[Ciclo/sprint concluído]
     end
 
     subgraph SPECIAL_HIST[EXECUTION-HISTORY — Dashboard]
@@ -919,13 +922,13 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    subgraph PMPO[WATERFALL-EXECUTION v2.0 — PM/PO]
+    subgraph PMPO[WATERFALL-EXECUTION v2.4 — PM/PO]
         direction TB
         P1[092-BACKLOG-KANBAN<br/>CICLO-NN · BL-NN · CR-NN] --> P2[3.1 Handoff<br/>pacote de demanda]
         P4[3.3 Recepção<br/>aplicar pacote 595<br/>→ GENERATE-092 + GATE-092] --> P1
     end
 
-    subgraph TECHLEAD[PROJECT-TECHNICAL-DEFINITIONS v6.0 — TECHLEAD]
+    subgraph TECHLEAD[PROJECT-TECHNICAL-DEFINITIONS v7.4 — TECHLEAD]
         direction TB
         T0[Bootstrap detecta modo<br/>waterfall-discovery] --> T1[Bloco 0 reduzido +<br/>Blocos A-D migrados/validados]
         T1 --> T2[Bloco E + Bloco F:<br/>esteira + janelas por ciclo]
@@ -946,7 +949,7 @@ flowchart LR
 | **Project Documents** | Estratégico / Negócio | Charter, BRD, Epics, Features, US, RTM | → Definições Técnicas (Bloco 0) |
 | **Technical Definitions** ← | Tático / Projeto | 20 artefatos + `technical-discovery/` + EXECUTION-HISTORY | → Soluções Técnicas |
 | **Technical Solutions** | Tático / Implementação | PRD, ARCH, SEC, SPECS, TASKS, TEST_PLAN | → Times de Desenvolvimento |
-| **WATERFALL-EXECUTION v2.0 (FASE 5)** | Operacional / PM-PO | 092/093 + pacote de demanda (CICLO-NN + docs F1–F4) | → Definições Técnicas (modo waterfall-discovery) |
+| **WATERFALL-EXECUTION v2.4 (FASE 5)** | Operacional / PM-PO | 092/093 + pacote de demanda (CICLO-NN + docs F1–F4) | → Definições Técnicas (modo waterfall-discovery) |
 
 ---
 
@@ -962,7 +965,7 @@ flowchart LR
 | 🔴 Vermelho (`#d63031`) | Barreiras de bloqueio (0, A, B, C, D) / Falhas |
 | 🔲 Linha tracejada (`-.->`) | Loop de retrabalho (GATE→FIX→GATE) / Iterativo (F19) |
 | 🔲 Linha sólida (`-->`) | Fluxo sequencial normal |
-| 🆕 | Fase nova na v5.0 |
+| 🆕 | Fase nova na v7.4 |
 | 🔄 | Fase movida / repropositada |
 | ⛔ | Barreira de bloqueio |
 | ⚡ | Fase especial (não segue loop trifásico) |
@@ -974,7 +977,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    subgraph GATING["Regras Críticas de Bloqueio — Technical Definitions v7.0"]
+    subgraph GATING["Regras Críticas de Bloqueio — Technical Definitions v7.4"]
         G1["⛔ Nenhuma fase<br/>avança sem<br/>COMPLIANCE humano"]
         G2["⛔ Barreira 0 —<br/>Bloco 0 100% antes<br/>do Bloco A"]
         G3["⛔ Barreira A —<br/>Bloco A 100% antes<br/>do Bloco B"]
@@ -998,12 +1001,12 @@ flowchart LR
 ---
 
 > **📁 Arquivos relacionados:**
-> - `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` — Documento fonte (v6.0)
-> - `../PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` — Parceria PM/PO × TECHLEAD na FASE 5 do WATERFALL (v2.0)
+> - `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` — Documento fonte (v7.4)
+> - `../PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` — Parceria PM/PO × TECHLEAD na FASE 5 do WATERFALL (v2.4)
 > - `../project-documents/FLOWCHART-ROADMAP-GENERATE-PROJECT-DOCUMENTS.md` — Visualização do roadmap de negócio
 > - `../technical-solutions/FLOWCHART-ROADMAP-GENERATE-TECHNICAL_SOLUTIONS.md` — Visualização do roadmap técnico
 > - `PROMPT-GENERATE-{NNN}-*.md` — 21 prompts geradores (fases 1-19 + 595 + EXECUTION-HISTORY)
 > - `PROMPT-GATE-{NNN}-*.md` — 20 prompts de auditoria (fases 1-19 + 595)
 > - `PROMPT-FIX-{NNN}-*.md` — 20 prompts de correção (fases 1-19 + 595)
 > - Especialistas reusados (sprint-tecnhnical-implementation/): `PROMPT-EXECUTE-CI-CD-PIPELINE`, `PROMPT-EXECUTE-CVE-SCA-SCAN`, `PROMPT-EXECUTE-STRESS-PERFORMANCE-TEST` (steps 3a/3b/4a do Bloco E)
-> - Roadmap companion: `PROMPT-ROADMAP-GENERATE-IMPLEMENTATION-TOOLING.md` v1.0 (trios 610/620/630/640 em `implementation-tooling/` — invocado pelo Bloco F)
+> - Roadmap companion: `PROMPT-ROADMAP-GENERATE-IMPLEMENTATION-TOOLING.md` v1.1 (trios 610/620/630/640 em `implementation-tooling/` — invocado pelo Bloco F)

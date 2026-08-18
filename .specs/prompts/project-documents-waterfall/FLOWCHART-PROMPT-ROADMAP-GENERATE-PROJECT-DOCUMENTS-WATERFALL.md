@@ -86,7 +86,7 @@ flowchart TB
         D092["092: BACKLOG-KANBAN<br/>092-BACKLOG-KANBAN-{PROJECT_ID_NAME}.md<br/>CRs Negócio/Técnico (085)<br/>Status · CICLO-NN"] --> D093["093: GESTAO-TIMES<br/>093-GESTAO-TIMES-{PROJECT_ID_NAME}.md<br/>Capacidade · IMP-NN"]
         D093 --> D092
         D092 --> ESTEIRA_DEV["Esteira de Construção por ciclo CICLO-NN<br/>(sprint-artefacts + orquestrador 1000 — 18 fases)"]
-        JANELAS["2. Janelas de Entrega<br/>096-DEFINICAO-JANELAS-ENTREGA-{PROJECT_ID_NAME}.md<br/>+ Bloco F (TECHLEAD v7.0)"]
+        JANELAS["2. Janelas de Entrega<br/>096-DEFINICAO-JANELAS-ENTREGA-{PROJECT_ID_NAME}.md<br/>+ Bloco F (TECHLEAD v7.4)"]
         ESTEIRA_DEV -.->|"roda por ciclo CICLO-NN"| JANELAS
         ESTEIRA_DEV --> D095F["095: RELATORIO-QUALIDADE<br/>095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md<br/>(evidências por ciclo)"]
         D095F --> D097["097: MANUAIS-USUARIO<br/>097-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md"]
@@ -167,13 +167,13 @@ flowchart TD
         F0_1["Apresentar 7 inputs obrigatórios<br/>+ 4 opcionais<br/>+ diretiva HITL"] --> F0_1_DEC{Inputs<br/>fornecidos?}
         F0_1_DEC -->|Parcial| F0_1_ASK["Perguntar inputs faltantes<br/>de forma clara e objetiva"]
         F0_1_ASK --> F0_1_DEC
-        F0_1_DEC -->|Todos ✅| F0_2
+        F0_1_DEC -->|"Todos ✅"| F0_2
     end
 
     subgraph PASSO_02["Passo 0.2 — Validar Stack"]
         F0_2["Ler STACK-PADROES-CORPORATIVOS"] --> F0_2_VAL{Stack dentro<br/>do padrão?}
-        F0_2_VAL -->|✅ Padrão| F0_3
-        F0_2_VAL -->|⚠️ Fora| F0_2_JUST["Solicitar justificativa<br/>técnica ao usuário"]
+        F0_2_VAL -->|"✅ Padrão"| F0_3
+        F0_2_VAL -->|"⚠️ Fora"| F0_2_JUST["Solicitar justificativa<br/>técnica ao usuário"]
         F0_2_JUST --> F0_3
     end
 
@@ -440,7 +440,7 @@ flowchart TD
     SF1 --> SF2
 
     subgraph SF2["Sub-fase 2: JANELAS DE ENTREGA — 096 + Bloco F (TECHLEAD)"]
-        JANELAS["DEV → QA → UAT → DEPLOY<br/>estrutura preservada no flowchart-WATERFALL.md<br/>solução NÃO definida nesta revisão"]
+        JANELAS["DEV → QA → UAT → DEPLOY<br/>estrutura preservada no flowchart-WATERFALL.md<br/>solução: 096 + Bloco F (TECHLEAD v7.4)"]
     end
 
     SF1 -.->|"a esteira roda por ciclo CICLO-NN"| SF3
@@ -525,7 +525,7 @@ flowchart TD
 
 ---
 
-## 7. Matriz de UPSTREAM_DOCS — Fluxo de Dependências (v3.0)
+## 7. Matriz de UPSTREAM_DOCS — Fluxo de Dependências (v3.3)
 
 ```mermaid
 flowchart LR
@@ -691,11 +691,11 @@ flowchart LR
     style D115 fill:#6c5ce7,color:#fff
 ```
 
-> **Nota:** a matriz reflete a tabela UPSTREAM_DOCS do roadmap master (v3.0). O nó 001 (Charter) é raiz e alimenta todos os documentos — as arestas foram omitidas para legibilidade onde o caminho passa por documentos intermediários.
+> **Nota:** a matriz reflete a tabela UPSTREAM_DOCS do roadmap master (v3.3). O nó 001 (Charter) é raiz e alimenta todos os documentos — as arestas foram omitidas para legibilidade onde o caminho passa por documentos intermediários.
 
 ---
 
-## 8. Efeitos Cascata — Impacto de Modificações (v3.0)
+## 8. Efeitos Cascata — Impacto de Modificações (v3.3)
 
 ```mermaid
 flowchart TD
@@ -772,10 +772,10 @@ flowchart LR
 
 ```mermaid
 stateDiagram-v2
-    ["*"] --> Bootstrap
+    [*] --> Bootstrap
 
     state Bootstrap {
-        ["*"] --> SolicitarInputs
+        [*] --> SolicitarInputs
         SolicitarInputs --> ValidarStack
         ValidarStack --> ColetarTime
         ColetarTime --> ConfirmarCaminhos
@@ -787,33 +787,33 @@ stateDiagram-v2
     Bootstrap --> Fase1_Negocio
 
     state Fase1_Negocio {
-        ["*"] --> Doc1_Charter
+        [*] --> Doc1_Charter
         Doc1_Charter --> Doc2_Stakeholders: COMPLIANCE
         Doc2_Stakeholders --> Doc3_Personas: COMPLIANCE
         Doc3_Personas --> Doc4_Processos: COMPLIANCE
         Doc4_Processos --> Doc5_BRD: COMPLIANCE
         Doc5_BRD --> Doc10_FRD: COMPLIANCE
         Doc10_FRD --> Doc15_RTM1: COMPLIANCE
-        Doc15_RTM1 --> ["*"]: COMPLIANCE
+        Doc15_RTM1 --> [*]: COMPLIANCE
     }
 
     Fase1_Negocio --> Fase2_Especificacao
 
     state Fase2_Especificacao {
-        ["*"] --> Doc16_Prototipos
+        [*] --> Doc16_Prototipos
         Doc16_Prototipos --> Doc20_SRS: COMPLIANCE
         Doc20_SRS --> Doc25_RTM2: COMPLIANCE
         Doc25_RTM2 --> Doc30_SAD: COMPLIANCE
         Doc30_SAD --> Doc35_HLD: COMPLIANCE
         Doc35_HLD --> GateUpstream: COMPLIANCE
-        GateUpstream --> ["*"]: GO ou Pular
+        GateUpstream --> [*]: GO ou Pular
         GateUpstream --> Cancelado: NO-GO
     }
 
     Fase2_Especificacao --> Fase3_Engenharia
 
     state Fase3_Engenharia {
-        ["*"] --> Doc40_LLD
+        [*] --> Doc40_LLD
         Doc40_LLD --> Doc42_Dados: COMPLIANCE
         Doc42_Dados --> Doc43_Seguranca: COMPLIANCE
         Doc43_Seguranca --> Doc44_Infra: COMPLIANCE
@@ -823,13 +823,13 @@ stateDiagram-v2
         Doc50_EstCases --> Doc95_Estrutura: COMPLIANCE
         Doc95_Estrutura --> Doc60_EAP: COMPLIANCE
         Doc60_EAP --> GateDownstream: COMPLIANCE
-        GateDownstream --> ["*"]: Pular ou PERT
+        GateDownstream --> [*]: Pular ou PERT
     }
 
     Fase3_Engenharia --> Fase4_Baseline
 
     state Fase4_Baseline {
-        ["*"] --> Doc62_Staffing
+        [*] --> Doc62_Staffing
         Doc62_Staffing --> Doc65_Cronograma: COMPLIANCE
         Doc65_Cronograma --> Doc70_Orcamento: COMPLIANCE
         Doc70_Orcamento --> Doc75_Comunicacao: COMPLIANCE
@@ -840,13 +840,13 @@ stateDiagram-v2
         Doc87_CICD --> Doc88_Backlog: COMPLIANCE
         Doc88_Backlog --> Doc90_Deploy: COMPLIANCE
         Doc90_Deploy --> M4: COMPLIANCE
-        M4 --> ["*"]: BASELINE LOCKED
+        M4 --> [*]: BASELINE LOCKED
     }
 
     Fase4_Baseline --> Fase5_Execucao
 
     state Fase5_Execucao {
-        ["*"] --> Doc92_Kanban
+        [*] --> Doc92_Kanban
         Doc92_Kanban --> Doc93_Times
         Doc93_Times --> Doc92_Kanban
         Doc92_Kanban --> EsteiraConstrucao
@@ -854,20 +854,20 @@ stateDiagram-v2
         Doc95_Evidencias --> Doc97_ManuaisUser
         Doc97_ManuaisUser --> Doc100_ManuaisOps
         Doc100_ManuaisOps --> M5
-        M5 --> ["*"]: GO-LIVE
+        M5 --> [*]: GO-LIVE
     }
 
     Fase5_Execucao --> Fase6_Encerramento
 
     state Fase6_Encerramento {
-        ["*"] --> Doc105_Aceite
+        [*] --> Doc105_Aceite
         Doc105_Aceite --> Doc110_Licoes: COMPLIANCE
         Doc110_Licoes --> Doc115_Encerramento: COMPLIANCE
-        Doc115_Encerramento --> ["*"]: COMPLIANCE
+        Doc115_Encerramento --> [*]: COMPLIANCE
     }
 
     Fase6_Encerramento --> GitWorkflow
-    GitWorkflow --> ["*"]
+    GitWorkflow --> [*]
 ```
 
 ---
@@ -937,6 +937,6 @@ flowchart LR
 > - `../PROMPT-ROADMAP-GENERATE-WATERFALL-ESTIMATION.md` — Roadmap companion de estimativa
 > - `../PROMPT-ROADMAP-GENERATE-SOURCING-FACTORY-BIDDING.md` — Roadmap de Sourcing (consome docs WATERFALL)
 > - `../../../flowchart-WATERFALL.md` — Fluxo macro WATERFALL (visão de milestones e esteiras)
-> - `PROMPT-GENERATE-*.md` — 38 prompts geradores
-> - `PROMPT-GATE-*.md` — 38 prompts de auditoria
-> - `PROMPT-FIX-*.md` — 38 prompts de correção
+> - `PROMPT-GENERATE-*.md` — 39 prompts geradores
+> - `PROMPT-GATE-*.md` — 39 prompts de auditoria
+> - `PROMPT-FIX-*.md` — 39 prompts de correção

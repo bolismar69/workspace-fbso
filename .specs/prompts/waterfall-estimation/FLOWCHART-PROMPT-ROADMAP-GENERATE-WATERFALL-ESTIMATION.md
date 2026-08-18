@@ -370,10 +370,10 @@ flowchart LR
 
 ```mermaid
 stateDiagram-v2
-    [*"] --> Bootstrap: Início da Estimativa WATERFALL
+    [*] --> Bootstrap: Início da Estimativa WATERFALL
 
     state Bootstrap {
-        [*"] --> ColetarInputs
+        [*] --> ColetarInputs
         ColetarInputs --> AuditarDocsWATERFALL
         AuditarDocsWATERFALL --> DetectarModo: upstream-discovery | downstream-refinement | ambos
         DetectarModo --> EscolherModo
@@ -386,9 +386,9 @@ stateDiagram-v2
     Bootstrap --> ModoDownstream: downstream-refinement
 
     state ModoUpstream {
-        [*"] --> F1_ROM
+        [*] --> F1_ROM
         state F1_ROM {
-            [*"] --> F1Gen
+            [*] --> F1Gen
             F1Gen --> F1Gate
             F1Gate --> F1Fix: FAIL
             F1Fix --> F1Gate
@@ -398,7 +398,7 @@ stateDiagram-v2
         }
         F1_ROM --> F2_SnapUp: COMPLIANCE
         state F2_SnapUp {
-            [*"] --> F2Gen
+            [*] --> F2Gen
             F2Gen --> F2Gate
             F2Gate --> F2Fix: FAIL
             F2Fix --> F2Gate
@@ -408,7 +408,7 @@ stateDiagram-v2
         }
         F2_SnapUp --> F3_Gov: COMPLIANCE
         state F3_Gov {
-            [*"] --> F3Gen
+            [*] --> F3Gen
             F3Gen --> F3Gate
             F3Gate --> F3Fix: FAIL
             F3Fix --> F3Gate
@@ -420,16 +420,16 @@ stateDiagram-v2
     }
 
     state BarreiraUpstream {
-        [*"] --> Governanca
+        [*] --> Governanca
         Governanca --> GoAhead: GO ✅
         Governanca --> Cancelado: NO-GO ❌
         Governanca --> Aguardando: HOLD ⏸️
     }
 
     state ModoDownstream {
-        [*"] --> F4_PERT
+        [*] --> F4_PERT
         state F4_PERT {
-            [*"] --> F4Gen
+            [*] --> F4Gen
             F4Gen --> F4Gate
             F4Gate --> F4Fix: FAIL
             F4Fix --> F4Gate
@@ -439,7 +439,7 @@ stateDiagram-v2
         }
         F4_PERT --> F5_SnapDown: COMPLIANCE
         state F5_SnapDown {
-            [*"] --> F5Gen
+            [*] --> F5Gen
             F5Gen --> F5Gate
             F5Gate --> F5Fix: FAIL
             F5Fix --> F5Gate
@@ -449,7 +449,7 @@ stateDiagram-v2
         }
         F5_SnapDown --> F6_Crono: COMPLIANCE
         state F6_Crono {
-            [*"] --> F6Gen
+            [*] --> F6Gen
             F6Gen --> F6Gate
             F6Gate --> F6Fix: FAIL
             F6Fix --> F6Gate
@@ -459,7 +459,7 @@ stateDiagram-v2
         }
         F6_Crono --> F7_Orc: COMPLIANCE
         state F7_Orc {
-            [*"] --> F7Gen
+            [*] --> F7Gen
             F7Gen --> F7Gate
             F7Gate --> F7Fix: FAIL
             F7Fix --> F7Gate
@@ -471,12 +471,12 @@ stateDiagram-v2
     }
 
     state BarreiraDownstream {
-        [*"] --> IntegrarWATERFALL
-        IntegrarWATERFALL --> [*"]: Cronograma → Doc #12 | Orçamento → Doc #13
+        [*] --> IntegrarWATERFALL
+        IntegrarWATERFALL --> [*]: Cronograma → Doc #12 | Orçamento → Doc #13
     }
 
-    GoAhead --> [*"]
-    Cancelado --> [*"]
+    GoAhead --> [*]
+    Cancelado --> [*]
     Aguardando --> Governanca: Info recebida
 ```
 

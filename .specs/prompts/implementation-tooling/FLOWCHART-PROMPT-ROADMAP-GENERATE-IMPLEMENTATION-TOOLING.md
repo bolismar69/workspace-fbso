@@ -2,7 +2,7 @@
 
 ## Versão: 1.0 — 4 Fases, 4 Trios (610/620/630/640), Barreiras e Gates HITL
 
-> **Documento de referência:** `PROMPT-ROADMAP-GENERATE-IMPLEMENTATION-TOOLING.md` v1.0
+> **Documento de referência:** `PROMPT-ROADMAP-GENERATE-IMPLEMENTATION-TOOLING.md` v1.1
 >
 > Este documento complementa o roadmap textual com diagramas Mermaid que visualizam o fluxo de execução, a arquitetura de fases com barreiras, o loop GENERATE→GATE→FIX por artefato e a integração com os roadmaps TECHLEAD/WATERFALL.
 
@@ -74,9 +74,9 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-    PMPO["WATERFALL-EXECUTION (FASE 5)<br/>janelas DEV/QA do 096"] --> TL["TECHLEAD v7.x — Bloco F<br/>tarefas de infra/ferramentas"]
-    TL --> IT["IMPLEMENTATION-TOOLING v1.0<br/>610 / 620 / 630 / 640"]
-    IT -->|manifests e ferramentas| BL["Bloco E do TECHLEAD<br/>EXECUTE-SPRINT-TASKS,<br/>EXECUTE-CI-CD-PIPELINE,<br/>EXECUTE-CVE-SCA-SCAN"]
+    PMPO["WATERFALL-EXECUTION (FASE 5)<br/>janelas DEV/QA do 096"] --> TL["TECHLEAD v7.4 — Bloco F<br/>tarefas de infra/ferramentas"]
+    TL --> IT["IMPLEMENTATION-TOOLING v1.1<br/>610 / 620 / 630 / 640"]
+    IT -->|manifests e ferramentas| BL["Bloco E do TECHLEAD<br/>ORQUESTRADOR 1000 (18 fases),<br/>fallback: EXECUTE-SPRINT-TASKS,<br/>CI-CD · CVE · STRESS"]
     BL -->|evidências| PMPO
     IT -.->|runbooks e evidências| DOCS["095-RELATORIO-QUALIDADE<br/>100-MANUAIS-OPERACIONAIS"]
 ```

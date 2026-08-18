@@ -287,7 +287,7 @@ O PROJECT-CHARTER é o **start do projeto** — no momento de sua criação, mui
 
 ### FASE 5 — EXECUÇÃO E CONSTRUÇÃO
 
-> 🚀 **Orquestrada pelo roadmap dedicado:** `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` (v2.3 — incluindo o Planejamento do Ciclo de Entrega, Sub-fase 1.5). O time recebe a documentação completa das FASES 1–4 (negócio, funcional, design técnico, planejamento e regras) e executa em ciclos de entrega (`CICLO-NN` do 092).
+> 🚀 **Orquestrada pelo roadmap dedicado:** `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` (v2.4 — incluindo o Planejamento do Ciclo de Entrega, Sub-fase 1.5, e o orquestrador 1000 do pacote de desenvolvimento). O time recebe a documentação completa das FASES 1–4 (negócio, funcional, design técnico, planejamento e regras) e executa em ciclos de entrega (`CICLO-NN` do 092).
 
 | # | Documento | Arquivo | Papel na Execução |
 |---|---|---|---|
@@ -298,9 +298,9 @@ O PROJECT-CHARTER é o **start do projeto** — no momento de sua criação, mui
 | 097 | MANUAIS-USUARIO | `097-MANUAIS-USUARIO-{PROJECT_ID_NAME}.md` | Treinamento e negócio (upstream 003/010/016) |
 | 100 | MANUAIS-OPERACIONAIS | `100-MANUAIS-OPERACIONAIS-{PROJECT_ID_NAME}.md` | Runbooks e sustentação (upstream 041/044/087/090) |
 
-> 🚧 **Sub-fase 2 — Janelas de Entrega (Ciclos/Sprints):** TBD — fora de escopo nesta revisão. A esteira executa por ciclo de entrega (`CICLO-NN` do 092) sem depender da definição das janelas.
+> 🚧 **Sub-fase 2 — Janelas de Entrega (Ciclos/Sprints):** definidas no `096-DEFINICAO-JANELAS-ENTREGA` e orquestradas pelo Bloco F do TECHLEAD (DEV→QA→UAT→DEPLOY por `CICLO-NN`) — ver WATERFALL-EXECUTION v2.4.
 
-> 🔗 **Divisão de papéis (2026-08-16):** a construção é **delegada ao TECHLEAD** via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v6.0, modo `waterfall-discovery`, Bloco E). O PM/PO entrega o pacote de demanda (handoff) e recebe o `595-RETURN-PACKAGE-{CICLO-NN}.md` (recepção), conforme `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` v2.0.
+> 🔗 **Divisão de papéis (2026-08-16):** a construção é **delegada ao TECHLEAD** via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v7.4, modo `waterfall-discovery`, Bloco E). O PM/PO entrega o pacote de demanda (handoff) e recebe o `595-RETURN-PACKAGE-{CICLO-NN}.md` (recepção), conforme `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` v2.4.
 
 ### FASE 6 — ENCERRAMENTO E OPERAÇÃO
 
@@ -619,7 +619,7 @@ FASE 5 (EXECUÇÃO E CONSTRUÇÃO)
        │
        ▼
   ┌──────────────────────────────────┐
-  │ IMPLEMENTATION-TOOLING v1.0      │
+  │ IMPLEMENTATION-TOOLING v1.1      │
   │ F1: 610 MANIFESTS-DEVOPS         │
   │ F2: 620 OBSERVABILITY-SETUP      │
   │ F3: 630 INSTALL-TOOL-{FERRAMENTA}│
@@ -657,7 +657,7 @@ git commit -m "docs: documentação WATERFALL completa — ${PROJECT_ID_NAME}
 
 - 39 documentos WATERFALL gerados e validados
 - Status: COMPLIANCE em todos os documentos
-- Gerado pelo Waterfall Orchestrator v2.0
+- Gerado pelo Waterfall Orchestrator v3.3
 - Branch: ${WORK_BRANCH}
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
@@ -695,7 +695,7 @@ git branch -d ${WORK_BRANCH}
 
 ```
 .specs/prompts/
-├── PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md   ← ESTE ORQUESTRADOR (v3.0)
+├── PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md   ← ESTE ORQUESTRADOR (v3.3)
 │
 └── project-documents-waterfall/
     ├── PROMPT-GENERATE-001-PROJECT-CHARTER.md
@@ -710,4 +710,4 @@ git branch -d ${WORK_BRANCH}
 
 ---
 
-🤖 *Roadmap gerado pelo Waterfall Orchestrator v3.0. Skills: draft-project-charter, senior-pm, brainstorming.*
+🤖 *Roadmap gerado pelo Waterfall Orchestrator v3.3. Skills: draft-project-charter, senior-pm, brainstorming.*

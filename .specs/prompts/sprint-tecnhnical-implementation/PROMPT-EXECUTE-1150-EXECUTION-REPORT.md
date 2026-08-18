@@ -29,18 +29,23 @@ Este prompt executa a **Fase de Geração do Relatório de Execução** do pacot
 
 ```
 Ler obrigatoriamente (fases anteriores do ciclo — fonte das evidências):
-    ├── PACKAGE-DEVELOPMENT-PRE-IMPLEMENTATION.md     (1010)
-    ├── PACKAGE-DEVELOPMENT-PLANNING.md               (1020)
-    ├── PACKAGE-DEVELOPMENT-IMPLEMENTATION.md         (1030)
-    ├── PACKAGE-DEVELOPMENT-TEST-PLANNING.md          (1040)
-    ├── PACKAGE-DEVELOPMENT-TEST-IMPLEMENTATION.md    (1050)
-    ├── PACKAGE-DEVELOPMENT-QUALITY-VALIDATION.md     (1060)
-    ├── PACKAGE-DEVELOPMENT-FAILURE-HANDLING.md       (1070, se existir)
-    ├── PACKAGE-DEVELOPMENT-CODE-REVIEW.md            (1080)
-    └── PACKAGE-DEVELOPMENT-POST-IMPLEMENTATION.md    (1090)
+    ├── PACKAGE-DEVELOPMENT-TECHNICAL-DEBT-AUDIT.md   (1010, se executada)
+    ├── PACKAGE-DEVELOPMENT-PRE-IMPLEMENTATION.md     (1020)
+    ├── PACKAGE-DEVELOPMENT-PLANNING.md               (1030)
+    ├── PACKAGE-DEVELOPMENT-IMPLEMENTATION.md         (1040)
+    ├── PACKAGE-DEVELOPMENT-CVE-SCA-SCAN.md           (1050, se executada)
+    ├── PACKAGE-DEVELOPMENT-CI-CD-PIPELINE.md         (1060, se executado)
+    ├── PACKAGE-DEVELOPMENT-TEST-PLANNING.md          (1070)
+    ├── PACKAGE-DEVELOPMENT-STRESS-PERFORMANCE-TEST.md (1080, se executado)
+    ├── PACKAGE-DEVELOPMENT-TEST-IMPLEMENTATION.md    (1090)
+    ├── PACKAGE-DEVELOPMENT-QUALITY-VALIDATION.md     (1100)
+    ├── PACKAGE-DEVELOPMENT-FAILURE-HANDLING.md       (1110, se existir)
+    ├── PACKAGE-DEVELOPMENT-CODE-REVIEW.md            (1120)
+    ├── PACKAGE-DEVELOPMENT-QUALITY-ASSURANCE-REVIEW.md (1130)
+    └── PACKAGE-DEVELOPMENT-POST-IMPLEMENTATION.md    (1140)
 ```
 
-> ⚠️ Se qualquer artefato obrigatório das fases 1010–1090 não existir → **PARE** e sinalize ao orquestrador (1000).
+> ⚠️ Se qualquer artefato obrigatório das fases 1020–1140 não existir → **PARE** e sinalize ao orquestrador (1000).
 
 ---
 

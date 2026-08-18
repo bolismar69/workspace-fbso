@@ -49,7 +49,7 @@ Atualizar os artefatos do ciclo e os documentos-mestre do projeto com o resultad
 ## Fluxo de Execução
 
 ```
-APÓS o relatório de execução (1100), atualizar:
+APÓS o relatório de execução (1150), atualizar:
 
 1. ARTEFATOS DO CICLO ({CICLO_DIR}/):
    ├── SPRINT-CARD.md

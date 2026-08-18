@@ -36,8 +36,8 @@ Ler obrigatoriamente (modo pre-ciclo):
     └── {SOLUTION_PATH}/src/ (código-fonte a escanear)
 
 Ler no modo catálogo:
-    ├── {CICLO_DIR}/PACKAGE-DEVELOPMENT-FAILURE-HANDLING.md  (1070)
-    ├── {CICLO_DIR}/PACKAGE-DEVELOPMENT-CODE-REVIEW.md       (1080)
+    ├── {CICLO_DIR}/PACKAGE-DEVELOPMENT-FAILURE-HANDLING.md  (1110)
+    ├── {CICLO_DIR}/PACKAGE-DEVELOPMENT-CODE-REVIEW.md       (1120)
     └── IDENTIFIED-TECHNICAL-DEBT-{CICLO_NAME}.md (documento de débitos)
 ```
 
@@ -77,7 +77,7 @@ Gerar `{CICLO_DIR}/PACKAGE-DEVELOPMENT-TECHNICAL-DEBT-AUDIT.md`:
 ## 2. Débitos Identificados / Incorporados
 | DT-XXX | Descrição | Origem (skill/fase) | Impacto | Decisão |
 |:---|:---|:---|:---|:---|
-| DT-014 | Query N+1 em RelatorioService | performance-review (1080) | Médio | tratar no CICLO-03 |
+| DT-014 | Query N+1 em RelatorioService | performance-review (1120) | Médio | tratar no CICLO-03 |
 ## 3. Documento de Débitos
 [Referência: IDENTIFIED-TECHNICAL-DEBT-{CICLO_NAME}.md — estado atualizado]
 ## 4. Decisões Humanas

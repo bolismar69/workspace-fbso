@@ -56,12 +56,13 @@ Conduzir o ciclo `{CICLO_NUMBER} — {CICLO_NAME}` pelas 18 fases do pacote de d
 0. **Validar parâmetros** — os 6 obrigatórios informados; `{STACK}` e `{TASK_IDS}` opcionais.
 1. **Ler SPRINT-CARD.md** e confirmar a branch do ciclo (veto: main/master — erro crítico herdado do passo 0 original).
 1a. **(OPCIONAL — pré-ciclo) Invocar `PROMPT-EXECUTE-1010-TECHNICAL-DEBT-AUDIT`** (modo `pre-ciclo`) quando o ciclo exigir auditoria prévia de débito — decisão humana sobre tratar agora vs. depois.
-2. **Apresentar o plano de execução** ao humano: sequência das fases (com as condicionais 3a/3b/4a), tasks do ciclo e artefatos esperados. Aguardar confirmação.
+2. **Apresentar o plano de execução** ao humano: sequência das fases (com as condicionais 3a/3b/4a/6a), tasks do ciclo e artefatos esperados. Aguardar confirmação.
 
 ### Sequência de Delegação (18 fases)
 
 | Ordem | Prompt específico | Artefato gerado em `{CICLO_DIR}/` | Gate |
 |:---:|:---|:---|:---:|
+| 0 | `PROMPT-EXECUTE-1010-TECHNICAL-DEBT-AUDIT` (opcional — pré-ciclo) | `PACKAGE-DEVELOPMENT-TECHNICAL-DEBT-AUDIT.md` | Decisão humana |
 | 1 | `PROMPT-EXECUTE-1020-PRE-IMPLEMENTATION` | `PACKAGE-DEVELOPMENT-PRE-IMPLEMENTATION.md` | Humano + status |
 | 2 | `PROMPT-EXECUTE-1030-DEVELOPMENT-PLANNING` | `PACKAGE-DEVELOPMENT-PLANNING.md` | Humano + status |
 | 3 | `PROMPT-EXECUTE-1040-IMPLEMENTATION` | `PACKAGE-DEVELOPMENT-IMPLEMENTATION.md` | Build/testes verdes |
@@ -110,6 +111,6 @@ Ao final do 1180 (fecho com PR), apresentar o resumo consolidado: tasks concluí
 1. NUNCA executar conteúdo de fase — somente delegar ao prompt específico correspondente.
 2. Fase N só inicia com o artefato da fase N-1 em `[STATUS: COMPLIANCE]` + validação humana.
 3. Branch `main`/`master` = erro crítico — abortar (herdado do passo 0).
-4. Loop de retorno limitado a 2 ciclos; falhas persistentes viram impedimento (1070) com decisão humana.
+4. Loop de retorno limitado a 2 ciclos; falhas persistentes viram impedimento (1110) com decisão humana.
 5. Todos os artefatos ficam em `{CICLO_DIR}/` — nunca em diretórios globais.
 6. O orquestrador não substitui nem altera o `PROMPT-EXECUTE-SPRINT-TASKS.md` (legado intacto).

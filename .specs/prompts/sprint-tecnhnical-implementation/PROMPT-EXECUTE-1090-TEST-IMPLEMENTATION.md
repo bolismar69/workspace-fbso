@@ -118,7 +118,7 @@ Gerar `{CICLO_DIR}/PACKAGE-DEVELOPMENT-TEST-IMPLEMENTATION.md`:
 
 ## Regras de Ouro
 
-1. Testes seguem o plano aprovado (1040) — desvio registrado e justificado.
+1. Testes seguem o plano aprovado (1070) — desvio registrado e justificado.
 2. Nenhum teste é considerado pronto sem executar e passar.
 3. Cobertura abaixo da meta = tratar antes de prosseguir (corrigir testes ou escalar ao humano).
 4. Falha persistente → 1070 (impedimento + decisão humana).

@@ -12,7 +12,7 @@ Este prompt gera o artefato `595-RETURN-PACKAGE-{CICLO-NN}.md` 🆕 — o **paco
 
 **Papel no Bloco E (Esteira de Construção — modo waterfall-discovery):** passo final de cada ciclo. Consome os artefatos técnicos do ciclo e entrega o pacote ao PM/PO.
 
-**Inputs upstream:** snapshot do 092-BACKLOG-KANBAN recebido no pacote de demanda, 580-PACKAGE-BACKLOG-REFINED, `590-ciclo-NNN/` (5 contratos), `SPRINT-REVIEW.md`, `TASK-EXECUTED`, `IDENTIFIED-TECHNICAL-DEBT.md`, relatório do `PROMPT-EXECUTE-SPRINT-TASKS.md`, 600-EXECUTION-HISTORY.
+**Inputs upstream:** snapshot do 092-BACKLOG-KANBAN recebido no pacote de demanda, 580-PACKAGE-BACKLOG-REFINED, `590-ciclo-NNN/` (5 contratos), `SPRINT-REVIEW.md`, `TASK-EXECUTED`, `IDENTIFIED-TECHNICAL-DEBT.md`, artefatos do pacote de desenvolvimento (`PACKAGE-DEVELOPMENT-*.md` em `{CICLO_DIR}` — orquestrador 1000; fallback: relatório do `PROMPT-EXECUTE-SPRINT-TASKS.md`), 600-EXECUTION-HISTORY.
 
 ---
 
@@ -27,7 +27,7 @@ Este prompt gera o artefato `595-RETURN-PACKAGE-{CICLO-NN}.md` 🆕 — o **paco
 | `{TECHNICAL_SOLUTION_NAMES}` | Lista de nomes das soluções técnicas do projeto |
 | `{CICLO_NN}` | Identificador do Ciclo de Entrega (`CICLO-NN`) do 092 (ex.: `CICLO-01`) |
 | `{SNAPSHOT_092}` | Caminho do snapshot do 092-BACKLOG-KANBAN recebido no pacote de demanda (NUNCA inferir — vem do handoff PM/PO) |
-| `{SPRINT_NUMBER}` | Número do `590-ciclo-NNN` correspondente à `{CICLO_NN}` (regra: `590-ciclo-NN ↔ CICLO-NN`) |
+| `{SPRINT_NUMBER}` | Número do `590-ciclo-NNN` correspondente à `{CICLO_NN}` (regra: `590-ciclo-NNN ↔ CICLO-NN`) |
 | `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
 
 ---
@@ -38,7 +38,7 @@ Este prompt gera o artefato `595-RETURN-PACKAGE-{CICLO-NN}.md` 🆕 — o **paco
 Verificar se TODOS os parâmetros obrigatórios foram informados, em especial `{CICLO_NN}` e `{SNAPSHOT_092}`.
 
 ### Passo 1 — Carregar Documentos Base
-Ler `{SNAPSHOT_092}` (itens `BL-NN` do ciclo, `CR-NN` aprovadas), `580-PACKAGE-BACKLOG-REFINED.md` (tarefas `T-NNN`), `technical-discovery/590-ciclo-{SPRINT_NUMBER}/` (5 contratos), `SPRINT-REVIEW.md`, `TASK-EXECUTED`, `IDENTIFIED-TECHNICAL-DEBT.md`, o relatório do `PROMPT-EXECUTE-SPRINT-TASKS.md` e `600-EXECUTION-HISTORY.md` (estado do pipeline). NÃO ler ou buscar outros arquivos.
+Ler `{SNAPSHOT_092}` (itens `BL-NN` do ciclo, `CR-NN` aprovadas), `580-PACKAGE-BACKLOG-REFINED.md` (tarefas `T-NNN`), `technical-discovery/590-ciclo-{SPRINT_NUMBER}/` (5 contratos), `SPRINT-REVIEW.md`, `TASK-EXECUTED`, `IDENTIFIED-TECHNICAL-DEBT.md`, os artefatos `PACKAGE-DEVELOPMENT-*.md` do ciclo (orquestrador 1000; fallback: relatório do `PROMPT-EXECUTE-SPRINT-TASKS.md`) e `600-EXECUTION-HISTORY.md` (estado do pipeline). NÃO ler ou buscar outros arquivos.
 
 ### Passo 2 — Invocar Skills Especializadas
 Invocar skills de gestão de execução, gap analysis e documentação.

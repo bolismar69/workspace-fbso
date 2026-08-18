@@ -47,7 +47,7 @@ Gerar o `TASK-EXECUTED-*.md` do ciclo `{CICLO_NUMBER} — {CICLO_NAME}` via `PRO
 
 ## Fluxo de Execução
 
-1. **Consolidar** as fontes: execução (1100), arquivos (1030), testes (1050), qualidade (1060).
+1. **Consolidar** as fontes: execução (1150), arquivos (1040), testes (1090), qualidade (1100).
 2. **Invocar `PROMPT-GENERATE-IMPLEMENTATION-REPORT`** (executor mantido) com os dados consolidados.
 3. **Conferir a saída:** arquivo `{AAAA-MM-DD-HHMMSS}-TASK-EXECUTED-[feature].md` criado em `{SOLUTION_PATH}/.specs/skill-output/` com: resumo do desenvolvimento, arquivos modificados/criados, evidências de testes, validação de segurança, débitos resolvidos e surgidos.
 4. **Registrar** o caminho no artefato da fase.

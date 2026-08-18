@@ -8,7 +8,7 @@ Este prompt executa a **fase de Revisão de QA/Segurança (HITL)** do pacote de 
 
 1. **Gate humano obrigatório:** nenhum ciclo avança sem o veredito `[STATUS: APPROVED]`.
 2. **Limite de 3 loops:** FAILED → correção no 1030/1080 → re-invocar o gate (máx. 3 tentativas).
-3. **O revisor não corrige:** o `PROMPT-QA-REVISOR-SECURITY` só encontra falhas e documenta — a correção volta ao executor (1030).
+3. **O revisor não corrige:** o `PROMPT-QA-REVISOR-SECURITY` só encontra falhas e documenta — a correção volta ao executor (1040).
 
 ---
 

@@ -41,7 +41,7 @@ TECHNICAL_DEFINITIONS_PATH    = PROJECT_COMPLETE_PATH_NAME + "/technical-definit
 | Modo | Pipeline | Baseline | Quando |
 |---|---|---|---|
 | `agile-discovery` | Pipeline atual (Blocos 0–A–B–C–D, 20 fases) | Docs de negócio ágeis (`project-documents/`: Charter, BRD, Epics, Features, US) | Projetos ágeis — comportamento atual, retrocompatível |
-| `waterfall-discovery` 🆕 | Bloco 0 reduzido (F1–F2 puladas, F3–F4 migradas) + Blocos A–D (migrados/validados) + **Bloco E** (Esteira de Construção) + **Bloco F** (Janelas de Entrega — consome o 096) + **595-TECHLEAD-RETURN-PACKAGE** | Docs WATERFALL F1–F4 em `[STATUS: COMPLIANCE]` (M4 travado: 088, 092, 010-FRD, 060-EAP-WBS, 062, 065, 070, 086, 087, 090) + `096-DEFINICAO-JANELAS-ENTREGA` | Projetos WATERFALL na FASE 5 (parceria com `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` v2.3) |
+| `waterfall-discovery` 🆕 | Bloco 0 reduzido (F1–F2 puladas, F3–F4 migradas) + Blocos A–D (migrados/validados) + **Bloco E** (Esteira de Construção) + **Bloco F** (Janelas de Entrega — consome o 096) + **595-TECHLEAD-RETURN-PACKAGE** | Docs WATERFALL F1–F4 em `[STATUS: COMPLIANCE]` (M4 travado: 088, 092, 010-FRD, 060-EAP-WBS, 062, 065, 070, 086, 087, 090) + `096-DEFINICAO-JANELAS-ENTREGA` | Projetos WATERFALL na FASE 5 (parceria com `PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md` v2.4) |
 
 **Detecção no Bootstrap (auditoria de artefatos):**
 
@@ -170,7 +170,7 @@ Dashboard de controle — estado de todos os documentos. Pipeline: Generate → 
 
 ## MODO WATERFALL-DISCOVERY (FASE 5 DO WATERFALL — PARCERIA PM/PO × TECHLEAD)
 
-No modo `waterfall-discovery`, este roadmap atua como o **lado TECHLEAD da FASE 5**: recebe o pacote de demanda do PM/PO (via WATERFALL-EXECUTION v2.0), valida/refina as definições técnicas contra os docs WATERFALL, executa a esteira de construção (Bloco E) e devolve o `595-RETURN-PACKAGE-{CICLO-NN}.md`.
+No modo `waterfall-discovery`, este roadmap atua como o **lado TECHLEAD da FASE 5**: recebe o pacote de demanda do PM/PO (via WATERFALL-EXECUTION v2.4), valida/refina as definições técnicas contra os docs WATERFALL, executa a esteira de construção (Bloco E) e devolve o `595-RETURN-PACKAGE-{CICLO-NN}.md`.
 
 **Ownership:** "TECHLEAD propõe, PM/PO aplica" — este roadmap NUNCA edita 092/093/095/085/088; atualiza apenas os artefatos de `technical-definitions/`, `technical-discovery/`, o repositório da solução e o 600-EXECUTION-HISTORY.
 
@@ -199,7 +199,7 @@ No modo `waterfall-discovery`, este roadmap atua como o **lado TECHLEAD da FASE 
 | F19 | 590-TECHNICAL-DISCOVERY (iterativo) | **RODA** | por ciclo: pacote de demanda (CICLO-NN) → 5 contratos por 590-ciclo-NNN |
 | 600 | 600-EXECUTION-HISTORY | **RODA** | registro interno do TECHLEAD |
 
-**Regras de vocabulário:** US → UC-NN (010-FRD), sprint → CICLO-NN (092), DoR → GATE de COMPLIANCE, Epic → pacote EAP (060), Product Backlog → 088. **Regra de espelhamento:** `590-ciclo-NN ↔ CICLO-NN`.
+**Regras de vocabulário:** US → UC-NN (010-FRD), sprint → CICLO-NN (092), DoR → GATE de COMPLIANCE, Epic → pacote EAP (060), Product Backlog → 088. **Regra de espelhamento:** `590-ciclo-NNN ↔ CICLO-NN`.
 
 ### BLOCO E — Esteira de Construção por Ciclo (após Barreira D, somente no modo waterfall-discovery)
 

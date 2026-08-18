@@ -103,4 +103,4 @@ Gerar `{CICLO_DIR}/PACKAGE-DEVELOPMENT-POST-IMPLEMENTATION.md`:
 1. Nenhuma violação de SECURITY.md pode permanecer — corrigir ou escalar ao humano.
 2. SPRINT-CARD.md é atualizado SEMPRE (tasks marcadas antes do relatório).
 3. Estrutura fora do ARCHITECTURE.md = corrigir localização ou registrar desvio justificado.
-4. Artefato em `{CICLO_DIR}/`; conclusão da fase libera a geração do relatório (1100).
+4. Artefato em `{CICLO_DIR}/`; conclusão da fase libera a geração do relatório (1150).
