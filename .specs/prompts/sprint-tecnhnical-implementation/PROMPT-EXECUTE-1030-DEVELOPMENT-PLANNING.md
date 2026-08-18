@@ -1,4 +1,4 @@
-# PROMPT-EXECUTE-1020-DEVELOPMENT-PLANNING
+# PROMPT-EXECUTE-1030-DEVELOPMENT-PLANNING
 
 ## Contexto
 
@@ -36,7 +36,7 @@ Ler obrigatoriamente:
     └── SPECS_DIR/TASKS.md                            ← Fonte da verdade das tarefas (§2) e dependências (§3)
 ```
 
-> ⚠️ Se `PACKAGE-DEVELOPMENT-PRE-IMPLEMENTATION.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1010-PRE-IMPLEMENTATION`.
+> ⚠️ Se `PACKAGE-DEVELOPMENT-PRE-IMPLEMENTATION.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1020-PRE-IMPLEMENTATION`.
 
 ---
 

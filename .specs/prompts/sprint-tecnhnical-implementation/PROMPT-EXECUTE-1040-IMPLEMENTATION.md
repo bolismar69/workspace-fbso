@@ -1,4 +1,4 @@
-# PROMPT-EXECUTE-1030-IMPLEMENTATION
+# PROMPT-EXECUTE-1040-IMPLEMENTATION
 
 ## Contexto
 
@@ -41,7 +41,7 @@ Ler obrigatoriamente:
     └── {SOLUTION_PATH}/README.md                     ← Comandos de build/teste
 ```
 
-> ⚠️ Se `PACKAGE-DEVELOPMENT-PLANNING.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1020-DEVELOPMENT-PLANNING`.
+> ⚠️ Se `PACKAGE-DEVELOPMENT-PLANNING.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1030-DEVELOPMENT-PLANNING`.
 
 ---
 
@@ -99,8 +99,8 @@ PARA cada task T-XXX, na ordem do PACKAGE-DEVELOPMENT-PLANNING.md (§4):
        - Corrigir erros de compilação antes de prosseguir
 
     4.1 (OPCIONAL — se o projeto exigir varredura de dependências, conforme
-         480-SECURITY-DEFINITION e 510-TEST-STRATEGY): executar o
-         `PROMPT-EXECUTE-CVE-SCA-SCAN` pós-build. Reprovado → corrigir ou
+         480-SECURITY-DEFINITION e 510-TEST-STRATEGY): executar a fase
+         `PROMPT-EXECUTE-1050-CVE-SCA-SCAN` pós-build. Reprovado → corrigir ou
          catalogar débito DT-XXX antes de prosseguir.
 
     5. EXECUTAR o comando de teste do projeto:
@@ -116,7 +116,7 @@ PARA cada task T-XXX, na ordem do PACKAGE-DEVELOPMENT-PLANNING.md (§4):
     6. MARCAR a task como concluída no SPRINT-CARD.md
 ```
 
-**Falhas durante a implementação** → encaminhar ao `PROMPT-EXECUTE-1070-FAILURE-HANDLING` (não improvisar correções em loop infinito).
+**Falhas durante a implementação** → encaminhar ao `PROMPT-EXECUTE-1110-FAILURE-HANDLING` (não improvisar correções em loop infinito).
 
 ---
 
@@ -156,7 +156,7 @@ Gerar `{CICLO_DIR}/PACKAGE-DEVELOPMENT-IMPLEMENTATION.md`:
 | `code-review` | automático | Revisão de qualidade do código gerado |
 | `caveman` | full | Comunicação interativa (nunca em artefatos permanentes) |
 
-> `PROMPT-EXECUTE-CVE-SCA-SCAN` (passo 4.1) é um **prompt**, não skill — invocado quando 480/510 exigirem varredura.
+> `PROMPT-EXECUTE-1050-CVE-SCA-SCAN` (passo 4.1) é um **prompt**, não skill — invocado quando 480/510 exigirem varredura.
 
 ---
 

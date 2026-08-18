@@ -1,4 +1,4 @@
-# PROMPT-EXECUTE-1070-FAILURE-HANDLING
+# PROMPT-EXECUTE-1110-FAILURE-HANDLING
 
 ## Contexto
 
@@ -71,8 +71,8 @@ Gerar `{CICLO_DIR}/PACKAGE-DEVELOPMENT-FAILURE-HANDLING.md` (registro da tratati
 ## 1. Falhas Encontradas
 | Task | Fase de origem | Mensagem exata | Tentativas | Desfecho |
 |:---|:---|:---|:---:|:---|
-| T-003 | 1030-IMPLEMENTATION | NullPointerException ... | 1 | ✅ corrigida |
-| T-007 | 1060-QUALITY | coverage 74% < 80% | 3 | ❌ impedimento (ver IMPEDIMENT-SPRINT-{N}.md) |
+| T-003 | 1040-IMPLEMENTATION | NullPointerException ... | 1 | ✅ corrigida |
+| T-007 | 1100-QUALITY-VALIDATION | coverage 74% < 80% | 3 | ❌ impedimento (ver IMPEDIMENT-SPRINT-{N}.md) |
 ## 2. Correções Aplicadas
 [Tabela: arquivo | correção | revalidação]
 ## 3. Impedimentos Abertos

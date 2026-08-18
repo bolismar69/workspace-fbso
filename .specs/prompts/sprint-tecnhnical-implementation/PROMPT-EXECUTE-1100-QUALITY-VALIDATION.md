@@ -1,4 +1,4 @@
-# PROMPT-EXECUTE-1060-QUALITY-VALIDATION
+# PROMPT-EXECUTE-1100-QUALITY-VALIDATION
 
 ## Contexto
 
@@ -35,7 +35,7 @@ Ler obrigatoriamente:
     └── SPECS_DIR/ARCHITECTURE.md + TEST_PLAN.md               ← Meta de cobertura e padrões
 ```
 
-> ⚠️ Se `PACKAGE-DEVELOPMENT-TEST-IMPLEMENTATION.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1050-TEST-IMPLEMENTATION`.
+> ⚠️ Se `PACKAGE-DEVELOPMENT-TEST-IMPLEMENTATION.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1090-TEST-IMPLEMENTATION`.
 
 ---
 
@@ -66,7 +66,7 @@ Validar a qualidade do ciclo `{CICLO_NUMBER} — {CICLO_NAME}`: linter/formatado
 - Cobertura ≥ 80% (meta padrão; ajustar se ARCHITECTURE.md ou TEST_PLAN.md definirem meta diferente)
 ```
 
-3. **Tratar falhas:** qualquer violação ou teste quebrado → encaminhar ao `PROMPT-EXECUTE-1070-FAILURE-HANDLING` (auto-correção máx. 3 tentativas, depois impedimento).
+3. **Tratar falhas:** qualquer violação ou teste quebrado → encaminhar ao `PROMPT-EXECUTE-1110-FAILURE-HANDLING` (auto-correção máx. 3 tentativas, depois impedimento).
 4. **Gerar o artefato de saída** com as evidências.
 
 ---

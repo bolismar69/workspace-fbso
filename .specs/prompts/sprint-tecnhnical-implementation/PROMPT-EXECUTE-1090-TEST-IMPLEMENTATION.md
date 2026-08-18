@@ -1,4 +1,4 @@
-# PROMPT-EXECUTE-1050-TEST-IMPLEMENTATION
+# PROMPT-EXECUTE-1090-TEST-IMPLEMENTATION
 
 ## Contexto
 
@@ -36,7 +36,7 @@ Ler obrigatoriamente:
     └── SPECS_DIR/ARCHITECTURE.md                         ← Padrões de testes por camada
 ```
 
-> ⚠️ Se `PACKAGE-DEVELOPMENT-TEST-PLANNING.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1040-TEST-PLANNING`.
+> ⚠️ Se `PACKAGE-DEVELOPMENT-TEST-PLANNING.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1070-TEST-PLANNING`.
 
 ---
 
@@ -72,7 +72,7 @@ PARA cada task T-XXX:
        · Rust: `cargo tarpaulin`
 ```
 
-**Falhas nos testes** → encaminhar ao `PROMPT-EXECUTE-1070-FAILURE-HANDLING`.
+**Falhas nos testes** → encaminhar ao `PROMPT-EXECUTE-1110-FAILURE-HANDLING`.
 
 ---
 

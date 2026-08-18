@@ -1,4 +1,4 @@
-# PROMPT-EXECUTE-1090-POST-IMPLEMENTATION
+# PROMPT-EXECUTE-1140-POST-IMPLEMENTATION
 
 ## Contexto
 
@@ -35,7 +35,7 @@ Ler obrigatoriamente:
     └── {SOLUTION_PATH}/.specs/security/SECURITY.md     ← Regras de segurança
 ```
 
-> ⚠️ Se `PACKAGE-DEVELOPMENT-CODE-REVIEW.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1080-CODE-REVIEW`.
+> ⚠️ Se `PACKAGE-DEVELOPMENT-CODE-REVIEW.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1120-CODE-REVIEW`.
 
 ---
 

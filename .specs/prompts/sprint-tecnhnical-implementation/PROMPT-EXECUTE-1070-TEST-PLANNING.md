@@ -1,4 +1,4 @@
-# PROMPT-EXECUTE-1040-TEST-PLANNING
+# PROMPT-EXECUTE-1070-TEST-PLANNING
 
 ## Contexto
 
@@ -37,7 +37,7 @@ Ler obrigatoriamente:
     └── {SOLUTION_PATH}/README.md                     ← Comandos de execução de testes
 ```
 
-> ⚠️ Se `PACKAGE-DEVELOPMENT-IMPLEMENTATION.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1030-IMPLEMENTATION`.
+> ⚠️ Se `PACKAGE-DEVELOPMENT-IMPLEMENTATION.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1040-IMPLEMENTATION`.
 
 ---
 

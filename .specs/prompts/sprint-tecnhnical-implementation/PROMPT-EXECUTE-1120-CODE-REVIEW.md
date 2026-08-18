@@ -1,4 +1,4 @@
-# PROMPT-EXECUTE-1080-CODE-REVIEW
+# PROMPT-EXECUTE-1120-CODE-REVIEW
 
 ## Contexto
 
@@ -39,7 +39,7 @@ Ler obrigatoriamente:
     └── {SOLUTION_PATH}/.specs/security/SECURITY.md            ← Regras de segurança
 ```
 
-> ⚠️ Se `PACKAGE-DEVELOPMENT-QUALITY-VALIDATION.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1060-QUALITY-VALIDATION`.
+> ⚠️ Se `PACKAGE-DEVELOPMENT-QUALITY-VALIDATION.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1100-QUALITY-VALIDATION`.
 
 ---
 
@@ -67,7 +67,7 @@ Auditar o código do ciclo `{CICLO_NUMBER} — {CICLO_NAME}` com as 7 auditorias
    - Aplicar a correção → marcar concluído (§10) → executar build → falhou? reverter, marcar ❌ e documentar.
 
 10. **Controle do loop de retorno:**
-    - Após os ajustes: retornar ao `PROMPT-EXECUTE-1040-TEST-PLANNING` (o plano de testes pode precisar de atualização) e reexecutar 1040 → 1050 → 1060 → 1080.
+    - Após os ajustes: retornar ao `PROMPT-EXECUTE-1070-TEST-PLANNING` (o plano de testes pode precisar de atualização) e reexecutar 1040 → 1050 → 1060 → 1080.
     - **Máximo de 2 ciclos completos.** Após o 2º ciclo, achados Critical/High não resolvidos são registrados no relatório de execução (§8 do 1100) e o fluxo prossegue; Medium/Low viram débito técnico documentado.
 
 > ⚠️ **Por que voltar à Fase de Testes?** Ajustes de code review podem alterar assinaturas, introduzir classes, remover código morto ou mudar fluxos de exceção — os testes precisam ser revalidados para manter a qualidade.

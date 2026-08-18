@@ -1,4 +1,4 @@
-# PROMPT-EXECUTE-1110-ARTIFACTS-UPDATE
+# PROMPT-EXECUTE-1170-ARTIFACTS-UPDATE
 
 ## Contexto
 
@@ -36,7 +36,7 @@ Ler obrigatoriamente:
     └── {CICLO_DIR}/../README.md (sprints/README.md) ← Índice de sprints
 ```
 
-> ⚠️ Se `PACKAGE-DEVELOPMENT-EXECUTION-REPORT.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1100-EXECUTION-REPORT`.
+> ⚠️ Se `PACKAGE-DEVELOPMENT-EXECUTION-REPORT.md` não existir → **PARE**: execute primeiro o `PROMPT-EXECUTE-1150-EXECUTION-REPORT`.
 
 ---
 
