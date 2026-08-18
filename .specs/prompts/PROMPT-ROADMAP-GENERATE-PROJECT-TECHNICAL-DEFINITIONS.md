@@ -1,5 +1,5 @@
 # PROMPT: ROADMAP DE DEFINIÇÕES TÉCNICAS DO PROJETO
-## Versão: 7.3 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção + Especialistas Pipeline/CVE/Stress) + Bloco F (Janelas de Entrega + Tooling de Ambiente) + Ciclos de Entrega CICLO-NN + 590-ciclo-NNN
+## Versão: 7.4 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção + Pacote de Desenvolvimento — orquestrador 1000, 18 fases) + Bloco F (Janelas de Entrega + Tooling de Ambiente) + Ciclos de Entrega CICLO-NN + 590-ciclo-NNN
 
 Atue como um Especialista em Gestão de Processos (BPM), Arquiteto de Soluções Ágeis e Tech Lead, especializado em definições técnicas de projetos e engenharia de prompts.
 
@@ -212,16 +212,11 @@ No modo `waterfall-discovery`, este roadmap atua como o **lado TECHLEAD da FASE 
 | 0 | SPRINT-CARD + SPRINT-TEST-SUITE | `sprint-artefacts/PROMPT-GENERATE-SPRINT-ARTEFACTS.md` |
 | 1 | GATE dos artefatos do ciclo | `sprint-artefacts/PROMPT-GATE-SPRINT-ARTEFACTS.md` |
 | 2 | FIX cirúrgico (máx. 3 loops) | `sprint-artefacts/PROMPT-FIX-SPRINT-ARTEFACTS.md` |
-| 3 | Executar tarefas | `sprint-tecnhnical-implementation/PROMPT-EXECUTE-SPRINT-TASKS.md` |
-| 3a | (OPCIONAL — se 480/510 exigirem) Varredura CVE/SCA pós-build | `sprint-tecnhnical-implementation/PROMPT-EXECUTE-CVE-SCA-SCAN.md` |
-| 3b | (OPCIONAL — se 500/087 exigirem pipeline para a solução) Implementar pipeline CI/CD | `sprint-tecnhnical-implementation/PROMPT-EXECUTE-CI-CD-PIPELINE.md` |
-| 4 | Revisão humana obrigatória (HITL) | `sprint-tecnhnical-implementation/PROMPT-QA-REVISOR-SECURITY.md` (máx. 3 tentativas) |
-| 4a | (OPCIONAL — se 510/050 tiverem cenários de performance) Teste de estresse/performance | `sprint-tecnhnical-implementation/PROMPT-EXECUTE-STRESS-PERFORMANCE-TEST.md` |
-| 5 | Débito técnico + relatório | `PROMPT-GENERATE-IDENTIFIED-TECHNICAL-DEBT.md` + `PROMPT-GENERATE-IMPLEMENTATION-REPORT.md` |
-| 6 | Git e PR | `PROMPT-GENERATE-PULL-REQUEST.md` |
-| 7 | **Empacotamento (em vez de governança direta)** | trio **595-TECHLEAD-RETURN-PACKAGE** (GENERATE → GATE → FIX → COMPLIANCE) → entrega `595-RETURN-PACKAGE-{CICLO-NN}.md` ao PM/PO |
+| 3 | **Executar o pacote de desenvolvimento (18 fases)** | `sprint-tecnhnical-implementation/PROMPT-EXECUTE-1000-PACKAGE-DEVELOPMENT-ORCHESTRATOR.md` — fases internas: 1010 débito pré-ciclo → 1020 pré-impl → 1030 plano → 1040 código → 1050 CVE/SCA + 1060 CI-CD (condicionais) → 1070–1100 testes/qualidade → 1110 falhas → 1120 code review → 1130 QA gate (HITL, 3 loops) → 1140–1170 pós/relatórios/artefatos → 1180 PR |
+| 4 | (FALLBACK legado — somente se o orquestrador 1000 não se aplicar) Execução monolítica | `sprint-tecnhnical-implementation/PROMPT-EXECUTE-SPRINT-TASKS.md` + `PROMPT-QA-REVISOR-SECURITY.md` + `PROMPT-GENERATE-PULL-REQUEST.md` |
+| 5 | **Empacotamento (em vez de governança direta)** | trio **595-TECHLEAD-RETURN-PACKAGE** (GENERATE → GATE → FIX → COMPLIANCE) → entrega `595-RETURN-PACKAGE-{CICLO-NN}.md` ao PM/PO |
 
-**E3 — Regras:** vocabulário WATERFALL na invocação (nunca reescrever prompts reusados); branch `feature/sprint-NN-<slug>`; HITL obrigatório por ciclo; débito técnico `DT-XXX` entra no pacote 595 como CR Técnico; ownership (nunca editar 092/093/095/085/088). O Bloco E roda por `CICLO-NN` **dentro da janela DEV** — a passagem pelas janelas (QA/UAT/DEPLOY) é orquestrada pelo **Bloco F** (abaixo), conforme o 096-DEFINICAO-JANELAS-ENTREGA.
+**E3 — Regras:** vocabulário WATERFALL na invocação (nunca reescrever prompts reusados); branch `feature/sprint-NN-<slug>`; **padrão = orquestrador 1000** (18 fases numeradas na ordem de execução, artefato `PACKAGE-DEVELOPMENT-{FASE}.md` por fase; HITL interno = fase 1130, gate QA/segurança com 3 loops; débito centralizado na fase 1010); o legado monolítico `PROMPT-EXECUTE-SPRINT-TASKS.md` permanece como fallback; débito técnico `DT-XXX` entra no pacote 595 como CR Técnico; ownership (nunca editar 092/093/095/085/088). O Bloco E roda por `CICLO-NN` **dentro da janela DEV** — a passagem pelas janelas (QA/UAT/DEPLOY) é orquestrada pelo **Bloco F** (abaixo), conforme o 096-DEFINICAO-JANELAS-ENTREGA.
 
 ### BLOCO F — Janelas de Entrega (após Barreira D, somente no modo waterfall-discovery)
 
@@ -455,7 +450,7 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `project
 ├── PROMPT-GENERATE-595-TECHLEAD-RETURN-PACKAGE.md        🆕 (Bloco E)
 ├── PROMPT-GATE-595-TECHLEAD-RETURN-PACKAGE.md            🆕
 ├── PROMPT-FIX-595-TECHLEAD-RETURN-PACKAGE.md             🆕
-└── ... (61 prompts no total: 21 GENERATE + 20 GATE + 20 FIX; + 3 especialistas reusados de sprint-tecnhnical-implementation/ — EXECUTE-CI-CD-PIPELINE, EXECUTE-CVE-SCA-SCAN, EXECUTE-STRESS-PERFORMANCE-TEST — e roadmap companion IMPLEMENTATION-TOOLING com 12 prompts em implementation-tooling/)
+└── ... (61 prompts no total: 21 GENERATE + 20 GATE + 20 FIX; + pacote de desenvolvimento em sprint-tecnhnical-implementation/ — orquestrador 1000 + 18 fases 1010-1180 — + 3 especialistas reusados EXECUTE-CI-CD-PIPELINE, EXECUTE-CVE-SCA-SCAN, EXECUTE-STRESS-PERFORMANCE-TEST e roadmap companion IMPLEMENTATION-TOOLING com 12 prompts em implementation-tooling/)
 ```
 
 ---
@@ -474,6 +469,7 @@ Os prompts de geração, gate e correção de cada fase estão na pasta `project
 | 7.1 | 17/08/2026 | Bloco E ganha 3 especialistas opcionais reusados de sprint-tecnhnical-implementation/ (steps 3a/3b/4a: EXECUTE-CVE-SCA-SCAN, EXECUTE-CI-CD-PIPELINE, EXECUTE-STRESS-PERFORMANCE-TEST); Bloco F ganha F.6 — tooling de ambiente via roadmap companion IMPLEMENTATION-TOOLING v1.0 (trios 610/620/630/640). Sem prompts novos no folder TECHLEAD (61 preservados). | Time de Arquitetura |
 | 7.2 | 17/08/2026 | Renomeação global FILA-NN → CICLO-NN (Ciclo de Entrega) em todo o ecossistema; regra de espelhamento `590-ciclo-NNN ↔ CICLO-NN`; alinhado ao Planejamento do Ciclo (WATERFALL-EXECUTION v2.3, Sub-fase 1.5). Trio 580 renomeado: `580-SPRINT-BACKLOG` → `580-PACKAGE-BACKLOG-REFINED` (prompt e artefato `technical-discovery/580-PACKAGE-BACKLOG-REFINED.md`), alinhado à terminologia de Pacote de Trabalho (060-EAP-WBS). | Time de Arquitetura |
 | 7.3 | 17/08/2026 | Revisão de termos ágeis: vocabulário genérico FILA/CICLO/CICLOS/PACKAGE no roadmap e FLOWCHART — formas duplas `ciclo/sprint` onde o gerador de demanda pode vir de fluxos ágeis ou waterfall (Bloco D "Ciclos/Sprints", "Ciclo/Sprint-Alvo", Barreira D); pasta do discovery técnico renomeada `590-sprint-NNN` → `590-ciclo-NNN` (roadmap, FLOWCHART e prompts 580/590/595/600 + WATERFALL-EXECUTION). Nomes estruturais preservados (sprint-artefacts/, SPRINT-CARD, branch feature/sprint-NN). | Time de Arquitetura |
+| 7.4 | 17/08/2026 | Bloco E passa a apontar o **pacote de desenvolvimento** — orquestrador `PROMPT-EXECUTE-1000-PACKAGE-DEVELOPMENT-ORCHESTRATOR` (18 fases numeradas na ordem de execução, artefato PACKAGE-DEVELOPMENT-{FASE}.md por fase, gate HITL 1130, débito centralizado 1010); legado monolítico mantido como fallback (step 4); empacotamento 595 inalterado. | Time de Arquitetura |
 
 ---
 

@@ -1,6 +1,6 @@
 # FLOWCHART: ROADMAP DE DEFINIÇÕES TÉCNICAS DO PROJETO
 
-## Versão: 7.3 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção + Especialistas Pipeline/CVE/Stress) + Bloco F (Janelas de Entrega + Tooling de Ambiente) + Ciclos de Entrega CICLO-NN + 590-ciclo-NNN
+## Versão: 7.4 — Modos de Execução (agile/waterfall-discovery) + 6 Disciplinas Técnicas + Discovery Contínuo + Bloco E (Esteira de Construção + Pacote de Desenvolvimento — orquestrador 1000, 18 fases) + Bloco F (Janelas de Entrega + Tooling de Ambiente) + Ciclos de Entrega CICLO-NN + 590-ciclo-NNN
 
 > **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` v5.0
 >
@@ -61,7 +61,7 @@ flowchart TB
     BLOCO_D --> GD{{⛔ Barreira D}}
 
     subgraph BLOCO_E["Bloco E: Esteira de Construção (SOMENTE modo waterfall-discovery)"]
-        E1[E1: Contexto Base<br/>PRD/ARCH/SPECS/TASKS/TEST_PLAN] --> E2["E2: Loop por ciclo CICLO-NN<br/>SPRINT-CARD → EXECUTE → QA → PR<br/>(3a CVE/SCA · 3b CI-CD · 4a STRESS)"]
+        E1[E1: Contexto Base<br/>PRD/ARCH/SPECS/TASKS/TEST_PLAN] --> E2["E2: Loop por ciclo CICLO-NN<br/>SPRINT-CARD → ORQUESTRADOR 1000 (18 fases) → PR<br/>(1050 CVE · 1060 CI-CD · 1080 STRESS · 1130 QA HITL)"]
         E2 --> E3["595-TECHLEAD-RETURN-PACKAGE<br/>595-RETURN-PACKAGE-{CICLO-NN}.md<br/>GENERATE → GATE → FIX"]
     end
 
