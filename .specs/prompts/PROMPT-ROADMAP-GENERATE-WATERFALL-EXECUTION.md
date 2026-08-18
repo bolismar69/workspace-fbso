@@ -1,11 +1,11 @@
 # PROMPT: ROADMAP DE EXECUÇÃO E CONSTRUÇÃO — FASE 5 DO WATERFALL (WATERFALL-EXECUTION)
-## Versão: 2.3 — WATERFALL Orchestrator v3.3 (6 Fases, 39 Documentos) — Delegação da Construção ao TECHLEAD (PROJECT-TECHNICAL-DEFINITIONS v7.3, modo waterfall-discovery) + Planejamento do Ciclo de Entrega (Sub-fase 1.5) + Janelas de Entrega (096 + Bloco F) + Tooling de Ambiente (IMPLEMENTATION-TOOLING)
+## Versão: 2.4 — WATERFALL Orchestrator v3.3 (6 Fases, 39 Documentos) — Delegação da Construção ao TECHLEAD (PROJECT-TECHNICAL-DEFINITIONS v7.4, modo waterfall-discovery, Bloco E com orquestrador 1000) + Planejamento do Ciclo de Entrega (Sub-fase 1.5) + Janelas de Entrega (096 + Bloco F) + Tooling de Ambiente (IMPLEMENTATION-TOOLING)
 
 Atue como um Arquiteto de Soluções Organizacionais e Gestor de Execução, especializado em metodologia WATERFALL, engenharia de prompts e orquestração de esteiras de desenvolvimento.
 
 ## Propósito e Posição no Fluxo
 
-Este roadmap orquestra a **FASE 5 — EXECUÇÃO E CONSTRUÇÃO** do fluxo WATERFALL no **escopo do PM/PO**: gestão do backlog (092), gestão do time (093), entrega das demandas ao TECHLEAD e recepção da atualização do 092. A **construção é delegada ao TECHLEAD** via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v7.1, modo `waterfall-discovery`) — este roadmap cuida do **contrato PM/PO ↔ TECHLEAD** (handoff e recepção).
+Este roadmap orquestra a **FASE 5 — EXECUÇÃO E CONSTRUÇÃO** do fluxo WATERFALL no **escopo do PM/PO**: gestão do backlog (092), gestão do time (093), entrega das demandas ao TECHLEAD e recepção da atualização do 092. A **construção é delegada ao TECHLEAD** via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v7.4, modo `waterfall-discovery`) — este roadmap cuida do **contrato PM/PO ↔ TECHLEAD** (handoff e recepção).
 
 ```
 FASE 0 (Bootstrap) → FASE 1 (Negócio) → FASE 2 (Especificação) → FASE 3 (Engenharia) → FASE 4 (Baseline)
@@ -133,9 +133,9 @@ Rito formal por ciclo — o equivalente WATERFALL da reunião de Sprint Planning
 
 ## Sub-fase 2 — Janelas de Entrega (DEV → QA → UAT → DEPLOY)
 
-As janelas são **definidas no `096-DEFINICAO-JANELAS-ENTREGA`** (documento WATERFALL, trio em `project-documents-waterfall/`) e **orquestradas pelo TECHLEAD no Bloco F do PROJECT-TECHNICAL-DEFINITIONS v7.1** — o PM/PO não executa janelas.
+As janelas são **definidas no `096-DEFINICAO-JANELAS-ENTREGA`** (documento WATERFALL, trio em `project-documents-waterfall/`) e **orquestradas pelo TECHLEAD no Bloco F do PROJECT-TECHNICAL-DEFINITIONS v7.4** — o PM/PO não executa janelas.
 
-Loop por ciclo `CICLO-NN`: `DEV (Bloco E) → gate → QA (050 + QA-REVISOR + 095 GO/NO-GO) → UAT (DE-ACORDO/APROVAÇÃO por entrega — Key Users + PM/PO) → DEPLOY (090 + 087, GMUD) → pacote 595 → PM/PO aplica no 092 → próximo `CICLO-NN`.
+Loop por ciclo `CICLO-NN`: `DEV (Bloco E — orquestrador 1000 do pacote de desenvolvimento) → gate (1130, HITL) → QA (050 + QA-REVISOR + 095 GO/NO-GO) → UAT (DE-ACORDO/APROVAÇÃO por entrega — Key Users + PM/PO) → DEPLOY (090 + 087, GMUD) → pacote 595 → PM/PO aplica no 092 → próximo `CICLO-NN`.
 
 **Quem propõe/aceita por janela:**
 - DEV: TECHLEAD executa e propõe a conclusão; aceite = GATE do ciclo + revisor humano (086)
@@ -149,7 +149,7 @@ Loop por ciclo `CICLO-NN`: `DEV (Bloco E) → gate → QA (050 + QA-REVISOR + 09
 
 ## Sub-fase 3 — Contrato de Delegação ao TECHLEAD
 
-A construção é executada pelo TECHLEAD via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v7.1, modo `waterfall-discovery`, **Bloco E**). Este roadmap orquestra apenas o contrato: handoff, acompanhamento e recepção.
+A construção é executada pelo TECHLEAD via `PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md` (v7.4, modo `waterfall-discovery`, **Bloco E**). Este roadmap orquestra apenas o contrato: handoff, acompanhamento e recepção.
 
 ### 3.1 Handoff PM/PO → TECHLEAD
 
@@ -158,11 +158,11 @@ A construção é executada pelo TECHLEAD via `PROMPT-ROADMAP-GENERATE-PROJECT-T
    - Docs F1–F4 (a tabela de Inputs acima — pacote técnico mínimo: 010-FRD, 016, 020-SRS, 030-SAD, 035-HLD, 040-LLD, 041–044, 045-TEST-PLAN, 050-TEST-CASES, 060-EAP-WBS, 062, 065, 070, 086, 087, 088, 090)
    - Cruzamento por item: `CICLO-NN → FEAT-NN/UC-NN (010) → pacote EAP (060) → tarefas T-NNN`
 2. **Transicionar** os `BL-NN` do ciclo para `Em Execução (delegado ao TECHLEAD)`
-3. **Acionar** o TECHLEAD no modo `waterfall-discovery` do PROJECT-TECHNICAL-DEFINITIONS v7.1
+3. **Acionar** o TECHLEAD no modo `waterfall-discovery` do PROJECT-TECHNICAL-DEFINITIONS v7.4
 
 ### 3.2 Execução no TECHLEAD (resumo — sem duplicar steps)
 
-O TECHLEAD executa o pipeline completo no roadmap dele: Fases migradas/validadas (F1–F19 no modo waterfall), **Bloco E** (contexto base + loop por ciclo — janela DEV) e **Bloco F** (janelas QA/UAT/DEPLOY), encerrando cada ciclo com o **trio 595** (empacotamento do retorno). A tabela de steps vive SOMENTE no v7.1 (Bloco E).
+O TECHLEAD executa o pipeline completo no roadmap dele: Fases migradas/validadas (F1–F19 no modo waterfall), **Bloco E** (contexto base + **orquestrador 1000 do pacote de desenvolvimento** — 18 fases por ciclo, janela DEV) e **Bloco F** (janelas QA/UAT/DEPLOY), encerrando cada ciclo com o **trio 595** (empacotamento do retorno). A tabela de steps vive SOMENTE no v7.4 (Bloco E).
 
 ### 3.3 Recepção TECHLEAD → PM/PO
 
@@ -205,14 +205,14 @@ Se a EAP mudar via 085 (mudança de escopo aprovada), o orquestrador alerta o hu
 .specs/prompts/
 ├── PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md      ← roadmap master (6 fases)
 ├── PROMPT-ROADMAP-GENERATE-WATERFALL-EXECUTION.md              ← ESTE ROADMAP (FASE 5 — escopo PM/PO)
-├── PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md    ← roadmap TECHLEAD (v7.1 — modo waterfall-discovery, Bloco E)
+├── PROMPT-ROADMAP-GENERATE-PROJECT-TECHNICAL-DEFINITIONS.md    ← roadmap TECHLEAD (v7.4 — modo waterfall-discovery, Bloco E)
 ├── project-documents-waterfall/                                ← triads WATERFALL (092, 093 e demais docs)
 ├── project-technical-definitions/                              ← pipeline TECHLEAD + trio 595-TECHLEAD-RETURN-PACKAGE
 ├── sprint-artefacts/                                           ← reuso (Bloco E do TECHLEAD): contexto base + artefatos de ciclo
-├── sprint-tecnhnical-implementation/                           ← reuso (Bloco E do TECHLEAD): execução, QA-revisor, PR, débito técnico
+├── sprint-tecnhnical-implementation/                           ← reuso (Bloco E do TECHLEAD): pacote de desenvolvimento (orquestrador 1000 + 18 fases 1010-1180), QA-revisor, PR, débito técnico
 └── technical-solutions/                                        ← reuso: tarefas por solução técnica
 ```
 
 ---
 
-🤖 *Roadmap gerado pelo Waterfall Orchestrator v3.3. v2.3 (17/08/2026): + Sub-fase 1.5 — Planejamento do Ciclo de Entrega (CICLO-NN) com pauta de 9 pontos e o 595 do ciclo anterior como entrada obrigatória; renomeação global FILA-NN → CICLO-NN (18 arquivos). Histórico v2.2: + tooling de ambiente via IMPLEMENTATION-TOOLING v1.0; referências TECHLEAD atualizadas para v7.1. Histórico v2.1: Janelas de Entrega definidas no 096 e orquestradas pelo TECHLEAD (Bloco F) — aceite por entrega via DE-ACORDO; 105 permanece aceite final (FASE 6).*
+🤖 *Roadmap gerado pelo Waterfall Orchestrator v3.3. v2.4 (17/08/2026): execução do ciclo aponta o orquestrador 1000 do pacote de desenvolvimento (Bloco E, TECHLEAD v7.4; gate HITL 1130); referências v7.1→v7.4. Histórico v2.3: + Sub-fase 1.5 — Planejamento do Ciclo de Entrega (CICLO-NN) com pauta de 9 pontos e o 595 do ciclo anterior como entrada obrigatória; renomeação global FILA-NN → CICLO-NN (18 arquivos). Histórico v2.2: + tooling de ambiente via IMPLEMENTATION-TOOLING v1.0. Histórico v2.1: Janelas de Entrega definidas no 096 e orquestradas pelo TECHLEAD (Bloco F) — aceite por entrega via DE-ACORDO; 105 permanece aceite final (FASE 6).*

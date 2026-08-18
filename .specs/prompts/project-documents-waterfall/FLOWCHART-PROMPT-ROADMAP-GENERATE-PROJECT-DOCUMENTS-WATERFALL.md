@@ -1,6 +1,6 @@
 # FLOWCHART: ROADMAP DE DOCUMENTOS WATERFALL
 
-## Versão: 3.1 — Visualização Gráfica das 6 Fases, 39 Documentos, Dupla RTM, Gates Estruturais e Janelas de Entrega (096)
+## Versão: 3.2 — Visualização Gráfica das 6 Fases, 39 Documentos, Dupla RTM, Gates Estruturais, Janelas de Entrega (096) e Esteira de Construção com Orquestrador 1000
 
 > **Documento de referência:** `PROMPT-ROADMAP-GENERATE-PROJECT-DOCUMENTS-WATERFALL.md` (6 fases, 39 documentos)
 >
@@ -85,7 +85,7 @@ flowchart TB
         direction LR
         D092["092: BACKLOG-KANBAN<br/>092-BACKLOG-KANBAN-{PROJECT_ID_NAME}.md<br/>CRs Negócio/Técnico (085)<br/>Status · CICLO-NN"] --> D093["093: GESTAO-TIMES<br/>093-GESTAO-TIMES-{PROJECT_ID_NAME}.md<br/>Capacidade · IMP-NN"]
         D093 --> D092
-        D092 --> ESTEIRA_DEV["Esteira de Construção por ciclo CICLO-NN<br/>(sprint-artefacts + sprint-tecnhnical-implementation)"]
+        D092 --> ESTEIRA_DEV["Esteira de Construção por ciclo CICLO-NN<br/>(sprint-artefacts + orquestrador 1000 — 18 fases)"]
         JANELAS["2. Janelas de Entrega<br/>096-DEFINICAO-JANELAS-ENTREGA-{PROJECT_ID_NAME}.md<br/>+ Bloco F (TECHLEAD v7.0)"]
         ESTEIRA_DEV -.->|"roda por ciclo CICLO-NN"| JANELAS
         ESTEIRA_DEV --> D095F["095: RELATORIO-QUALIDADE<br/>095-RELATORIO-QUALIDADE-{PROJECT_ID_NAME}.md<br/>(evidências por ciclo)"]
@@ -447,7 +447,7 @@ flowchart TD
 
     subgraph SF3["Sub-fase 3: ESTEIRA DE CONSTRUÇÃO POR SOLUÇÃO TÉCNICA"]
         direction TB
-        CTX["Contexto base: PROMPT-ORCHESTRATOR-GENERATE-ALL-ARTEFACTS<br/>→ PRD.md/SPECS.md · ARCH.md/LLD.md · TEST_PLAN.md · TASKS.md"] --> CICLO["Loop por ciclo (CICLO-NN):<br/>SPRINT-CARD + SPRINT-TEST-SUITE → EXECUTE-SPRINT-TASKS<br/>→ QA-REVISOR-SECURITY (revisão humana obrigatória)<br/>→ SPRINT-REVIEW + IDENTIFIED-TECHNICAL-DEBT<br/>→ IMPLEMENTATION-REPORT → PR"]
+        CTX["Contexto base: PROMPT-ORCHESTRATOR-GENERATE-ALL-ARTEFACTS<br/>→ PRD.md/SPECS.md · ARCH.md/LLD.md · TEST_PLAN.md · TASKS.md"] --> CICLO["Loop por ciclo (CICLO-NN):<br/>SPRINT-CARD + SPRINT-TEST-SUITE → ORQUESTRADOR 1000<br/>(18 fases: pré-impl → código → testes → review → gate HITL 1130 → PR)<br/>(fallback legado: EXECUTE-SPRINT-TASKS)"]
         CICLO --> GOV["Saída de governança:<br/>095-RELATORIO-QUALIDADE (evidências)<br/>092 (status BL-NN/CICLO-NN) · 093 (impedimentos)<br/>desvios → 085"]
         GOV -.->|"próximo ciclo"| CICLO
     end
