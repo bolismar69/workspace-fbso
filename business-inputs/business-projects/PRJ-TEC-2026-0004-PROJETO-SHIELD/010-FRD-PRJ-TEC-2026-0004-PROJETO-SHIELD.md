@@ -6,7 +6,7 @@
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD |
 | **Data de Elaboração** | 08/08/2026 |
-| **Versão** | 1.3 — Revisão de correção (19/08/2026): B-UC-04 vinculado à B-JOURNEY-04 (003) |
+| **Versão** | 1.6 — Aprovação humana (19/08/2026, P1=SIM/P2–P4=NÃO — atalho OK) — documento congelado em COMPLIANCE |
 | **Metodologia** | WATERFALL |
 
 ---
@@ -41,7 +41,7 @@ O **FRD (Functional Requirements Document)** é o guia que detalha exatamente **
 
 ---
 
-### 1. Funcionalidades de Negócio (Business Features)
+### 1. Funcionalidades de Negócio (B-FEAT-NN)
 
 Cada funcionalidade deriva diretamente de um ou mais requisitos de negócio do BRD (`B-REQ-NN`).
 
@@ -111,7 +111,7 @@ Regras operacionais que detalham o comportamento esperado de cada funcionalidade
 
 ---
 
-### 3. Casos de Uso de Negócio (Business Use Cases)
+### 3. Casos de Uso de Negócio (B-UC-NN)
 
 Cada caso de uso descreve um cenário completo de interação entre o usuário e a plataforma, sob a ótica de valor para o negócio.
 
@@ -164,7 +164,7 @@ Cada caso de uso descreve um cenário completo de interação entre o usuário e
 
 **Fluxos de Exceções:**
 - **B-UC-02-EX-01 — Domínio já cadastrado:** O sistema alerta que o domínio já está em uso por outro cliente. Product Owner verifica e confirma
-- **B-UC-02-EX-02 — Prazo de 4 horas excedido:** Se o processo ultrapassar 4 horas, o Product Owner é notificado e deve comunicar o Gerente Comercial
+- **B-UC-02-EX-02 — Prazo de 4 horas excedido:** Se o processo ultrapassar 4 horas, o Product Owner é notificado e deve comunicar a Gerência Comercial
 
 ---
 
@@ -179,7 +179,7 @@ Cada caso de uso descreve um cenário completo de interação entre o usuário e
 | **Pós-condições (Falha)** | Bloqueio não confirmado em todos os níveis |
 
 **Fluxo Principal:**
-1. O Gerente Comercial notifica o Product Owner sobre a suspensão ou encerramento do contrato
+1. A Gerência Comercial notifica o Product Owner sobre a suspensão ou encerramento do contrato
 2. O Product Owner registra a solicitação de bloqueio
 3. O ambiente da escola é marcado como suspenso
 4. Em até 1 minuto, todos os acessos ativos daquela escola são bloqueados
@@ -211,7 +211,7 @@ Cada caso de uso descreve um cenário completo de interação entre o usuário e
 
 **Fluxos de Exceções:**
 - **B-UC-04-EX-01 — Falha detectada na validação:** A equipe aciona o plano de contingência e reverte a migração em até 30 minutos. O Comitê é notificado e uma nova janela é agendada
-- **B-UC-04-EX-02 — Impacto em usuários finais detectado:** A migração é imediatamente revertida. O Gerente Comercial é comunicado para gerenciar expectativas com os clientes
+- **B-UC-04-EX-02 — Impacto em usuários finais detectado:** A migração é imediatamente revertida. A Gerência Comercial é comunicada para gerenciar expectativas com os clientes
 
 ---
 
@@ -376,3 +376,5 @@ Cada funcionalidade do FRD rastreia a pelo menos um requisito de negócio do BRD
 | 1.2 | 19/08/2026 | Correção cirúrgica (review FASE 1): marcador residual de status removido do rodapé — o status oficial permanece no cabeçalho | Time de Negócios / skill waterfall-business-documents |
 | 1.3 | 19/08/2026 | Correção cirúrgica (review FASE 1, F1): B-UC-04 vinculado à B-JOURNEY-04 (003-PERSONAS-JORNADAS) — espelho da cadeia de origem do B-REQ-11 | Time de Negócios / skill waterfall-business-documents |
 | 1.4 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |
+| 1.5 | 19/08/2026 | Correção cirúrgica (update pós-selo, F3/F4/F6): 'Gerente Comercial' → 'Gerência Comercial' (B-UC-03, B-UC-02-EX-02 e B-UC-04-EX-02); títulos das Seções 1 e 3 sem glosa inglesa; campo Versão do cabeçalho alinhado | Time de Negócios / skill waterfall-business-documents |
+| 1.6 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — correções do update pós-selo aprovadas; documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |

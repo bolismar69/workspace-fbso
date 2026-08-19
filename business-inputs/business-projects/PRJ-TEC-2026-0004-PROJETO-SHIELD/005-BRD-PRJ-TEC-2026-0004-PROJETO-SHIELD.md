@@ -6,7 +6,7 @@
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE |
 | **Data de Elaboração** | 07/08/2026 |
-| **Versão** | 1.2 — Revisão de correção (19/08/2026): marcador residual de status removido do rodapé (status oficial no cabeçalho) |
+| **Versão** | 1.5 — Aprovação humana (19/08/2026, P1=SIM/P2–P4=NÃO — atalho OK) — documento congelado em COMPLIANCE |
 | **Metodologia** | WATERFALL |
 
 ---
@@ -36,8 +36,8 @@ O **BRD (Business Requirements Document)** é o documento formal que define os o
 - **B-REQ-** _(Business Constraint)_: Requisito de Negócios ambito Geral/Genérico (identificador padrão para qualquer `requisito de negócio` de ambito geral/macro).
 - **B-RULE-** _(Business Rules)_: Regra de Negócio (restrições ou limitações que o negócio impõe).
 - **B-LIMIT-** _(Business Constraint)_: Restrição de Negócio (limitações ou restrições de negócio, usado para rastrear, categorizar e referenciar limitações impostas pela empresa que afetam o escopo ou a entrega do projeto)
-- **B-FEAT-** _(Business Feature)_, Funcionalidade (funcionalidades e recursos de negócio, no nivel macro)
-- **B-UC** _(User Case)_, Caso de Uso (descreve um processo ou uma macro-atividade de negócio da organização, no nivel macro, sob a ótica de valor para o negócio ou para o cliente fim do produto).
+- **B-FEAT-** _(Funcionalidade de Negócio)_: funcionalidades e recursos de negócio, no nível macro
+- **B-UC** _(Caso de Uso de Negócio)_: descreve um processo ou uma macro-atividade de negócio da organização, no nível macro, sob a ótica de valor para o negócio ou para o cliente fim do produto.
 - **B-REQ-SECURITY-** _(Business Requirement — Security)_: Requisito de Segurança e Compliance no nível de negócio (obrigações regulatórias/LGPD), derivado dos B-REQ da Seção 1 (ver subseção 1.3).
 - **B-PERSONA-** _(Business Persona)_: Persona de negócio — origem 003-PERSONAS-JORNADAS
 - **B-JOURNEY-** _(Business Journey)_: Jornada de negócio — origem 003-PERSONAS-JORNADAS
@@ -142,7 +142,7 @@ Cada requisito abaixo descreve **o que o produto deve fazer** para entregar valo
 
 **Fluxo de Ativação de Novo Cliente:**
 
-1. O time comercial fecha contrato com uma nova escola
+1. A Gerência Comercial fecha contrato com uma nova escola
 2. O Product Owner solicita a ativação da escola na plataforma
 3. A equipe cria o ambiente isolado da nova escola a partir do modelo padrão (em até 4 horas)
 4. A equipe configura o domínio da escola na camada de proteção
@@ -152,7 +152,7 @@ Cada requisito abaixo descreve **o que o produto deve fazer** para entregar valo
 **Fluxo de Bloqueio de Cliente:**
 
 1. O contrato de uma escola é suspenso ou encerrado
-2. O time de Sucesso do Cliente notifica o Product Owner
+2. A Gerência Comercial notifica o Product Owner
 3. O ambiente da escola é marcado como suspenso
 4. Todos os acessos ativos daquela escola são imediatamente bloqueados
 5. Os dados permanecem armazenados (para eventual reativação ou extração), mas inacessíveis
@@ -189,7 +189,7 @@ Cada requisito abaixo descreve **o que o produto deve fazer** para entregar valo
 | B-REQ-08 — Ativação de novo cliente em até 4 horas | C6 — Tempo para Adicionar Novo Cliente | Meta de 4 horas para ativação |
 | B-REQ-09 — Adaptação automática ao crescimento de demanda | C4 — Capacidade de Atender Picos, C7 — Disponibilidade da Plataforma | Escalar automaticamente garante capacidade em picos e disponibilidade contínua |
 | B-REQ-10 — Experiência de login consistente em todos os produtos | C5 — Cobertura a Ataques Cibernéticos | Consistência entre produtos evita brechas de segurança por implementações divergentes |
-| B-REQ-11 — Transição sem interrupção para os usuários finais | C7 — Disponibilidade da Plataforma, Premissa 1 (Charter Seção 7) | A migração não pode causar indisponibilidade ou impacto operacional nos clientes |
+| B-REQ-11 — Transição sem interrupção para os usuários finais | C7 — Disponibilidade da Plataforma, Premissas 1 e 2 (Charter Seção 7) | A migração não pode causar indisponibilidade ou impacto operacional nos clientes |
 
 **Cobertura:** 11/11 requisitos de negócio vinculados a critérios de sucesso do Project Charter. 8/8 critérios de sucesso do Charter endereçados. Premissas do Charter cobertas. **Zero órfãos. 100% rastreável.**
 
@@ -203,3 +203,5 @@ Cada requisito abaixo descreve **o que o produto deve fazer** para entregar valo
 | 1.1 | 19/08/2026 | Revisão de atualização: Documentos Base incluem 003/004; subseções 1.1–1.3 (Dados, Integração, Segurança) adicionadas; linguagem de negócio | Time de Negócios / skill waterfall-business-documents |
 | 1.2 | 19/08/2026 | Correção cirúrgica (review FASE 1): marcador residual de status removido do rodapé — o status oficial permanece no cabeçalho | Time de Negócios / skill waterfall-business-documents |
 | 1.3 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |
+| 1.4 | 19/08/2026 | Correção cirúrgica (update pós-selo, F2/F3/F4/F6): B-REQ-11 passa a citar Premissas 1 e 2 (Seção 6); fluxos harmonizados ('Gerência Comercial' nos Fluxos de Ativação e Bloqueio); siglas B-FEAT/B-UC com glosa em português; campo Versão do cabeçalho alinhado | Time de Negócios / skill waterfall-business-documents |
+| 1.5 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — correções do update pós-selo aprovadas; documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |
