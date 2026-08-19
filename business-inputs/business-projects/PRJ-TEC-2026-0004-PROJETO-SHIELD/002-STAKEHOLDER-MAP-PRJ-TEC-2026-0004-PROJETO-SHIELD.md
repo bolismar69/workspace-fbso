@@ -6,7 +6,7 @@
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Documento Base** | 001-PROJECT-CHARTER-PRJ-TEC-2026-0004-PROJETO-SHIELD.md |
 | **Data de Elaboração** | 07/08/2026 |
-| **Versão** | 1.0 |
+| **Versão** | 1.2 — Revisão de correção (19/08/2026): referência de entregas do PO corrigida para (D1-D2), conforme Charter (001) |
 | **Metodologia** | WATERFALL |
 
 ---
@@ -28,12 +28,12 @@ O **Stakeholder Map (Mapa de Partes Interessadas)** é o registro canônico de t
 
 | # | Papel | Nome | Posição | Decide sobre | Contato |
 |---|-------|------|---------|--------------|---------|
-| **1.1** | Sponsor — Diretoria de Tecnologia | `<nome>` | C-Level / Diretoria | Liberação de recursos orçamentários, aprovação de diretrizes estratégicas, GO/NO-GO no GATE 1 (ROM ±50%), validação do alinhamento com portfólio de produtos | `<email>` |
-| **1.2** | Gerência Comercial | `<nome>` | Diretor Comercial | Principal impactado — aprovação de alterações de alto impacto, priorização de funcionalidades do ponto de vista do negócio, validação dos critérios de aceite de negócio (UAT) | `<email>` |
-| **1.2** | Gerência de Tecnologia | `<nome>` | Diretor de Tecnologia | Responsável pela entrega do projeto — aprovação e priorização de todas as frentes do projeto para evitar atrasos e garantir qualidade | `<email>` |
-| **1.2** | Gerência de Finanças | `<nome>` | Diretor Financeiro | Responsável pela liberação do budget para pagamento das despesas com fornecedores e custos de infraestrutura | `<email>` |
-| **1.3** | Product Owner (PO) | `<nome>` | Gerente Funcional de TI | Priorização de funcionalidades, definição de critérios de aceite, trade-offs de escopo vs. prazo, aceitação formal das entregas (D1-D7) | `<email>` |
-| **1.3** | PMO Corporativo | `<nome>` | Gerente de Projetos | Alinhamento do cronograma com portfólio, arbitragem de conflitos de priorização, escalação de impedimentos aos sponsors e stakeholders, status reporting | `<email>` |
+| **1.1** | Sponsor — Diretoria de Tecnologia | A definir | C-Level / Diretoria | Liberação de recursos orçamentários, aprovação de diretrizes estratégicas, GO/NO-GO no GATE 1 (ROM ±50%), validação do alinhamento com portfólio de produtos | A definir |
+| **1.2** | Gerência Comercial | A definir | Diretor Comercial | Principal impactado — aprovação de alterações de alto impacto, priorização de funcionalidades do ponto de vista do negócio, validação dos critérios de aceite de negócio (UAT) | A definir |
+| **1.2** | Gerência de Tecnologia | A definir | Diretor de Tecnologia | Responsável pela entrega do projeto — aprovação e priorização de todas as frentes do projeto para evitar atrasos e garantir qualidade | A definir |
+| **1.2** | Gerência de Finanças | A definir | Diretor Financeiro | Responsável pela liberação do budget para pagamento das despesas com fornecedores e custos de infraestrutura | A definir |
+| **1.3** | Product Owner (PO) | A definir | Gerente Funcional de TI | Priorização de funcionalidades, definição de critérios de aceite, trade-offs de escopo vs. prazo, aceitação formal das entregas (D1-D2) | A definir |
+| **1.3** | PMO Corporativo | A definir | Gerente de Projetos | Alinhamento do cronograma com portfólio, arbitragem de conflitos de priorização, escalação de impedimentos aos sponsors e stakeholders, status reporting | A definir |
 
 **Legenda da coluna #:**
 - **1.1** = Patrocinadores Executivos (Sponsors)
@@ -88,15 +88,24 @@ O **Stakeholder Map (Mapa de Partes Interessadas)** é o registro canônico de t
 | Plano de Gestão de Mudanças (085) | **A** | C | C | I | C | R |
 | Deployment Plan (090) | I | I | **A** | I | C | C |
 
-### 2.5 Fase 5 — Encerramento e Operação
+### 2.5 Fase 5 — Execução e Construção
 
 | Atividade | Sponsor (Dir. Tec.) | Ger. Comercial | Ger. Tecnologia | Ger. Finanças | PO | PMO |
 |-----------|---------------------|----------------|-----------------|---------------|-----|------|
-| Manuais de Usuário (095) | I | **A** | C | I | R | I |
+| Backlog-Kanban (092) | I | C | C | I | **A** | R |
+| Gestão de Times (093) | I | I | **A** | C | C | R |
+| Definição de Janelas de Entrega (096) | C | C | **A** | I | C | R |
+| Manuais de Usuário (097) | I | **A** | C | I | R | I |
 | Manuais Operacionais (100) | I | I | **A** | I | C | C |
+
+### 2.6 Fase 6 — Encerramento e Operação
+
+| Atividade | Sponsor (Dir. Tec.) | Ger. Comercial | Ger. Tecnologia | Ger. Finanças | PO | PMO |
+|-----------|---------------------|----------------|-----------------|---------------|-----|------|
 | Termo de Aceite (105) | **A** | C | C | I | R | C |
 | Lições Aprendidas (110) | C | C | C | I | R | **A** |
 | Termo de Encerramento (115) | **A** | C | C | C | R | R |
+
 
 ---
 
@@ -164,3 +173,6 @@ O **Stakeholder Map (Mapa de Partes Interessadas)** é o registro canônico de t
 | Versão | Data | Alteração | Autor |
 |--------|------|-----------|-------|
 | 1.0 | 07/08/2026 | Criação inicial a partir do Project Charter (001) — stakeholders de negócio | Time de Negócios / Orquestrador WATERFALL v2.0 |
+| 1.1 | 19/08/2026 | Atualização (skill waterfall-business-documents): nomes/contatos marcados como "A definir" (decisão HITL); Matriz RACI reestruturada para as 6 fases do roadmap v3.3 (F5 Execução + F6 Encerramento) | Time de Negócios / skill waterfall-business-documents |
+| 1.2 | 19/08/2026 | Correção cirúrgica (review FASE 1): referência de entregas do PO corrigida para (D1-D2), conforme entregas definidas no Charter (001, Seção 4) | Time de Negócios / skill waterfall-business-documents |
+| 1.3 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |

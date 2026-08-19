@@ -4,9 +4,9 @@
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
-| **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP |
+| **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE |
 | **Data de Elaboração** | 07/08/2026 |
-| **Versão** | 1.0 |
+| **Versão** | 1.2 — Revisão de correção (19/08/2026): marcador residual de status removido do rodapé (status oficial no cabeçalho) |
 | **Metodologia** | WATERFALL |
 
 ---
@@ -38,6 +38,11 @@ O **BRD (Business Requirements Document)** é o documento formal que define os o
 - **B-LIMIT-** _(Business Constraint)_: Restrição de Negócio (limitações ou restrições de negócio, usado para rastrear, categorizar e referenciar limitações impostas pela empresa que afetam o escopo ou a entrega do projeto)
 - **B-FEAT-** _(Business Feature)_, Funcionalidade (funcionalidades e recursos de negócio, no nivel macro)
 - **B-UC** _(User Case)_, Caso de Uso (descreve um processo ou uma macro-atividade de negócio da organização, no nivel macro, sob a ótica de valor para o negócio ou para o cliente fim do produto).
+- **B-REQ-SECURITY-** _(Business Requirement — Security)_: Requisito de Segurança e Compliance no nível de negócio (obrigações regulatórias/LGPD), derivado dos B-REQ da Seção 1 (ver subseção 1.3).
+- **B-PERSONA-** _(Business Persona)_: Persona de negócio — origem 003-PERSONAS-JORNADAS
+- **B-JOURNEY-** _(Business Journey)_: Jornada de negócio — origem 003-PERSONAS-JORNADAS
+- **B-PROCESS-** _(Business Process)_: Processo de negócio (AS-IS/TO-BE) — origem 004-MAPEAMENTO-AS-IS-TO-BE
+- **B-GAP-ANALYSIS-** _(Business Gap Analysis)_: Gap AS-IS → TO-BE — origem 004-MAPEAMENTO-AS-IS-TO-BE
 
 ---
 
@@ -58,6 +63,33 @@ Cada requisito abaixo descreve **o que o produto deve fazer** para entregar valo
 | B-REQ-09 | A plataforma deve ser capaz de se adaptar automaticamente ao aumento de demanda — se mais clientes entrarem ou o uso crescer, a plataforma escala sem intervenção manual | Reduz custo operacional e garante estabilidade em cenários de crescimento | **Baixa** | Gerência de Finanças |
 | B-REQ-10 | A plataforma deve garantir que a experiência de login seja a mesma para todos os produtos do ecossistema FBSO | Consistência de marca e experiência do usuário. O cliente não percebe que está mudando de produto | **Média** | Gerência Comercial |
 | B-REQ-11 | A transição dos sistemas atuais para a nova plataforma de acesso deve ocorrer sem interrupção perceptível para os usuários finais | Os sistemas das escolas já estão em operação. Uma parada ou falha durante a migração impacta diretamente a confiança dos clientes e a operação das instituições | **Alta** | Gerência Comercial, Gerência de Tecnologia |
+
+#### 1.1 Requisitos de Dados
+
+| Entidade | Descrição | Requisito Vinculado |
+|----------|-----------|---------------------|
+| Cliente (Escola) | Identificação única de cada escola, com ambiente isolado e domínio próprio | B-REQ-01, B-REQ-02, B-REQ-08 |
+| Domínio | Endereço de acesso da escola — identificador único do ambiente | B-REQ-01 |
+| Usuário | Perfil de acesso de professores, coordenadores e alunos por escola | B-REQ-03, B-REQ-04 |
+| Sessão | Sessão de acesso protegida, com renovação transparente | B-REQ-04, B-REQ-05 |
+| Registro de Auditoria | Registro de todas as tentativas de acesso (bem-sucedidas ou não), sem dados sensíveis | B-REQ-07 |
+
+#### 1.2 Requisitos de Interface e Integração
+
+| Interface | Descrição | Tipo | Requisito Vinculado |
+|-----------|-----------|------|---------------------|
+| Produtos do ecossistema FBSO | Todos os produtos da empresa consomem a plataforma única de acesso | Interface de negócio | B-REQ-04, B-REQ-10 |
+| Fluxo de login/logout | Padronização de entrada, saída e renovação de sessão para todos os produtos | Interface de negócio | B-REQ-04, B-REQ-05 |
+| Migração dos sistemas atuais | Cada sistema é integrado à nova plataforma individualmente, com plano de contingência | Interface de negócio | B-REQ-11 |
+
+#### 1.3 Requisitos de Segurança e Compliance
+
+| ID | Requisito | Regulação/Política | Requisito Vinculado |
+|----|-----------|-------------------|---------------------|
+| B-REQ-SECURITY-01 | Isolamento estrito entre ambientes de clientes | LGPD (segurança dos dados), política interna de segurança | B-REQ-02 |
+| B-REQ-SECURITY-02 | Credenciais jamais expostas fora do ambiente seguro de autenticação | Política interna de segurança | B-REQ-03 |
+| B-REQ-SECURITY-03 | Registro de auditoria de acessos sem dados sensíveis, com retenção mínima de 6 meses | LGPD (responsabilização e auditoria) | B-REQ-07 |
+| B-REQ-SECURITY-04 | Conformidade com LGPD para dados processados em nuvem sem datacenter no Brasil | LGPD — diretrizes do Jurídico | B-LIMIT-04 |
 
 ---
 
@@ -82,9 +114,9 @@ Cada requisito abaixo descreve **o que o produto deve fazer** para entregar valo
 | ID | Restrição | Descrição | Impacto no Negócio |
 |----|-----------|-----------|-------------------|
 | B-LIMIT-01 | Padrões Tecnológicos Corporativos | A empresa possui um catálogo de tecnologias aprovadas. Qualquer tecnologia fora desse catálogo precisa ser justificada e aprovada pelo comitê de arquitetura | Pode limitar escolhas técnicas, mas garante consistência e reduz custo de manutenção |
-| B-LIMIT-02 | Provedor de Nuvem Exclusivo | A plataforma opera exclusivamente na DigitalOcean. Serviços não disponíveis nesse provedor exigem soluções alternativas | Limita opções de infraestrutura, mas simplifica gestão e negociação |
+| B-LIMIT-02 | Provedor de Nuvem Exclusivo | A plataforma opera exclusivamente no provedor de nuvem corporativo aprovado. Serviços não disponíveis nesse provedor exigem soluções alternativas | Limita opções de infraestrutura, mas simplifica gestão e negociação |
 | B-LIMIT-03 | Proteção de Borda Obrigatória | Todo tráfego externo passa por camada de segurança antes de chegar à plataforma | Adiciona etapa de configuração por cliente, mas é essencial para segurança |
-| B-LIMIT-04 | LGPD — Dados em Nuvem | A DigitalOcean não possui datacenter no Brasil. Isso exige medidas adicionais de conformidade com o Jurídico | Risco regulatório que precisa ser endereçado |
+| B-LIMIT-04 | LGPD — Dados em Nuvem | O provedor de nuvem corporativo aprovado não possui datacenter no Brasil. Isso exige medidas adicionais de conformidade com o Jurídico | Risco regulatório que precisa ser endereçado |
 | B-LIMIT-05 | Prazo Máximo de 6 Semanas | O projeto precisa estar em produção em 6 semanas. Atrasos superiores a 20% exigem replanejamento formal | Pressão sobre escopo e qualidade |
 | B-LIMIT-06 | Isolamento Lógico de Clientes | Cada cliente opera em ambiente logicamente isolado — como se fosse uma instalação dedicada — mas compartilha a mesma infraestrutura física | Modelo otimiza custo sem comprometer segurança |
 
@@ -137,7 +169,7 @@ Cada requisito abaixo descreve **o que o produto deve fazer** para entregar valo
 | Gerência Comercial | Produto que viabilize o crescimento do portfólio sem aumentar risco; onboarding rápido de novas escolas | Apresentação do produto antes do lançamento; demonstração de isolamento entre clientes | **Alta** — valida se o produto atende à estratégia da empresa |
 | Gerência de Tecnologia | Arquitetura robusta e segura; conformidade com padrões corporativos | Equipe técnica ter clareza do escopo antes de iniciar codificação | **Alta** — responsável pela entrega |
 | Gerência de Finanças | Budget controlado; sem surpresas de custo | Visibilidade de custos recorrentes antes do Go-Live | **Média** — libera pagamentos |
-| Product Owner | Backlog priorizado; critérios de aceite claros; onboarding fluido de novos clientes | Plataforma funcional, documentação completa, processo de ativação definido | **Alta** — define o que entra e em qual ordem |
+| Product Owner | Prioridades definidas; critérios de aceite claros; onboarding fluido de novos clientes | Plataforma funcional, documentação completa, processo de ativação definido | **Alta** — define o que entra e em qual ordem |
 | PMO Corporativo | Cronograma realista; marcos mensuráveis | Alinhamento com portfólio corporativo; sem conflitos de recurso | **Média** — coordena com portfólio |
 | Clientes (Escolas/Universidades) | Login rápido, seguro e sem complicações; garantia de isolamento de dados | Experiência de acesso fluida; zero vazamentos | **Alta** — razão de existir do produto |
 
@@ -163,4 +195,11 @@ Cada requisito abaixo descreve **o que o produto deve fazer** para entregar valo
 
 ---
 
-**[STATUS: SUCESSO]** — Documento em linguagem de negócio. Detalhes técnicos reservados para 010-FRD, 020-SRS, 030-SAD, 035-HLD e 040-LLD (Fases 2 e 3).
+## 7. Registro de Alterações
+
+| Versão | Data | Alteração | Autor |
+|--------|------|-----------|-------|
+| 1.0 | 07/08/2026 | Criação inicial a partir do Project Charter (001) | Time de Negócios / Orquestrador WATERFALL |
+| 1.1 | 19/08/2026 | Revisão de atualização: Documentos Base incluem 003/004; subseções 1.1–1.3 (Dados, Integração, Segurança) adicionadas; linguagem de negócio | Time de Negócios / skill waterfall-business-documents |
+| 1.2 | 19/08/2026 | Correção cirúrgica (review FASE 1): marcador residual de status removido do rodapé — o status oficial permanece no cabeçalho | Time de Negócios / skill waterfall-business-documents |
+| 1.3 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |
