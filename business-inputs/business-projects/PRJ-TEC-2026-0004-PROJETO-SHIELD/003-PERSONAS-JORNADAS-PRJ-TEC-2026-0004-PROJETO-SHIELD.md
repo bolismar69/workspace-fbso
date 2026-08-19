@@ -1,4 +1,4 @@
-# Personas e Jornadas de Negócio: PROJETO SHIELD
+# Personas e Jornadas de Negócio: PROJETO SHIELD — Plataforma de Identidade e Segurança
 ## [STATUS: COMPLIANCE]
 
 | Campo | Detalhe |
@@ -6,7 +6,7 @@
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP |
 | **Data de Elaboração** | 19/08/2026 |
-| **Versão** | 1.2 — Revisão de correção (19/08/2026): B-PERSONA-04 e B-JOURNEY-04 (migração de sistemas) adicionadas — cadeia de origem do B-REQ-11 completa |
+| **Versão** | 1.5 — Aprovação humana (19/08/2026, P1=SIM/P2–P4=NÃO — atalho OK) — documento congelado em COMPLIANCE |
 | **Metodologia** | WATERFALL |
 
 ---
@@ -86,7 +86,7 @@ Cada jornada descreve o caminho de uma persona por um fluxo de negócio relevant
 
 | Etapa | Ação do Usuário | Ponto de Contato | Dor | Oportunidade |
 |-------|-----------------|------------------|-----|--------------|
-| 1. Contratação | Escola fecha contrato com a FBSO | Time Comercial | Nenhuma visibilidade do prazo de ativação | Processo padronizado com SLA de 4 horas → B-REQ-08 |
+| 1. Contratação | Escola fecha contrato com a FBSO | Gerência Comercial | Nenhuma visibilidade do prazo de ativação | Processo padronizado com SLA de 4 horas → B-REQ-08 |
 | 2. Configuração | Equipe FBSO cria o ambiente da escola | Ambiente isolado da escola | Dias de configuração manual | Ativação a partir de modelo padrão → B-RULE-07 |
 | 3. Primeiro acesso | Diretora testa o acesso | Tela de login da escola | Configuração errada descoberta só no primeiro uso | Validação completa do fluxo antes da liberação → B-UC-02 |
 
@@ -103,7 +103,7 @@ Cada jornada descreve o caminho de uma persona por um fluxo de negócio relevant
 
 | Etapa | Ação do Usuário | Ponto de Contato | Dor | Oportunidade |
 |-------|-----------------|------------------|-----|--------------|
-| 1. Encerramento | Contrato é suspenso ou encerrado | Time Comercial → PO | Bloqueio dependia de processo manual e demorado | Bloqueio imediato de todos os acessos → B-RULE-08/B-RULE-13 |
+| 1. Encerramento | Contrato é suspenso ou encerrado | Gerência Comercial → PO | Bloqueio dependia de processo manual e demorado | Bloqueio imediato de todos os acessos → B-RULE-08/B-RULE-13 |
 | 2. Verificação | PO confirma o bloqueio | Painel de gestão | Sem evidência de que todos os acessos caíram | Registro de auditoria de todas as tentativas → B-REQ-07 |
 
 ### B-JOURNEY-04: Migração dos Sistemas Atuais para a Plataforma Única de Acesso
@@ -113,7 +113,7 @@ Cada jornada descreve o caminho de uma persona por um fluxo de negócio relevant
 | **ID** | B-JOURNEY-04 |
 | **Persona** | B-PERSONA-04 |
 | **Objetivo da Jornada** | Migrar cada sistema atual para a nova plataforma de acesso sem interrupção perceptível para os usuários finais, com equivalência de acessos e permissões |
-| **Objetivo de Negócio Relacionado (001)** | C7 (Disponibilidade da Plataforma), Premissa 2 (Charter Seção 7) |
+| **Objetivo de Negócio Relacionado (001)** | C7 (Disponibilidade da Plataforma), Premissas 1 e 2 (Charter Seção 7) |
 
 **Etapas:**
 
@@ -135,8 +135,8 @@ Cada jornada descreve o caminho de uma persona por um fluxo de negócio relevant
 | B-PERSONA-01 | B-JOURNEY-01 | Página de entrada, tela de login, sistemas da escola | 1, 2, 3, 4 |
 | B-PERSONA-02 | B-JOURNEY-01 | Página de entrada, tela de login, sistemas da escola | 1, 2, 3, 4 |
 | B-PERSONA-03 | B-JOURNEY-01 | Página de entrada, tela de login, sistemas da escola | 1, 2, 3, 4 |
-| B-PERSONA-01 | B-JOURNEY-02 | Time Comercial, ambiente isolado, tela de login | 1, 2, 3 |
-| B-PERSONA-01 | B-JOURNEY-03 | Time Comercial, painel de gestão | 1, 2 |
+| B-PERSONA-01 | B-JOURNEY-02 | Gerência Comercial, ambiente isolado, tela de login | 1, 2, 3 |
+| B-PERSONA-01 | B-JOURNEY-03 | Gerência Comercial, painel de gestão | 1, 2 |
 | B-PERSONA-04 | B-JOURNEY-04 | Comitê de Projeto, janela de migração, sistema migrado, plano de contingência | 1, 2, 3, 4 |
 
 ---
@@ -152,7 +152,7 @@ Cada jornada descreve o caminho de uma persona por um fluxo de negócio relevant
 | B-JOURNEY-01 | C1–C4 (001 Seção 6) | 004, 005, 010 | ✅ Vinculado |
 | B-JOURNEY-02 | C6 (001 Seção 6) | 004, 005, 010 | ✅ Vinculado |
 | B-JOURNEY-03 | C1, C8 (001 Seção 6) | 004, 005, 010 | ✅ Vinculado |
-| B-JOURNEY-04 | C7, Premissa 2 (001 Seções 6/7) | 004, 005, 010 | ✅ Vinculado |
+| B-JOURNEY-04 | C7, Premissas 1 e 2 (001 Seções 6/7) | 004, 005, 010 | ✅ Vinculado |
 
 > **REGRA DE OURO:** Nenhuma persona ou jornada pode existir sem lastro no Charter (001), no Stakeholder Map (002) ou no registro de partes interessadas do BRD (005-BRD Seção 5). A RTM-FASE-1 (015) validará esta rastreabilidade formalmente.
 
@@ -166,3 +166,5 @@ Cada jornada descreve o caminho de uma persona por um fluxo de negócio relevant
 | 1.1 | 19/08/2026 | Correção cirúrgica (review FASE 1): stakeholder de origem das personas corrigido — "Clientes (Escolas/Universidades)" consta no registro de partes interessadas do 005-BRD (Seção 5), não no 002 | Time de Negócios / skill waterfall-business-documents |
 | 1.2 | 19/08/2026 | Correção cirúrgica (review FASE 1, F1): B-PERSONA-04 (Especialista de Integração de Sistemas) e B-JOURNEY-04 (Migração dos Sistemas Atuais) adicionadas — cadeia de origem do B-REQ-11 completa | Time de Negócios / skill waterfall-business-documents |
 | 1.3 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |
+| 1.4 | 19/08/2026 | Correção cirúrgica (update pós-selo, F2/F3/F4/F6): B-REQ-11 passa a citar Premissas 1 e 2 (J-04 e Seção 4); pontos de contato e matriz harmonizados ('Gerência Comercial'); título com subtítulo do produto; campo Versão do cabeçalho alinhado | Time de Negócios / skill waterfall-business-documents |
+| 1.5 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — correções do update pós-selo aprovadas; documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |

@@ -6,7 +6,7 @@
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Documento Base** | 001-PROJECT-CHARTER-PRJ-TEC-2026-0004-PROJETO-SHIELD.md |
 | **Data de Elaboração** | 07/08/2026 |
-| **Versão** | 1.2 — Revisão de correção (19/08/2026): referência de entregas do PO corrigida para (D1-D2), conforme Charter (001) |
+| **Versão** | 1.5 — Aprovação humana (19/08/2026, P1=SIM/P2–P4=NÃO — atalho OK) — documento congelado em COMPLIANCE |
 | **Metodologia** | WATERFALL |
 
 ---
@@ -176,3 +176,5 @@ O **Stakeholder Map (Mapa de Partes Interessadas)** é o registro canônico de t
 | 1.1 | 19/08/2026 | Atualização (skill waterfall-business-documents): nomes/contatos marcados como "A definir" (decisão HITL); Matriz RACI reestruturada para as 6 fases do roadmap v3.3 (F5 Execução + F6 Encerramento) | Time de Negócios / skill waterfall-business-documents |
 | 1.2 | 19/08/2026 | Correção cirúrgica (review FASE 1): referência de entregas do PO corrigida para (D1-D2), conforme entregas definidas no Charter (001, Seção 4) | Time de Negócios / skill waterfall-business-documents |
 | 1.3 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |
+| 1.4 | 19/08/2026 | Correção cirúrgica (update pós-selo, F3): campo Versão do cabeçalho alinhado à versão mais recente do Registro de Alterações | Time de Negócios / skill waterfall-business-documents |
+| 1.5 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — correções do update pós-selo aprovadas; documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |

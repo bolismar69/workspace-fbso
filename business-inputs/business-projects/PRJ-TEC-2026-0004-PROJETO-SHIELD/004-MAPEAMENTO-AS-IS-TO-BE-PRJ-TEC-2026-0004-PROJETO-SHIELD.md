@@ -1,4 +1,4 @@
-# Mapeamento de Processos AS-IS / TO-BE: PROJETO SHIELD
+# Mapeamento de Processos AS-IS / TO-BE: PROJETO SHIELD — Plataforma de Identidade e Segurança
 ## [STATUS: COMPLIANCE]
 
 | Campo | Detalhe |
@@ -6,7 +6,7 @@
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS |
 | **Data de Elaboração** | 19/08/2026 |
-| **Versão** | 1.2 — Revisão de correção (19/08/2026): B-PROCESS-04 (migração de sistemas) e B-GAP-ANALYSIS-07 adicionados — cadeia de origem do B-REQ-11 completa |
+| **Versão** | 1.5 — Aprovação humana (19/08/2026, P1=SIM/P2–P4=NÃO — atalho OK) — documento congelado em COMPLIANCE |
 | **Metodologia** | WATERFALL |
 
 ---
@@ -42,8 +42,8 @@ O **documento de Mapeamento de Processos** registra COMO o negócio funciona hoj
 | ID | Processo | Descrição | Atores Envolvidos | Jornadas Relacionadas (003) | Pontos de Dor |
 |----|----------|-----------|-------------------|------------------------------|---------------|
 | B-PROCESS-01 | Acesso e Autenticação de Usuários | Cada produto do ecossistema gerencia seus próprios usuários e senhas | B-PERSONA-01, B-PERSONA-02, B-PERSONA-03 | B-JOURNEY-01 | Login repetido por produto; credenciais fragmentadas; risco de vazamento entre clientes |
-| B-PROCESS-02 | Ativação de Novo Cliente (Onboarding) | Configuração manual de acessos a cada nova escola contratada | B-PERSONA-01, Product Owner (002), Time Comercial | B-JOURNEY-02 | Processo manual que leva dias; sem SLA; configuração errada descoberta no primeiro uso |
-| B-PROCESS-03 | Suspensão e Bloqueio de Cliente | Bloqueio de acessos quando um contrato é encerrado | B-PERSONA-01, Product Owner (002), Time Comercial | B-JOURNEY-03 | Bloqueio manual e demorado; sem evidência imediata de efetivação |
+| B-PROCESS-02 | Ativação de Novo Cliente (Onboarding) | Configuração manual de acessos a cada nova escola contratada | B-PERSONA-01, Product Owner (002), Gerência Comercial (002) | B-JOURNEY-02 | Processo manual que leva dias; sem SLA; configuração errada descoberta no primeiro uso |
+| B-PROCESS-03 | Suspensão e Bloqueio de Cliente | Bloqueio de acessos quando um contrato é encerrado | B-PERSONA-01, Product Owner (002), Gerência Comercial (002) | B-JOURNEY-03 | Bloqueio manual e demorado; sem evidência imediata de efetivação |
 | B-PROCESS-04 | Migração de Sistemas Existentes | Hoje cada produto mantém autenticação própria — não há processo padronizado de integração a uma plataforma única | B-PERSONA-04, Product Owner (002), Gerência de Tecnologia (002) | B-JOURNEY-04 | Migração sem padrão; risco de interrupção para usuários ativos; divergência de acessos/permissões |
 
 ### Fluxo AS-IS — B-PROCESS-01
@@ -209,3 +209,5 @@ flowchart TD
 | 1.1 | 19/08/2026 | Correção cirúrgica (review FASE 1): B-GAP-ANALYSIS-04 estendido — gap de desempenho sob demanda agora deriva B-REQ-05, B-REQ-06 e B-REQ-09 (alinhamento com a RTM-FASE-1, seção 2.3) | Time de Negócios / skill waterfall-business-documents |
 | 1.2 | 19/08/2026 | Correção cirúrgica (review FASE 1, F1): B-PROCESS-04 (Migração de Sistemas Existentes, AS-IS/TO-BE) e B-GAP-ANALYSIS-07 adicionados — cadeia de origem do B-REQ-11 completa | Time de Negócios / skill waterfall-business-documents |
 | 1.3 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |
+| 1.4 | 19/08/2026 | Correção cirúrgica (update pós-selo, F3/F4/F6): atores dos B-PROCESS-02/03 harmonizados ('Gerência Comercial (002)'); título com subtítulo do produto; campo Versão do cabeçalho alinhado | Time de Negócios / skill waterfall-business-documents |
+| 1.5 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — correções do update pós-selo aprovadas; documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |

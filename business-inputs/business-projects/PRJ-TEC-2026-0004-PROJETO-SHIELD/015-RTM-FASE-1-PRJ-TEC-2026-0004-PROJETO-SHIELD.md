@@ -1,4 +1,4 @@
-# RTM Fase 1 — Matriz de Rastreabilidade de Negócio: PROJETO SHIELD
+# RTM Fase 1 — Matriz de Rastreabilidade de Negócio: PROJETO SHIELD — Plataforma de Identidade e Segurança
 ## [STATUS: COMPLIANCE]
 
 | Campo | Detalhe |
@@ -6,7 +6,7 @@
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD |
 | **Data de Elaboração** | 08/08/2026 |
-| **Versão** | 1.4 — Revisão de correção (19/08/2026): B-REQ-11 com contexto completo de origem (B-JOURNEY-04 / B-PERSONA-04 / B-PROCESS-04 / B-GAP-ANALYSIS-07) |
+| **Versão** | 1.7 — Aprovação humana (19/08/2026, P1=SIM/P2–P4=NÃO — atalho OK) — documento congelado em COMPLIANCE |
 | **Metodologia** | WATERFALL |
 
 ---
@@ -50,7 +50,7 @@ A **RTM-FASE-1** é o instrumento de governança que sela a **Linha de Base de E
 | C7 — Disponibilidade da Plataforma | B-REQ-09 | B-FEAT-09 — Adaptação ao Crescimento | B-RULE-25 | B-UC-06 | ✅ |
 | C7 — Disponibilidade da Plataforma | B-REQ-11 | B-FEAT-10 — Transição Transparente | B-RULE-23, B-RULE-24 | B-UC-04 | ✅ |
 | C8 — Rastreabilidade de Acessos | B-REQ-07 | B-FEAT-07 — Registro de Auditoria | B-RULE-19, B-RULE-20 | B-UC-07 | ✅ |
-| Premissa 1 (Charter Seção 7) | B-REQ-11 | B-FEAT-10 — Transição Transparente | B-RULE-23, B-RULE-24 | B-UC-04 | ✅ |
+| Premissas 1 e 2 (Charter Seção 7) | B-REQ-11 | B-FEAT-10 — Transição Transparente | B-RULE-23, B-RULE-24 | B-UC-04 | ✅ |
 
 ---
 
@@ -114,7 +114,7 @@ Jornadas, personas, processos e gaps que fundamentam cada requisito de negócio.
 
 **Cobertura reversa (zero-órfãos de contexto):** todo B-JOURNEY (4/4), B-PERSONA (4/4), B-PROCESS (4/4) e B-GAP-ANALYSIS (7/7) dos 003/004 aparece em pelo menos uma linha desta seção. ✅
 
-> **NOTA:** O reuso de um mesmo B-GAP-ANALYSIS/B-PROCESS/B-JOURNEY por múltiplos B-REQs é legítimo (um gap pode derivar vários requisitos) e não penaliza a Cobertura. O `B-REQ-11` possui contexto completo de origem via B-JOURNEY-04/B-PERSONA-04/B-PROCESS-04/B-GAP-ANALYSIS-07, espelhando o B-UC-04 do 010-FRD. Os `B-REQ-SECURITY-*` são tratados na subseção 2.4.
+> **NOTA:** O reuso de um mesmo B-GAP-ANALYSIS/B-PROCESS/B-JOURNEY por múltiplos B-REQs é legítimo (um gap pode derivar vários requisitos) e não penaliza a Cobertura. O `B-REQ-11` possui contexto completo de origem via B-JOURNEY-04/B-PERSONA-04/B-PROCESS-04/B-GAP-ANALYSIS-07, espelhando o B-UC-04 do 010-FRD. Os vínculos `B-REQ-02`, `B-REQ-09` e `B-REQ-10` → `B-JOURNEY-01` são indiretos e legítimos: a jornada relaciona os critérios C1/C4 (001, Seção 6) e a Seção 6 do 005-BRD mapeia esses B-REQs aos mesmos critérios — encadeamento registrado nesta NOTA. Os `B-REQ-SECURITY-*` são tratados na subseção 2.4.
 
 ---
 
@@ -208,3 +208,5 @@ Total de regras: B-RULE-01 a B-RULE-25 (25 regras).
 | 1.3 | 19/08/2026 | Correção cirúrgica (review FASE 1): linha 2.3 do B-REQ-11 alinhada à regra determinística (❌ justificado — origem nas Premissas 1 e 2 do Charter; 004 B-GAP-ANALYSIS-04 estendido para derivar B-REQ-09); subseção 2.4 (B-REQ-SECURITY × Referência) adicionada; Sumário Executivo com B-REQ-SECURITY | Time de Negócios / skill waterfall-business-documents |
 | 1.4 | 19/08/2026 | Correção cirúrgica (review FASE 1, F1 — decisão humana): B-REQ-11 passou a ter contexto completo de origem — B-JOURNEY-04/B-PERSONA-04 (003) e B-PROCESS-04/B-GAP-ANALYSIS-07 (004); linha 2.3 ✅; cobertura reversa 4/4, 4/4, 4/4 e 7/7; Sumário 11/11 | Time de Negócios / skill waterfall-business-documents |
 | 1.5 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |
+| 1.6 | 19/08/2026 | Correção cirúrgica (update pós-selo, F2/F3/F5/F6): linha do B-REQ-11 com Premissas 1 e 2 (Seção 1); NOTA 2.3 documenta vínculos indiretos (B-REQ-02/09/10 → B-JOURNEY-01 via C1/C4); título com subtítulo do produto; campo Versão do cabeçalho alinhado | Time de Negócios / skill waterfall-business-documents |
+| 1.7 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — correções do update pós-selo aprovadas; documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |

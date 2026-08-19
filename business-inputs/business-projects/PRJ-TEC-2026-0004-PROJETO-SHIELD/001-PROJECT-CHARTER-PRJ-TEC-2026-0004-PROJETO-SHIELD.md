@@ -6,7 +6,7 @@
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Produto** | Plataforma Shield — Identidade e Acesso Centralizada |
 | **Data de Elaboração** | 07/08/2026 |
-| **Versão** | 1.1 — Revisão de atualização (19/08/2026): linguagem de negócio na Seção 2, subseção 11.1 estruturada, aprovações com áreas responsáveis |
+| **Versão** | 1.3 — Aprovação humana (19/08/2026, P1=SIM/P2–P4=NÃO — atalho OK) — correções da versão 1.2 aprovadas; documento congelado em COMPLIANCE |
 | **Patrocinador** | Diretoria de Tecnologia — FBSO.ORG |
 | **Metodologia** | WATERFALL |
 | **Status** | COMPLIANCE |
@@ -148,7 +148,7 @@ O que ele entrega para o negócio:
 | M2: Finalização dos Documentos Funcionais | Primeira quinzena | Documentos (001-PROJECT-CHARTER, BRD, FRD, 015-RTM-FASE-1) entregues |
 | M3: Estimativa High-Level e Decisão Go/No-Go | Segunda quinzena | Estimativa High Level (ROM ±50%) entregue, e, decisão de Go para o projeto, e aprovação de Reserva de Budget |
 | M4: Estimativa detalhada, Orçamento e Cronograma | Terceira quinzena | Entrega da estimativa detalhada, e, efetivação de aprovação Real do Budget |
-| M5: Desenvolvimento | Conforme Cronograma  | Entrega da estimativa detalhada, e, efetivação de aprovação Real do Budget |
+| M5: Desenvolvimento | Conforme Cronograma  | Desenvolvimento concluído — sistemas migrados para a Plataforma Única de Acesso e homologação interna concluída |
 | M6: Projeto Entregue e Homologação Concluída | Conforme Cronograma  | Projeto Concluido e Homologado por todas partes interessadas |
 | M7: Go-Live | Conforme Cronograma | Plataforma em produção, termo de aceite assinado |
 
