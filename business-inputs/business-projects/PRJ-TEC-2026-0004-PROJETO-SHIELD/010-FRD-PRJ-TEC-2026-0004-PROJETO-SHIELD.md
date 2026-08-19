@@ -4,9 +4,9 @@
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
-| **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 005-BRD |
+| **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD |
 | **Data de Elaboração** | 08/08/2026 |
-| **Versão** | 1.0 |
+| **Versão** | 1.3 — Revisão de correção (19/08/2026): B-UC-04 vinculado à B-JOURNEY-04 (003) |
 | **Metodologia** | WATERFALL |
 
 ---
@@ -34,6 +34,10 @@ O **FRD (Functional Requirements Document)** é o guia que detalha exatamente **
 | `B-UC-**-FA-` | Fluxo Alternativo em caso de uso | Este documento (010-FRD) |
 | `B-UC-**-EX-` | Exceções em Caso de Uso de Negócio | Este documento (010-FRD) |
 | `B-PREMISE-` | Premissas Funcionais | Este documento (010-FRD) |
+| `B-PERSONA-` | Persona de Negócio | 003-PERSONAS-JORNADAS |
+| `B-JOURNEY-` | Jornada de Negócio | 003-PERSONAS-JORNADAS |
+| `B-PROCESS-` | Processo de Negócio (AS-IS/TO-BE) | 004-MAPEAMENTO-AS-IS-TO-BE |
+| `B-GAP-ANALYSIS-` | Gap AS-IS → TO-BE | 004-MAPEAMENTO-AS-IS-TO-BE |
 
 ---
 
@@ -54,30 +58,56 @@ Cada funcionalidade deriva diretamente de um ou mais requisitos de negócio do B
 | B-FEAT-09 | Adaptação Automática ao Crescimento | A plataforma ajusta automaticamente sua capacidade conforme novos clientes entram ou o volume de acessos aumenta, sem intervenção manual | B-REQ-09 | **Baixa** |
 | B-FEAT-10 | Transição Transparente de Sistemas | Os sistemas atuais são migrados para a nova plataforma um a um, com plano de contingência, sem que o usuário final perceba interrupção no serviço | B-REQ-11 | **Alta** |
 
+#### 1.1 Matriz de Funcionalidades Detalhadas
+
+| FEAT | Módulo/Tela | Campos | Validações | Obrigatoriedade |
+|------|------------|--------|------------|-----------------|
+| B-FEAT-01 | Página de entrada da escola | Endereço acessado (domínio) | Domínio configurado → direciona ao ambiente; não configurado → mensagem padronizada | Obrigatório |
+| B-FEAT-02 | Ambiente do cliente | Ambiente da sessão | Acesso restrito ao próprio ambiente; tentativa externa → "nada encontrado" | Obrigatório |
+| B-FEAT-03 | Tela de login | Credenciais do usuário | Credenciais nunca visíveis no navegador; falha → "Credenciais inválidas" sem revelar qual campo errou | Obrigatório |
+| B-FEAT-04 | Portal de acesso (entrar/sair/perfil/trocar senha) | Sessão, perfil | Logout encerra a sessão em todos os níveis; sessão renovada em segundo plano | Obrigatório |
+| B-FEAT-05 | Validação de identidade | Identidade do usuário | 95% das validações abaixo de 15ms; acima de 20ms alerta a Gerência de Tecnologia | Obrigatório |
+| B-FEAT-06 | Pico de acesso | Carga de acessos simultâneos | Degradação de serviços não críticos antes de afetar o login | Obrigatório |
+| B-FEAT-07 | Registro de auditoria | Tentativas de acesso (data, hora, origem) | Sem senha, CPF ou e-mail completo; retenção mínima de 6 meses | Obrigatório |
+| B-FEAT-08 | Ativação de nova escola | Nome da escola, domínio, responsável | Ambiente criado a partir do modelo padrão; prazo máximo de 4 horas | Obrigatório |
+| B-FEAT-09 | Capacidade da plataforma | Volume de clientes e acessos | Confirmação de capacidade antes da contratação de novo lote de escolas | Obrigatório |
+| B-FEAT-10 | Migração de sistema | Sistema alvo, plano de contingência | Migração individual por sistema; rollback em até 30 minutos | Obrigatório |
+
+#### 1.2 Matriz de Telas/Módulos
+
+| Módulo | Funcionalidades | Descrição |
+|--------|----------------|-----------|
+| Portal de Acesso | B-FEAT-01, B-FEAT-03, B-FEAT-04, B-FEAT-05 | Porta de entrada única para todos os produtos do ecossistema |
+| Ambiente do Cliente | B-FEAT-02 | Isolamento estrito entre escolas |
+| Auditoria de Acessos | B-FEAT-07 | Registro e rastreabilidade de todas as tentativas de acesso |
+| Ativação de Cliente | B-FEAT-08 | Onboarding de novas escolas em até 4 horas |
+| Capacidade e Picos | B-FEAT-06, B-FEAT-09 | Suporte a picos de acesso e crescimento da base |
+| Migração de Sistemas | B-FEAT-10 | Transição transparente dos sistemas atuais |
+
 ---
 
 ### 2. Regras de Negócio por Funcionalidade
 
 Regras operacionais que detalham o comportamento esperado de cada funcionalidade. Estas complementam as `B-RULE-` do BRD, que definem as regras macro do negócio.
 
-| ID | Regra | Descrição | Funcionalidade Vinculada |
-|----|-------|-----------|-------------------------|
-| B-RULE-10 | Roteamento por Domínio | O endereço digitado pelo usuário (ex: `escola-alfa.com`) é a única informação usada para determinar em qual ambiente ele será atendido. Não há menu de seleção de escola | B-FEAT-01 |
-| B-RULE-11 | Mensagem Padronizada para Domínio Desconhecido | Se um domínio não está configurado na plataforma, o sistema exibe a mensagem "Domínio não reconhecido" — sem revelar detalhes internos da infraestrutura | B-FEAT-01 |
-| B-RULE-12 | Sessão Vinculada ao Ambiente | Uma vez autenticado, o usuário só pode acessar recursos do seu próprio ambiente. Qualquer tentativa de acessar recursos de outro ambiente retorna "nada encontrado" | B-FEAT-02 |
-| B-RULE-13 | Bloqueio Imediato na Suspensão | Quando um cliente é suspenso, todos os acessos ativos daquele ambiente são bloqueados em até 1 minuto, sem depender da expiração natural da sessão | B-FEAT-02 |
-| B-RULE-14 | Invisibilidade de Credenciais | Em nenhum momento o navegador do usuário tem acesso direto a tokens ou senhas. O frontend não consegue ler essas informações — elas são gerenciadas exclusivamente pela plataforma | B-FEAT-03 |
-| B-RULE-15 | Logout Completo | Quando o usuário sai do sistema, sua sessão é encerrada na plataforma e todas as informações de acesso são removidas do navegador | B-FEAT-04 |
-| B-RULE-16 | Renovação sem Interrupção | A sessão do usuário é renovada automaticamente em segundo plano enquanto ele estiver ativo — sem precisar fazer login novamente | B-FEAT-04 |
-| B-RULE-17 | Latência Máxima por Validação | 95% das validações de identidade devem responder em menos de 15 milissegundos. Acima de 20ms, o time técnico é alertado | B-FEAT-05 |
-| B-RULE-18 | Degradação Controlada em Pico | Se a demanda ultrapassar a capacidade máxima, a plataforma não pode cair — ela degrada serviços não críticos antes de afetar o login | B-FEAT-06 |
-| B-RULE-19 | Retenção de Logs por 6 Meses | Registros de auditoria de acesso são mantidos por no mínimo 6 meses. Após esse período, seguem a política de expurgo da empresa | B-FEAT-07 |
-| B-RULE-20 | Logs sem Dados Pessoais | Nenhum registro de auditoria pode conter senha, CPF, e-mail completo ou qualquer identificador pessoal do usuário — apenas identificadores internos | B-FEAT-07 |
-| B-RULE-21 | Ambiente Novo a Partir de Modelo | Todo novo cliente é criado a partir de um modelo padrão que já inclui as configurações de segurança básicas. Customizações são tratadas à parte | B-FEAT-08 |
-| B-RULE-22 | Prazo Máximo de Ativação | O processo completo de ativação de um novo cliente — da solicitação à liberação para uso — não pode ultrapassar 4 horas | B-FEAT-08 |
-| B-RULE-23 | Migração Individual por Sistema | Cada sistema corporativo é migrado para a nova plataforma separadamente. A migração do Sistema A não pode afetar o funcionamento do Sistema B | B-FEAT-10 |
-| B-RULE-24 | Rollback em Até 30 Minutos | Se um sistema apresentar falha após a migração, a equipe tem até 30 minutos para reverter ao estado anterior. Este prazo está documentado no plano de contingência aprovado pelo Comitê | B-FEAT-10 |
-| B-RULE-25 | Confirmação de Capacidade antes da Expansão | Antes da contratação de um novo lote de escolas, a Gerência Comercial deve consultar a Gerência de Tecnologia para confirmar a capacidade atual da plataforma e, se necessário, solicitar expansão | B-FEAT-09 |
+| ID | Regra | Descrição | Funcionalidade Vinculada | UC Vinculado |
+|----|-------|-----------|-------------------------|--------------|
+| B-RULE-10 | Roteamento por Domínio | O endereço digitado pelo usuário (ex: `escola-alfa.com`) é a única informação usada para determinar em qual ambiente ele será atendido. Não há menu de seleção de escola | B-FEAT-01 | B-UC-01 |
+| B-RULE-11 | Mensagem Padronizada para Domínio Desconhecido | Se um domínio não está configurado na plataforma, o sistema exibe a mensagem "Domínio não reconhecido" — sem revelar detalhes internos da infraestrutura | B-FEAT-01 | B-UC-01 |
+| B-RULE-12 | Sessão Vinculada ao Ambiente | Uma vez autenticado, o usuário só pode acessar recursos do seu próprio ambiente. Qualquer tentativa de acessar recursos de outro ambiente retorna "nada encontrado" | B-FEAT-02 | B-UC-03 |
+| B-RULE-13 | Bloqueio Imediato na Suspensão | Quando um cliente é suspenso, todos os acessos ativos daquele ambiente são bloqueados em até 1 minuto, sem depender da expiração natural da sessão | B-FEAT-02 | B-UC-03 |
+| B-RULE-14 | Invisibilidade de Credenciais | Em nenhum momento o navegador do usuário tem acesso direto a tokens ou senhas — essas informações são gerenciadas exclusivamente pela plataforma | B-FEAT-03 | B-UC-01 |
+| B-RULE-15 | Logout Completo | Quando o usuário sai do sistema, sua sessão é encerrada na plataforma e todas as informações de acesso são removidas do navegador | B-FEAT-04 | B-UC-01 |
+| B-RULE-16 | Renovação sem Interrupção | A sessão do usuário é renovada automaticamente em segundo plano enquanto ele estiver ativo — sem precisar fazer login novamente | B-FEAT-04 | B-UC-01 |
+| B-RULE-17 | Latência Máxima por Validação | 95% das validações de identidade devem responder em menos de 15 milissegundos. Acima de 20ms, o time técnico é alertado | B-FEAT-05 | B-UC-01 |
+| B-RULE-18 | Degradação Controlada em Pico | Se a demanda ultrapassar a capacidade máxima, a plataforma não pode cair — ela degrada serviços não críticos antes de afetar o login | B-FEAT-06 | B-UC-05 |
+| B-RULE-19 | Retenção de Logs por 6 Meses | Registros de auditoria de acesso são mantidos por no mínimo 6 meses. Após esse período, seguem a política de expurgo da empresa | B-FEAT-07 | B-UC-07 |
+| B-RULE-20 | Logs sem Dados Pessoais | Nenhum registro de auditoria pode conter senha, CPF, e-mail completo ou qualquer identificador pessoal do usuário — apenas identificadores internos | B-FEAT-07 | B-UC-07 |
+| B-RULE-21 | Ambiente Novo a Partir de Modelo | Todo novo cliente é criado a partir de um modelo padrão que já inclui as configurações de segurança básicas. Customizações são tratadas à parte | B-FEAT-08 | B-UC-02 |
+| B-RULE-22 | Prazo Máximo de Ativação | O processo completo de ativação de um novo cliente — da solicitação à liberação para uso — não pode ultrapassar 4 horas | B-FEAT-08 | B-UC-02 |
+| B-RULE-23 | Migração Individual por Sistema | Cada sistema corporativo é migrado para a nova plataforma separadamente. A migração do Sistema A não pode afetar o funcionamento do Sistema B | B-FEAT-10 | B-UC-04 |
+| B-RULE-24 | Rollback em Até 30 Minutos | Se um sistema apresentar falha após a migração, a equipe tem até 30 minutos para reverter ao estado anterior. Este prazo está documentado no plano de contingência aprovado pelo Comitê | B-FEAT-10 | B-UC-04 |
+| B-RULE-25 | Confirmação de Capacidade antes da Expansão | Antes da contratação de um novo lote de escolas, a Gerência Comercial deve consultar a Gerência de Tecnologia para confirmar a capacidade atual da plataforma e, se necessário, solicitar expansão | B-FEAT-09 | B-UC-06 |
 
 ---
 
@@ -167,6 +197,7 @@ Cada caso de uso descreve um cenário completo de interação entre o usuário e
 |-------|---------|
 | **Atores** | Product Owner, Gerência de Tecnologia, Equipe Técnica |
 | **Funcionalidades Vinculadas** | B-FEAT-10 |
+| **Jornada Vinculada (003)** | B-JOURNEY-04 — Migração dos Sistemas Atuais |
 | **Pré-condições** | Plano de contingência aprovado pelo Comitê de Projeto; sistema alvo identificado |
 | **Pós-condições (Sucesso)** | Sistema migrado e operando com a nova plataforma; usuários finais não perceberam interrupção |
 | **Pós-condições (Falha)** | Sistema revertido ao estado anterior em até 30 minutos; Comitê notificado |
@@ -336,4 +367,12 @@ Cada funcionalidade do FRD rastreia a pelo menos um requisito de negócio do BRD
 
 ---
 
-**[STATUS: SUCESSO]** — Documento com foco em funcionalidades de negócio e casos de uso. Decisões técnicas de implementação reservadas para 020-SRS, 030-SAD, 035-HLD e 040-LLD.
+## 7. Registro de Alterações
+
+| Versão | Data | Alteração | Autor |
+|--------|------|-----------|-------|
+| 1.0 | 08/08/2026 | Criação inicial a partir do BRD (005) | Time de Negócios / Orquestrador WATERFALL |
+| 1.1 | 19/08/2026 | Revisão de atualização: matrizes 1.1/1.2 adicionadas; linguagem de negócio | Time de Negócios / skill waterfall-business-documents |
+| 1.2 | 19/08/2026 | Correção cirúrgica (review FASE 1): marcador residual de status removido do rodapé — o status oficial permanece no cabeçalho | Time de Negócios / skill waterfall-business-documents |
+| 1.3 | 19/08/2026 | Correção cirúrgica (review FASE 1, F1): B-UC-04 vinculado à B-JOURNEY-04 (003-PERSONAS-JORNADAS) — espelho da cadeia de origem do B-REQ-11 | Time de Negócios / skill waterfall-business-documents |
+| 1.4 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |

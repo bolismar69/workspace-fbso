@@ -66,7 +66,7 @@ O **DED** é a especificação operacional que define COMO as soluções desenha
 ### Conexão com o Pipeline
 
 - **UPSTREAM:** Consome topologia do 035-HLD, componentes do 040-LLD, decisões do 030-SAD e os setups 042/043/044
-- **DOWNSTREAM:** Alimenta 050-EST-CASES (testes de pipeline), 060-EAP-WBS (pacotes de trabalho de automação), 087-PLANO-CI-CD-AMBIENTES, 088-PRODUCT-BACKLOG-LIST e 100-MANUAIS-OPERACIONAIS (runbooks)
+- **DOWNSTREAM:** Alimenta 050-TEST-CASES (testes de pipeline), 060-EAP-WBS (pacotes de trabalho de automação), 087-PLANO-CI-CD-AMBIENTES, 088-PRODUCT-BACKLOG-LIST e 100-MANUAIS-OPERACIONAIS (runbooks)
 
 ---
 

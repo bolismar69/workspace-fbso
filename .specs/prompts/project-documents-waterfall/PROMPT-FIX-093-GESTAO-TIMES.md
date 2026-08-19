@@ -21,6 +21,6 @@ Cada item em `VIOLATIONS` tem o formato:
 2. **NÃO** recrie, regenere ou reescreva o documento inteiro
 3. **NÃO** altere seções que passaram no GATE e não estão em `VIOLATIONS`
 4. Mantenha o status como `[STATUS: Em revisão]`
-5. **Mantenha o vocabulário WATERFALL** (STF-NN/IMP-NN/FILA-NN) — conforme a tabela VOCABULÁRIO WATERFALL do GENERATE
+5. **Mantenha o vocabulário WATERFALL** (STF-NN/IMP-NN/CICLO-NN) — conforme a tabela VOCABULÁRIO WATERFALL do GENERATE
 6. Após corrigir cada violação, adicione um comentário inline `<!-- FIX: {description} — corrigido -->` na seção reparada
 7. Retorne `{DOC_PATH}` após as correções

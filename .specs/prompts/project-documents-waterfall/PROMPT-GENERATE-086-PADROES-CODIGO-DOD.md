@@ -82,7 +82,7 @@ Este documento é a **constituição de engenharia do projeto**: as regras de co
 
 ### DOD-01 — Entrega de Funcionalidade
 
-- [ ] Código implementa integralmente o UC vinculado (010-FRD) e passa nos casos de teste (050-EST-CASES)
+- [ ] Código implementa integralmente o UC vinculado (010-FRD) e passa nos casos de teste (050-TEST-CASES)
 - [ ] Cobertura mínima de testes unitários: {ex: 80%}
 - [ ] Code review aprovado por {papel}
 - [ ] Análises SAST/SCA sem achados HIGH (043-SEC-SETUP)

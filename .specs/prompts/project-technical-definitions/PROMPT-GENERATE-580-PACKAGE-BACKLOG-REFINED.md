@@ -1,13 +1,15 @@
-# PROMPT-GENERATE-580-SPRINT-BACKLOG-REFINED
+# PROMPT-GENERATE-580-PACKAGE-BACKLOG-REFINED
 
 ## Contexto
 
-Este prompt gera o artefato `technical-discovery/580-SPRINT-BACKLOG.md` — o **backlog refinado de tarefas técnicas** do projeto. Diferente do `PRODUCT-BACKLOG-LIST` (F3), que lista itens de backlog de negócio priorizados, este documento decompõe cada User Story em tarefas técnicas T-NNN, associa a sprints-alvo e vincula a contratos técnicos.
+Este prompt gera o artefato `technical-discovery/580-PACKAGE-BACKLOG-REFINED.md` — o **backlog refinado de tarefas técnicas** do projeto. Diferente do `PRODUCT-BACKLOG-LIST` (F3), que lista itens de backlog de negócio priorizados, este documento decompõe cada User Story em tarefas técnicas T-NNN, associa a sprints-alvo e vincula a contratos técnicos.
+
+> **Modo waterfall-discovery:** a "sprint" deste artefato espelha o **Ciclo de Entrega `CICLO-NN`** do 092 (regra de espelhamento `580-ciclo-NNN ↔ CICLO-NN` do roadmap) — os itens `BL-NN` do pacote de demanda (Sub-fase 1.5/3.1 do WATERFALL-EXECUTION) são decompostos em `T-NNN` por ciclo, nunca o backlog inteiro de uma vez.
 
 **Objetivo:** Servir como índice mestre entre User Stories de negócio e tarefas técnicas, habilitando o rastreamento bidirecional US → Tarefas → Contratos.
 
 **Estrutura do artefato:**
-- `technical-discovery/580-SPRINT-BACKLOG.md` — backlog T-NNN enriquecido com sprints, status, datas e contratos
+- `technical-discovery/580-PACKAGE-BACKLOG-REFINED.md` — backlog T-NNN enriquecido com sprints, status, datas e contratos
 
 **Papel no Bloco D (Sprints — Technical Discovery):** Fase 18 de 2. Este artefato recebe insumos do Bloco C (SPECS-DEFINITION e MILESTONES) e prepara o backlog para o Discovery Técnico.
 
@@ -49,11 +51,11 @@ Invocar skills de planejamento ágil, backlog, sprint e gestão de projetos para
 
 ### Passo 3 — Gerar o Artefato
 
-Criar o diretório `technical-discovery/` (se não existir) e gerar `{PROJECT_PATH}/technical-discovery/580-SPRINT-BACKLOG.md` com a estrutura abaixo.
+Criar o diretório `technical-discovery/` (se não existir) e gerar `{PROJECT_PATH}/technical-discovery/580-PACKAGE-BACKLOG-REFINED.md` com a estrutura abaixo.
 
 #### 3.1 Cabeçalho do Documento
 ```markdown
-# SPRINT-BACKLOG — Backlog Refinado de Tarefas Técnicas
+# PACKAGE-BACKLOG — Backlog Refinado de Tarefas Técnicas
 
 - **Projeto:** {PROJECT_ID_NAME}
 - **Versão:** 1.0
@@ -83,7 +85,7 @@ Gerar a tabela completa de tarefas técnicas derivadas das User Stories, seguind
 ```markdown
 | TASK-ID | TASK-DESCRIÇÃO | SPRINT-ALVO | US-ID | STATUS | DATA-INICIO | DATA-ENTREGA | CONTRACTS |
 |---------|----------------|-------------|-------|--------|-------------|--------------|-----------|
-| T-000010 | Auditar endpoint GET /dashboard/admin/summary | Sprint 01 | US-FEAT-EP-0001-0001-0001 | TODO | | | [API](590-sprint-01/CONTRACTS-API.md) · [DATA](590-sprint-01/CONTRACTS-DATA.md) · [SEC](590-sprint-01/CONTRACTS-SECURITY.md) · [SRE](590-sprint-01/CONTRACTS-SRE.md) |
+| T-000010 | Auditar endpoint GET /dashboard/admin/summary | Sprint 01 | US-FEAT-EP-0001-0001-0001 | TODO | | | [API](590-ciclo-01/CONTRACTS-API.md) · [DATA](590-ciclo-01/CONTRACTS-DATA.md) · [SEC](590-ciclo-01/CONTRACTS-SECURITY.md) · [SRE](590-ciclo-01/CONTRACTS-SRE.md) |
 ```
 
 **Regras de preenchimento:**
@@ -120,7 +122,7 @@ Após a tabela principal, adicionar um resumo consolidado por sprint:
 | Total de Tarefas | [N] |
 | User Stories Vinculadas | [US-FEAT-EP-0001-0001-0001, US-FEAT-EP-0001-0002-0001] |
 | Status | 5 TODO · 2 IN-PROGRESS · 0 DONE |
-| Contratos | [API](590-sprint-01/CONTRACTS-API.md) · [DATA](590-sprint-01/CONTRACTS-DATA.md) · [SEC](590-sprint-01/CONTRACTS-SECURITY.md) · [SRE](590-sprint-01/CONTRACTS-SRE.md) |
+| Contratos | [API](590-ciclo-01/CONTRACTS-API.md) · [DATA](590-ciclo-01/CONTRACTS-DATA.md) · [SEC](590-ciclo-01/CONTRACTS-SECURITY.md) · [SRE](590-ciclo-01/CONTRACTS-SRE.md) |
 | Início Previsto | [DATA] |
 | Término Previsto | [DATA] |
 
@@ -154,10 +156,10 @@ Verificar:
 
 ## Modelo do Arquivo
 
-O arquivo `technical-discovery/580-SPRINT-BACKLOG.md` deve seguir a estrutura consolidada abaixo:
+O arquivo `technical-discovery/580-PACKAGE-BACKLOG-REFINED.md` deve seguir a estrutura consolidada abaixo:
 
 ```markdown
-# SPRINT-BACKLOG — Backlog Refinado de Tarefas Técnicas
+# PACKAGE-BACKLOG — Backlog Refinado de Tarefas Técnicas
 
 - **Projeto:** {PROJECT_ID_NAME}
 - **Versão:** 1.0
@@ -225,7 +227,7 @@ O arquivo `technical-discovery/580-SPRINT-BACKLOG.md` deve seguir a estrutura co
 | 3 | `backlog-management` | Gestão e refinamento do backlog técnico | Agile |
 | 4 | `project-manager` | Coordenação entre tarefas, US e sprints | PM |
 | 5 | `technical-change-tracker` | Rastreamento de mudanças técnicas no backlog | Engenharia |
-| 6 | `documentation-writer` | Redigir o 580-SPRINT-BACKLOG.md consolidado | Documentação |
+| 6 | `documentation-writer` | Redigir o 580-PACKAGE-BACKLOG-REFINED.md consolidado | Documentação |
 
 > **🔄 Flexibilidade:** Substituir skills conforme aderência e justificar no changelog do artefato.
 

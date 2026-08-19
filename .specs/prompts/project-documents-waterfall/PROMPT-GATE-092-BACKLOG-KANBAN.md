@@ -22,9 +22,9 @@ Atue como um Auditor de Qualidade de Documentação, especializado em Gestão de
 2. **Seção 1 — Estado Atual:** Todo item do 088 baseline aparece com status anterior e atual? Nenhum item da baseline sumiu?
 3. **Seção 2 — Change Requests:** Todo CR-NN tem tipo (Negócio/Técnico), origem, impacto e status do 085? CRs sem aprovação são identificados como tal?
 4. **Seção 3 — Itens:** Todo item novo tem CR aprovada vinculada e origem rastreável? Status transitam apenas no fluxo válido (A Fazer → Em Execução → Em Revisão → Concluído/Impedido)?
-5. **Seção 4 — Filas:** Toda fila (FILA-NN) tem itens, ordem, capacidade alocada e critério de entrada? A soma das alocações respeita o 062-STAFFING-PLAN?
-6. **Limite de Escopo:** Nenhuma Janela de Entrega (DEV/QA/UAT/DEPLOY) foi definida neste documento (sub-fase 2 da FASE 5, fora de escopo)?
-7. **Seção 5 — Rastreabilidade:** Todo item/fila aponta origem no 088/CR/085? Não há órfãos?
+5. **Seção 4 — Ciclos de Entrega:** Todo ciclo (CICLO-NN) tem itens, ordem, capacidade alocada e critério de entrada? A soma das alocações respeita o 062-STAFFING-PLAN?
+6. **Limite de Escopo:** Nenhuma Janela de Entrega (DEV/QA/UAT/DEPLOY) foi definida neste documento (definição pertence ao 096-DEFINICAO-JANELAS-ENTREGA; orquestração ao Bloco F do TECHLEAD)?
+7. **Seção 5 — Rastreabilidade:** Todo item/ciclo aponta origem no 088/CR/085? Não há órfãos?
 8. **Seção 6 — Registro de Alterações:** Tabela de versões presente?
-9. **Vocabulário WATERFALL:** Respeita a tabela VOCABULÁRIO WATERFALL do GENERATE? IDs usam apenas BL-NN/CR-NN/FILA-NN?
+9. **Vocabulário WATERFALL:** Respeita a tabela VOCABULÁRIO WATERFALL do GENERATE? IDs usam apenas BL-NN/CR-NN/CICLO-NN?
 10. **Consistência Interna:** Itens da Seção 3 são os mesmos das Seções 1, 4 e 5?

@@ -97,7 +97,7 @@ Por favor, responda às seguintes perguntas para podermos prosseguir ou reajusta
 2. Deseja enviar mais documentos/arquivos para enriquecer o planejamento?
 3. Deseja enviar mais informações ou novos direcionamentos via input de texto neste momento?
 
-*(Instrução de Orquestração: Se "Sim, Não, Não" → [STATUS: COMPLIANCE] e F18 (SPRINT-BACKLOG). Se novos inputs → retrocede ao PROMPT-GENERATE).*
+*(Instrução de Orquestração: Se "Sim, Não, Não" → [STATUS: COMPLIANCE] e F18 (PACKAGE-BACKLOG). Se novos inputs → retrocede ao PROMPT-GENERATE).*
 
 ---
 

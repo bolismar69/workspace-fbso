@@ -1,8 +1,8 @@
-# PROMPT-FIX-580-SPRINT-BACKLOG-REFINED
+# PROMPT-FIX-580-PACKAGE-BACKLOG-REFINED
 
 ## Contexto
 
-Este prompt é acionado quando o gate reprova `technical-discovery/580-SPRINT-BACKLOG.md`. O agente corretor aplica correções cirúrgicas com base no relatório inline do gate. **Nunca reescreve o documento do zero. Modifique estritamente as seções, tabelas ou linhas apontadas como Não Compliance.**
+Este prompt é acionado quando o gate reprova `technical-discovery/580-PACKAGE-BACKLOG-REFINED.md`. O agente corretor aplica correções cirúrgicas com base no relatório inline do gate. **Nunca reescreve o documento do zero. Modifique estritamente as seções, tabelas ou linhas apontadas como Não Compliance.**
 
 ---
 

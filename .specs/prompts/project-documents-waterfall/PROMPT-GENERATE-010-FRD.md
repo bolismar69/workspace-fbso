@@ -25,7 +25,7 @@ Atue como um Analista de Requisitos Sênior e Arquiteto Funcional, especializado
 
 ## Template de Fallback (6 Seções)
 
-```
+````
 # Functional Requirements Document (FRD): {NOME DO PROJETO}
 ## [STATUS: Em análise]
 
@@ -186,3 +186,5 @@ Cada funcionalidade (FEAT), regra de negócio (RN) e caso de uso (UC) deve rastr
 
 ## Gating Rule
 Emitir `[STATUS: SUCESSO]` se as 6 seções estiverem completas, todos os REQs do BRD tiverem cobertura (FEAT+RN+UC), e a matriz de rastreabilidade DRF→BRD estiver preenchida sem lacunas.
+
+````

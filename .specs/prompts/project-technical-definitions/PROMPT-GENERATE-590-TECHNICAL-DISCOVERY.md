@@ -2,22 +2,22 @@
 
 ## Contexto
 
-Este prompt gera os **contratos técnicos por sprint** dentro do diretório `technical-discovery/590-sprint-NNN/`. Este é um prompt **iterativo** — executa uma vez por sprint desejada, gerando 5 arquivos de contrato por sprint que detalham os acordos técnicos entre as disciplinas de API, Dados, Segurança e SRE, além da definição de incrementos retroativos.
+Este prompt gera os **contratos técnicos por sprint** dentro do diretório `technical-discovery/590-ciclo-NNN/`. Este é um prompt **iterativo** — executa uma vez por sprint desejada, gerando 5 arquivos de contrato por sprint que detalham os acordos técnicos entre as disciplinas de API, Dados, Segurança e SRE, além da definição de incrementos retroativos.
 
 **Objetivo:** Estabelecer contratos formais e rastreáveis entre as disciplinas técnicas para cada sprint, garantindo que todas as tarefas T-NNN tenham especificações técnicas detalhadas antes do início do desenvolvimento.
 
 **Arquivos gerados por sprint:**
 ```
-technical-discovery/590-sprint-NNN/
-├── CONTRACTS-API-sprint-NNN.md       ← Endpoints, request/response, auth, rate limits
-├── CONTRACTS-DATA-sprint-NNN.md       ← Schemas, migrations, queries, índices
-├── CONTRACTS-SECURITY-sprint-NNN.md   ← Regras IAM, validações, threat model da sprint
-├── CONTRACTS-SRE-sprint-NNN.md        ← SLOs, dashboards, alertas, runbooks
-└── DEFINITION-INCREMENTS-sprint-NNN.md ← Atualizações retroativas nos docs base
+technical-discovery/590-ciclo-NNN/
+├── CONTRACTS-API-ciclo-NNN.md       ← Endpoints, request/response, auth, rate limits
+├── CONTRACTS-DATA-ciclo-NNN.md       ← Schemas, migrations, queries, índices
+├── CONTRACTS-SECURITY-ciclo-NNN.md   ← Regras IAM, validações, threat model da sprint
+├── CONTRACTS-SRE-ciclo-NNN.md        ← SLOs, dashboards, alertas, runbooks
+└── DEFINITION-INCREMENTS-ciclo-NNN.md ← Atualizações retroativas nos docs base
 ```
 
 **Inputs upstream (Bloco D):**
-- **580-SPRINT-BACKLOG.md (F18):** Tarefas T-NNN da sprint atual, US vinculadas e contratos
+- **580-PACKAGE-BACKLOG-REFINED.md (F18):** Tarefas T-NNN da sprint atual, US vinculadas e contratos
 - **SPECS-DEFINITION.md (F16):** Baseline de especificações técnicas cross-solution
 - **Artefatos do Bloco B:** ARCHITECTURE-DEFINITION (F7), SECURITY-DEFINITION (F8), DATA-ARCHITECTURE-DEFINITION (F9), DEVOPS-SRE-DEFINITION (F10)
 
@@ -35,7 +35,7 @@ technical-discovery/590-sprint-NNN/
 | `{ARCHITECTURE_GLOBAL}` | Caminho para a pasta de arquitetura global (ADRs, blueprints) |
 | `{SECURITY_GLOBAL}` | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) |
 | `{SPRINT_NUMBER}` | Número da sprint alvo (ex: 01, 02, 03) |
-| `{SPRINT_TASKS}` | Lista de TASK-ID da sprint conforme SPRINT-BACKLOG |
+| `{SPRINT_TASKS}` | Lista de TASK-ID da sprint conforme PACKAGE-BACKLOG |
 | `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
 | `{PROJECT_PROMPT_INPUTS}` | (Opcional) Lista de caminhos para prompts auxiliares ou contextos adicionais |
 
@@ -47,9 +47,9 @@ technical-discovery/590-sprint-NNN/
 Verificar se TODOS os parâmetros foram informados, especialmente `{SPRINT_NUMBER}` e `{SPRINT_TASKS}`.
 
 ### Passo 1 — Carregar Documentos Base
-Ler SPRINT-BACKLOG (F18), SPECS-DEFINITION (F16), ARCHITECTURE-DEFINITION (F7), SECURITY-DEFINITION (F8), DATA-ARCHITECTURE-DEFINITION (F9), DEVOPS-SRE-DEFINITION (F10) para fundamentar os contratos.
+Ler PACKAGE-BACKLOG (F18), SPECS-DEFINITION (F16), ARCHITECTURE-DEFINITION (F7), SECURITY-DEFINITION (F8), DATA-ARCHITECTURE-DEFINITION (F9), DEVOPS-SRE-DEFINITION (F10) para fundamentar os contratos.
 
-Filtrar do SPRINT-BACKLOG apenas as tarefas T-NNN pertencentes à sprint corrente (`{SPRINT_NUMBER}`).
+Filtrar do PACKAGE-BACKLOG apenas as tarefas T-NNN pertencentes à sprint corrente (`{SPRINT_NUMBER}`).
 
 ### Passo 2 — Invocar Skills Especializadas
 Invocar skills de API design, modelagem de dados, segurança e SRE para gerar os contratos específicos de cada disciplina.
@@ -286,7 +286,7 @@ Definição de incrementos: documenta as atualizações retroativas nos artefato
 - **Responsável:** [papel]
 - **Prazo:** [data]
 
-### 580-SPRINT-BACKLOG.md
+### 580-PACKAGE-BACKLOG-REFINED.md
 - [ ] Atualizar status das tarefas concluídas para DONE
 - [ ] Preencher DATA-INICIO e DATA-ENTREGA das tarefas
 - [ ] Atualizar resumo por sprint
@@ -302,7 +302,7 @@ Definição de incrementos: documenta as atualizações retroativas nos artefato
 Verificar para cada sprint:
 - 5 arquivos de contrato criados no diretório correto
 - Cada contrato referencia ao menos uma US-ID e um artefato base
-- TASK-IDs consistentes com SPRINT-BACKLOG
+- TASK-IDs consistentes com PACKAGE-BACKLOG
 - Links markdown entre contratos são válidos
 
 ---

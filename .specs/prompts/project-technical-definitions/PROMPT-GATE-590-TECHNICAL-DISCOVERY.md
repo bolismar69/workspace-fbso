@@ -2,7 +2,7 @@
 
 ## Contexto
 
-Este prompt implementa o **Gate de Validação dos Contratos Técnicos por Sprint** para os artefatos gerados em `technical-discovery/590-sprint-NNN/`. Verifica se 100% das tarefas da sprint possuem contratos, se cada contrato referencia User Stories e artefatos base, e se há consistência com SPECS-DEFINITION.
+Este prompt implementa o **Gate de Validação dos Contratos Técnicos por Sprint** para os artefatos gerados em `technical-discovery/590-ciclo-NNN/`. Verifica se 100% das tarefas da sprint possuem contratos, se cada contrato referencia User Stories e artefatos base, e se há consistência com SPECS-DEFINITION.
 
 **Princípio fundamental:** Toda tarefa T-NNN da sprint deve ter contratos de API, Dados, Segurança e SRE. Nenhuma tarefa pode ser entregue sem acordo formal entre as disciplinas técnicas.
 
@@ -22,7 +22,7 @@ Este prompt implementa o **Gate de Validação dos Contratos Técnicos por Sprin
 | `{ARCHITECTURE_GLOBAL}` | Caminho para a pasta de arquitetura global (ADRs, blueprints) |
 | `{SECURITY_GLOBAL}` | Caminho para o documento de segurança global (GLOBAL-SECURITY.md) |
 | `{SPRINT_NUMBER}` | Número da sprint alvo (ex: 01, 02, 03) |
-| `{SPRINT_TASKS}` | Lista de TASK-ID da sprint conforme SPRINT-BACKLOG |
+| `{SPRINT_TASKS}` | Lista de TASK-ID da sprint conforme PACKAGE-BACKLOG |
 | `{PROJECT_DOCUMENTS_INPUTS}` | (Opcional) Lista de caminhos para documentos brutos de entrada adicionais |
 | `{PROJECT_PROMPT_INPUTS}` | (Opcional) Lista de caminhos para prompts auxiliares ou contextos adicionais |
 
@@ -33,7 +33,7 @@ Este prompt implementa o **Gate de Validação dos Contratos Técnicos por Sprin
 ## Fluxo de Execução
 
 ### Passo 1 — Carregar Documentos Base
-Ler todos os 5 contratos da sprint atual, SPRINT-BACKLOG (F18), SPECS-DEFINITION (F16), artefatos base do Bloco B (ARCHITECTURE, SECURITY, DATA-ARCH, DEVOPS-SRE).
+Ler todos os 5 contratos da sprint atual, PACKAGE-BACKLOG (F18), SPECS-DEFINITION (F16), artefatos base do Bloco B (ARCHITECTURE, SECURITY, DATA-ARCH, DEVOPS-SRE).
 
 ### Passo 2 — Executar Dimensões de Validação
 
@@ -80,7 +80,7 @@ Ler todos os 5 contratos da sprint atual, SPRINT-BACKLOG (F18), SPECS-DEFINITION
 ##### 🔍 Pontos Conflitantes Identificados:
 - **[ID-CONFLITO-DISCOVERY-01] - [Título Curto]:**
   - **O que foi gerado:** [Descrever o trecho problemático]
-  - **O que o artefato base/SPRINT-BACKLOG determinava:** [Descrever a referência]
+  - **O que o artefato base/PACKAGE-BACKLOG determinava:** [Descrever a referência]
   - **Impacto:** [O risco de inconsistência entre contratos ou lacuna técnica]
   - **Sugestão de tratativa:** [O que poderia ser feito para corrigir]
 

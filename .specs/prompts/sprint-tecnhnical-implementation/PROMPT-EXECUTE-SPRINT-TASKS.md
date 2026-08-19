@@ -116,8 +116,8 @@ Implemente as tarefas da **Sprint {SPRINT_NUMBER} — {SPRINT_NAME}** seguindo o
    │      6º README.md (instruções de build — ex: mvn, go, npm, cargo)
    │
    ├── 6.2 DECOMPOR a stack em componentes:
-   │      - Linguagem(s): Java, Go, Python, TypeScript, Rust, Kotlin, C#, PHP, Ruby
-   │      - Framework(s): Spring Boot, Quarkus, Micronaut, Fiber, Gin, Express, FastAPI, Next.js, Django, Rails, Laravel
+   │      - Linguagem(s): Java, Go, Python, TypeScript, Rust, Kotlin, C#, PHP, Ruby, Dart
+   │      - Framework(s): Spring Boot, Quarkus, Micronaut, Fiber, Gin, Express, FastAPI, Next.js, Django, Rails, Laravel, Flutter, React, React Native, Angular, Vue
    │      - Banco(s): PostgreSQL, MySQL, MongoDB, Redis, Elasticsearch
    │      - Infraestrutura: Docker, K8s, RabbitMQ, Kafka
    │
@@ -134,10 +134,16 @@ Implemente as tarefas da **Sprint {SPRINT_NUMBER} — {SPRINT_NAME}** seguindo o
    │      | Linguagem: TypeScript | `typescript-pro`, `javascript-typescript-jest` |
    │      | Linguagem: Python | `python-pro`, `pytest-coverage` |
    │      | Linguagem: Rust | `rust-engineer` |
+   │      | Linguagem: Dart | `flutter-expert` |
    │      | Framework: Spring Boot | `301-frameworks-spring-boot-core`, `302-frameworks-spring-boot-rest`, `304-frameworks-spring-boot-security`, `311-frameworks-spring-jdbc` |
    │      | Framework: Quarkus | `401-frameworks-quarkus-core`, `402-frameworks-quarkus-rest` |
    │      | Framework: Micronaut | `501-frameworks-micronaut-core`, `502-frameworks-micronaut-rest` |
    │      | Framework: Fiber/Gin (Go) | `golang-pro` (já cobre padrões idiomáticos) |
+   │      | Framework: Flutter | `flutter-expert` |
+   │      | Framework: React | `react-best-practices`, `react-patterns`, `typescript-pro` |
+   │      | Framework: React Native | `react-native-expert` |
+   │      | Framework: Angular | `angular` |
+   │      | Framework: Vue | `vue-expert` |
    │      | Banco: PostgreSQL | `postgres-pro`, `postgresql-optimization` |
    │      | Banco: MongoDB | `mongodb-query-optimizer`, `mongodb-schema-design` |
    │      | Testes: Qualquer stack | `131-java-testing-unit-testing` (Java), `golang-testing` (Go), `javascript-typescript-jest` (JS/TS), `pytest-coverage` (Python) |
@@ -257,6 +263,13 @@ Implemente as tarefas da **Sprint {SPRINT_NUMBER} — {SPRINT_NAME}** seguindo o
        │        · Cargo.toml → `cargo build`
        │        · pyproject.toml → `python -m compileall .`
        │      - Corrigir erros de compilação antes de prosseguir
+       │
+       ├── 4.1 (OPCIONAL — se o projeto exigir varredura de dependências, conforme
+       │      480-SECURITY-DEFINITION e 510-TEST-STRATEGY): executar o
+       │      `PROMPT-EXECUTE-CVE-SCA-SCAN` para varrer CVEs/SCA da stack
+       │      (Semgrep/Snyk/OWASP Dependency-Check/Dependabot) pós-build.
+       │      Resultado reprovado → corrigir ou catalogar débito DT-XXX antes
+       │      de prosseguir.
        │
        ├── 5. EXECUTAR o comando de teste do projeto:
        │      - Descobrir o comando a partir do README.md, ou

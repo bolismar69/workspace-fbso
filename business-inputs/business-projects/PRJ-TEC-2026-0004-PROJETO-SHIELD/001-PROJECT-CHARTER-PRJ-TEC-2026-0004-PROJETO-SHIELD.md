@@ -6,7 +6,7 @@
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
 | **Produto** | Plataforma Shield — Identidade e Acesso Centralizada |
 | **Data de Elaboração** | 07/08/2026 |
-| **Versão** | 1.0 — Documento Inicial (WATERFALL v2.0) |
+| **Versão** | 1.1 — Revisão de atualização (19/08/2026): linguagem de negócio na Seção 2, subseção 11.1 estruturada, aprovações com áreas responsáveis |
 | **Patrocinador** | Diretoria de Tecnologia — FBSO.ORG |
 | **Metodologia** | WATERFALL |
 | **Status** | COMPLIANCE |
@@ -58,7 +58,7 @@ O que ele entrega para o negócio:
 
 - **Reconhecimento automático do cliente:** um diretor acessa o sistema da sua escola e a plataforma já sabe quem ele é e para onde direcioná-lo, sem qualquer configuração manual.
 - **Isolamento total entre clientes:** os dados da Escola A são completamente inacessíveis para a Escola B. Cada cliente opera em seu próprio ambiente seguro.
-- **Login protegido contra ataques:** as credenciais dos usuários jamais ficam expostas no navegador, eliminando os riscos mais comuns de roubo de sessão (XSS/CSRF).
+- **Login protegido contra ataques:** as credenciais dos usuários jamais ficam expostas no navegador, eliminando os riscos mais comuns de roubo de credenciais e de sessão.
 - **Velocidade de resposta:** a validação de identidade acontece em menos de 15 milissegundos — imperceptível para o usuário final.
 - **Porta única para todos os produtos:** qualquer novo sistema da FBSO.ORG usará a mesma plataforma de identidade.
 
@@ -160,6 +160,18 @@ O que ele entrega para o negócio:
 |---|---|
 | **Valor máximo de investimento pretendido (Budget/Limite)** | ~R$ 100.000 |
 
+#### 11.1 Budget/Limite ou Budget/Pretendido
+
+> **📌 Informação do Patrocinador.** Esta subseção documenta o limite orçamentário ou valor pretendido definido pelo patrocinador, com a referência temporal de negócio associada.
+
+| Item | Valor |
+|---|---|
+| **Tipo** | Budget/Limite |
+| **Valor** | ~R$ 100.000 |
+| **Referência de Negócio** | "A solução precisa estar operacional antes da expansão para novas escolas no próximo ciclo letivo" |
+| **Nota** | Esta NÃO é uma data de entrega contratual — é uma referência de negócio para priorização |
+
+
 ---
 
 ### 12. Plano de Comunicação (Communication Plan)
@@ -181,6 +193,7 @@ O que ele entrega para o negócio:
 
 | Nome | Papel | Data | Assinatura |
 |---|---|---|---|
-| `<Sponsor>` | Diretoria de Tecnologia — FBSO.ORG | Pendente | Pendente |
-| `<Product Owner>` | Product Owner — Plataforma Shield | Pendente | Pendente |
-| `<PMO>` | PMO Corporativo | Pendente | Pendente |
+| Diretoria de Tecnologia — FBSO.ORG | Patrocinador | Pendente | Pendente |
+| Product Owner — Plataforma Shield | Product Owner | Pendente | Pendente |
+| PMO Corporativo | PMO | Pendente | Pendente |
+

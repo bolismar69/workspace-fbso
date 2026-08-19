@@ -4,10 +4,20 @@
 | Campo | Detalhe |
 |-------|---------|
 | **Projeto** | PRJ-TEC-2026-0004-PROJETO-SHIELD |
-| **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 005-BRD, 010-FRD |
+| **Documentos Base** | 001-PROJECT-CHARTER, 002-STAKEHOLDER-MAP, 003-PERSONAS-JORNADAS, 004-MAPEAMENTO-AS-IS-TO-BE, 005-BRD, 010-FRD |
 | **Data de Elaboração** | 08/08/2026 |
-| **Versão** | 1.0 |
+| **Versão** | 1.4 — Revisão de correção (19/08/2026): B-REQ-11 com contexto completo de origem (B-JOURNEY-04 / B-PERSONA-04 / B-PROCESS-04 / B-GAP-ANALYSIS-07) |
 | **Metodologia** | WATERFALL |
+
+---
+
+### Siglas definidas no documento
+
+- **B-PERSONA-** _(Business Persona)_: Persona de negócio — origem 003-PERSONAS-JORNADAS
+- **B-JOURNEY-** _(Business Journey)_: Jornada de negócio — origem 003-PERSONAS-JORNADAS
+- **B-PROCESS-** _(Business Process)_: Processo de negócio (AS-IS/TO-BE) — origem 004-MAPEAMENTO-AS-IS-TO-BE
+- **B-GAP-ANALYSIS-** _(Business Gap Analysis)_: Gap AS-IS → TO-BE — origem 004-MAPEAMENTO-AS-IS-TO-BE
+- **B-REQ-** / **B-FEAT-** / **B-RULE-** / **B-UC-** / **B-REQ-SECURITY-**: siglas definidas no 005-BRD e no 010-FRD
 
 ---
 
@@ -79,6 +89,48 @@ A **RTM-FASE-1** é o instrumento de governança que sela a **Linha de Base de E
 
 **Resultado:** 8/8 critérios do Charter cobertos por pelo menos um B-REQ. **100% de cobertura.**
 
+### 2.3 Contexto de Origem — B-JOURNEY / B-PERSONA / B-PROCESS / B-GAP-ANALYSIS
+
+Jornadas, personas, processos e gaps que fundamentam cada requisito de negócio.
+
+**Regra de Cobertura (determinística):**
+- ✅ = as 4 colunas estão preenchidas **E** cada ID citado existe no documento de origem (003/004) e pertence ao B-REQ da linha
+- ⚠️ = alguma coluna vazia ou ID não localizado
+- ❌ = nenhum contexto (B-REQ sem lastro em 003/004)
+
+| Requisito BRD | B-JOURNEY | B-PERSONA | B-PROCESS | B-GAP-ANALYSIS | Cobertura |
+|---|---|---|---|---|---|
+| B-REQ-01 | B-JOURNEY-01 (etapa 1) | B-PERSONA-01, B-PERSONA-02, B-PERSONA-03 | B-PROCESS-01 | B-GAP-ANALYSIS-01 | ✅ |
+| B-REQ-02 | B-JOURNEY-01 (etapa 3) | B-PERSONA-01 | B-PROCESS-01 | B-GAP-ANALYSIS-02 | ✅ |
+| B-REQ-03 | B-JOURNEY-01 (etapa 2) | B-PERSONA-01, B-PERSONA-02, B-PERSONA-03 | B-PROCESS-01 | B-GAP-ANALYSIS-03 | ✅ |
+| B-REQ-04 | B-JOURNEY-01 (etapas 2/4) | B-PERSONA-01, B-PERSONA-02, B-PERSONA-03 | B-PROCESS-01 | B-GAP-ANALYSIS-01 | ✅ |
+| B-REQ-05 | B-JOURNEY-01 (etapa 3) | B-PERSONA-02, B-PERSONA-03 | B-PROCESS-01 | B-GAP-ANALYSIS-04 | ✅ |
+| B-REQ-06 | B-JOURNEY-01 (etapa 3) | B-PERSONA-03 | B-PROCESS-01 | B-GAP-ANALYSIS-04 | ✅ |
+| B-REQ-07 | B-JOURNEY-03 (etapa 2) | B-PERSONA-01 | B-PROCESS-03 | B-GAP-ANALYSIS-06 | ✅ |
+| B-REQ-08 | B-JOURNEY-02 (etapas 1–3) | B-PERSONA-01 | B-PROCESS-02 | B-GAP-ANALYSIS-05 | ✅ |
+| B-REQ-09 | B-JOURNEY-01 (etapa 3) | B-PERSONA-02, B-PERSONA-03 | B-PROCESS-01 | B-GAP-ANALYSIS-04 | ✅ |
+| B-REQ-10 | B-JOURNEY-01 (etapa 1) | B-PERSONA-01, B-PERSONA-02, B-PERSONA-03 | B-PROCESS-01 | B-GAP-ANALYSIS-01 | ✅ |
+| B-REQ-11 | B-JOURNEY-04 (etapas 1–4) | B-PERSONA-04 | B-PROCESS-04 | B-GAP-ANALYSIS-07 | ✅ |
+
+**Cobertura reversa (zero-órfãos de contexto):** todo B-JOURNEY (4/4), B-PERSONA (4/4), B-PROCESS (4/4) e B-GAP-ANALYSIS (7/7) dos 003/004 aparece em pelo menos uma linha desta seção. ✅
+
+> **NOTA:** O reuso de um mesmo B-GAP-ANALYSIS/B-PROCESS/B-JOURNEY por múltiplos B-REQs é legítimo (um gap pode derivar vários requisitos) e não penaliza a Cobertura. O `B-REQ-11` possui contexto completo de origem via B-JOURNEY-04/B-PERSONA-04/B-PROCESS-04/B-GAP-ANALYSIS-07, espelhando o B-UC-04 do 010-FRD. Os `B-REQ-SECURITY-*` são tratados na subseção 2.4.
+
+---
+
+### 2.4 Contexto de Referência — B-REQ-SECURITY (facetas de segurança/compliance)
+
+Os requisitos de segurança e compliance (005-BRD, subseção 1.3) são **facetas** dos requisitos de negócio e restrições a que estão vinculados — **não geram linha própria** na matriz primária (Seção 1) nem em 2.1/2.2, e **não contam como órfãos**.
+
+| ID | Requisito de Segurança/Compliance | Regulação/Política | Referência de Negócio Vinculada | Cobertura |
+|---|---|---|---|---|
+| B-REQ-SECURITY-01 | Isolamento estrito entre ambientes de clientes | LGPD (segurança dos dados), política interna de segurança | B-REQ-02 | ✅ |
+| B-REQ-SECURITY-02 | Credenciais jamais expostas fora do ambiente seguro de autenticação | Política interna de segurança | B-REQ-03 | ✅ |
+| B-REQ-SECURITY-03 | Registro de auditoria de acessos sem dados sensíveis, com retenção mínima de 6 meses | LGPD (responsabilização e auditoria) | B-REQ-07 | ✅ |
+| B-REQ-SECURITY-04 | Conformidade com LGPD para dados processados em nuvem sem datacenter no Brasil | LGPD — diretrizes do Jurídico | B-LIMIT-04 | ✅ |
+
+**Cobertura:** 4/4 B-REQ-SECURITY com referência de negócio registrada no 005-BRD (subseção 1.3). ✅
+
 ---
 
 ## 3. Análise de Órfãos (Gold-Plating)
@@ -118,9 +170,9 @@ A **RTM-FASE-1** é o instrumento de governança que sela a **Linha de Base de E
 
 Total de regras: B-RULE-01 a B-RULE-25 (25 regras).
 - B-RULE-01 a B-RULE-09: definidas no 005-BRD, todas vinculadas a B-REQ ✅
-- B-RULE-10 a B-RULE-24: definidas no 010-FRD, todas vinculadas a B-FEAT ✅
+- B-RULE-10 a B-RULE-25: definidas no 010-FRD, todas vinculadas a B-FEAT ✅
 
-**NENHUM órfão encontrado.** 24/24 regras com lastro. ✅
+**NENHUM órfão encontrado.** 25/25 regras com lastro. ✅
 
 ---
 
@@ -133,10 +185,16 @@ Total de regras: B-RULE-01 a B-RULE-25 (25 regras).
 | B-FEATs com lastro em B-REQ | 10/10 — **100%** |
 | Casos de Uso com lastro em B-FEAT | 7/7 — **100%** |
 | Regras de Negócio com lastro | 25/25 — **100%** |
+| B-JOURNEY com lastro em B-REQ (2.3) | 4/4 — **100%** |
+| B-PERSONA com lastro em B-REQ (2.3) | 4/4 — **100%** |
+| B-PROCESS com lastro em B-REQ (2.3) | 4/4 — **100%** |
+| B-GAP-ANALYSIS com lastro em B-REQ (2.3) | 7/7 — **100%** |
+| B-REQs com Contexto de Origem completo (2.3) | 11/11 — **100%** |
 | Órfãos (Gold-Plating) | **0** |
 | Lacunas de Cobertura | **0** |
+| B-REQ-SECURITY com referência registrada (2.4) | 4/4 — **100%** |
 
-> **✅ LINHA DE BASE DE ESCOPO FUNCIONAL SELADA.** A Fase 1 está completa e íntegra. Todos os artefatos de negócio (001-Charter, 002-Stakeholder-Map, 005-BRD, 010-FRD) estão 100% rastreáveis entre si. O projeto está apto a avançar para a Fase 2 — Especificação de Sistema e Arquitetura Macro.
+> **✅ LINHA DE BASE DE ESCOPO FUNCIONAL SELADA.** A Fase 1 está completa e íntegra. Todos os artefatos de negócio (001-Charter, 002-Stakeholder-Map, 003-Personas-Jornadas, 004-As-Is/To-Be, 005-BRD, 010-FRD) estão 100% rastreáveis entre si. O projeto está apto a avançar para a Fase 2 — Especificação de Sistema e Arquitetura Macro.
 
 ---
 
@@ -145,3 +203,8 @@ Total de regras: B-RULE-01 a B-RULE-25 (25 regras).
 | Versão | Data | Alteração | Autor |
 |--------|------|-----------|-------|
 | 1.0 | 08/08/2026 | Baseline inicial de rastreabilidade de negócio — Fase 1 selada | Time de Negócios / Orquestrador WATERFALL v2.0 |
+| 1.1 | 19/08/2026 | Atualização (skill waterfall-business-documents): Documentos Base incluem 003 e 004; seção 2.3 Contexto de Origem adicionada; contagem de regras corrigida (25/25); sumário com os 6 artefatos | Time de Negócios / skill waterfall-business-documents |
+| 1.2 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO) — Fase 1 congelada: 7/7 documentos em COMPLIANCE | Orquestrador / skill waterfall-business-documents |
+| 1.3 | 19/08/2026 | Correção cirúrgica (review FASE 1): linha 2.3 do B-REQ-11 alinhada à regra determinística (❌ justificado — origem nas Premissas 1 e 2 do Charter; 004 B-GAP-ANALYSIS-04 estendido para derivar B-REQ-09); subseção 2.4 (B-REQ-SECURITY × Referência) adicionada; Sumário Executivo com B-REQ-SECURITY | Time de Negócios / skill waterfall-business-documents |
+| 1.4 | 19/08/2026 | Correção cirúrgica (review FASE 1, F1 — decisão humana): B-REQ-11 passou a ter contexto completo de origem — B-JOURNEY-04/B-PERSONA-04 (003) e B-PROCESS-04/B-GAP-ANALYSIS-07 (004); linha 2.3 ✅; cobertura reversa 4/4, 4/4, 4/4 e 7/7; Sumário 11/11 | Time de Negócios / skill waterfall-business-documents |
+| 1.5 | 19/08/2026 | Aprovação humana (P1=SIM, P2/P3/P4=NÃO — atalho OK) — documento congelado em COMPLIANCE | Orquestrador / skill waterfall-business-documents |

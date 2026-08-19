@@ -66,7 +66,7 @@ O **SRD** é a especificação de segurança do projeto: arquitetura de controle
 ### Conexão com o Pipeline
 
 - **UPSTREAM:** Consome componentes e fluxos de autenticação do 040-LLD, topologia do 035-HLD e NFR-SEC da 020-SRS (via ADRs do 030-SAD)
-- **DOWNSTREAM:** Alimenta 041-DEVOPS-SETUP (segurança no pipeline), 050-EST-CASES (testes de segurança/pentest), 060-EAP-WBS, 086-PADROES-CODIGO-DOD (práticas seguras de código), 088-PRODUCT-BACKLOG-LIST e 100-MANUAIS-OPERACIONAIS
+- **DOWNSTREAM:** Alimenta 041-DEVOPS-SETUP (segurança no pipeline), 050-TEST-CASES (testes de segurança/pentest), 060-EAP-WBS, 086-PADROES-CODIGO-DOD (práticas seguras de código), 088-PRODUCT-BACKLOG-LIST e 100-MANUAIS-OPERACIONAIS
 
 ---
 

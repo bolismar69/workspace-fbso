@@ -26,6 +26,6 @@ Atue como um Auditor de Qualidade de Documentação, especializado em Backlog de
 6. **Seção 2 — Priorização:** MoSCoW completo com critérios e contagem por prioridade?
 7. **Seção 3 — Matriz:** Matriz EAP × Itens consistente com as Seções 1 e 2?
 8. **Seção 4 — Rastreabilidade:** Cadeia completa BL → REQ → FEAT/UC → FR/NFR → pacote EAP → estimativa? Sem lacunas?
-9. **Limite de Responsabilidade:** O documento NÃO define filas/sprints e NÃO altera status além do inicial "A Fazer" (responsabilidade do 092 na FASE 5)? O ciclo de vida declara expansão via Change-Request de Negócio/Técnico (085)?
+9. **Limite de Responsabilidade:** O documento NÃO define ciclos de entrega (`CICLO-NN`) e NÃO altera status além do inicial "A Fazer" (responsabilidade do 092 na FASE 5)? O ciclo de vida declara expansão via Change-Request de Negócio/Técnico (085)?
 10. **Seção 5 — Registro de Alterações:** Tabela de versões presente? Baseline M4 registrada?
 11. **Vocabulário WATERFALL:** Respeita a tabela VOCABULÁRIO WATERFALL do GENERATE (sem termos ágeis)? IDs usam apenas BL-NN?

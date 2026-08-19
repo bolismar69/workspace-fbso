@@ -104,8 +104,8 @@ flowchart TB
         %% O 041 (DevOps) integra as especialidades e só inicia após 042/043/044 em COMPLIANCE (validado pelo GATE-041).
 
         subgraph FASE-3-ESTEIRA-QUALIDADE["ESTEIRA DE QUALIDADE (QA)"]
-            045-EST-PLAN["045-EST-PLAN - Software Test Plan (IEEE 829)"]
-            050-EST-CASES["050-EST-CASES - Especificação de Casos de Teste"]
+            045-TEST-PLAN["045-TEST-PLAN - Software Test Plan (IEEE 829)"]
+            050-TTEST-CASES["050-TTEST-CASES - Especificação de Casos de Teste"]
         end
         
         060-EAP-WBS["060-EAP-WBS - Estrutura Analítica do Projeto"]
@@ -150,7 +150,7 @@ flowchart TB
             092-KANBAN-BACKLOG --> 093-GESTAO-TIMES --> 092-KANBAN-BACKLOG
         end
 
-        subgraph JANELAS-EXECUCAO["2. Janelas de Entrega (Ciclos/Sprints) — TBD/FORA DE ESCOPO"]
+        subgraph JANELAS-EXECUCAO["2. Janelas de Entrega (DEV → QA → UAT → DEPLOY por FILA-NN)"]
             direction TB
             JANELA-DEV["Janela de Desenvolvimento (DEV)\n(Code, Unit Tests, Code Review)"]
             JANELA-QA["Janela de Testes (QA)\n(Testes Funcionais, Carga e Pentest)"]
@@ -162,8 +162,8 @@ flowchart TB
             JANELA-UAT --> JANELA-DEPLOY
             JANELA-DEPLOY --> JANELA-DEV
         end
-        %% TBD: a sub-fase 2 (Janelas de Entrega) está FORA DE ESCOPO nesta revisão (evolução aprovada em 14/08/2026).
-        %% A esteira da FASE 5 executa por ciclo de entrega (FILA-NN do 092) sem depender da definição das janelas.
+        %% Janelas definidas no 096-DEFINICAO-JANELAS-ENTREGA (doc WATERFALL) e orquestradas pelo TECHLEAD (Bloco F, PROJECT-TECHNICAL-DEFINITIONS v7.0).
+        %% Aceite por entrega: DE-ACORDO/APROVAÇÃO na UAT; o 105-TERMO-ACEITE permanece aceite final (FASE 6).
 
         subgraph ARTEFATOS-SUPORTE["3. Documentação de Suporte e Evidências"]
             %% NOTA: 095-RELATORIO-QUALIDADE tem a estrutura criada na F3 e é alimentado com evidências na F5 (via 092/093).
@@ -230,17 +230,17 @@ flowchart TB
     MILESTONE-2 -- "Estimativa no Fluxo Normal" --> ESTIMATIVA-UPSTREAM-DISCOVERY
     ESTIMATIVA-UPSTREAM-DISCOVERY --> GO-NO-GO-UPSTREAM{"Go/No-Go Upstream?"}
     GO-NO-GO-UPSTREAM -- "GO (ARQUITETURA / ENGENHARIA / ESPECIALIDADES)" --> FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING
-    GO-NO-GO-UPSTREAM -- "GO (QUALIDADE)" --> 045-EST-PLAN
+    GO-NO-GO-UPSTREAM -- "GO (QUALIDADE)" --> 045-TEST-PLAN
     GO-NO-GO-UPSTREAM -- "TIMEBOX FASE-3" --> FASE-3-TIMEBOX
     GO-NO-GO-UPSTREAM -- "NO-GO" --> PROJETO-CANCELADO
 
     %% Consulta técnica sem travamento sequencial
-    045-EST-PLAN --> 050-EST-CASES
-    FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING -.->|"Alimenta / Consulta Técnica"| 050-EST-CASES
+    045-TEST-PLAN --> 050-TTEST-CASES
+    FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING -.->|"Alimenta / Consulta Técnica"| 050-TTEST-CASES
 
     %% Consolidação Final na WBS
     FASE-3-ESTEIRA-ARCHITECTURE-ENGINEERING --> 060-EAP-WBS
-    050-EST-CASES --> 060-EAP-WBS
+    050-TTEST-CASES --> 060-EAP-WBS
 
     060-EAP-WBS --> MILESTONE-3
     MILESTONE-3 --> ESTIMATIVA-DOWNSTREAM-REFINEMENT
@@ -333,7 +333,7 @@ flowchart TB
 ```mermaid
 flowchart TB
     %% INSUMO UPSTREAM (FASE 1 A 4)
-    IN_MACRO["ARTEFATOS MACRO (FASE 1-4)\n(BRD, SRS, SAD, HLD, LLD, EST-CASES,\n086-Padrões/DoD, 087-CI-CD)"]
+    IN_MACRO["ARTEFATOS MACRO (FASE 1-4)\n(BRD, SRS, SAD, HLD, LLD, TEST-CASES,\n086-Padrões/DoD, 087-CI-CD)"]
 
     subgraph REPO["REPOSITÓRIO DA SOLUÇÃO TÉCNICA (Ex: /services/payment-engine)"]
         

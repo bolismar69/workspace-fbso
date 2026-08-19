@@ -18,7 +18,7 @@ Atue como um Gerente de Produto/PMO Sênior, especializado em backlog de execuç
 1. **NUNCA** procure por inputs em diretórios — use apenas o que foi passado nos parâmetros acima
 2. **LEIA** o 010-FRD (FEAT-NN/RN-NN/UC-NN) e o 020-SRS (FR-NN/NFR-NN) — cada item do backlog deriva de um requisito documentado; o 060-EAP-WBS fornece o pacote de trabalho; o 062 o responsável (STF-NN); o 065/070 a estimativa (esforço PERT); o 086 o DoD (DOD-NN)
 3. **BASELINE M4:** este documento nasce na FASE 4 e entra no baseline lock (M4). Nasce "A Fazer" para todos os itens
-4. **RESPONSABILIDADE DO 092:** este documento NÃO define filas/sprints nem muda status — na FASE 5, o 092-BACKLOG-KANBAN revisa e pode expandir este backlog via Change-Request de Negócio (novas features) e Change-Request Técnico (gaps de arquitetura/engenharia/time), atualiza o status de andamento e define as Filas/Sprints de implementação
+4. **RESPONSABILIDADE DO 092:** este documento NÃO define ciclos de entrega (`CICLO-NN`) nem muda status — na FASE 5, o 092-BACKLOG-KANBAN revisa e pode expandir este backlog via Change-Request de Negócio (novas features) e Change-Request Técnico (gaps de arquitetura/engenharia/time), atualiza o status de andamento e define os Ciclos de Entrega (`CICLO-NN`) de implementação
 5. Skills: tente usar as skills listadas em `SKILLS` via `Skill` tool. Se falharem, use o template de fallback abaixo
 6. Crie o arquivo em `DOC_PATH` com o status inicial `[STATUS: Em análise]`
 7. Use o prefixo padronizado: **BL-NN** (itens do backlog)
@@ -68,7 +68,7 @@ O **Product Backlog List** é a lista priorizada e rastreável de tudo o que o t
 1. **FASE 4 — Nascimento:** gerado neste documento, congelado no baseline M4 (Project Baseline Locked)
 2. **FASE 5 — Revisão/Expansão (via 092-BACKLOG-KANBAN):** o backlog pode ser expandido com novos itens vindos de **Change-Request de Negócio** (novas features de negócio, formalizadas pelo processo do 085-PLANO-GESTAO-MUDANCAS) ou de **Change-Request Técnico** (gaps de arquitetura/engenharia/time identificados na execução)
 3. **FASE 5 — Atualização de Status (via 092):** itens passam por A Fazer → Em Execução → Em Revisão → Concluído / Impedido
-4. **FASE 5 — Definição de Filas/Sprints (via 092):** o corte do backlog em filas/ciclos de entrega é responsabilidade exclusiva do 092
+4. **FASE 5 — Definição de Ciclos de Entrega (via 092):** o corte do backlog em ciclos de entrega (`CICLO-NN`) é responsabilidade exclusiva do 092
 
 ### Conexão com o Pipeline
 
@@ -125,4 +125,4 @@ O **Product Backlog List** é a lista priorizada e rastreável de tudo o que o t
 ```
 
 ## Gating Rule
-Emitir `[STATUS: SUCESSO]` se as 6 seções estiverem completas, todo FEAT/UC do FRD tiver item BL, todo item tiver origem rastreável + pacote EAP + estimativa PERT + DoD, a priorização MoSCoW estiver completa, o status inicial de todos os itens for "A Fazer", e nenhuma fila/sprint tiver sido definida (responsabilidade do 092 na FASE 5).
+Emitir `[STATUS: SUCESSO]` se as 6 seções estiverem completas, todo FEAT/UC do FRD tiver item BL, todo item tiver origem rastreável + pacote EAP + estimativa PERT + DoD, a priorização MoSCoW estiver completa, o status inicial de todos os itens for "A Fazer", e nenhum ciclo de entrega (`CICLO-NN`) tiver sido definido (responsabilidade do 092 na FASE 5).

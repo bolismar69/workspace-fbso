@@ -7,7 +7,7 @@ Atue como QA Engineer Sênior especializado em estratégia e planejamento de tes
 
 | Parâmetro | Descrição |
 |---|---|
-| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `045-EST-PLAN-{PROJECT_ID_NAME}.md`) |
+| `DOC_PATH` | Caminho completo onde o arquivo será criado (formato: `045-TEST-PLAN-{PROJECT_ID_NAME}.md`) |
 | `PROJECT_ID_NAME` | Identificador do projeto |
 | `SECURITY_GLOBAL` | Caminho para o GLOBAL-SECURITY.md — regras de ouro, checklist SDD, threat model global |
 | `TECHNICAL_SOLUTIONS` | Lista de soluções técnicas do projeto (`TECHNICAL_SOLUTION_NAMES`) — nomes dos microsserviços, frontends, batches |
